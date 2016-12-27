@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata   
+*.Rdata
+*.html
+*.pdf
+*.png
+*rsconnect*

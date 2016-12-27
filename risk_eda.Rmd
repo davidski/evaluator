@@ -1,0 +1,598 @@
+---
+title: "Strategic Information Security Risk Report"
+author: "David F. Severski (@dseverski)"
+date: "January 1, 1969"
+output:
+  word_document:
+    toc: yes
+    toc_depth: '3'
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    toc: yes
+    toc_depth: '3'
+  html_document:
+    fig_caption: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+subtitle: Technical Analysis
+header-includes:
+- \usepackage{draftwatermark}
+- \usepackage{fancyhdr}
+- \pagestyle{fancy}
+- \fancyfoot[C]{Confidential - \thepage}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+# plotting, commas, binning, and color libraries
+library(ggplot2)
+library(scales)
+library(hexbin)
+library(viridis)
+library(dplyr)
+library(pbapply)
+library(readr)
+library(pander)
+```
+
+```{r load_data, echo = FALSE}
+# Simulations and pre-computed summary views are available via the 
+# `strat_risk.Rmd` notebook. For analysis, this data is pre-loaded.
+load(file = "./data/results.Rdata")
+load(file = "./data/scenario_summary.Rdata")
+load(file = "./data/domain_summary.Rdata")
+mappings <- read_tsv("data/qualitative_mappings.tsv") # pre-assigned dist.
+scenarios <- read_tsv("./data/scenarios.tsv") %>% mutate(tef = tolower(tef), 
+                                                      lm = tolower(lm), 
+                                                      tc = tolower(tc))
+```
+
+```{r useful_values}
+# Precalculate the correct order of scenarios (domain, then ID of the scenario). Also 
+# store the `scenario_id` of manually identified outlier (super large upper 
+# risk exposure) scenarios.
+scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
+scenario_outliers <- c(52, 22)    # visually identified outliers
+```
+
+# Summary
+
+Risk has REDACTED.
+
+```{r overall_risk, echo=FALSE}
+overall <- results %>% group_by(simulation) %>% 
+                     summarize(ale = max(ale)) %>% select(ale) %>%
+                     ungroup
+```
+
+> `r comma(max(results$simulation))` simulations generated on `r 
+format(attr(results, "generated_on"), "%b %d, %Y %H:%M:%S")`.
+
+
+## Aggregate Risk
+
++-----------------+--------------------------------------------+
+| Maximum         | `r dollar(max(overall$ale))`               |
++-----------------+--------------------------------------------+
+| 95th Percentile | `r dollar(quantile(overall$ale, c(0.95)))` |
++-----------------+--------------------------------------------+
+| Mean            | `r dollar(mean(overall$ale))`              |
++-----------------+--------------------------------------------+
+| 10th Percentile | `r dollar(quantile(overall$ale, c(0.10)))` |
++-----------------+--------------------------------------------+
+| Minimum         | `r dollar(min(overall$ale))`               |
++-----------------+--------------------------------------------+
+
+The following figure shows the frequency a given loss value will be met or 
+exceeded during a given year. The outlier scenarios are excluded. The 80% line 
+reflects that we should expect a loss of REDACTED or more during four out of 
+five years.
+
+```{r loss_exceedance_curve}
+max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%  
+  group_by(simulation) %>% 
+  summarise(loss = max(ale),
+            min_loss = min(ale),
+            max_loss = sum(ale)) %>%
+  ungroup
+loss_points <- seq(0, 4 * 10 ^ 6, by = 10 ^ 5)
+
+foo <- pblapply(loss_points,
+                function(x) {list(loss = x, prob_exceedance = sum(max_loss$loss > x) /
+                                    nrow(max_loss))})
+foo <- data_frame(loss = sapply(foo, "[[", 1), 
+                  prob = sapply(foo, "[[", 2))
+
+gg <- ggplot(foo, aes(x = prob, y = loss))
+gg <- gg + geom_path()
+gg <- gg + geom_vline(xintercept = 0.8, color = "gray80", size = 1) + 
+  annotate("text", x = 0.8, y = max(foo$loss), label = percent(.8), hjust = 1, size = 3)
+gg <- gg + scale_y_continuous(labels = dollar)
+gg <- gg + scale_x_reverse(labels = percent)
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme_minimal()
+gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss", 
+                title = "Loss Exceedance Curve")
+print(gg)
+```
+
+
+## Largest Areas of Impact
+
+The top three areas of largest expected loss are REDACTED.
+
+```{r domain_impact, echo = FALSE}
+domain_impact <-   domain_summary %>%
+  group_by(domain_id) %>%
+  select(domain_id, ale) %>%
+  summarize_each(funs(mean, max, sd)) %>%
+  arrange(desc(mean)) %>% 
+  mutate_each(funs(dollar), -domain_id) %>% ungroup()
+knitr::kable(domain_impact, row.names = NA, 
+             col.names = c("Domain", "Mean Annual Loss", "Maximum Annual Loss", 
+                           "Loss Standard Deviation"), 
+             align = c("l", "r", "r", "r"))
+```
+
+## Key Areas of Control Weakness
+
+Our controls are REDACTED.
+
+```{r domain_weakness, echo = FALSE}
+control_weakness <- scenario_summary %>% group_by(domain_id) %>% 
+  summarize(vuln = percent(mean(mean_vuln))) %>% arrange(desc(vuln)) %>% 
+  ungroup()
+knitr::kable(control_weakness, row.names = NA, 
+             col.names = c("Domain", "Control Weakness"), 
+             align = c("l", "r"))
+```
+
+## Newly Added Risk Scenarios
+
+This analysis evolved the static list of threats into more nuanced scenarios 
+with complete actors, actions, and assets. Several new scenarios were added as 
+part of this process. REDACTED
+
+### REDACTED
+
+REDACTED
+
+```{r recacted_details, echo=FALSE}
+scenario_details <- scenario_summary %>% filter(scenario_id == 52)
+```
+
++---------------------+-------------------------------------------------------+
+| Vulnerability       | `r percent(scenario_details$mean_vuln)`               |
+| (% of events that   |                                                       | 
+| results in loss)    |                                                       |
++---------------------+-------------------------------------------------------+
+| Mean Control Gap    | `r percent(scenario_details$mean_tc_exceedance / 100)`|
++---------------------+-------------------------------------------------------+
+| Maximum Annual Loss | `r dollar(scenario_details$ale_max)`                  |
++---------------------+-------------------------------------------------------+
+| Median Annual Loss  | `r dollar(scenario_details$ale_median)`               |
++---------------------+-------------------------------------------------------+
+| Maximum Single Loss | `r dollar(scenario_details$sle_max)`                  |
++---------------------+-------------------------------------------------------+
+| Median Single Loss  | `r dollar(scenario_details$sle_median)`               |
++---------------------+-------------------------------------------------------+
+
+### REDACTED
+
+REDACTED 
+
+```{r redacted2_details, echo=FALSE}
+scenario_details <- scenario_summary %>% filter(scenario_id == 53)
+```
++---------------------+-------------------------------------------------------+
+| Vulnerability       | `r percent(scenario_details$mean_vuln)`               |
+| (% of events that   |                                                       | 
+| results in loss)    |                                                       |
++---------------------+-------------------------------------------------------+
+| Mean Control Gap    | `r percent(scenario_details$mean_tc_exceedance / 100)`|
++---------------------+-------------------------------------------------------+
+| Maximum Annual Loss | `r dollar(scenario_details$ale_max)`                  |
++---------------------+-------------------------------------------------------+
+| Median Annual Loss  | `r dollar(scenario_details$ale_median)`               |
++---------------------+-------------------------------------------------------+
+| Maximum Single Loss | `r dollar(scenario_details$sle_max)`                  |
++---------------------+-------------------------------------------------------+
+| Median Single Loss  | `r dollar(scenario_details$sle_median)`               |
++---------------------+-------------------------------------------------------+
+
+
+## Recommendations
+
+REDACTED
+
+### Project Recommendation (TBD)
+
+REDACTED
+
+### Analysis Improvement Opportunities
+
+REDACTED
+
+# Methodology
+
+The strategic risk assessment process uses an OpenFAIR based method. 
+Expert opinion is polled on the threats, controls, and possible lost magnitudes 
+to create a Monte Carlo model resulting in a quantified risk exposure for each 
+tracked risk.
+
+## Capabilities
+
+The security teams met and formed a consensus opinion on the maturity level of
+the XX capabilities over the `r nrow(unique(domain_summary$domains_id))` 
+security program areas. The team assessed each capability on a 1-5 maturity 
+model closely modeled after the CMM. For each valuation, notes were taken on 
+key observations supporting those decisions. These capability mappings were 
+used to create a sample (10,000 samples using a beta pert distribution) of 
+control strengths ranging from 100% (completely effective) to 0% (completely 
+ineffective). The control strength for each scenario is calculated by taking 
+the arithmetic mean of all applicable controls.
+
+## Risk Scenarios
+
+Each program area has a list of multiple risk scenarios that apply to that 
+domain. Each scenario consists of:
+
+1. The threat community (e.g. internal workforce members, nature, partners) 
+performing the action.
+2. The action taken by the threat actor.
+3. The program controls that resist harm by the threat and actor.
+4. The consequences of the action, should it occur.
+
+With this list of scenarios, a rating of the probability of the threat acting 
+against the institution, the strength of the threat, and the size of the loss 
+should the attack be successful was created. We use a beta pert distribution to 
+model each of these factors.
+
+
+## Risk Simulation
+
+We ran a Monte Carlo process of 10,000 simulations of each risk scenario 
+against the control strength for the domain assigned to the threat scenario. 
+This process generates the following outputs:
+
+* Threat Events: The number of times per year the threat presents itself
+* Loss Events: The number of times the threat results in a loss (the threat 
+  overcomes the controls)
+* Single Loss Expected (SLE): The size range of individual losses from each 
+  loss event
+* Annual Loss Expected (ALE): The annualized sum of all individual losses.
+
+## Assumptions
+
+Parameters for each of the input distributions are displayed below.
+
+```{r, tef_table, results='asis', echo=FALSE}
+create_table <- function(label, id) {
+  pandoc.header(label, level = 3)
+  filter(mappings, type == id) %>% select(label, l, ml, h, conf) %>% 
+    mutate(ml = as.integer(ml)) %>% 
+    knitr::kable(., row.names = NA, 
+               col.names = c("Category", "Low", "Most Likely", "High", "Confidence"), 
+               align = c("l", "r", "r", "r", "r"))
+}
+create_table("Threat Frequencies", "tef")
+create_table("Threat Capabilities", "tc")
+create_table("Control Difficulties", "diff")
+create_table("Loss Magnitudes", "lm")
+
+```
+
+# Exploratory Analysis
+
+
+## Loss Frequency
+
+Loss is a function of:
+
+1. Number of times a threat actor acts against the institution
+2. The strength of the particular attack
+3. The difficulty to overcome the relevant controls
+
+### Loss Frequency by Domain
+
+The following figure shows the density of annualized loss events by domain. Most 
+domains are REDACTED
+
+```{r lef_by_domain, fig.width = 8, fig.height = 8, echo=FALSE}
+results %>% group_by(domain_id, simulation) %>%
+  summarise(loss_events = sum(loss_events)) %>% 
+  ggplot(., aes(x = loss_events)) -> gg
+gg <- gg + facet_grid(domain_id ~ ., scales = "free_y")
+#gg <- gg + scale_fill_viridis(discrete = TRUE)
+gg <- gg + geom_density(alpha = 1/3, fill = viridis(1))
+gg <- gg + labs(x = "Loss Events Per Year", 
+                title = "Number of Loss Events by Domain")
+gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + theme(axis.ticks.y = element_blank(),
+                 axis.text.y = element_blank())
+print(gg)
+```
+
+### Loss Frequency Per Scenario
+
+Looking at the loss events for each individual scenario helps identify the 
+particular cases within each domain that are of concern. SCENARIO A and 
+SCENARIO B have a larger than avergae number of losses.
+
+Note that larger than average loss events does not necessarily imply high risk, 
+as the total size of all losses may be small. The size of losses is 
+explored in the loss magnitude section.
+
+```{r lef_by_scenario, fig.width = 8, fig.height = 8, echo=FALSE}
+r2 <- results %>% mutate(scenario_id = factor(as.character(scenario_id), 
+                                        levels = scenario_order$scenario_id)) %>%
+  arrange(domain_id, scenario_id)
+
+plot_scenarios_by_domain <- function(x) {
+  gg <- ggplot(x, aes(x = loss_events, fill = domain_id))
+  gg <- gg + facet_wrap(~domain_id + scenario_id,
+                        scales = "free_y", switch = "x")
+  gg <- gg + scale_fill_viridis(discrete = TRUE)
+  gg <- gg + geom_density(alpha = 1/2)
+  #gg <- gg + scale_y_log10(label = dollar)
+  gg <- gg + theme_minimal()
+  gg <- gg + theme(panel.grid.major = element_blank())
+  gg <- gg + theme(panel.grid.minor = element_blank())
+  gg <- gg + labs(x = "Loss Frequency",
+                  title = "Number of Annual Loss Events for Each Scenario")
+  gg <- gg + theme(legend.position = "none")
+  gg <- gg + theme(axis.ticks.y = element_blank(),
+                   axis.text.x = element_blank(),
+                   axis.text.y = element_blank(),
+                   strip.text.y = element_blank())
+  print(gg)
+}
+
+plot_scenarios_by_domain(r2)
+
+#sapply(unique(results$domain_id), function(x) { 
+#  plot_scenarios_by_domain(r2[r2$domain_id == x, ]) })
+
+rm(r2)
+
+```
+
+## Loss Magnitudes
+
+Loss Magnitudes represent the economic impact when a loss materializes. Types of 
+losses may include fines, response costs (notification & ID theft monitoring), 
+increased audit scrutiny, restoration costs, etc. While these types can all be 
+individually modelled, this analysis performs an agregate modelling with an 
+absolute upper bound represented as REDACTED.
+
+### ALE Ranges per Scenario
+
+This figure shows the range of expected annual losses (ALE) for each scenario. 
+
+```{r ale_range_by_scenario, fig.height = 8, fig.width=8, echo=FALSE}
+gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>% 
+  ggplot(., aes(x = as.character(scenario_id), 
+                          y = ale + 1))
+gg <- gg + facet_wrap(~domain_id, scales = "free_x", switch = "x")
+gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
+gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5, 
+                        outlier.color = alpha("black", 1/2), 
+                        outlier.shape = NA)
+gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + scale_y_continuous(labels = function(x) { 
+  paste0("$", x / 10 ^ 6, "M")})
+#gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + labs(x = "Scenario ID", y = "ALE",
+                tile = "Loss Ranges by Domain and Scenario")
+print(gg)
+```
+
+## Risk
+
+Risk is the annualized expected loss across all the scenarios in a domain. 
+Within a single domain, risk is capped at the maximum loss scenario within 
+that domain. This is a limitation of the combination model we have currently 
+implemented (the interactions between scenarios and domains are not well 
+defined).
+
+### Risk by Domains
+
+This figure (a violin plot) shows the range of expected annual losses by 
+domain. The wider portion of each column represents where the losses are more 
+likely to occur.
+
+```{r risk_by_domain, echo=FALSE}
+
+# box plot of all ales
+gg <- ggplot(domain_summary, aes(x = domain_id, y = ale + 1))
+gg <- gg + geom_hline(aes(yintercept = 10 ^ 6), color = "red") +
+  annotate("text", x = "ACCT", y = 10 ^ 6, label = "High", vjust = -1, 
+           hjust = 0.5)
+gg <- gg + geom_hline(aes(yintercept = 5 * 10 ^ 5), color = "lightsteelblue") +
+  annotate("text", x = "ACCT", y = 5 * 10 ^ 5, label = "Medium", 
+           vjust = -1, hjust = 0.5)
+gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
+gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3,
+                        outlier.color = alpha("black", 1/2),
+                        outlier.shape = NA)
+gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
+# gg <- gg + geom_violin(fill = viridis(1), alpha = 1/5)
+gg <- gg + theme_minimal()
+gg <- gg + theme(legend.position = "none")
+gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + labs(x = "Domain", y = "Annual Expected Loss",
+                title = "Range of Annual Losses By Domain")
+print(gg)
+```
+
+There is one domain  (`r paste(unique(scenario_summary[scenario_summary$scenario_id %in% scenario_outliers, ]$domain_id), collapse=", ")`) with annual loss ranges which 
+far exceed the other scenarios. The domains that contain these scenarios are 
+plotted seperately to identify the outlying scenarios.
+
+```{r risk_for_outlier_domains, eval = TRUE, echo=FALSE}
+# box plot for the outlier domains
+outlier_domains <- scenario_summary %>% filter(scenario_id %in% scenario_outliers) %>% group_by(domain_id) %>% summarise() %>% ungroup()
+gg <- results %>% filter(domain_id %in% outlier_domains$domain_id) %>% 
+  ggplot(., aes(x = as.character(scenario_id), y = ale))
+gg <- gg + facet_grid(. ~ domain_id, scales = "free_x", switch = "x")
+gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
+gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5)
+#gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
+gg <- gg + scale_fill_viridis(discrete = TRUE)
+gg <- gg + theme_minimal()
+gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + labs(x = "Scenario ID", y = "Annual Exepected Loss", 
+                title = "Domains with Outlier Scenarios")
+gg <- gg + theme(panel.background = element_rect(fill = NA, color = "black"))
+gg <- gg + theme(legend.position = "none")
+print(gg)
+```
+
+### Filter Out the Outlying Scenarios
+
+Repeating the above plot with the two outlier scenarios removed allows the 
+identification of another set of scenarios to be addressed.
+
+```{r annual_loss_no_outliers}
+#scenario_order$scenario_id
+gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>% 
+  mutate(scenario_id = factor(as.character(scenario_id), 
+                              levels = as.character(scenario_order$scenario_id))) %>% 
+  arrange(domain_id, scenario_id) %>% ggplot(., aes(x = scenario_id, y = ale))
+gg <- gg + facet_grid(~domain_id, scales = "free_x", switch = "x")
+gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + labs(x = NULL, y = "Annual Loss", 
+                title = "Loss Range for Each Scenario by Domain")
+gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
+gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5, 
+                        outlier.color = alpha("black", 1/2), outlier.shape = NA)
+gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + theme(axis.text.x = element_blank())
+print(gg)
+```
+
+## Miscellanious
+
+### Fragile Scenarios
+
+Risk scenarios that have only a single control are identified as fragile. 
+These represent opportunities to evaluate whether additional controls are 
+waranted.
+
+```{r fragile_scenarios, results = 'asis'}
+scenarios %>% rowwise %>% 
+  mutate(n_controls = length(stringi::stri_split_fixed(controls, ", ")[[1]])) %>%
+  filter(n_controls == 1) %>% 
+  arrange(domain_id, scenario_id) %>% 
+  select(Domain = domain_id, ID = scenario_id, Scenario = scenario) %>% 
+  pander::pander(., justify = c("left", "left", "left"))
+```
+
+
+### Median vs Max ALE
+
+```{r median_vs_max_ale, echo = FALSE}
+
+# scatter plot of median vs. max ALEs
+gg <- ggplot(scenario_summary, aes(x = ale_median, y = ale_max))
+gg <- gg + geom_point(position = "jitter", alpha = 1/5, aes(size = loss_events))
+#gg <- gg + stat_bin2d(bins = 50) + scale_fill_gradient(low = 'lightblue', high = 'red')
+#gg <- gg + stat_binhex(bins = 50) + scale_fill_viridis()
+#gg <- gg + geom_text(aes(label = title), size = 4)
+gg <- gg + scale_x_log10(labels = dollar) + scale_y_log10(labels = dollar)
+gg <- gg + theme_bw()
+print(gg)
+```
+
+### Histogram of median ALEs
+
+```{r median_ale_histogram, echo = FALSE}
+sc2 <- scenario_summary %>% filter(!scenario_id %in% scenario_outliers)
+gg <- ggplot(sc2, aes(x = ale_median))
+gg <- gg + geom_histogram(binwidth = max(sc2$ale_median) / 50, 
+                          aes(y = ..density..),
+                          color = "black", fill = "white")
+gg <- gg + geom_density(fill = viridis(1), alpha = 1/5)
+gg <- gg + scale_x_continuous(labels = dollar) +
+  scale_y_continuous(labels = comma)
+gg <- gg + theme_minimal()
+gg <- gg + labs(x = "Median Annualized Loss", y = element_blank(), 
+                title = "Median Losses (No Outliers)")
+print(gg)
+rm(sc2)
+```
+
+### Histogram/Density of All Simulations
+
+```{r density_all, echo = FALSE}
+gg <- ggplot(results, aes(x = ale))
+gg <- gg + geom_histogram(boundary = 0, binwidth = max(range(results$ale) / 50), 
+                          color = "white", 
+                          fill = viridis(1), alpha = 1/5)
+gg <- gg + geom_density(fill = "black")
+gg <- gg + scale_x_continuous(labels = dollar) 
+gg <- gg + scale_y_continuous(labels = comma)
+ gg <- gg + labs(x = "Risk Exposure", 
+                 y = element_blank(), 
+                 title = "Risk Exposure Over All Simualations")
+gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + theme(axis.line.y = element_line(color = "black", size = 0.15))
+gg <- gg + theme(axis.line.x = element_line(color = "black", size = 0.15))
+gg <- gg + theme(plot.margin = unit(rep(30, 4), "pt"))
+#gg <- gg + geom_point(aes(y=cumloss)) + geom_path(aes <- (y=cumloss, group=1))
+print(gg)
+```
+
+### Minus Outlier Scenarios
+
+```{r histogram_no_outliers, echo = FALSE}
+r2 <- results %>% filter(!scenario_id %in% scenario_outliers)
+gg <- ggplot(r2, aes(x = ale))
+gg <- gg + geom_histogram(binwidth = max(r2$ale) / 50, 
+                          color = "white", 
+                          fill = viridis(1), alpha = 1/5)
+#gg <- gg + geom_density(fill = "black")
+gg <- gg + scale_x_continuous(labels = dollar) 
+gg <- gg + scale_y_continuous(labels = comma)
+gg <- gg + labs(x = "Risk Exposure", 
+                y = element_blank(), 
+                title = "Risk Exposure Over All Non-Outlier Simualations")
+gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + theme(axis.line.y = element_line(color = "black", size = 0.15))
+gg <- gg + theme(axis.line.x = element_line(color = "black", size = 0.15))
+gg <- gg + theme(plot.margin = unit(rep(30, 4), "pt"))
+#gg <- gg + geom_point(aes(y=cumloss)) + geom_path(aes <- (y=cumloss, group=1))
+print(gg)
+```
+
+# Appendix
+
+Full threat listing
+
+```{r threat_list, results='asis', echo=FALSE}
+left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
+                                            "domain_id" = "domain_id")) %>% 
+  arrange(desc(ale_median), desc(ale_var)) %>% 
+  mutate_each(funs(dollar), ale_median, ale_var) %>% 
+  select("ID" = domain_id, "Scenario" = scenario, "Median Annual Loss" = ale_median, 
+         "95% Value at Risk" = ale_var) %>% 
+  pander::pander(., justify = c("left", "left", "right", "right"))
+  
+  
+  # knitr::kable(., row.names = NA, 
+  #              col.names = c("ID", "Scenario", "Median Annual Loss",
+  #                            "95% Value at Risk"), 
+  #              align = c("l", "l", "r", "r"))
+```

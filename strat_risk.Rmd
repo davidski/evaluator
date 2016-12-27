@@ -1,0 +1,189 @@
+---
+title: "Strategic Risk OpenFAIR"
+author: "David F. Severski (@dseverski)"
+date: "January 1, 1969"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, support_setup}
+source("bin/qual_to_quant.R")  # custom quant/qual conversions
+source("bin/openfair.R")       # OpenFAIR simulator
+library(dplyr)
+library(pbapply)
+```
+
+## Load Source Data
+
+| Source       | Purpose                 |
+|--------------|-------------------------|
+| domains      | Program domains         |
+| capabilities | Objectives and controls |
+| scenarios    | Risk scenarios          |
+| mappings     | Distribution params     |
+
+
+```{r data_load}
+suppressMessages(library(readr))
+domains <- read_csv("data/domains.csv") # program domains
+capabilities <- read_tsv("data/capabilities.tsv") # i.e. objectives & controls
+scenarios <- read_tsv("data/scenarios.tsv") %>% mutate(tef = tolower(tef), 
+                                                   lm = tolower(lm), 
+                                                   tc = tolower(tc))
+mappings <- read_tsv("data/qualitative_mappings.tsv") # pre-assigned dist.
+```
+
+## Apply Quant Distributions
+
+For each program domain, each control contributes equally to the protection 
+against all threats in the domain. We sample control strengths within the 
+domain, then take a straight mean to aggregate the sampled control 
+strength for the entire domain. This sampled strength is later applied to 
+each threat in the matching domain.
+
+```{r estimate_difficulty}
+capability_samples <- capabilities %>% group_by(domain_id) %>% 
+  do(diff_samples = agg_controls(.$diff))
+```
+
+Convert the various labels for the threat and loss information to the assigned 
+distribution parameters.
+
+```{r encode_threats}
+# rather than hard-code conversions, use an external mappings table
+# scenarios$tef_dist <- convert_tef_qual_to_quant(scenarios$tef)
+# scenarios$tc_dist <- convert_tc_qual_to_quant(scenarios$tc)
+# scenarios$lm_dist <- convert_lm_qual_to_quant(scenarios$lm)
+
+derive_controls <- function(x, id="None") {
+  control_list <- stringi::stri_split_fixed(x, ", ") %>% unlist()
+  results <- convert_diff_qual_to_quant(capabilities[capabilities$id %in% 
+                                            as.numeric(control_list), 
+                                          "diff"]$diff)
+  results <- list(id = results)
+  names(results) <- id
+  return(results)
+}
+
+control_params <- mapply(derive_controls, scenarios$controls, scenarios$scenario_id, SIMPLIFY = FALSE)
+control_params <- lapply(control_params, function(x) x[[1]])
+names(control_params) <- scenarios$scenario_id
+
+#control_params <- cbind("id" = scenarios$scenario_id, "params" = control_params)
+#scenarios <- scenarios %>%
+#  left_join(control_params, by = c("scenario_id" = "scenario_id"))
+
+# fetch TEF params
+scenarios %>% left_join(mappings[mappings$type == "tef",], 
+                        by = c("tef" = "label")) %>%
+  rename(tef_l = l, 
+         tef_ml = ml, 
+         tef_h = h, 
+         tef_conf = conf) %>% 
+  select(-c(tef, type)) -> scenarios
+
+# fetch TC params
+scenarios %>% left_join(mappings[mappings$type == "tc",], 
+                        by = c("tc" = "label")) %>%
+  rename(tc_l = l, 
+         tc_ml = ml, 
+         tc_h = h, 
+         tc_conf = conf) %>% 
+  select(-c(tc, type)) -> scenarios
+
+# fetch LM params
+scenarios %>% left_join(mappings[mappings$type == "lm",], 
+                        by = c("lm" = "label")) %>%
+  rename(lm_l = l, 
+         lm_ml = ml, 
+         lm_h = h, 
+         lm_conf = conf) %>% 
+  select(-c(lm, type)) -> scenarios
+```
+
+## Run Simulations
+
+Combine threats with the domain-level capabilities to form the complete 
+scenario parameters for simulation.
+
+```{r prepare_scenarios}
+scenarios <- scenarios %>% right_join(capability_samples, 
+                                    by = c("domain_id" = "domain_id"))
+```
+
+Run the simulations.
+
+```{r run_simulations}
+# results <- calculate_ale(scenarios[1,], scenarios[[1,"diff_samples"]])
+
+results <- pbapply(scenarios, 1, function(x) {
+    calculate_ale(scenario = x,
+                  diff_estimates = control_params[[as.character(x$scenario_id)]],
+                  title = x$scenario_id, verbose = FALSE)
+})
+
+
+# results <- pbapply(scenarios, 1, function(x) {
+#   if (x$diff_conf != 0) {
+#     calculate_ale(scenario = x,
+#                   title = x$scenario_id, verbose = FALSE)
+#   } else {
+#     calculate_ale(scenario = x, diff_samples = unlist(x$diff_samples),
+#                   title = x$scenario_id, verbose = FALSE)
+#   }
+#   
+# })
+
+results <- rbind_all(results)
+
+# convert title back to scenario_id
+results <- results %>% mutate(title = as.numeric(title)) %>% 
+  rename(scenario_id = title)
+
+# add the domain_id column
+scenarios2 <- scenarios %>% select(scenario_id, domain_id)
+results <- results %>% left_join(scenarios2, by = c("scenario_id" = "scenario_id"))
+rm(scenarios2)
+
+# calculate the vuln percentage
+# note that for no threat events, we report a NA vuln value
+results <- results %>% mutate(vuln = 1 - (threat_events - loss_events) /
+                                threat_events, 
+                              vuln = ifelse(vuln < 0, 0, vuln))
+
+# store the date on which this simulation set was generated
+attr(results, "generated_on")  <- Sys.time()
+
+```
+
+## Create summary views
+```{r}
+scenario_summary <- results %>% group_by(domain_id, scenario_id) %>% 
+  summarise(
+    loss_events = sum(loss_events),
+    ale_median = median(ale),
+    ale_max = max(ale),
+    ale_var = quantile(ale, 0.95),
+    sle_median = mean(sle_median, na.rm = TRUE),
+    sle_max = max(sle_max, na.rm = TRUE),
+    sle_min = min(sle_min, na.rm = TRUE),
+    mean_tc_exceedance = mean(mean_tc_exceedance, na.rm = TRUE),
+    mean_vuln = mean(vuln, na.rm = TRUE)) %>%
+  mutate(sle_median = ifelse(is.nan(sle_median), NA, sle_median)) %>%
+  ungroup()
+
+domain_summary <- results %>% group_by(domain_id, simulation) %>% 
+  summarise(ale = max(ale)) %>%
+  left_join(domains, by = c("domain_id" = "domain_id"))
+```
+
+Results are saved to `results.Rdata`.
+
+```{r, save_data}
+save(results, file = "./data/results.Rdata")
+save(scenario_summary, file = "./data/scenario_summary.Rdata")
+save(domain_summary, file = "./data/domain_summary.Rdata")
+```
