@@ -1,3 +1,5 @@
+#mappings <- read_tsv("data/qualitative_mappings.tsv") # pre-assigned dist.
+
 convert_tef_qual_to_quant <- function(scenario) {
   # Convert qualitative ratings to quant estimate ranges
   #
@@ -5,7 +7,7 @@ convert_tef_qual_to_quant <- function(scenario) {
   #		scenario - qualitative TEF
   #
   # RETURNS:
-  # 	dataframe of tef_estimate
+  # 	dataframe of estimate parameters
   
   tef_estimate <- data.frame(l = rep(NA, length(scenario)), 
                              ml = rep(NA, length(scenario)),
@@ -36,7 +38,7 @@ convert_tc_qual_to_quant <- function(scenario) {
   #		scenario - qualitative TC
   #
   # RETURNS:
-  # 	dataframe of tc_estimate
+  # 	dataframe of estimate parametesr
   
   tc_estimate <- data.frame(l = rep(NA, length(scenario)), 
                             ml = rep(NA, length(scenario)),
@@ -67,7 +69,7 @@ convert_lm_qual_to_quant <- function(scenario) {
   #		scenario - qualitative LM
   #
   # RETURNS:
-  # 	dataframe of lm_estimate
+  # 	dataframe of estimate parameters
   
   lm_estimate <- data.frame(l = rep(NA, length(scenario)), 
                             ml = rep(NA, length(scenario)),
@@ -116,7 +118,7 @@ convert_diff_qual_to_quant <- function(scenario) {
   #		scenario - qualitative scenario, including DIFF qualitative labels
   #
   # RETURNS:
-  # 	dataframe of estimates
+  # 	dataframe of estimate parameters
   
   #print(paste("length of scenario is", length(scenario)))
   diff_estimate <- data.frame(l = rep(NA, length(scenario)), 
@@ -137,4 +139,21 @@ convert_diff_qual_to_quant <- function(scenario) {
   #estimate <- tbl_df(diff_estimate)
   
   return(diff_estimate)
+}
+
+convert_qual_to_quant <- function(qual_label, qual_type) {
+  # Convert qualitative ratings to quant estimate ranges
+  #
+  # ARGS:
+  #		label - dataframe of qualitative labels (label=H/M/L, etc)
+  #
+  # RETURNS:
+  #   dataframe of estimate parameters
+  
+  
+  
+  filtered_mappings <- filter(mappings, type==qual_type)
+  filtered_mappings <- left_join(qual_label, mappings, by=c("label" = "label")) %>%  
+    select(l, ml, h, conf)
+  return(filtered_mappings)
 }

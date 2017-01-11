@@ -1,6 +1,5 @@
-# for *pert functons
-suppressMessages(library(mc2d))
-suppressMessages(library(dplyr))
+# mc2d required for *pert functons
+pacman::p_load(mc2d, dplyr)
 
 sample_lm <- function(n, l, ml, h, conf){
   # given a  number of loss events and a loss distribution, calculate losses
@@ -20,15 +19,17 @@ sample_lm <- function(n, l, ml, h, conf){
   
   # We have to calculate ALE/SLE different (ALE: 0, SLE: NA) if there are 
   # no losses
-  results <- if (is.logical(samples)) {
+  results <- if (length(samples)==0) {
     list(ale = 0,
-         sle_max = NA,
-         sle_min = NA,
-         sle_median = NA)
+         sle_max = 0,
+         sle_min = 0,
+         sle_mean = 0,
+         sle_median = 0)
   } else {
     list(ale = sum(samples),
          sle_max = max(samples),
          sle_min = min(samples[samples > 0]),
+         sle_mean = mean(samples[samples > 0]),
          sle_median = median(samples[samples > 0]))
   }
   
@@ -54,15 +55,15 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL,
   paste("Sampling:", n, TCestimate, DIFFestimate)
   
   if (n == 0) {
-    return(list(loss_events = NA,
-                mean_tc_exceedance = NA))
+    return(list(loss_events = 0,
+                mean_tc_exceedance = 0))
   }
   
   # sample threat capability
   TCsamples <- rpert(n, TCestimate$l, TCestimate$ml, TCestimate$h,
                      shape = TCestimate$conf)
   
-  # sample difficulty sample, either from a procomputed range or from a list of
+  # sample difficulty sample, either from a precomputed range or from a list of
   # probability distributions
   if (is.null(DIFFsamples)) {
     DIFFsamples <-
@@ -159,11 +160,11 @@ calculate_ale <- function(scenario, diff_samples = NULL, diff_estimates = NULL,
 
   # for the range of loss events, calculate the annual sum of losses across
   # the range of possible LMs
-  loss_samples <- lapply(LEF, function(x) sample_lm(x, l = LMestimate$l,
+  loss_samples <- map_df(unname(LEF), function(x) sample_lm(x, l = LMestimate$l,
                                                   ml = LMestimate$ml,
                                                   h = LMestimate$h,
                                                   conf = LMestimate$conf))
-  loss_samples <- rbind_all(loss_samples)
+  loss_samples <- bind_rows(loss_samples)
 
   # summary stats for ALE
   if (verbose) {
@@ -173,7 +174,7 @@ calculate_ale <- function(scenario, diff_samples = NULL, diff_estimates = NULL,
                format(value_at_risk, nsmall = 2, big.mark = ","), "\n"))
   }
 
-  simulation_results <- list(title = rep(as.character(title), n),
+  simulation_results <- data_frame(title = rep(as.character(title), n),
                              simulation = seq(1:n),
                              threat_events = TEFsamples,
                              loss_events = LEF,
@@ -181,6 +182,7 @@ calculate_ale <- function(scenario, diff_samples = NULL, diff_estimates = NULL,
                              ale = loss_samples$ale,
                              sle_max = loss_samples$sle_max,
                              sle_min = loss_samples$sle_min,
+                             sle_mean = loss_samples$sle_mean,
                              sle_median = loss_samples$sle_median)
 
   return(simulation_results)

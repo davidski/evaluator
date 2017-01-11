@@ -1,0 +1,198 @@
+---
+title: "Import Survey"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+# Summary
+
+Import scoring survey spreadsheet and generate the individual data files 
+needed for future simulation.
+
+If you wish to commit the results of this process to disk, set the following 
+varible to `TRUE`. A value of `FALSE` will run the process, but not write to 
+storage.
+
+```{r validate_flag}
+write_files <- TRUE
+```
+## File Format
+
+The survey spreadsheet must have one tab for each domain ID defined in the 
+`data/domains.csv` file. Each domain tab must have a capabilities table 
+beginning at row 2 (with row 1 ignored as the table title), followed 
+by one blank row, the Threats table tile, then the threats table itself. All 
+other  sheets (instructions, reference, etc.) are ignored.
+
+```{r setup, include=FALSE}
+pacman::p_load(readxl, tidyverse, magrittr)
+if (!pacman::p_isinstalled(stringi)) {
+  pacman::p_install(stringi)
+}
+```
+
+# Process
+
+Set the name of the survey spreadsheet (located in the `survey` subdirectory) 
+in the following code block:
+
+```{r survey_sheet}
+survey_file_name <- 'HITRUST Survey Document.xlsx'
+```
+
+## Read in Survey Spreadsheet
+
+Using the `domains.csv` file, pull in the individual domains from the 
+survey spreadsheet. Expecting one matching sheet per domain ID.
+
+```{r read_spreadsheet, message = FALSE}
+domains <- read_csv("data/domains.csv", quote = "\"") # program domains
+raw_domains <- domains %>% 
+  mutate(raw_data = map(domain_id, 
+                        ~ read_excel(paste("survey", survey_file_name, sep = "/"),
+                                     skip=1, sheet=.)))
+raw_domains
+```
+
+## Parse Capabilities and Threat Tables
+
+Set up a helper function `split_sheet` that takes the contents 
+of a given sheet and returns either the capabilities or the threats (scenario) 
+information.
+
+```{r define_splitter}
+split_sheet <- function(dat, table_type = "capabilities") {
+  # remote all NA rows
+  dat <- dat[!!rowSums(!is.na(dat) != 0 ), ]
+  # find the row where the threats table starts
+  split_point <- which(dat$Name == "Threats")
+  #message("Type is ", table_type)
+  
+  if (table_type == "capabilities") {
+    # generate capabilities data
+    capabilities_data <- dat[1:(split_point - 1), ]
+    names(capabilities_data) <-
+      make.names(
+        names = names(capabilities_data),
+        unique = TRUE,
+        allow_ = TRUE
+      )
+    capabilities_data %<>% select(matches("^[^X]"))
+    capabilities_data
+  } else {
+    # generate threats_data
+    threats_data <- dat[(split_point + 2):nrow(dat), ]
+    names(threats_data) <-
+      dat[(split_point + 1), ] %>% t %>% as.matrix() %>% as.vector()
+    threats_data
+  }
+  
+}
+```
+
+```{r debugging, eval = FALSE, include = FALSE}
+# The following block is not executed. This is debugging code for development
+dat <- raw_domains[[2, "raw_data"]]
+which(raw_domains[[2, "raw_data"]]$Name == "Threats")
+split_point = 6
+dat[(split_point + 2):nrow(dat),]
+dat[(split_point + 1), ] %>% t %>% as.matrix() %>% as.vector()
+#which
+split_sheet(raw_domains[[2, "raw_data"]], table_type = "threats")
+```
+
+Apply the helper function to the raw Excel import.
+
+```{r walk_the_frame}
+raw_domains %>% mutate(capabilities = map(.$raw_data, split_sheet),
+                       threats = map(.$raw_data, ~ split_sheet(dat = .x, table_type = "threats"))) %>% 
+  select(-raw_data) -> dat
+dat
+```
+
+Using the `tidyr::unnest` function, expand each of the tables with the 
+associated domain information, mapping the column names to the expected final 
+output format. View the data as a final visual check prior to writting to file.
+
+```{r create_tsvs}
+capabilities <- unnest(dat, capabilities) %>% 
+  select(id = CapabilityID, domain_id, capability = Name, 
+         diff = DIFF) %>% 
+  mutate(id = as.integer(id)) %>% arrange(id)
+capabilities
+
+scenarios <- unnest(dat, threats) %>% 
+  select(scenario_id = ScenarioID, scenario = Scenario, tcomm = TComm, tef = TEF, 
+         tc = TC, lm = LM, domain_id, controls = Capabilities) %>% 
+  mutate(scenario_id = as.integer(scenario_id)) %>% arrange(scenario_id)
+# add the number of controls applicable to each scenario as a validation step
+scenarios %<>% rowwise %>% 
+  mutate(control_count = length(stringi::stri_split_fixed(controls, ", ", 
+                                                          simplify = TRUE))) %>% 
+  ungroup
+
+scenarios
+```
+
+## Data Validation
+
+Perform some minimal data validation between the capabilites and scenarios 
+tables.
+
+```{r valdiate}
+# Check that scenario IDs have no gaps
+scenario_gaps <- setdiff(seq(range(scenarios$scenario_id)[1], 
+                              range(scenarios$scenario_id)[2]), 
+                          scenarios$scenario_id)
+if (length(scenario_gaps) != 0) stop(paste("Scenario gaps found:", 
+                                           scenario_gaps, collapse = "\n"))
+
+# Verify there are no duplicate scenarios
+scenarios %>% group_by(scenario_id) %>% tally %>% 
+  filter(n > 1) %>% left_join(scenarios) %>% rename(times_duplicated = n) -> 
+  duplicate_scenarios
+if (nrow(duplicate_scenarios) != 0) stop(paste("Duplicate scenarios found:", 
+                                           duplicate_scenarios$scenario_id, 
+                                           collapse = "\n"))
+
+# Check that control IDs have no gaps
+capability_gaps <- setdiff(seq(range(capabilities$id)[1], 
+                               range(capabilities$id)[2]), 
+                           capabilities$id)
+if (length(capability_gaps) != 0) stop(paste("Capability gaps found:", 
+                                           capability_gaps, collapse = "\n"))
+
+# Are all the referenced capabilities from the scenarios defined?
+missing_capabilities <- scenarios %>% 
+  separate_rows(controls, sep = ",", convert=TRUE) %>% 
+  anti_join(capabilities, by=c("controls" = "id"))
+if (nrow(missing_capabilities) != 0) stop(paste("Scenarios with undefined controls:", 
+                                           missing_capabilities$scenario_id, 
+                                           collapse = "\n"))
+
+# Verify there are no duplicate controls
+capabilities %>% group_by(id) %>% tally %>% 
+  filter(n > 1) %>% left_join(capabilities) %>% rename(times_duplicated = n) -> 
+  duplicate_capabilities
+if (nrow(duplicate_capabilities) != 0) stop(paste("Duplicate capabilities found:", 
+                                           duplicate_capabilities$id, 
+                                           collapse = "\n"))
+```
+
+## Output to Storage
+
+Write out the objects in TSV format.
+
+```{r write_tsvs}
+if (write_files) {
+  write_tsv(capabilities, path = "./data/capabilities.tsv")
+  scenarios %>% select(-control_count) %>% write_tsv(path = "./data/scenarios.tsv")
+
+  file.info(c("data/capabilities.tsv", "data/scenarios.tsv")) %>% 
+    rownames_to_column("filename") %>% as_data_frame
+} else {
+  message("Write_files not set. Not writing to disk.")
+}
+```

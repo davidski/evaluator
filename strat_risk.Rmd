@@ -1,19 +1,31 @@
 ---
 title: "Strategic Risk OpenFAIR"
 author: "David F. Severski (@dseverski)"
-date: "January 1, 1969"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, support_setup}
+```{r support_setup}
+pacman::p_load(tidyverse, pbapply, readr)
+if (!pacman::p_isinstalled(stringi)) {
+  pacman::p_install(stringi)
+}
 source("bin/qual_to_quant.R")  # custom quant/qual conversions
 source("bin/openfair.R")       # OpenFAIR simulator
-library(dplyr)
-library(pbapply)
+```
+
+If you want to save the simulation run, set the `save_flag` variable to `TRUE`.
+Set the number of simualations to run for each scenario in the `simulaton_count` 
+variable.
+
+```{r parameter_setup}
+save_flag <- TRUE
+simulation_count <- 10000
 ```
 
 ## Load Source Data
@@ -26,8 +38,7 @@ library(pbapply)
 | mappings     | Distribution params     |
 
 
-```{r data_load}
-suppressMessages(library(readr))
+```{r data_load, warning=FALSE}
 domains <- read_csv("data/domains.csv") # program domains
 capabilities <- read_tsv("data/capabilities.tsv") # i.e. objectives & controls
 scenarios <- read_tsv("data/scenarios.tsv") %>% mutate(tef = tolower(tef), 
@@ -36,46 +47,79 @@ scenarios <- read_tsv("data/scenarios.tsv") %>% mutate(tef = tolower(tef),
 mappings <- read_tsv("data/qualitative_mappings.tsv") # pre-assigned dist.
 ```
 
-## Apply Quant Distributions
+## Apply Quantitative Distributions
 
+Scenarios have qualititative labels applied to them. In this section, we 
+convert these quantitative labeles to beta PERT parameters from which we 
+will sample during the simulations.
+
+### Difficulty (Control Strength)
+
+<!--
 For each program domain, each control contributes equally to the protection 
 against all threats in the domain. We sample control strengths within the 
 domain, then take a straight mean to aggregate the sampled control 
-strength for the entire domain. This sampled strength is later applied to 
-each threat in the matching domain.
+strength for the entire domain. This sampled strength is added to each 
+threat scenarios for the domain.
+-->
 
-```{r estimate_difficulty}
+```{r estimate_domain_difficulty, eval=FALSE}
 capability_samples <- capabilities %>% group_by(domain_id) %>% 
   do(diff_samples = agg_controls(.$diff))
+scenarios <- scenarios %>% right_join(capability_samples, 
+                                    by = c("domain_id" = "domain_id"))
 ```
 
-Convert the various labels for the threat and loss information to the assigned 
-distribution parameters.
+With a list of all the relevant controls for each scenario, we can translate 
+the qualitative maturity (CMM) score of each control into a distribution 
+(H/M/L/Conf). This set of control strength distributions is later used 
+to sample an overall difficulty (DIFF) for each scenario.
 
-```{r encode_threats}
-# rather than hard-code conversions, use an external mappings table
-# scenarios$tef_dist <- convert_tef_qual_to_quant(scenarios$tef)
-# scenarios$tc_dist <- convert_tc_qual_to_quant(scenarios$tc)
-# scenarios$lm_dist <- convert_lm_qual_to_quant(scenarios$lm)
-
+```{r encode_capabilities}
 derive_controls <- function(x, id="None") {
   control_list <- stringi::stri_split_fixed(x, ", ") %>% unlist()
-  results <- convert_diff_qual_to_quant(capabilities[capabilities$id %in% 
-                                            as.numeric(control_list), 
-                                          "diff"]$diff)
+  
+  # rather than hard-code the conversions, use the external mappings table
+  results <- capabilities[capabilities$id %in% as.numeric(control_list), "diff"] %>% 
+    rename(label=diff) %>% 
+    mutate(label=as.character(label)) %>% 
+    convert_qual_to_quant(qual_type = "diff")
+  #results <- convert_diff_qual_to_quant(capabilities[capabilities$id %in% 
+  #                                          as.numeric(control_list), 
+  #                                        "diff"]$diff)
+  
   results <- list(id = results)
   names(results) <- id
   return(results)
 }
 
-control_params <- mapply(derive_controls, scenarios$controls, scenarios$scenario_id, SIMPLIFY = FALSE)
-control_params <- lapply(control_params, function(x) x[[1]])
+#control_params <- mapply(derive_controls, scenarios$controls, 
+#                         scenarios$scenario_id, SIMPLIFY = FALSE)
+#control_params <- lapply(control_params, function(x) x[[1]])
+control_params <- map2(scenarios$controls, scenarios$scenario_id, 
+                       ~derive_controls(.x, .y)) %>%
+  flatten
 names(control_params) <- scenarios$scenario_id
 
 #control_params <- cbind("id" = scenarios$scenario_id, "params" = control_params)
 #scenarios <- scenarios %>%
 #  left_join(control_params, by = c("scenario_id" = "scenario_id"))
+```
 
+### Threats Encoding
+
+Convert the various qualitative labels for the threat and loss information to 
+the assigned quantitative distribution parameters (H/M/L/Conf). Each single 
+qualitative parameter is converted into four parameters prefixed with the 
+relevant OpenFAIR element. For example, the threat expected frequency (TEF) 
+generates the parameters:
+
+- `tef_l` - Lower bound of frequency
+- `tef_ml` - Most Likely frequency
+- `tef_h` - Upper bound of frequency
+- `tef_conf` - Confidence of frequency estimates
+
+```{r encode_threats}
 # fetch TEF params
 scenarios %>% left_join(mappings[mappings$type == "tef",], 
                         by = c("tef" = "label")) %>%
@@ -106,24 +150,23 @@ scenarios %>% left_join(mappings[mappings$type == "lm",],
 
 ## Run Simulations
 
-Combine threats with the domain-level capabilities to form the complete 
-scenario parameters for simulation.
-
-```{r prepare_scenarios}
-scenarios <- scenarios %>% right_join(capability_samples, 
-                                    by = c("domain_id" = "domain_id"))
-```
-
-Run the simulations.
+Run the simulations. We perform `r prettyNum(simulation_count, big.mark=",")`
+simulations per threat scenario. After some light munging, a `results` object 
+is returned with a bit of extra metadata to note the date when these 
+simulations were peformed.
 
 ```{r run_simulations}
-# results <- calculate_ale(scenarios[1,], scenarios[[1,"diff_samples"]])
-
-results <- pbapply(scenarios, 1, function(x) {
+# the use of the list and the pblapply vs pbapply is a hack
+# for some reason, pbapply over rows wasn't giving x as a dataframe
+scen_list <- split(scenarios, seq(nrow(scenarios)))
+results <- pblapply(scen_list, function(x) {
     calculate_ale(scenario = x,
                   diff_estimates = control_params[[as.character(x$scenario_id)]],
-                  title = x$scenario_id, verbose = FALSE)
+                  n = simulation_count,
+                  title = x$scenario_id,
+                  verbose = FALSE)
 })
+rm(scen_list)
 
 
 # results <- pbapply(scenarios, 1, function(x) {
@@ -137,10 +180,10 @@ results <- pbapply(scenarios, 1, function(x) {
 #   
 # })
 
-results <- rbind_all(results)
+results <- bind_rows(results)
 
 # convert title back to scenario_id
-results <- results %>% mutate(title = as.numeric(title)) %>% 
+results <- results %>% mutate(title = as.integer(title)) %>% 
   rename(scenario_id = title)
 
 # add the domain_id column
@@ -160,30 +203,48 @@ attr(results, "generated_on")  <- Sys.time()
 ```
 
 ## Create summary views
-```{r}
+
+Calculate summary statistics for each scenario, reducing all the individual 
+simulations to descriptors.
+
+```{r summarize_scenarios}
 scenario_summary <- results %>% group_by(domain_id, scenario_id) %>% 
   summarise(
-    loss_events = sum(loss_events),
-    ale_median = median(ale),
-    ale_max = max(ale),
+    loss_events = sum(loss_events, na.rm = TRUE),
+    ale_median = median(ale, na.rm = TRUE),
+    ale_max = max(ale, na.rm = TRUE),
     ale_var = quantile(ale, 0.95),
-    sle_median = mean(sle_median, na.rm = TRUE),
+    sle_mean = mean(sle_median, na.rm = TRUE),
+    sle_median = median(sle_median, na.rm = TRUE),
     sle_max = max(sle_max, na.rm = TRUE),
     sle_min = min(sle_min, na.rm = TRUE),
     mean_tc_exceedance = mean(mean_tc_exceedance, na.rm = TRUE),
     mean_vuln = mean(vuln, na.rm = TRUE)) %>%
   mutate(sle_median = ifelse(is.nan(sle_median), NA, sle_median)) %>%
   ungroup()
+scenario_summary
+```
 
+Also aggregate all the scenarios in a domain to a single maximum expected 
+loss (ALE).
+
+```{r summarize_by_domain}
 domain_summary <- results %>% group_by(domain_id, simulation) %>% 
   summarise(ale = max(ale)) %>%
   left_join(domains, by = c("domain_id" = "domain_id"))
+domain_summary
 ```
 
-Results are saved to `results.Rdata`.
 
-```{r, save_data}
+Save out the detailed results (`results`), per-scenario summaries 
+(`scenario_summary`), domain summaries (`domains_summary`), and the 
+full scenarios with parameters (`scenarios_full`).
+
+```{r save_data, eval=save_flag}
 save(results, file = "./data/results.Rdata")
 save(scenario_summary, file = "./data/scenario_summary.Rdata")
 save(domain_summary, file = "./data/domain_summary.Rdata")
+saveRDS(scenarios, file = "./data/scenarios_full.Rds")
+file.info(c("data/results.Rdata", "data/scenario_summary.Rdata", 
+            "data/domain_summary.Rdata", "data/scenarios_full.Rds"))
 ```
