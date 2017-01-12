@@ -1,6 +1,6 @@
 Evaluator README
 ================
-true
+David F. Severski
 
 -   [Summary](#summary)
 -   [Background](#background)
@@ -14,6 +14,7 @@ true
         -   [Analyzing the Results](#analyzing-the-results)
 -   [Where to Go From Here](#where-to-go-from-here)
 -   [Contributing](#contributing)
+-   [License](#license)
 
 Summary
 =======
@@ -28,21 +29,22 @@ For a demonstration of one of the outputs of Evaluator, visit the demonstration 
 Background
 ==========
 
-The first iterations of Evaluator were created as part of a major healthcare institution's drive to move from a risk assessment program based upon qualitative labels (high/medium/low, etc.) to a quantitative model that could be used to compare potential projects more precisely. Taking a mature risk program and providing statistical sampling to quantitative numbers enabled this organization greater fidelity into its information risks, meeting HIPAA compliance obligations and providing business leaders at the manger to the board level with data to drive decision making.
+The first iterations of Evaluator were created as part of a major healthcare institution's drive to move from a risk assessment program based upon qualitative labels (high/medium/low, etc.) to a quantitative model that could be used to more precisely compare potential projects. Taking a mature risk program and providing statistical sampling with quantitative numbers enabled this organization greater fidelity into its information risks, meeting HIPAA compliance obligations, and providing business leaders from manger to board level with data to drive decision making.
 
-Since its first creation, versions of Evaluator have been deployed both in and outside of healthcare.
+Since its creation, versions of Evaluator have been deployed both in and outside of healthcare.
 
 How to Use
 ==========
 
-The Evaluator toolkit consists of a series of processes implemented in the [R language](https://www.r-project.org/). Starting from a simple Excel workbook, an organization can document the strategic risk scenarios that concern it. This workbook is then imported and ran through a simulation model to estimate the expected losses for each scenario. The results of these simulations can then be used for detailed analysis (a sample [Shiny](https://shiny.rstudio.com/) application is included) and creating a formal risk report.
+The Evaluator toolkit consists of a series of processes implemented in the [R language](https://www.r-project.org/). Starting from a simple Excel workbook, an organization can document its strategic risk scenarios.
+This workbook is then imported and ran through a simulation model to estimate the expected losses for each scenario. These simulations can then be used for detailed analysis (a sample [Shiny](https://shiny.rstudio.com/) application is included) and for creating a formal risk report.
 
-Evaluator takes a domain-driven and framework independent approach to strategic security risk analysis. Whether you use ISO, COBIT, HITRUST, PCI, or your own custom model for organizing your information security program, so long as you can describe what the major areas of your program are, what the controls in each area are, and what the threat scenarios look like for each domain, you can use Evaluator!
+Evaluator takes a domain-driven and framework-independent approach to strategic security risk analysis. Whether you use ISO, COBIT, HITRUST, PCI-DSS, or a custom model for organizing your information security program, so long as you can describe the major areas of your program, the controls in each area, and the threat scenarios for each domain, you can use Evaluator!
 
 Instructions
 ------------
 
-While not required, reviewing the OpenFAIR methodology and terminology is encouraged. This README does not go into depth on the definitions of terms, which the OpenFAIR documents provide.
+While not required, reviewing the OpenFAIR methodology and terminology is highly encouraged. This README does not go into depth on the definitions of terms, which the OpenFAIR documents provide.
 
 Running the toolkit involves six steps:
 
@@ -53,7 +55,7 @@ Running the toolkit involves six steps:
 5.  Running the simulations
 6.  Analyzing the results
 
-Don't be daunted by the process, Evaluator is with you at every step!
+Don't be daunted by the process. Evaluator is with you at every step!
 
 ### Preparing the Environment
 
@@ -71,7 +73,7 @@ The most critical piece is the identification of the capabilities (a/k/a control
 
 #### Capabilities Table
 
-The domain capabilities table is where you define the key capabilities/ objectives of each domain. What your capabilities are will vary from organization to organization, but you can use the provided sample spreadsheet as inspiration. You should try to avoid simply copying every technical control out of something like ISO 27001 or COBIT, as that is likely too fine grained to provide the high level overview Evaluator delivers. Typically 50 controls or less can describe organizations up to the one to two billion USD in size. Each capability must have a unique ID and should be assigned a difficult (DIFF) score, ranking the maturity of the control from 1 - 5, with 5 being best of class.
+The domain capabilities table is where you define the key capabilities/ objectives of each domain. Your specific capabilities will vary from organization to organization, but the provided sample spreadsheet may be used as inspiration. You should try to avoid simply copying every technical control out of something like ISO 27001 or COBIT, as that most such control frameworks are too fine grained to provide the high level overview Evaluator delivers. Typically 50 controls or less can describe organizations up to the one to two billion USD in size. Each capability must have a unique ID and should be assigned a difficulty (DIFF) score, ranking the maturity of the control from 1 - 5, with 5 being best of class.
 
 #### Threats Table
 
@@ -83,16 +85,11 @@ To extract the spreadsheet into tidy data files for further analysis, launch RSt
 
 ### Running the Simulations
 
-With the data now ready for simulation, open the `strat_risk.Rmd` notebook and click on the `Knit` button. Be default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actor will come into contact with your assets, the strength of the threat actor, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. The simulation process can be computationally intense. The sample data set takes approximately 5-7 minutes on my primary development machines (older Windows based platforms).
+With the data now ready for simulation, open the `strat_risk.Rmd` notebook and click on the `Knit` button. Be default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actor will come into contact with your assets, the strength of the threat actor, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process can be computationally intense. The sample data set takes approximately 5-7 minutes on my primary development machines (last generation Windows-based platforms).
 
 ### Analyzing the Results
 
 Open the `threat_explorer.Rmd` and click on `Run Document` to launch a local copy of the Threat Explorer application to view information on the individual scenarios as well as a sample overview of the entire program. For more in depth analysis, review the following data files:
-
-| Data File                | Purpose                                                                             |
-|:-------------------------|:------------------------------------------------------------------------------------|
-| results.Rdata            | Full details of each simulation against the scenarios                               |
-| scenarios\_summary.Rdata | Quantitative values of each scenario, as converted from the qualitative spreadsheet |
 
 These data files may be used for your own analysis, or as the data-driven foundation for your own risk report.
 
@@ -121,3 +118,8 @@ Contributing
 ============
 
 Note that this project is governed by a [Code of Conduct](./CODE_OF_CONDUCT.md). By participating in this project you agree to abide by these terms.
+
+License
+=======
+
+The [MIT License](LICENSE) applies.

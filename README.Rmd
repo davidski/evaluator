@@ -1,8 +1,6 @@
 ---
 title: "Evaluator README"
-author:
-- email: davidski@deadheaven.com
-  name: David F. Severski
+author: David F. Severski
 output:
   github_document:
     toc: yes
@@ -34,38 +32,36 @@ copy of [Threat Explorer](https://davidski.shinyapps.io/threat_explorer)
 The first iterations of Evaluator were created as part of a major healthcare 
 institution's drive to move from a risk assessment program based upon 
 qualitative labels (high/medium/low, etc.) to a quantitative model that could 
-be used to compare potential projects more precisely. Taking a mature risk 
-program and providing statistical sampling to quantitative numbers enabled 
+be used to more precisely compare potential projects. Taking a mature risk 
+program and providing statistical sampling with quantitative numbers enabled 
 this organization greater fidelity into its information risks, meeting HIPAA 
-compliance obligations and providing business leaders at the manger to the 
-board level with data to drive decision making.
+compliance obligations, and providing business leaders from manger to board 
+level with data to drive decision making.
 
-Since its first creation, versions of Evaluator have been deployed both in and 
+Since its creation, versions of Evaluator have been deployed both in and 
 outside of healthcare.
 
 # How to Use
 
 The Evaluator toolkit consists of a series of processes implemented in 
 the [R language](https://www.r-project.org/). Starting from a simple 
-Excel workbook, an organization can document the strategic risk scenarios that 
-concern it. This workbook is then imported and ran through a simulation model 
-to estimate the expected losses for each scenario. The results of these 
-simulations can then be used for detailed analysis (a sample 
-[Shiny](https://shiny.rstudio.com/) application is included) and creating a 
-formal risk report.
+Excel workbook, an organization can document its strategic risk scenarios.  
+This workbook is then imported and ran through a simulation model to estimate 
+the expected losses for each scenario. These simulations can then be used for
+detailed analysis (a sample  [Shiny](https://shiny.rstudio.com/) application 
+is included) and for creating a formal risk report.
 
-Evaluator takes a domain-driven and framework independent approach to strategic 
-security risk analysis. Whether you use ISO, COBIT, HITRUST, PCI, or your 
-own custom model for organizing your information security program, so long as 
-you can describe what the major areas of your program are, what the controls in 
-each area are, and what the threat scenarios look like for each domain, 
-you can use Evaluator!
+Evaluator takes a domain-driven and framework-independent approach to strategic 
+security risk analysis. Whether you use ISO, COBIT, HITRUST, PCI-DSS, or a 
+custom model for organizing your information security program, so long as 
+you can describe the major areas of your program, the controls in each area, 
+and the threat scenarios for each domain, you can use Evaluator!
 
 ## Instructions
 
 While not required, reviewing the OpenFAIR methodology and terminology is 
-encouraged. This README does not go into depth on the definitions of terms, which 
-the OpenFAIR documents provide.
+highly encouraged. This README does not go into depth on the definitions of 
+terms, which the OpenFAIR documents provide.
 
 Running the toolkit involves six steps:
 
@@ -76,7 +72,7 @@ Running the toolkit involves six steps:
 5. Running the simulations
 6. Analyzing the results
 
-Don't be daunted by the process, Evaluator is with you at every step!
+Don't be daunted by the process. Evaluator is with you at every step!
 
 ### Preparing the Environment
 
@@ -86,8 +82,10 @@ supported platform (Windows, MacOS, or Linux). Using the
 [RStudio](https://www.rstudio.com/) IDE is strongly recommended, but not 
 required.
 
-Obtain the Evaluator toolkit either by cloning this repository (`git clone https://github.com/davidski/evaluator`) 
-or by downloading and extracting the ZIP file from [GitHub](https://github.com/davidski/evaluator/archive/master.zip).
+Obtain the Evaluator toolkit either by cloning this repository 
+(`git clone https://github.com/davidski/evaluator`) or by downloading and 
+extracting the ZIP file from 
+[GitHub](https://github.com/davidski/evaluator/archive/master.zip).
 
 ### Defining Your Security Domains
 
@@ -114,14 +112,15 @@ and a threats table.
 #### Capabilities Table
 
 The domain capabilities table is where you define the key capabilities/
-objectives of each domain. What your capabilities are will vary from organization 
-to organization, but you can use the provided sample spreadsheet as inspiration. 
+objectives of each domain. Your specific capabilities will vary from organization 
+to organization, but the provided sample spreadsheet may be used as inspiration. 
 You should try to avoid simply copying every technical control out of something 
-like ISO 27001 or COBIT, as that is likely too fine grained to provide the 
-high level overview Evaluator delivers. Typically 50 controls or less can 
-describe organizations up to the one to two billion USD in size. Each 
-capability must have a unique ID and should be assigned a difficult (DIFF) score, 
-ranking the maturity of the control from 1 - 5, with 5 being best of class.
+like ISO 27001 or COBIT, as that most such control frameworks are too fine 
+grained to provide the high level overview Evaluator delivers. Typically 50 
+controls or less can  describe organizations up to the one to two billion USD 
+in size. Each  capability must have a unique ID and should be assigned a 
+difficulty (DIFF)  score, ranking the maturity of the control from 1 - 5, 
+with 5 being best of  class.
 
 #### Threats Table
 
@@ -149,11 +148,11 @@ errors, correct the spreadsheet and re-knit the notebook.
 With the data now ready for simulation, open the `strat_risk.Rmd` notebook and
 click on the `Knit` button. Be default, Evaluator puts each scenario through 
 10,000 individual simulated years, modelling how often the threat actor will 
-come into  contact with your assets, the strength of the threat actor, the strength of 
-your controls, and the losses involved in any situation where the threat 
-strength exceeds your control strength. The simulation process can be 
+come into contact with your assets, the strength of the threat actor, the 
+strength of your controls, and the losses involved in any situation where the 
+threat strength exceeds your control strength. This simulation process can be 
 computationally intense. The sample data set takes approximately 5-7 minutes on 
-my primary development machines (older Windows based platforms).
+my primary development machines (last generation Windows-based platforms).
 
 ### Analyzing the Results
 
@@ -162,7 +161,7 @@ copy of the Threat Explorer application to view information on the individual
 scenarios as well as a sample overview of the entire program. For more in depth 
 analysis, review the following data files:
 
-```{r data_files, echo=FALSE}
+```{r data_files, echo=FALSE, eval=FALSE}
 pacman::p_load(tidyr)
 tibble::tribble(
     ~`Data File`, ~Purpose,
@@ -204,3 +203,7 @@ Associations
 
 Note that this project is governed by a [Code of Conduct](./CODE_OF_CONDUCT.md). 
 By participating in this project you agree to abide by these terms.
+
+# License
+
+The [MIT License](LICENSE) applies.
