@@ -1,0 +1,148 @@
+---
+title: "OpenFAIR Example"
+runtime: shiny
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(mc2d)
+library(ggplot2)
+library(scales)
+
+source("bin/openfair.R")  # for FAIR analysis
+
+function(input, output) {
+  values <- reactiveValues() 
+	
+	values$N <- 50000
+	values$run <- FALSE
+	
+	observeEvent({
+		
+		if (input$runmodel != 0) {
+			
+			isolate({
+				
+				values$N <- input$N
+
+				TEFestimate <- data.frame(L = input$tefl,  ML = input$tefml,  H = input$tefh, CONF = input$tefconf)
+				TCestimate <- data.frame(L = input$tcapl,  ML = input$tcapml,  H = input$tcaph, CONF = input$tcapconf)
+				DIFFestimate <- data.frame(L = input$csl,  ML = input$csml,  H = input$csh, CONF = input$csconf)
+				LMestimate <- data.frame(L = input$lml, ML = input$lmml, H = input$lmh, CONF = 1)
+		
+				LMsample <- function(x){
+				  return(sum(rpert(x, LMestimate$L, LMestimate$ML, LMestimate$H, shape = LMestimate$CONF) ))
+				}
+		
+				TEFsamples <- rpert(values$N, TEFestimate$L, TEFestimate$ML, TEFestimate$H, shape = TEFestimate$CONF)
+				TCsamples <- rpert(values$N, TCestimate$L, TCestimate$ML, TCestimate$H, shape = TCestimate$CONF)
+				DIFFsamples <- rpert(values$N, DIFFestimate$L, DIFFestimate$ML, DIFFestimate$H, shape = RSestimate$CONF)
+		
+				VULNsamples <- TSsamples > RSsamples
+				LEF <- TEFsamples[VULNsamples]
+		
+				values$ALEsamples <- sapply(LEF, LMsample)
+				values$VAR <- quantile(values$ALEsamples, probs = (0.95))
+			})
+		}
+  })
+}
+```
+
+Column
+-----------------------------------------------------------------------
+
+### Input Area {.no-title}
+
+```{r input_controls}
+column(4, 
+       h4("Threat Event Frequency"),
+       h4("Threat Capability"),
+       h4("Control Strength"),
+       h4("Loss Magnitude")
+)
+
+column(4, 
+       numericInput("tefl", "Min:", 10, min = 0, max = 100),
+       numericInput("tcapl", "Min:", 20, min = 0, max = 100),
+       numericInput("csl", "Min:", 40, min = 0, max = 100),
+       numericInput("lml", "Min:", 100, min = 0)
+)
+			
+column(4,
+       numericInput("tcapml", "ML:", 30, min = 0, max = 100),
+       numericInput("tefml", "ML:", 20, min = 0, max = 100),
+       numericInput("csml", "ML:", 50, min = 0, max = 100),
+       numericInput("lmml", "ML:", 500, min = 0)
+)
+
+column(4, 
+       numericInput("tefh", "Max:", 100, min = 0, max = 100),
+       numericInput("tcaph", "Max:", 70, min = 0, max = 100),
+       numericInput("csh", "Max:", 60, min = 0, max = 100),
+       numericInput("lmh", "Max:", 10000, min = 0)
+)
+
+column(4, 
+       numericInput("tcapconf", "Conf:", 1, min = 1, max = 5),
+       numericInput("tefconf", "Conf:", 1, min = 1, max = 5),
+       numericInput("csconf", "Conf:", 2, min = 1, max = 5),
+       numericInput("lmconf", "Conf:", 1, min = 1, max = 5)
+)
+
+numericInput("N", "# Iterations:", 50000, min = 1000, step = 1000)
+
+actionButton("runmodel", "Run Model")
+```
+
+Column {.tabset}
+----------------------------------------------------------------------
+
+### Distribution
+
+```{r plot_distribution}
+renderPlot({
+	if (input$runmodel != 0) {
+		ALEsamples <- values$ALEsamples 
+		gg <- ggplot(data.frame(ALEsamples), aes(x = ALEsamples))
+		gg <- gg + geom_histogram(binwidth = diff(range(ALEsamples)/50), 
+		                          aes(y = ..density..), 
+		                          color = "black", 
+		                          fill = "white")
+		gg <- gg + geom_density(fill = "steelblue", alpha = 1/3)
+		gg <- gg + scale_x_continuous(labels = comma)
+		gg <- gg + theme_bw()
+		print(gg)
+	}
+})
+```
+
+### Detail
+
+#### Detail 1 {.no-title} 
+
+```{r detail1}
+renderPrint({
+  if (input$runmodel != 0) {
+  	print(summary(values$ALEsamples))
+	}
+})
+```	
+
+#### Detail 2 {.no-title} 
+
+```{r detail2}
+renderPrint({
+  if (input$runmodel != 0) {
+  	print(paste0("Losses at 95th percentile are $", 
+  	             format(values$VAR, nsmall = 2, big.mark = ",")
+  	             ))
+	}
+})
+```
