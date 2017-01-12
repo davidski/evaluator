@@ -12,8 +12,7 @@ output:
 
 # Summary
 
-<img alt="Evaluator Logo" title="Evaluator" src="img/evaluator_logo.jpg" 
-style="float:right;width:100px;"/>
+<img alt="Evaluator Logo" title="Evaluator" src="img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
 
 Evaluator is an open source information security strategic risk 
 analysis toolkit. Based upon the OpenFAIR
@@ -161,7 +160,7 @@ copy of the Threat Explorer application to view information on the individual
 scenarios as well as a sample overview of the entire program. For more in depth 
 analysis, review the following data files:
 
-```{r data_files, echo=FALSE, eval=FALSE}
+```{r data_files, echo=FALSE}
 pacman::p_load(tidyr)
 tibble::tribble(
     ~`Data File`, ~Purpose,

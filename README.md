@@ -19,8 +19,7 @@ David F. Severski
 Summary
 =======
 
-<img alt="Evaluator Logo" title="Evaluator" src="img/evaluator_logo.jpg" 
-style="float:right;width:100px;"/>
+<img alt="Evaluator Logo" title="Evaluator" src="img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
 
 Evaluator is an open source information security strategic risk analysis toolkit. Based upon the OpenFAIR [taxonomy](https://www2.opengroup.org/ogsys/catalog/C13K) and risk assessment [standard](https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator provides a concrete process for an organization to perform a review of its security program that is quantifiable, repeatable, and data-driven.
 
@@ -90,6 +89,11 @@ With the data now ready for simulation, open the `strat_risk.Rmd` notebook and c
 ### Analyzing the Results
 
 Open the `threat_explorer.Rmd` and click on `Run Document` to launch a local copy of the Threat Explorer application to view information on the individual scenarios as well as a sample overview of the entire program. For more in depth analysis, review the following data files:
+
+| Data File                | Purpose                                                                             |
+|:-------------------------|:------------------------------------------------------------------------------------|
+| results.Rdata            | Full details of each simulation against the scenarios                               |
+| scenarios\_summary.Rdata | Quantitative values of each scenario, as converted from the qualitative spreadsheet |
 
 These data files may be used for your own analysis, or as the data-driven foundation for your own risk report.
 
