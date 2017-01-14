@@ -1,0 +1,159 @@
+---
+title: "Strategic Security Risk Assessment"
+author: "Evaluator Framework (https://github.com/davidski/evaluator)"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: row
+    vertical_layout: fill
+  pdf_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+if ("pacman" %in% installed.packages()) {
+  pacman::p_load(ggplot2, scales, hexbin, viridis, dplyr, purrr)
+  pacman::p_load(readr, pander)
+} else  {
+  library(ggplot2)
+  library(scales)
+  library(hexbin)
+  library(viridis)
+  library(dplyr)
+  library(purrr)
+  library(readr)
+  library(pander)
+}
+```
+
+```{r load_data, echo = FALSE, message = FALSE}
+# Simulations and pre-computed summary views are created via the 
+# `strat_risk.Rmd` notebook.
+results <- readRDS(file = "./data/simulation_results.Rds") # full results
+scenario_summary <- readRDS(file = "./data/scenario_summary.Rds")  # scenario level summary
+domain_summary <- readRDS(file = "./data/domain_summary.Rds")    # domain level summary
+
+# details on our scenarios
+mappings <- read_tsv("./data/qualitative_mappings.tsv") # qualitative translations
+capabilities <- read_tsv("data/capabilities.tsv") # i.e. objectives & controls
+scenarios <- read_tsv("./data/scenarios.tsv") %>% mutate(tef = tolower(tef), 
+                                                         lm = tolower(lm), 
+                                                         tc = tolower(tc))
+```
+
+```{r useful_values}
+# Precalculate the standard order of scenarios (domain, then ID of the scenario)
+scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
+# store the `scenario_id` of manually identified outlier (super large upper 
+# risk exposure) scenarios.
+scenario_outliers <- c(11, 17)    # visually identified outliers
+# a text vector of numbers to english works
+numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight", 
+             "nine")
+risk_tolerance <- c("medium" = 20 * 10 ^ 6,
+                    "high" = 100 * 10 ^6)
+```
+
+```{r calculate_max_losses}
+max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%  
+  group_by(simulation) %>% 
+  summarise(loss = max(ale),
+            min_loss = min(ale),
+            max_loss = sum(ale)) %>%
+  ungroup
+```
+
+Executive Summary
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### Text {.notitle}
+
+#### Mean exposure of 42M USD per annum, with losses over $337K every four out of five years.
+
+#### Domains with Most Exposure
+
+- Foo
+- Bar
+- Baz
+- Qux
+
+### Loss Exceedance Curve
+
+```{r loss_exceedance_curve}
+# generate a sequence between zero and the maximum projected single loss
+loss_points <- seq(0, max(max_loss$loss), by = max(max_loss$loss / 50))
+
+# for each point in our range of losses, calculate the probability we'll 
+# incure losses greater than that amount
+dat <- map_df(loss_points, ~ data_frame(loss = .x, 
+                                        prob = sum(max_loss$loss > .x) / 
+                                          nrow(max_loss)))
+
+gg <- ggplot(dat, aes(x = prob, y = loss))
+gg <- gg + geom_path()
+gg <- gg + geom_vline(xintercept = 0.8, color = "gray80", size = 1) + 
+  annotate("text", x = 0.8, y = max(max_loss$loss), label = percent(.8), hjust = 1, size = 3)
+gg <- gg + scale_y_continuous(labels = dollar)
+gg <- gg + scale_x_reverse(labels = percent)
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme_minimal()
+gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss", 
+                title = "Loss Exceedance Curve")
+gg
+```
+
+### Loss Table
+
+```{r loss_table}
+domain_impact <- domain_summary %>%
+  group_by(domain_id) %>%
+  select(domain_id, ale) %>%
+  summarize_each(funs(mean, max, sd)) %>%
+  arrange(desc(mean)) %>% ungroup
+mutate_each(domain_impact, funs(dollar), -domain_id) %>% 
+  knitr::kable(row.names = NA, 
+               col.names = c("Domain", "Mean Annual Loss", "Maximum Annual Loss", 
+                             "Loss Standard Deviation"), 
+               align = c("l", "r", "r", "r"))
+```
+
+Loss Across all Domains
+----------------------------------------------------------------------
+
+```{r loss_across_all_domains}
+gg <- ggplot(results, aes(x = as.character(scenario_id), y = ale))
+gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + labs(x = "Risk Scenario", y = "Annual Loss")
+gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
+gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3)
+gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + facet_grid(~ domain_id, scales = "free_x", space = "free_x", switch = "x")
+gg
+```
+
+Strategic Security Risk Assessment {data-orientation=rows}
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### Scenarios with Expected Losses Over 1M USD {.no-title}
+
+```{r loss_across_domains}
+gg <- ggplot(results, aes(x = as.character(scenario_id), y = ale))
+gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + labs(x = "Risk Scenario", y = "Annual Loss")
+gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
+gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3)
+gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + facet_grid(~ domain_id, scales = "free_x", space = "free_x", 
+                      switch = "x")
+gg
+```

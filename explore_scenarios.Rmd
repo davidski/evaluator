@@ -1,43 +1,47 @@
 ---
 title: "Risk Scenario Explorer"
-runtime: shiny
-output: 
+author: "Evaluator Framework (https://github.com/davidski/evaluator)"
+output:
   flexdashboard::flex_dashboard:
     orientation: columns
-    vertical_layout: fill
-    source_code: embed
+runtime: shiny
 ---
-
-<!-- Learn more about flexdashboard at https://rstudio.github.io/flexdashboard -->
-
 
 ```{r setup, include=FALSE}
 # Load packages and initialize data here
-#pacman::p_load(flexdashboard, ggplot2, scales, viridis, stringi, dplyr)
-#pacman::p_load(readr, tidyr, modeest, shiny, DT)
-library(flexdashboard)
-library(ggplot2)
-library(scales)
-library(viridis)
-library(stringi)
-library(dplyr)
-library(readr)
-library(tidyr)
-library(modeest)
-library(shiny)
-library(DT)
+if ("pacman" %in% installed.packages()) {
+  pacman::p_load(flexdashboard, ggplot2, scales, viridis, stringi, dplyr)
+  pacman::p_load(readr, tidyr, modeest, shiny, DT)
+} else {
+  library(flexdashboard)
+  library(ggplot2)
+  library(scales)
+  library(viridis)
+  library(stringi)
+  library(dplyr)
+  library(readr)
+  library(tidyr)
+  library(modeest)
+  library(shiny)
+  library(DT)
+}
+```
 
+```{r load_data, include=FALSE}
 scenarios <- read_tsv("./data/scenarios.tsv") %>% mutate(tef = tolower(tef), 
                                                          lm = tolower(lm), 
                                                          tc = tolower(tc))
-load(file = "./data/results.Rdata")
-load(file = "./data/scenario_summary.Rdata")
-load(file = "./data/domain_summary.Rdata")
+results <- readRDS(file = "./data/simulation_results.Rds")
+scenario_summary <- readRDS(file = "./data/scenario_summary.Rds")
+domain_summary <- readRDS(file = "./data/domain_summary.Rds")
 scenarios_full <- readRDS(file = "./data/scenarios_full.Rds")
-capabilities <- read_tsv("data/capabilities.tsv") # i.e. objectives & controls
-mappings <<- read_tsv("data/qualitative_mappings.tsv") # pre-assigned dist.
-source("bin/qual_to_quant.R")  # custom quant/qual conversions
+capabilities <- read_tsv("./data/capabilities.tsv") # i.e. objectives & controls
+mappings <<- read_tsv("./data/qualitative_mappings.tsv") # pre-assigned dist.
+source("./bin/qual_to_quant.R")  # custom quant/qual conversions
+```
 
+
+```{r helper_functions, include=FALSE}
 # for values stored as full precentages, divide by 100 and pretty format 
 # with scales::percent()
 custom_percent <- function(x) {
@@ -144,7 +148,6 @@ get_loss_distribution_table <- reactive({
     select(Low = lm_l, "Most Likely" = lm_ml, "High" = lm_h, "Confidence" = lm_conf)
   return(loss_list)
 })
-
 ```
 
 Individual Risk Scenarios {data-icon="fa-user"}

@@ -8,7 +8,7 @@ David F. Severski
     -   [Instructions](#instructions)
         -   [Preparing the Environment](#preparing-the-environment)
         -   [Defining Your Security Domains](#defining-your-security-domains)
-        -   [Defining Your Capabilities and Risk Scenarios](#defining-your-capabilities-and-risk-scenarios)
+        -   [Defining Your Controls and Risk Scenarios](#defining-your-controls-and-risk-scenarios)
         -   [Importing the Scenarios](#importing-the-scenarios)
         -   [Running the Simulations](#running-the-simulations)
         -   [Analyzing the Results](#analyzing-the-results)
@@ -49,7 +49,7 @@ Running the toolkit involves six steps:
 
 1.  Preparing the environment
 2.  Defining your security domains
-3.  Defining your capabilities and risk scenarios
+3.  Defining your controls and risk scenarios
 4.  Importing the scenarios
 5.  Running the simulations
 6.  Analyzing the results
@@ -66,13 +66,13 @@ Obtain the Evaluator toolkit either by cloning this repository (`git clone https
 
 Evaluator needs to know the domains of your security program. These are the major buckets by which you subdivide your program, typically including areas such as Physical Security, Strategy, Policy, Business Continuity/Disaster Recover, Technical Security, and so forth. Out of the box, Evaluator comes with a demonstration model based upon the [HITRUST CSF](https://hitrustalliance.net/hitrust-csf/). If you have a different domain structure (ISO2700x, NIST CSF, COBIT, etc.) then you need to edit the `data\domains.csv` file to include the domain names and the domain IDs, a shorthand abbreviation for the domain, such as POL for the Policy domain.
 
-### Defining Your Capabilities and Risk Scenarios
+### Defining Your Controls and Risk Scenarios
 
-The most critical piece is the identification of the capabilities (a/k/a controls) and the key risk scenarios associated with each domain. A spreadsheet is used to define these critical elements. This Excel workbook consists of one tab per domain, with each tab being named after the the domain ID defined in the previous step. Each tab consists of two tables, a capabilities table and a threats table.
+The most critical piece is the identification of the controls (a/k/a capabilities) and the key risk scenarios associated with each domain. A spreadsheet is used to define these elements. This Excel workbook consists of one tab per domain, with each tab being named after the the domain ID defined in the previous step. Each tab consists of two tables- a controls table and a threats table.
 
-#### Capabilities Table
+#### Controls Table
 
-The domain capabilities table is where you define the key capabilities/ objectives of each domain. Your specific capabilities will vary from organization to organization, but the provided sample spreadsheet may be used as inspiration. You should try to avoid simply copying every technical control out of something like ISO 27001 or COBIT, as that most such control frameworks are too fine grained to provide the high level overview Evaluator delivers. Typically 50 controls or less can describe organizations up to the one to two billion USD in size. Each capability must have a unique ID and should be assigned a difficulty (DIFF) score, ranking the maturity of the control from 1 - 5, with 5 being best of class.
+The domain controls table is where you define the key objectives of each domain. While the specific controls will be unique to each organizationn, the provided sample spreadsheet may be used as inspiration. Try to avoid simply copying every technical control out of something like ISO 27001 or COBIT, as most such control frameworks are too fine grained to provide the high level overview Evaluator delivers. Typically 50 controls or less can describe organizations up to one to two billion USD in size. Each control must have a unique ID and should be assigned a difficulty (DIFF) score, ranking the maturity of the control from 1 - 5, with 5 being best of class.
 
 #### Threats Table
 
@@ -84,20 +84,18 @@ To extract the spreadsheet into tidy data files for further analysis, launch RSt
 
 ### Running the Simulations
 
-With the data now ready for simulation, open the `strat_risk.Rmd` notebook and click on the `Knit` button. Be default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actor will come into contact with your assets, the strength of the threat actor, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process can be computationally intense. The sample data set takes approximately 5-7 minutes on my primary development machines (last generation Windows-based platforms).
+With the data now ready for simulation, open the `simulate_risk.Rmd` notebook and click on the `Knit` button. By default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actor will come into contact with your assets, the strength of the threat actor, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process can be computationally intense. The sample data set takes approximately 5-7 minutes on my primary development machines (last generation Windows-based platforms).
 
 ### Analyzing the Results
 
-Open the `threat_explorer.Rmd` and click on `Run Document` to launch a local copy of the Threat Explorer application to view information on the individual scenarios as well as a sample overview of the entire program. For more in depth analysis, review the following data files:
+Open the `explore_scenarios.Rmd` and click on `Run Document` to launch a local copy of the Scenario Explorer application to view information on the individual scenarios as well as a sample overview of the entire program. For more in depth analysis, review the following data files:
 
-| Data File                | Purpose                                                                             |
-|:-------------------------|:------------------------------------------------------------------------------------|
-| results.Rdata            | Full details of each simulation against the scenarios                               |
-| scenarios\_summary.Rdata | Quantitative values of each scenario, as converted from the qualitative spreadsheet |
+| Data File               | Purpose                                                                             |
+|:------------------------|:------------------------------------------------------------------------------------|
+| simulation\_results.Rds | Full details of each simulated scenario                                             |
+| scenarios\_summary.Rds  | Quantitative values of each scenario, as converted from the qualitative spreadsheet |
 
-These data files may be used for your own analysis, or as the data-driven foundation for your own risk report.
-
-> Future iterations of Evaluator will include more guidance in this area!
+These data files may be used for your own analysis, or as the data-driven foundation for your own risk report. Sample reports are included in the `analyze_risk.Rmd`, which is a template for an technical risk report, and the `risk_dashboard.Rmd`, which provides a skeleton dashboard for an executive-level risk summary.
 
 Where to Go From Here
 =====================

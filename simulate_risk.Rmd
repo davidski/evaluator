@@ -1,6 +1,6 @@
 ---
-title: "Strategic Risk OpenFAIR"
-author: "David F. Severski (@dseverski)"
+title: "Strategic Risk OpenFAIR Simulation"
+author: "Evaluator Framework (https://github.com/davidski/evaluator)"
 output:
   html_document: default
   pdf_document: default
@@ -67,7 +67,7 @@ threat scenarios for the domain.
 capability_samples <- capabilities %>% group_by(domain_id) %>% 
   do(diff_samples = agg_controls(.$diff))
 scenarios <- scenarios %>% right_join(capability_samples, 
-                                    by = c("domain_id" = "domain_id"))
+                                      by = c("domain_id" = "domain_id"))
 ```
 
 With a list of all the relevant controls for each scenario, we can translate 
@@ -199,6 +199,8 @@ results <- results %>% mutate(vuln = 1 - (threat_events - loss_events) /
 
 # store the date on which this simulation set was generated
 attr(results, "generated_on")  <- Sys.time()
+# store how many simulations ran on each scenario
+attr(results, "simulation_count")  <- simulation_count
 
 ```
 
@@ -241,10 +243,10 @@ Save out the detailed results (`results`), per-scenario summaries
 full scenarios with parameters (`scenarios_full`).
 
 ```{r save_data, eval=save_flag}
-save(results, file = "./data/results.Rdata")
-save(scenario_summary, file = "./data/scenario_summary.Rdata")
-save(domain_summary, file = "./data/domain_summary.Rdata")
 saveRDS(scenarios, file = "./data/scenarios_full.Rds")
-file.info(c("data/results.Rdata", "data/scenario_summary.Rdata", 
-            "data/domain_summary.Rdata", "data/scenarios_full.Rds"))
+saveRDS(results, file = "./data/simulation_results.Rds")
+saveRDS(scenario_summary, file = "./data/scenario_summary.Rds")
+saveRDS(domain_summary, file = "./data/domain_summary.Rds")
+file.info(c("data/simulation_results.Rds", "data/scenario_summary.Rds", 
+            "data/domain_summary.Rds", "data/scenarios_full.Rds"))
 ```

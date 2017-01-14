@@ -1,5 +1,6 @@
 ---
 title: "Import Survey"
+author: "Evaluator Framework (https://github.com/davidski/evaluator)"
 output:
   html_document: default
   html_notebook: default
@@ -191,7 +192,7 @@ if (write_files) {
   scenarios %>% select(-control_count) %>% write_tsv(path = "./data/scenarios.tsv")
 
   file.info(c("data/capabilities.tsv", "data/scenarios.tsv")) %>% 
-    rownames_to_column("filename") %>% as_data_frame
+    rownames_to_column("filename") %>% as_data_frame %>% pander::pander()
 } else {
   message("Write_files not set. Not writing to disk.")
 }

@@ -1,8 +1,13 @@
 # mc2d required for *pert functons
-pacman::p_load(mc2d, dplyr)
+if ("pacman" %in% installed.packages()) {
+  pacman::p_load(mc2d, dplyr)
+} else {
+  library(mc2d)
+  library(dplyr)
+}
 
-sample_lm <- function(n, l, ml, h, conf){
-  # given a  number of loss events and a loss distribution, calculate losses
+sample_lm <- function(n, l, ml, h, conf) {
+  # given a number of loss events and a loss distribution, calculate losses
   #
   # ARGS:
   #   n - number of threat events to evaluate
@@ -17,7 +22,7 @@ sample_lm <- function(n, l, ml, h, conf){
   if (is.na(n)) { n <- 0 }
   samples <- rpert(n, l, ml, h, shape = conf)
   
-  # We have to calculate ALE/SLE different (ALE: 0, SLE: NA) if there are 
+  # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are 
   # no losses
   results <- if (length(samples)==0) {
     list(ale = 0,
@@ -38,17 +43,17 @@ sample_lm <- function(n, l, ml, h, conf){
 
 select_events <- function(n, TCestimate, DIFFsamples = NULL, 
                           DIFFestimate = NULL, verbose = FALSE){
-  # Calculate the threat strength and whether the control resists the attack
+  # Calculate the threat capability and whether the control resists the attack
   #
   # ARGS:
   #   n - number of threat events to evaluate
-  #   TCestimate - threat capability estimate
-  #   DIFFestimate - control difficulty estimate
+  #   TCestimate - threat capability estimate - df(l, m, h, conf)
+  #   DIFFestimate - control difficulty estimate - df(l, m, h, conf)
   #   DIFFsamples - pre-sampled control difficulty estimates
   #
   # RETURNS:
-  #   List of Number of succesfull attacks (i.e. loss events) and mean tc
-  #   exceedance
+  #   List of - Number of succesfull attacks (i.e. loss events)
+  #           - mean tc exceedance (how much TC > DIFF)
 
   # if there are no threat events to select from, then return NAs
   
@@ -87,6 +92,8 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL,
   # loss events occur whenever TC > DIFF
   VULNsamples <- TCsamples > DIFFsamples
 
+  # TC exceedance is TC - DIFF - how much more capable the threat actor 
+  # is vs. the capability defending against it
   mean_tc_exceedance <- mean(TCsamples[VULNsamples == TRUE] -
                                DIFFsamples[VULNsamples],
                              na.rm = TRUE)
@@ -96,14 +103,18 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL,
               mean_tc_exceedance = mean_tc_exceedance))
 }
 
-calculate_ale <- function(scenario, diff_samples = NULL, diff_estimates = NULL,
-                          n = 10 ^ 4, title = "Untitled",
+calculate_ale <- function(scenario,
+                          diff_samples = NULL,
+                          diff_estimates = NULL,
+                          n = 10 ^ 4,
+                          title = "Untitled",
                           verbose = FALSE) {
   # run an OpenFAIR simulation
   #
   # ARGS:
   #   scenario - l/ml/h/conf parameters for tef, ts, and lm
   #   diff_samples - sampled difficulties for the scenario
+  #   diff_estimates - sampled difficulties for the scenario
   #   n - number of simulations to run
   #   title - optional name of scenario
   #   verbose - whether to print progress indicators
@@ -143,7 +154,7 @@ calculate_ale <- function(scenario, diff_samples = NULL, diff_estimates = NULL,
 
   # for each number of contacts (TEF), calculate how many of those succeed
   # (become LEF counts)
-  # LEF contains (#er of threat events, # of times system is vuln)
+  # LEF contains:  #er of threat events, # of times system is vuln
   if (is.null(diff_samples)) {
     results <- lapply(TEFsamples, 
                       function(x) select_events(x, TCestimate, 
