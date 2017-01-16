@@ -117,7 +117,7 @@ Using the `tidyr::unnest` function, expand each of the tables with the
 associated domain information, mapping the column names to the expected final 
 output format. View the data as a final visual check prior to writting to file.
 
-```{r create_tsvs}
+```{r create_data_frames}
 capabilities <- unnest(dat, capabilities) %>% 
   select(id = CapabilityID, domain_id, capability = Name, 
          diff = DIFF) %>% 
@@ -184,14 +184,14 @@ if (nrow(duplicate_capabilities) != 0) stop(paste("Duplicate capabilities found:
 
 ## Output to Storage
 
-Write out the objects in TSV format.
+Write out the objects in CSV format.
 
-```{r write_tsvs}
+```{r write_files}
 if (write_files) {
-  write_tsv(capabilities, path = "./data/capabilities.tsv")
-  scenarios %>% select(-control_count) %>% write_tsv(path = "./data/scenarios.tsv")
+  write_csv(capabilities, path = "./data/capabilities.csv")
+  scenarios %>% select(-control_count) %>% write_csv(path = "./data/scenarios.csv")
 
-  file.info(c("data/capabilities.tsv", "data/scenarios.tsv")) %>% 
+  file.info(c("data/capabilities.csv", "data/scenarios.csv")) %>% 
     rownames_to_column("filename") %>% as_data_frame %>% pander::pander()
 } else {
   message("Write_files not set. Not writing to disk.")

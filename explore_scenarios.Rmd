@@ -28,15 +28,15 @@ if ("pacman" %in% installed.packages()) {
 ```
 
 ```{r load_data, include=FALSE}
-scenarios <- read_tsv("./data/scenarios.tsv") %>% mutate(tef = tolower(tef), 
+scenarios <- read_csv("./data/scenarios.csv") %>% mutate(tef = tolower(tef), 
                                                          lm = tolower(lm), 
                                                          tc = tolower(tc))
 results <- readRDS(file = "./data/simulation_results.Rds")
 scenario_summary <- readRDS(file = "./data/scenario_summary.Rds")
 domain_summary <- readRDS(file = "./data/domain_summary.Rds")
 scenarios_full <- readRDS(file = "./data/scenarios_full.Rds")
-capabilities <- read_tsv("./data/capabilities.tsv") # i.e. objectives & controls
-mappings <<- read_tsv("./data/qualitative_mappings.tsv") # pre-assigned dist.
+capabilities <- read_csv("./data/capabilities.csv") # i.e. objectives & controls
+mappings <<- read_csv("./data/qualitative_mappings.csv") # pre-assigned dist.
 source("./bin/qual_to_quant.R")  # custom quant/qual conversions
 ```
 

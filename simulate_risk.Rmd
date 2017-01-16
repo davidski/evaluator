@@ -40,11 +40,11 @@ simulation_count <- 10000
 
 ```{r data_load, warning=FALSE}
 domains <- read_csv("data/domains.csv") # program domains
-capabilities <- read_tsv("data/capabilities.tsv") # i.e. objectives & controls
-scenarios <- read_tsv("data/scenarios.tsv") %>% mutate(tef = tolower(tef), 
+capabilities <- read_csv("data/capabilities.csv") # i.e. objectives & controls
+scenarios <- read_csv("data/scenarios.csv") %>% mutate(tef = tolower(tef), 
                                                    lm = tolower(lm), 
                                                    tc = tolower(tc))
-mappings <- read_tsv("data/qualitative_mappings.tsv") # pre-assigned dist.
+mappings <- read_csv("data/qualitative_mappings.csv") # pre-assigned dist.
 ```
 
 ## Apply Quantitative Distributions
