@@ -141,7 +141,7 @@ print(gg)
 
 ## Largest Areas of Impact
 
-```{r caclulate_domain_impact}
+```{r calculate_domain_impact}
 domain_impact <- domain_summary %>%
   group_by(domain_id) %>%
   select(domain_id, ale) %>%
@@ -154,12 +154,10 @@ The top three areas of largest expected loss are `r domain_impact[1, "domain_id"
 
 ```{r domain_impact, echo = FALSE}
 mutate_each(domain_impact, funs(dollar), -domain_id) %>% 
-  knitr::kable(row.names = NA, 
-               col.names = c("Domain", "Mean Annual Loss", 
-                             "Maximum Annual Loss", 
-                             "Loss Standard Deviation"), 
-               align = c("l", "r", "r", "r"),
-               caption = "Impact by Domain")
+  rename("Domain" = domain_id, "Mean Annual Loss" = mean, 
+         "Maximum Annual Loss" = max, "Loss Standard Deviation" = sd) %>% 
+  pander::pander(justify = c("left", rep("right", 3)),
+                 caption = "Impact by Domain")
 ```
 
 ## Key Areas of Capability Weakness
@@ -176,10 +174,10 @@ the domains of `r control_weakness[1, "domain_id"]`,
 `r control_weakness[2, "domain_id"]`, and `r control_weakness[3, "domain_id"]`.
 
 ```{r domain_weakness, echo = FALSE}
-knitr::kable(control_weakness, row.names = NA, 
-             col.names = c("Domain", "Frequency Threat Overcomes Control"), 
-             align = c("l", "r"),
-             caption = "Domain Weaknesses")
+rename(control_weakness, "Domain" = domain_id, 
+       "Frequency Threat Overcomes Control" = vuln) %>% 
+  pander::pander(justify = c("left", "right"), 
+                 caption = "Domain Weaknesses")
 ```
 
 ## Key Added Risk Scenarios
@@ -214,7 +212,7 @@ display_scenario_table(scenario_summary, "1")
 
 ### REDACTED (Scenario B)
 
-SOMETHING INTERSTING ABOUT A KEY REDACTED SCENARIO
+SOMETHING INTERESTING ABOUT A KEY REDACTED SCENARIO
 
 ```{r scenarioB_details, echo=FALSE}
 display_scenario_table(scenario_summary, "1")
@@ -327,26 +325,45 @@ assigned to the threat scenario. This process generates the following outputs:
 
 Parameters for each of the input distributions are displayed below.
 
-```{r, tef_table, results='asis', echo=FALSE}
+```{r, table_helper, echo=FALSE}
 create_table <- function(label, id) {
-  pandoc.header(label, level = 3)
+  # pandoc.header(label, level = 3)
   filter(mappings, type == id) %>% select(label, l, ml, h, conf) %>% 
     rowwise() %>% 
+    mutate(label = stringi::stri_trans_totitle(label)) %>% 
     mutate(l = ifelse(id == "lm", dollar(l), 
                       ifelse(id == "tef", comma(l), percent(l/100)))) %>% 
     mutate(ml = ifelse(id == "lm", dollar(ml), 
                        ifelse(id == "tef", comma(ml), percent(ml/100)))) %>% 
     mutate(h = ifelse(id == "lm", dollar(h), 
                       ifelse(id == "tef", comma(h), percent(h/100)))) %>% 
-    knitr::kable(., row.names = NA, 
-               col.names = c("Category", "Low", "Most Likely", "High", 
-                             "Confidence"), 
-               align = c("l", "r", "r", "r", "r"),
+    rename("Category" = label, "Low"=l, "Most Likely"= ml, "High" = h, 
+           "Confidence"=conf) %>% 
+    pander::pander(justify = c("left", rep("right", 4)),
                caption = paste(label, "table"))
 }
+```
+
+### Threat Frequencies
+
+```{r}
 create_table("Threat Frequencies", "tef")
+```
+### Threat Frequencies
+
+```{r}
 create_table("Threat Capabilities", "tc")
+```
+
+### Control Difficulties
+
+```{r}
 create_table("Control Difficulties", "diff")
+```
+
+### Loss Magnitudes
+
+```{r}
 create_table("Loss Magnitudes", "lm")
 ```
 
@@ -563,7 +580,9 @@ scenarios %>% rowwise %>%
   filter(n_controls == 1) %>% 
   arrange(domain_id, scenario_id) %>% 
   select(Domain = domain_id, ID = scenario_id, Scenario = scenario) %>% 
-  pander::pander(., justify = c("left", "left", "left"), caption="Fragile Scenarios")
+  pander::pander(justify = c("left", "left", "left"), 
+                 split.cells = c("10%", "10%", "80%"), 
+                 caption="Fragile Scenarios")
 ```
 
 ### Median vs Max ALE
@@ -666,10 +685,11 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
                                             "domain_id" = "domain_id")) %>% 
   arrange(desc(ale_median), desc(ale_var)) %>% 
   mutate_each(funs(dollar), ale_median, ale_var) %>% 
-  select("ID" = domain_id, "Scenario" = scenario, 
+  select("ID" = domain_id, 
+         "Scenario" = scenario, 
          "Median Annual Loss" = ale_median, 
          "95% Value at Risk" = ale_var) %>% 
-  pander::pander(., justify = c("left", "left", "right", "right"), 
+  pander::pander(justify = c("left", "left", "right", "right"), 
                  caption="Threat List")
   
   
