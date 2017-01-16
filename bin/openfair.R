@@ -127,24 +127,31 @@ calculate_ale <- function(scenario,
   set.seed(31337)
 
   if (verbose) {
-    cat(paste0("Working on scenario ", title, "\n"))
-    cat(paste("Scenario is: ", scenario[, -which(names(scenario) %in%
+    message("Working on scenario ", title)
+    message(paste("Scenario is: ", scenario[, -which(names(scenario) %in%
                                                    "diff_samples")], "\n"))
-    #cat(paste("Names are ", names(scenario), "\n"))
+    #message(paste("Names are ", names(scenario)))
   }
 
-  # calibrated estimates
+  # get parameters for TEF, LC, and LM calibrated estimates
   TEFestimate <- data.frame(l = scenario$tef_l, ml = scenario$tef_ml,
                             h = scenario$tef_h, conf = scenario$tef_conf)
   TCestimate  <- data.frame(l = scenario$tc_l, ml = scenario$tc_ml,
                             h = scenario$tc_h, conf = scenario$tc_conf)
+  LMestimate  <- data.frame(l = scenario$lm_l, ml = scenario$lm_ml,
+                            h = scenario$lm_h, conf = scenario$lm_conf)
+
+  # we need estimates for DIFF or, less optimally, pre-sampled DIFFs
+  if (is.null(diff_samples) && is.null(diff_estimates)) {
+    stop("Must supply either diff_samples or diff_estimates")
+  } else if (!is.null(diff_samples) && !is.null(diff_estimates)) {
+    stop("Cannot supply both diff_samples and diff_estimates")
+  }
   if (is.null(diff_samples)) {
     #DIFFestimate <- data.frame(l = scenario$diff_ml, ml = scenario$diff_ml,
     #                           h = scenario$diff_h, conf = scenario$diff_conf)
     DIFFestimate <- diff_estimates
   }
-  LMestimate  <- data.frame(l = scenario$lm_l, ml = scenario$lm_ml,
-                            h = scenario$lm_h, conf = scenario$lm_conf)
 
   # TEF - how many contacts do we have in each simulated year
   TEFsamples <- rpert(n, TEFestimate$l, TEFestimate$ml, TEFestimate$h,
@@ -181,8 +188,8 @@ calculate_ale <- function(scenario,
   if (verbose) {
     print(summary(loss_samples$ale))
     value_at_risk <- quantile(loss_samples$ale, probs = (0.95))
-    cat(paste0("Losses at 95th percentile are $",
-               format(value_at_risk, nsmall = 2, big.mark = ","), "\n"))
+    message(paste0("Losses at 95th percentile are $",
+               format(value_at_risk, nsmall = 2, big.mark = ",")))
   }
 
   simulation_results <- data_frame(title = rep(as.character(title), n),
