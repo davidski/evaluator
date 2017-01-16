@@ -187,7 +187,7 @@ if (nrow(duplicate_capabilities) != 0) stop(paste("Duplicate capabilities found:
 Write out the objects in CSV format.
 
 ```{r write_files}
-if (write_files) {
+if (exists("write_files") && write_files)  {
   write_csv(capabilities, path = "./data/capabilities.csv")
   scenarios %>% select(-control_count) %>% write_csv(path = "./data/scenarios.csv")
 
