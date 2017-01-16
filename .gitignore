@@ -8,3 +8,6 @@
 *.png
 *rsconnect*
 *.bak
+capabilities.csv
+scenarios.csv
+*.Rds
