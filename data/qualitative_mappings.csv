@@ -5,11 +5,11 @@ tef,rare,0,0.1,1,4
 tc,high,50,60.0,98,3
 tc,medium,33,50.0,60,3
 tc,low,0,16.0,30,4
-diff,5,70,85.0,98,4
-diff,4,50,70.0,84,4
-diff,3,33,50.0,60,4
-diff,2,20,30.0,50,4
-diff,1,0,10.0,30,4
+diff,Optimizing,70,85.0,98,4
+diff,Managed,50,70.0,84,4
+diff,Defined,33,50.0,60,4
+diff,Repeatable,20,30.0,50,4
+diff,Initial,0,10.0,30,4
 lm,high,1000000,2e6,5000000,4
 lm,medium,10000,2e4,500000,4
 lm,low,100,200.0,10000,1
