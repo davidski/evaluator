@@ -162,10 +162,11 @@ mutate_each(domain_impact, funs(dollar), -domain_id) %>%
 
 ## Key Areas of Capability Weakness
 
-```{r caclulate_weak_domains}
+```{r calculate_weak_domains}
 control_weakness <- scenario_summary %>% group_by(domain_id) %>% 
-  summarize(vuln = percent(round(mean(mean_vuln), 2))) %>% 
+  summarize(vuln = round(mean(mean_vuln), 2)) %>% 
   arrange(desc(vuln)) %>% 
+  mutate(vuln = percent(vuln)) %>% 
   ungroup()
 ```
 
