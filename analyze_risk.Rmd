@@ -1,6 +1,6 @@
 ---
 title: "SAMPLE Strategic Information Security Risk Analysis"
-subtitle: "Sample Evaluator Report""
+subtitle: "Sample Evaluator Report"
 author: "Evaluator Framework (https://github.com/davidski/evaluator)"
 output:
   html_document:
@@ -83,8 +83,7 @@ interactions, the calculated annualized losses for each individual scenario
 are computed to show the distribution of potential losses. The following 
 table shows the maximum, 95% percentile, mean, 10th percentile, and minimum 
 losses for **any single scenario**. It is possible that multiple scenarios could 
-realize into losses over the course of a single year resulting in higher 
-totally losses.
+realize losses over the course of a single year resulting in higher total losses.
 
 ```{r overall_exposure, echo=FALSE}
 overall <- results %>% group_by(simulation) %>% 
@@ -116,7 +115,7 @@ exceeded during a given year. The outlier scenarios are excluded. The 80% line
 reflects that we should expect a loss of 
 `r dollar(quantile(max_loss$loss, .2))` or more during four out of five years.
 
-```{r loss_exceedance_curve}
+```{r loss_exceedance_curve, fig.cap="Loss Exceedance Curve"}
 # generate a sequence between zero and the maximum projected single loss
 loss_points <- seq(0, max(max_loss$loss), by = max(max_loss$loss / 50))
 
@@ -129,7 +128,8 @@ dat <- map_df(loss_points, ~ data_frame(loss = .x,
 gg <- ggplot(dat, aes(x = prob, y = loss))
 gg <- gg + geom_path()
 gg <- gg + geom_vline(xintercept = 0.8, color = "gray80", size = 1) + 
-  annotate("text", x = 0.8, y = max(max_loss$loss), label = percent(.8), hjust = 1, size = 3)
+  annotate("text", x = 0.8, y = max(max_loss$loss), label = percent(.8),
+           hjust = 1, size = 3)
 gg <- gg + scale_y_continuous(labels = dollar)
 gg <- gg + scale_x_reverse(labels = percent)
 gg <- gg + theme(panel.grid.major = element_blank())
@@ -138,7 +138,6 @@ gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss",
                 title = "Loss Exceedance Curve")
 print(gg)
 ```
-
 
 ## Largest Areas of Impact
 
@@ -156,9 +155,11 @@ The top three areas of largest expected loss are `r domain_impact[1, "domain_id"
 ```{r domain_impact, echo = FALSE}
 mutate_each(domain_impact, funs(dollar), -domain_id) %>% 
   knitr::kable(row.names = NA, 
-               col.names = c("Domain", "Mean Annual Loss", "Maximum Annual Loss", 
+               col.names = c("Domain", "Mean Annual Loss", 
+                             "Maximum Annual Loss", 
                              "Loss Standard Deviation"), 
-               align = c("l", "r", "r", "r"))
+               align = c("l", "r", "r", "r"),
+               caption = "Impact by Domain")
 ```
 
 ## Key Areas of Capability Weakness
@@ -354,8 +355,10 @@ create_table <- function(label, id) {
     mutate(h = ifelse(id == "lm", dollar(h), 
                       ifelse(id == "tef", comma(h), percent(h/100)))) %>% 
     knitr::kable(., row.names = NA, 
-               col.names = c("Category", "Low", "Most Likely", "High", "Confidence"), 
-               align = c("l", "r", "r", "r", "r"))
+               col.names = c("Category", "Low", "Most Likely", "High", 
+                             "Confidence"), 
+               align = c("l", "r", "r", "r", "r"),
+               caption = paste(label, "table"))
 }
 create_table("Threat Frequencies", "tef")
 create_table("Threat Capabilities", "tc")
@@ -364,7 +367,6 @@ create_table("Loss Magnitudes", "lm")
 ```
 
 # Exploratory Analysis
-
 
 ## Loss Frequency
 
@@ -380,7 +382,7 @@ The following figure shows the density of annualized loss events by domain. Most
 domains are highly right skewed with few annual events leading to loss. 
 Exceptions include the FOO, BAR, and BAZ domains.
 
-```{r lef_by_domain, fig.width = 8, fig.height = 8, echo=FALSE}
+```{r lef_by_domain, fig.width = 8, fig.height = 8, fig.cap="Loss Frequency by Domain", echo=FALSE}
 results %>% group_by(domain_id, simulation) %>%
   summarise(loss_events = sum(loss_events)) %>% 
   ggplot(., aes(x = loss_events)) -> gg
@@ -408,7 +410,7 @@ Note that larger than average loss events does not necessarily imply high risk,
 as the total size of all losses may be small. The size of losses is 
 explored in the loss magnitude section.
 
-```{r lef_by_scenario, fig.width = 8, fig.height = 8, echo=FALSE}
+```{r lef_by_scenario, fig.width = 8, fig.height = 8, fig.cap="Loss Frequency by Scenario", echo=FALSE}
 plot_scenarios_by_domain <- function(x) {
   gg <- ggplot(x, aes(x = loss_events, fill = domain_id))
   gg <- gg + facet_wrap(~domain_id + scenario_id,
@@ -451,7 +453,7 @@ absolute upper bound represented as the largest known HIPAA fine of 4.8M USD.
 
 This figure shows the range of expected annual losses (ALE) for each scenario. 
 
-```{r ale_range_by_scenario, fig.height = 8, fig.width=8, echo=FALSE}
+```{r ale_range_by_scenario, fig.height = 8, fig.width=8, fig.cap="Annual Loss Range by Scenario", echo=FALSE}
 gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>% 
   ggplot(., aes(x = as.character(scenario_id), 
                           y = ale + 1))
@@ -485,18 +487,19 @@ domain. The wider portion of each column represents where the losses are more
 likely to occur. For example, the FOO domain has expected losses not to exceed 
 BAR, with simulations extending down to zero (no loss).
 
-```{r risk_by_domain, echo=FALSE}
+```{r risk_by_domain, echo=FALSE, fig.cap="Risk by Domain"}
 
 first_domain <- domain_summary[[1, "domain_id"]]
 
 # plot of all ales
 gg <- ggplot(domain_summary, aes(x = domain_id, y = ale + 1))
 gg <- gg + geom_hline(aes(yintercept = risk_tolerance["high"]), color = "red") +
-  annotate("text", x = first_domain, y = risk_tolerance["high"], label = "High", vjust = -1, 
-           hjust = 0)
-gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]), color = "lightsteelblue") +
-  annotate("text", x = first_domain, y = risk_tolerance["medium"], label = "Medium", 
-           vjust = -1, hjust = 0)
+  annotate("text", x = first_domain, y = risk_tolerance["high"], 
+           label = "High", vjust = -1, hjust = 0)
+gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]), 
+                      color = "lightsteelblue") +
+  annotate("text", x = first_domain, y = risk_tolerance["medium"], 
+           label = "Medium", vjust = -1, hjust = 0)
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3,
                         outlier.color = alpha("black", 1/2),
@@ -516,7 +519,7 @@ There are `r numbers[length(scenario_outliers)]` domains
 with annual loss ranges which far exceed the other scenarios. The domains that 
 contain these scenarios are plotted separately to identify the outlying scenarios.
 
-```{r risk_for_outlier_domains, eval = TRUE, echo=FALSE}
+```{r risk_for_outlier_domains, eval = TRUE, echo=FALSE, fig.cap="Risk for Outliers"}
 # box plot for the outlier domains
 outlier_domains <- scenario_summary %>% 
   filter(scenario_id %in% scenario_outliers) %>% group_by(domain_id) %>% 
@@ -539,10 +542,10 @@ print(gg)
 
 ### Filter Out the Outlying Scenarios
 
-Repeating the above plot across all the scenarios with only the iutliers removed 
+Repeating the above plot across all the scenarios with the outliers removed 
 allows examination of the remaining scenarios without distortion. 
 
-```{r annual_loss_no_outliers}
+```{r annual_loss_no_outliers, fig.cap="Annual Loss Excluding Outliers"}
 #scenario_order$scenario_id
 gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>% 
   mutate(scenario_id = factor(as.character(scenario_id), 
@@ -576,12 +579,12 @@ scenarios %>% rowwise %>%
   filter(n_controls == 1) %>% 
   arrange(domain_id, scenario_id) %>% 
   select(Domain = domain_id, ID = scenario_id, Scenario = scenario) %>% 
-  pander::pander(., justify = c("left", "left", "left"))
+  pander::pander(., justify = c("left", "left", "left"), caption="Fragile Scenarios")
 ```
 
 ### Median vs Max ALE
 
-```{r median_vs_max_ale, echo = FALSE}
+```{r median_vs_max_ale, echo = FALSE, fig.cap="Median vs Maximum Annual Loss"}
 
 # scatter plot of median vs. max ALEs
 gg <- ggplot(scenario_summary, aes(x = ale_median, y = ale_max))
@@ -599,13 +602,13 @@ print(gg)
 
 ### Histogram of median ALEs
 
-```{r median_ale_histogram, echo = FALSE}
+```{r median_ale_histogram, echo = FALSE, fig.cap="Median Losses"}
 # prepare data an init graph
 scenario_summary %>% filter(!scenario_id %in% scenario_outliers) %>% 
   ggplot(., aes(x = ale_median)) -> gg
 
 # graph options
-gg <- gg + geom_histogram(binwidth = max(sc2$ale_median) / 50, 
+gg <- gg + geom_histogram(binwidth = max(gg$data$ale_median) / 50, 
                           aes(y = ..density..),
                           color = "black", fill = "white")
 gg <- gg + geom_density(fill = viridis(1), alpha = 1/5)
@@ -619,7 +622,7 @@ print(gg)
 
 ### Histogram/Density of All Simulations
 
-```{r density_all, echo = FALSE}
+```{r density_all, echo = FALSE, fig.cap="Risk Exposure"}
 # init graph
 gg <- ggplot(results, aes(x = ale))
 
@@ -632,7 +635,7 @@ gg <- gg + scale_x_continuous(labels = dollar)
 gg <- gg + scale_y_continuous(labels = comma)
 gg <- gg + labs(x = "Risk Exposure", 
                 y = element_blank(), 
-                title = "Risk Exposure Over All Simualations")
+                title = "Risk Exposure Over All Simulations")
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
@@ -645,13 +648,13 @@ print(gg)
 
 ### Minus Outlier Scenarios
 
-```{r histogram_no_outliers, echo = FALSE}
+```{r histogram_no_outliers, echo = FALSE, fig.cap="Risk Exposure"}
 # prepare data and init graph
 results %>% filter(!scenario_id %in% scenario_outliers) %>% 
   ggplot(., aes(x = ale)) -> gg
 
 #graph options
-gg <- gg + geom_histogram(binwidth = max(r2$ale) / 50, 
+gg <- gg + geom_histogram(binwidth =max(gg$data$ale) / 50, 
                           color = "white", 
                           fill = viridis(1), alpha = 1/5)
 #gg <- gg + geom_density(fill = "black")
@@ -679,9 +682,11 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
                                             "domain_id" = "domain_id")) %>% 
   arrange(desc(ale_median), desc(ale_var)) %>% 
   mutate_each(funs(dollar), ale_median, ale_var) %>% 
-  select("ID" = domain_id, "Scenario" = scenario, "Median Annual Loss" = ale_median, 
+  select("ID" = domain_id, "Scenario" = scenario, 
+         "Median Annual Loss" = ale_median, 
          "95% Value at Risk" = ale_var) %>% 
-  pander::pander(., justify = c("left", "left", "right", "right"))
+  pander::pander(., justify = c("left", "left", "right", "right"), 
+                 caption="Threat List")
   
   
   # knitr::kable(., row.names = NA, 
