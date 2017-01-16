@@ -178,71 +178,55 @@ the domains of `r control_weakness[1, "domain_id"]`,
 ```{r domain_weakness, echo = FALSE}
 knitr::kable(control_weakness, row.names = NA, 
              col.names = c("Domain", "Frequency Threat Overcomes Control"), 
-             align = c("l", "r"))
+             align = c("l", "r"),
+             caption = "Domain Weaknesses")
 ```
 
 ## Key Added Risk Scenarios
 
 > Identify any scenarios of particular interest here. By highlighting scenarios 
-of interest (e.g. ransomware) to your decission makers, high visibility 
-scenarios can be analyzed and treated without loosing sight of the overall 
-risk picture.
+of interest (e.g. ransomware) to your decission makers, those scenarios of
+key management interest can be analyzed and treated in the context of the 
+overall risk picture.
+
+```{r make_scenario_table, echo=FALSE}
+display_scenario_table <- function(scenario_summary, id) {
+  filter(scenario_summary, scenario_id == id) %>% 
+  summarise(
+    "Vulnerability (% of events results in loss)" = percent(mean_vuln),
+    "Mean Control Gap" = percent(mean_tc_exceedance / 100),
+    "Maximum Annual Loss" = dollar(ale_max),
+    "Median Annual Loss" = dollar(ale_median),
+    "Maximum Single Loss" = dollar(sle_max),
+    "Median Single Loss" = dollar(sle_median)
+  ) %>% t %>% pander(justify="right", 
+                     caption=paste("Scenario", id, "Overview"))
+}
+```
 
 ### (Scenario A)
 
 SOMETHING INTERESTING ABOUT A KEY REDACTED SCENARIO
 
 ```{r scenarioA_details, echo=FALSE}
-scenario_details <- scenario_summary %>% filter(scenario_id == 1)
+display_scenario_table(scenario_summary, "1")
 ```
-
-+---------------------+-------------------------------------------------------+
-| Vulnerability       | `r percent(scenario_details$mean_vuln)`               |
-| (% of events        |                                                       | 
-| resulting in loss)  |                                                       |
-+---------------------+-------------------------------------------------------+
-| Mean Control Gap    | `r percent(scenario_details$mean_tc_exceedance / 100)`|
-+---------------------+-------------------------------------------------------+
-| Maximum Annual Loss | `r dollar(scenario_details$ale_max)`                  |
-+---------------------+-------------------------------------------------------+
-| Median Annual Loss  | `r dollar(scenario_details$ale_median)`               |
-+---------------------+-------------------------------------------------------+
-| Maximum Single Loss | `r dollar(scenario_details$sle_max)`                  |
-+---------------------+-------------------------------------------------------+
-| Median Single Loss  | `r dollar(scenario_details$sle_median)`               |
-+---------------------+-------------------------------------------------------+
 
 ### REDACTED (Scenario B)
 
 SOMETHING INTERSTING ABOUT A KEY REDACTED SCENARIO
 
 ```{r scenarioB_details, echo=FALSE}
-scenario_details <- scenario_summary %>% filter(scenario_id == 17)
+display_scenario_table(scenario_summary, "1")
 ```
-
-+---------------------+-------------------------------------------------------+
-| Vulnerability       | `r percent(scenario_details$mean_vuln)`               |
-| (% of events        |                                                       | 
-| resulting in loss)  |                                                       |
-+---------------------+-------------------------------------------------------+
-| Mean Control Gap    | `r percent(scenario_details$mean_tc_exceedance / 100)`|
-+---------------------+-------------------------------------------------------+
-| Maximum Annual Loss | `r dollar(scenario_details$ale_max)`                  |
-+---------------------+-------------------------------------------------------+
-| Median Annual Loss  | `r dollar(scenario_details$ale_median)`               |
-+---------------------+-------------------------------------------------------+
-| Maximum Single Loss | `r dollar(scenario_details$sle_max)`                  |
-+---------------------+-------------------------------------------------------+
-| Median Single Loss  | `r dollar(scenario_details$sle_median)`               |
-+---------------------+-------------------------------------------------------+
 
 ## Recommendations
 
-Document the key risk manamgenet projects for the coming planning period 
+Document the key risk management projects for the coming planning period 
 (typically yearly) that are either approved or proposed. These projects 
 should address the findings from the simulated scenarios by improving controls 
 or reducing loss. Describe each project in terms of its expected cost versus 
-the amount of loss exposure addresed by the control.
+the amount of loss exposure addressed by the control.
 
 ### Project Recommendation (TBD)
 
@@ -278,8 +262,8 @@ the amount of loss exposure addresed by the control.
 ### Analysis Improvement Opportunities
 
 Every analysis is imperfect. The point of analysis is to provide better 
-information and to reduce uncertainy, not to provide perfect information and 
-compelte confidence. Attempting to do the latter results in an inability to 
+information and to reduce uncertainty, not to provide perfect information and 
+complete confidence. Attempting to do the latter results in an inability to 
 complete the work. Identify gaps in your current data and estimates and call 
 out any areas where you wish to improve.
 
@@ -307,7 +291,7 @@ taken on key observations supporting those  decisions.
 These capability mappings are used to create a distribution of actual 
 capability effectiveness over the course of a year, ranging from 100% 
 (completely effective) to 0% (completely ineffective). When a scenario has
-multiple controls associated with the risk statemetn, the arithmatic mean across 
+multiple controls associated with the risk statement, the asthmatic mean across 
 the simulated effectiveness of all controls is used.
 
 ## Risk Scenarios
@@ -372,7 +356,7 @@ create_table("Loss Magnitudes", "lm")
 
 Whether a loss occurs is a function of:
 
-1. Number of times a threat actor acts against the organzation
+1. Number of times a threat actor acts against the organization
 2. The capabilities of the threat actor
 3. The difficulty the relevant controls presents to the threat actor
 
