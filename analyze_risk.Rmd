@@ -24,7 +24,7 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = TRUE)
 # plotting, commas, binning, and color libraries
 if ("pacman" %in% installed.packages()) {
   pacman::p_load(ggplot2, scales, hexbin, viridis, dplyr, purrr)
@@ -68,8 +68,8 @@ focus_scenarios <- c(51, 11)    # if there are scenariso of particular interest,
 numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight", 
              "nine")
 # specify the bounds of our risk tolerances
-risk_tolerance <- c("medium" = 20 * 10 ^ 6,
-                    "high" = 100 * 10 ^6)
+risk_tolerance <- c("medium" = 10 * 10 ^ 6,
+                    "high" = 50 * 10 ^ 6)
 ```
 
 # Summary
@@ -87,6 +87,9 @@ table shows the maximum, 95% percentile, mean, 10th percentile, and minimum
 losses for **any single scenario**. It is possible that multiple scenarios could 
 realize losses over the course of a single year resulting in higher total losses.
 
+In portions of this analysis, scenarios which are outliers are excluded. Graphs 
+and tables with such exclusion are noted.
+
 ```{r overall_exposure, echo=FALSE}
 overall <- results %>% group_by(simulation) %>% 
                      summarize(ale = max(ale)) %>% select(ale) %>%
@@ -100,7 +103,6 @@ data_frame("Maximum" = dollar(max(overall$ale)),
                                 caption = paste("Range of Annual Loss", 
                                                 "Exposures Across all",
                                                 "Simulations"))
-
 ```
 
 ```{r calculate_max_losses}
@@ -110,12 +112,19 @@ max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%
             min_loss = min(ale),
             max_loss = sum(ale)) %>%
   ungroup
+max_loss_w_outliers <- results %>% 
+  group_by(simulation) %>% 
+  summarise(loss = max(ale),
+            min_loss = min(ale),
+            max_loss = sum(ale)) %>%
+  ungroup
 ```
 
 The following figure shows the frequency a given loss value will be met or 
-exceeded during a given year. The outlier scenarios are excluded. The 80% line 
-reflects that we should expect a loss of 
-`r dollar(quantile(max_loss$loss, .2))` or more during four out of five years.
+exceeded during a given year, **excluding outlier scenarios**. The 80% line 
+reflects that a loss of no less than `r dollar(quantile(max_loss$loss, .2))` 
+occurs every four out of five years. The 80% minimum loss threshold with the 
+outliers included is  `r dollar(quantile(max_loss_w_outliers$loss, .2))`
 
 ```{r loss_exceedance_curve, fig.cap="Loss Exceedance Curve"}
 # generate a sequence between zero and the maximum projected single loss
@@ -134,10 +143,11 @@ gg <- gg + geom_vline(xintercept = 0.8, color = "gray80", size = 1) +
            hjust = 1, size = 3)
 gg <- gg + scale_y_continuous(labels = dollar)
 gg <- gg + scale_x_reverse(labels = percent)
-gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss", 
-                title = "Loss Exceedance Curve")
+                title = "Loss Exceedance Curve",
+                subtitle = "Excluding Outlier Scenarios")
 print(gg)
 ```
 
@@ -200,7 +210,8 @@ display_scenario_table <- function(scenario_summary, id) {
     "Median Annual Loss" = dollar(ale_median),
     "Maximum Single Loss" = dollar(sle_max),
     "Median Single Loss" = dollar(sle_median)
-  ) %>% t %>% pander(justify=c("left", "right"), caption=paste("Scenario", id, "Overview"))
+  ) %>% t %>% pander(justify = c("left", "right"), 
+                     caption = paste("Scenario", id, "Overview"))
 }
 ```
 
@@ -339,8 +350,8 @@ create_table <- function(label, id) {
                        ifelse(id == "tef", comma(ml), percent(ml/100)))) %>% 
     mutate(h = ifelse(id == "lm", dollar(h), 
                       ifelse(id == "tef", comma(h), percent(h/100)))) %>% 
-    rename("Category" = label, "Low"=l, "Most Likely"= ml, "High" = h, 
-           "Confidence"=conf) %>% 
+    rename("Category" = label, "Low" = l, "Most Likely" = ml, "High" = h, 
+           "Confidence" = conf) %>% 
     pander::pander(justify = c("left", rep("right", 4)),
                caption = paste(label, "table"))
 }
@@ -396,7 +407,7 @@ gg <- gg + geom_density(alpha = 1/3, fill = viridis(1))
 gg <- gg + labs(x = "Loss Events Per Year", 
                 title = "Number of Loss Events by Domain")
 gg <- gg + theme_minimal()
-gg <- gg + theme(strip.text.y = element_text(angle= 180))
+gg <- gg + theme(strip.text.y = element_text(angle = 180))
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.ticks.y = element_blank(),
@@ -455,7 +466,8 @@ absolute upper bound represented as the largest known HIPAA fine of 4.8M USD.
 
 ### ALE Ranges per Scenario
 
-This figure shows the range of expected annual losses (ALE) for each scenario. 
+This figure shows the range of expected annual losses (ALE) for each scenario, 
+wit **outliers excluded**.
 
 ```{r ale_range_by_scenario, fig.height = 8, fig.width=8, fig.cap="Annual Loss Range by Scenario", echo=FALSE}
 gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>% 
@@ -473,7 +485,8 @@ gg <- gg + scale_y_continuous(labels = function(x) {
   paste0("$", x / 10 ^ 6, "M")})
 #gg <- gg + scale_y_continuous(label = dollar)
 gg <- gg + labs(x = "Scenario ID", y = "ALE",
-                tile = "Loss Ranges by Domain and Scenario")
+                title = "Loss Ranges by Domain and Scenario",
+                subtitle = "Outliers excluded")
 print(gg)
 ```
 
@@ -486,10 +499,10 @@ domains not being defined.
 
 ### Risk by Domains
 
-This figure (a violin plot) shows the range of expected annual losses by 
-domain. The wider portion of each column represents where the losses are more 
-likely to occur. For example, the FOO domain has expected losses not to exceed 
-BAR, with simulations extending down to zero (no loss).
+This figure shows the range of expected annual losses by domain. The wider 
+portion of each column represents where the losses are more likely to occur. 
+For example, the FOO domain has expected losses not to exceed BAR, with 
+simulations extending down to zero (no loss).
 
 ```{r risk_by_domain, echo=FALSE, fig.cap="Risk by Domain"}
 
@@ -509,12 +522,13 @@ gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3,
                         outlier.color = alpha("black", 1/2),
                         outlier.shape = NA)
 gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
-# gg <- gg + geom_violin(fill = viridis(1), alpha = 1/5)
+#gg <- gg + geom_violin(fill = viridis(1), alpha = 1/5)
 gg <- gg + theme_minimal()
 gg <- gg + theme(legend.position = "none")
 gg <- gg + scale_y_continuous(label = dollar)
 gg <- gg + labs(x = "Domain", y = "Annual Expected Loss",
-                title = "Range of Annual Losses By Domain")
+                title = "Range of Annual Losses by Domain",
+                subtitle = "Outliers Included")
 print(gg)
 ```
 
@@ -537,8 +551,9 @@ gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5)
 gg <- gg + scale_fill_viridis(discrete = TRUE)
 gg <- gg + scale_y_continuous(label = dollar)
 gg <- gg + theme_minimal()
-gg <- gg + labs(x = "Scenario ID", y = "Annual Exepected Loss", 
-                title = "Domains with Outlier Scenarios")
+gg <- gg + labs(x = "Domain / Scenario ID", y = "Annual Expected Loss", 
+                title = "Illustrating Influences of Outliers on Domain Summaries",
+                subtitle = "Outliers can greatly influence dommain summaries")
 gg <- gg + theme(panel.background = element_blank(),
                  panel.grid = element_blank(),
                  panel.border = element_blank())
@@ -559,11 +574,12 @@ gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>%
   arrange(domain_id, scenario_id) %>% ggplot(., aes(x = scenario_id, y = ale))
 gg <- gg + facet_grid(~domain_id, scales = "free_x", switch = "x")
 gg <- gg + scale_y_continuous(label = dollar)
-gg <- gg + labs(x = NULL, y = "Annual Loss", 
-                title = "Loss Range for Each Scenario by Domain")
+gg <- gg + labs(x = NULL, y = "Annual Expected Loss", 
+                title = "Loss Range for Each Scenario by Domain",
+                subtitle = "Outliers Excluded")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5, 
-                        outlier.color = alpha("black", 1/2), outlier.shape = NA)
+                        outlier.color = alpha("black", 1/40), outlier.shape = 16)
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
@@ -587,7 +603,7 @@ scenarios %>% rowwise %>%
   select(Domain = domain_id, ID = scenario_id, Scenario = scenario) %>% 
   pander::pander(justify = c("left", "left", "left"), 
                  split.cells = c("10%", "10%", "80%"), 
-                 caption="Fragile Scenarios")
+                 caption = "Fragile Scenarios")
 ```
 
 ### Median vs Max ALE
@@ -603,12 +619,13 @@ gg <- gg + geom_point(position = "jitter", alpha = 1/5, aes(size = loss_events))
 gg <- gg + scale_x_log10(labels = dollar) + scale_y_log10(labels = dollar)
 gg <- gg + theme_minimal() 
 gg <- gg + scale_size_continuous(labels = comma)
-gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE", size = "Loss Event Count")
+gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE", size = "Loss Event Count", 
+                subtitle = "Outliers Included")
 gg <- gg + ggtitle("Median vs Maximum Annual Loss")
 print(gg)
 ```
 
-### Histogram of median ALEs
+### Histogram of Median ALEs
 
 ```{r median_ale_histogram, echo = FALSE, fig.cap="Median Losses"}
 # prepare data an init graph
@@ -624,7 +641,8 @@ gg <- gg + scale_x_continuous(labels = dollar) +
   scale_y_continuous(labels = comma)
 gg <- gg + theme_minimal()
 gg <- gg + labs(x = "Median Annualized Loss", y = element_blank(), 
-                title = "Median Losses (No Outliers)")
+                title = "Median Losses",
+                subtitle = "Outliers Excluded")
 print(gg)
 ```
 
@@ -643,7 +661,8 @@ gg <- gg + scale_x_continuous(labels = dollar)
 gg <- gg + scale_y_continuous(labels = comma)
 gg <- gg + labs(x = "Risk Exposure", 
                 y = element_blank(), 
-                title = "Risk Exposure Over All Simulations")
+                title = "Risk Exposure",
+                subtitle = "Outlier Scenarios Included")
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
@@ -662,7 +681,7 @@ results %>% filter(!scenario_id %in% scenario_outliers) %>%
   ggplot(., aes(x = ale)) -> gg
 
 #graph options
-gg <- gg + geom_histogram(binwidth =max(gg$data$ale) / 50, 
+gg <- gg + geom_histogram(binwidth = max(gg$data$ale) / 50, 
                           color = "white", 
                           fill = viridis(1), alpha = 1/5)
 #gg <- gg + geom_density(fill = "black")
@@ -670,7 +689,8 @@ gg <- gg + scale_x_continuous(labels = dollar)
 gg <- gg + scale_y_continuous(labels = comma)
 gg <- gg + labs(x = "Risk Exposure", 
                 y = element_blank(), 
-                title = "Risk Exposure Over All Non-Outlier Simualations")
+                title = "Risk Exposure",
+                subtitle = "Outliers Excluded")
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
@@ -695,8 +715,8 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
          "Scenario" = scenario, 
          "Median Annual Loss" = ale_median, 
          "95% Value at Risk" = ale_var) %>% 
-  pander(split.cells=20, justify = c("left", "left", "left", "right", "right"), 
-                 caption="Threat List")
+  pander(split.cells = 20, justify = c("left", "left", "left", "right", "right"), 
+                 caption = "Threat List")
   
   
   # knitr::kable(., row.names = NA, 
