@@ -3,6 +3,9 @@ title: "SAMPLE Strategic Information Security Risk Analysis"
 subtitle: "Sample Evaluator Report"
 author: "Evaluator Framework (https://github.com/davidski/evaluator)"
 output:
+  word_document:
+    toc: yes
+    toc_depth: '3'
   html_document:
     fig_caption: yes
     toc: yes
@@ -11,9 +14,6 @@ output:
   pdf_document:
     fig_caption: yes
     keep_tex: yes
-    toc: yes
-    toc_depth: '3'
-  word_document:
     toc: yes
     toc_depth: '3'
 header-includes:
@@ -49,6 +49,7 @@ scenario_summary <- readRDS(file = "./data/scenario_summary.Rds")  # scenario le
 domain_summary <- readRDS(file = "./data/domain_summary.Rds")    # domain level summary
 
 # details on our scenarios
+domains <- read_csv("./data/domains.csv") # domain catalog
 mappings <- read_csv("./data/qualitative_mappings.csv") # qualitative translations
 capabilities <- read_csv("data/capabilities.csv") # i.e. objectives & controls
 scenarios <- read_csv("./data/scenarios.csv") %>% mutate(tef = tolower(tef), 
@@ -158,17 +159,22 @@ domain_impact <- domain_summary %>%
   group_by(domain_id) %>%
   select(domain_id, ale) %>%
   summarize_each(funs(mean, max, sd)) %>%
-  arrange(desc(mean)) %>% ungroup
+  arrange(desc(mean)) %>% 
+  ungroup %>% 
+  left_join(domains, by = c("domain_id" = "domain_id")) %>% 
+  mutate(domain = paste0(domain, " (", domain_id, ")"))
 ```
 
-The top three areas of largest expected loss are `r domain_impact[1, "domain_id"]`, 
- `r domain_impact[2, "domain_id"]`, and  `r domain_impact[3, "domain_id"]`.
+The top three areas of largest expected loss are `r domain_impact[1, "domain"]`, 
+ `r domain_impact[2, "domain"]`, and  `r domain_impact[3, "domain"]`.
 
 ```{r domain_impact, echo = FALSE}
-mutate_each(domain_impact, funs(dollar), -domain_id) %>% 
-  rename("Domain" = domain_id, "Mean Annual Loss" = mean, 
-         "Maximum Annual Loss" = max, "Loss Standard Deviation" = sd) %>% 
-  pander::pander(justify = c("left", rep("right", 3)),
+mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>% 
+  select("Domain" = domain, 
+         "Mean Annual Loss" = mean, "Maximum Annual Loss" = max, 
+         "Loss Standard Deviation" = sd) %>% 
+  pander::pander(justify = c(rep("left", 1), rep("right", 3)),
+                 split.cells = 25,
                  caption = "Impact by Domain")
 ```
 
@@ -600,9 +606,10 @@ scenarios %>% rowwise %>%
   mutate(n_controls = length(stringi::stri_split_fixed(controls, ", ")[[1]])) %>%
   filter(n_controls == 1) %>% 
   arrange(domain_id, scenario_id) %>% 
-  select(Domain = domain_id, ID = scenario_id, Scenario = scenario) %>% 
+  select("Domain ID" = domain_id, "Scenario ID" = scenario_id, 
+         Scenario = scenario) %>% 
   pander::pander(justify = c("left", "left", "left"), 
-                 split.cells = c("10%", "10%", "80%"), 
+                 split.cells = c("20%", "20%", "60%"), 
                  caption = "Fragile Scenarios")
 ```
 
@@ -620,8 +627,8 @@ gg <- gg + scale_x_log10(labels = dollar) + scale_y_log10(labels = dollar)
 gg <- gg + theme_minimal() 
 gg <- gg + scale_size_continuous(labels = comma)
 gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE", size = "Loss Event Count", 
+                title = "Median vs Maximum Annual Loss", 
                 subtitle = "Outliers Included")
-gg <- gg + ggtitle("Median vs Maximum Annual Loss")
 print(gg)
 ```
 
@@ -703,9 +710,9 @@ print(gg)
 
 # Appendix
 
-Full threat listing
+Full risk scenario listing
 
-```{r threat_list,, echo=FALSE}
+```{r risk_list,, echo=FALSE}
 left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
                                             "domain_id" = "domain_id")) %>% 
   arrange(desc(ale_median), desc(ale_var)) %>% 
