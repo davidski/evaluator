@@ -12,6 +12,7 @@ output:
     keep_tex: yes
     toc: yes
     toc_depth: '3'
+    monofont: inconsolata
   word_document:
     toc: yes
     toc_depth: '3'
@@ -494,7 +495,7 @@ gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>%
 gg <- gg + facet_wrap(~domain_id, scales = "free_x", strip.position = "bottom")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5, 
-                        outlier.color = alpha(viridis(1), 1/2), 
+                        outlier.color = viridis(1), outlier.alpha = 1/2, 
                         outlier.shape = 16)
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
@@ -524,26 +525,29 @@ simulations extending down to zero (no loss).
 
 ```{r risk_by_domain, echo=FALSE, fig.cap="Risk by Domain"}
 
-first_domain <- domain_summary[[1, "domain_id"]]
+test_position <- domain_summary[[nrow(domain_summary), "domain_id"]]
 
 # plot of all ales
 gg <- ggplot(domain_summary, aes(x = domain_id, y = ale + 1))
 gg <- gg + geom_hline(aes(yintercept = risk_tolerance["high"]), color = "red") +
-  annotate("text", x = first_domain, y = risk_tolerance["high"], 
-           label = "High", vjust = -1, hjust = 0)
+  annotate("text", x = test_position, y = risk_tolerance["high"], 
+           label = "High", vjust = "bottom", hjust = "right")
 gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]), 
                       color = "lightsteelblue") +
-  annotate("text", x = first_domain, y = risk_tolerance["medium"], 
-           label = "Medium", vjust = -1, hjust = 0)
+  annotate("text", x = test_position, y = risk_tolerance["medium"], 
+           label = "Medium", vjust = "bottom", hjust = "right")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3,
-                        outlier.color = alpha("black", 1/2),
+                        outlier.color = "black", outlier.alpha = 1/2,
                         outlier.shape = NA)
-gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
+#gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
 #gg <- gg + geom_violin(fill = viridis(1), alpha = 1/5)
 gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major = element_blank())
+gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(legend.position = "none")
-gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + scale_y_continuous(labels = function(x) { 
+  paste0("$", x / 10 ^ 6, "M")})
 gg <- gg + labs(x = "Domain", y = "Annual Expected Loss",
                 title = "Range of Annual Losses by Domain",
                 subtitle = "Outliers Included")
@@ -567,7 +571,8 @@ gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5)
 #gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
 gg <- gg + scale_fill_viridis(discrete = TRUE)
-gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + scale_y_continuous(labels = function(x) { 
+  paste0("$", x / 10 ^ 6, "M")})
 gg <- gg + theme_minimal()
 gg <- gg + labs(x = "Domain / Scenario ID", y = "Annual Expected Loss", 
                 title = "Illustrating Influences of Outliers on Domain Summaries",
@@ -591,17 +596,18 @@ gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>%
                               levels = as.character(scenario_order$scenario_id))) %>% 
   arrange(domain_id, scenario_id) %>% ggplot(., aes(x = scenario_id, y = ale))
 gg <- gg + facet_grid(~domain_id, scales = "free_x", switch = "x")
-gg <- gg + scale_y_continuous(label = dollar)
 gg <- gg + labs(x = NULL, y = "Annual Expected Loss", 
                 title = "Loss Range for Each Scenario by Domain",
                 subtitle = "Outliers Excluded")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5, 
-                        outlier.color = alpha("black", 1/40), outlier.shape = 16)
+                        outlier.color = "black", outlier.alpha = 1/40, outlier.shape = 16)
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.text.x = element_blank())
+gg <- gg + scale_y_continuous(labels = function(x) { 
+  paste0("$", x / 10 ^ 6, "M")})
 print(gg)
 ```
 
@@ -635,12 +641,16 @@ gg <- gg + geom_point(position = "jitter", alpha = 1/5, aes(size = loss_events))
 #gg <- gg + stat_bin2d(bins = 50) + scale_fill_gradient(low = 'lightblue', high = 'red')
 #gg <- gg + stat_binhex(bins = 50) + scale_fill_viridis()
 #gg <- gg + geom_text(aes(label = title), size = 4)
-gg <- gg + scale_x_log10(labels = dollar) + scale_y_log10(labels = dollar)
+gg <- gg + scale_x_log10(labels = dollar)
+gg <- gg + scale_y_log10(labels = function(x) { 
+  paste0("$", x / 10 ^ 6, "M")})
+gg <- gg + expand_limits()
 gg <- gg + theme_minimal() 
 gg <- gg + scale_size_continuous(labels = comma)
 gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE", size = "Loss Event Count", 
                 title = "Median vs Maximum Annual Loss", 
                 subtitle = "Outliers Included")
+gg <- gg + expand_limits(x=-100000000)
 print(gg)
 ```
 
@@ -665,57 +675,69 @@ gg <- gg + labs(x = "Median Annualized Loss", y = element_blank(),
 print(gg)
 ```
 
-### Histogram/Density of All Simulations
+### Histogram/Density of All Simulations with Outliers
+
+Histogram of all annual losses, across all scenarios and simulations. Zero 
+loss scenarios are **excluded** while outliers are **included**.
+
 
 ```{r density_all, echo = FALSE, fig.cap="Risk Exposure"}
 # init graph
-gg <- ggplot(results, aes(x = ale))
+results %>% filter(ale != 0) %>% ggplot(., aes(x = ale)) -> gg
+binwidth <- max(range(gg$data$ale) / 50)
 
 # graph options
-gg <- gg + geom_histogram(boundary = 0, binwidth = max(range(results$ale) / 50), 
+gg <- gg + geom_histogram(boundary = 0, binwidth = binwidth, 
                           color = "white", 
                           fill = viridis(1), alpha = 1/5)
-gg <- gg + geom_density(fill = "black")
+gg <- gg + geom_density(fill = "black", alpha = 1/5, 
+                        aes(y = get("binwidth", envir=.GlobalEnv) * ..count..))
 gg <- gg + scale_x_continuous(labels = dollar) 
 gg <- gg + scale_y_continuous(labels = comma)
-gg <- gg + labs(x = "Risk Exposure", 
+gg <- gg + labs(x = "Loss Exposure", 
                 y = element_blank(), 
                 title = "Risk Exposure",
-                subtitle = "Outlier Scenarios Included")
+                subtitle = "Outlier Scenarios Included, Zero Loss Scenarios Excluded")
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
-gg <- gg + theme(axis.line.y = element_line(color = "black", size = 0.15))
-gg <- gg + theme(axis.line.x = element_line(color = "black", size = 0.15))
-gg <- gg + theme(plot.margin = unit(rep(30, 4), "pt"))
+#gg <- gg + theme(axis.line.y = element_line(color = "black", size = 0.15))
+#gg <- gg + theme(axis.line.x = element_line(color = "black", size = 0.15))
+gg <- gg + theme(plot.margin = unit(rep(1, 4), "pt"))
 #gg <- gg + geom_point(aes(y=cumloss)) + geom_path(aes <- (y=cumloss, group=1))
 print(gg)
 ```
 
-### Minus Outlier Scenarios
+### Risk Exposure without Outliers
+
+Histogram of all annual losses, across all scenarios and simulations. Zero 
+loss scenarios and outliers are **excluded**.
 
 ```{r histogram_no_outliers, echo = FALSE, fig.cap="Risk Exposure"}
 # prepare data and init graph
 results %>% filter(!scenario_id %in% scenario_outliers) %>% 
+  filter(ale != 0) %>% 
   ggplot(., aes(x = ale)) -> gg
+binwidth <- max(range(gg$data$ale) / 50)
 
 #graph options
-gg <- gg + geom_histogram(binwidth = max(gg$data$ale) / 50, 
+gg <- gg + geom_histogram(boundary = 0, binwidth = max(gg$data$ale) / 50, 
                           color = "white", 
                           fill = viridis(1), alpha = 1/5)
-#gg <- gg + geom_density(fill = "black")
+gg <- gg + geom_density(fill = "black", alpha = 1/5, 
+                        aes(y = get("binwidth", envir=.GlobalEnv) * ..count..))
 gg <- gg + scale_x_continuous(labels = dollar) 
 gg <- gg + scale_y_continuous(labels = comma)
-gg <- gg + labs(x = "Risk Exposure", 
-                y = element_blank(), 
+gg <- gg + labs(x = "Annual Loss", 
+                y = "Number of Occurances", 
                 title = "Risk Exposure",
-                subtitle = "Outliers Excluded")
+                subtitle = "Outliers and Zero Loss Scenarios Excluded")
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
-gg <- gg + theme(axis.line.y = element_line(color = "black", size = 0.15))
-gg <- gg + theme(axis.line.x = element_line(color = "black", size = 0.15))
-gg <- gg + theme(plot.margin = unit(rep(30, 4), "pt"))
+#gg <- gg + theme(axis.line.y = element_line(color = "black", size = 0.15))
+#gg <- gg + theme(axis.line.x = element_line(color = "black", size = 0.15))
+gg <- gg + theme(plot.margin = unit(rep(1, 4), "pt"))
 #gg <- gg + geom_point(aes(y=cumloss)) + geom_path(aes <- (y=cumloss, group=1))
 print(gg)
 ```
@@ -736,10 +758,4 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
          "95% Value at Risk" = ale_var) %>% 
   pander(split.cells = 20, justify = c("left", "left", "left", "right", "right"), 
                  caption = "Threat List")
-  
-  
-  # knitr::kable(., row.names = NA, 
-  #              col.names = c("ID", "Scenario", "Median Annual Loss",
-  #                            "95% Value at Risk"), 
-  #              align = c("l", "l", "r", "r"))
 ```
