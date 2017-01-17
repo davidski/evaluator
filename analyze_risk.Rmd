@@ -1,11 +1,7 @@
 ---
 title: "SAMPLE Strategic Information Security Risk Analysis"
-subtitle: "Sample Evaluator Report"
 author: "Evaluator Framework (https://github.com/davidski/evaluator)"
 output:
-  word_document:
-    toc: yes
-    toc_depth: '3'
   html_document:
     fig_caption: yes
     toc: yes
@@ -16,6 +12,10 @@ output:
     keep_tex: yes
     toc: yes
     toc_depth: '3'
+  word_document:
+    toc: yes
+    toc_depth: '3'
+subtitle: Sample Evaluator Report
 header-includes:
 - \usepackage{draftwatermark}
 - \usepackage{fancyhdr}
@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = TRUE)
 # plotting, commas, binning, and color libraries
 if ("pacman" %in% installed.packages()) {
   pacman::p_load(ggplot2, scales, hexbin, viridis, dplyr, purrr)
-  pacman::p_load(readr, pander)
+  pacman::p_load(psych, readr, pander)
 } else  {
   library(ggplot2)
   library(scales)
@@ -37,6 +37,7 @@ if ("pacman" %in% installed.packages()) {
   library(dplyr)
   library(purrr)
   library(readr)
+  library(psych)
   library(pander)
 }
 ```
@@ -89,7 +90,7 @@ losses for **any single scenario**. It is possible that multiple scenarios could
 realize losses over the course of a single year resulting in higher total losses.
 
 In portions of this analysis, scenarios which are outliers are excluded. Graphs 
-and tables with such exclusion are noted.
+and tables with these exclusions are clearly noted.
 
 ```{r overall_exposure, echo=FALSE}
 overall <- results %>% group_by(simulation) %>% 
@@ -100,7 +101,7 @@ data_frame("Maximum" = dollar(max(overall$ale)),
            "Mean" = dollar(mean(overall$ale)),
            "10th Percentile" = dollar(quantile(overall$ale, c(0.10))),
            "Minimum" = dollar(min(overall$ale))
-           ) %>% t %>% pander::pander(justify = "right", 
+           ) %>% t %>% pander(justify = "right", 
                                 caption = paste("Range of Annual Loss", 
                                                 "Exposures Across all",
                                                 "Simulations"))
@@ -173,8 +174,8 @@ mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>%
   select("Domain" = domain, 
          "Mean Annual Loss" = mean, "Maximum Annual Loss" = max, 
          "Loss Standard Deviation" = sd) %>% 
-  pander::pander(justify = c(rep("left", 1), rep("right", 3)),
-                 split.cells = 25,
+  pander(justify = c(rep("left", 1), rep("right", 3)),
+                 split.cells = 20,
                  caption = "Impact by Domain")
 ```
 
@@ -195,7 +196,7 @@ the domains of `r control_weakness[1, "domain_id"]`,
 ```{r domain_weakness, echo = FALSE}
 rename(control_weakness, "Domain" = domain_id, 
        "Frequency Threat Overcomes Control" = vuln) %>% 
-  pander::pander(justify = c("left", "right"), 
+  pander(justify = c("left", "right"), 
                  caption = "Domain Weaknesses")
 ```
 
@@ -241,9 +242,9 @@ display_scenario_table(scenario_summary, focus_scenarios[2])
 
 > Document the key risk management projects for the coming planning period 
 (typically yearly) that are either approved or proposed. These projects 
-should address the findings from the simulated scenarios by improving controls 
-or reducing loss. Describe each project in terms of its expected cost versus 
-the amount of loss exposure addressed by the control.
+should address the findings from the simulated scenarios by improving controls, 
+reducing loss, or transferring risk. Describe each project in terms of its 
+expected cost versus the amount of loss exposure addressed by the control.
 
 ## Project Recommendation (TBD)
 
@@ -294,11 +295,11 @@ The security team strategic risk assessment process is based upon the
 industry standard OpenFAIR methodology. Expert opinion is polled on the threats, 
 capabilities, and probable lose magnitudes associated with key risk scenarios. 
 This information is used to create a Monte Carlo model which generates a 
-a risk exposure quantified in terms of dollars for each  tracked risk.
+a risk exposure quantified in dollars for each tracked risk.
 
 ## Capabilities
 
-The security function and key subject matter experts met and formed a consensus 
+The security team and key subject matter experts met and formed a consensus 
 opinion on the maturity level of the `r nrow(capabilities)` capabilities over 
 the `r nrow(unique(domain_summary$domain_id))` security program areas. The 
 team assessed each capability against a five point capability maturity model 
@@ -358,7 +359,7 @@ create_table <- function(label, id) {
                       ifelse(id == "tef", comma(h), percent(h/100)))) %>% 
     rename("Category" = label, "Low" = l, "Most Likely" = ml, "High" = h, 
            "Confidence" = conf) %>% 
-    pander::pander(justify = c("left", rep("right", 4)),
+    pander(justify = c("left", rep("right", 4)),
                caption = paste(label, "table"))
 }
 ```
@@ -399,9 +400,19 @@ Whether a loss occurs is a function of:
 
 ### Loss Frequency by Domain
 
-The following figure shows the density of annualized loss events by domain. Most 
-domains are highly right skewed with few annual events leading to loss. 
-Exceptions include the FOO, BAR, and BAZ domains.
+```{r prepare_skewness_and_kurtosis}
+domain_loss_frequency <- results %>% slice_rows("domain_id") %>% 
+  by_slice(~ describe(.x$loss_events), .collate="rows") %>% select(-vars)
+
+if (sum(domain_loss_frequency$Skew<=0, na.rm = TRUE) == 0) {
+  narrative <- "All domains are positive skewed, indicating loss events are clustered to the lower ranges."
+}
+
+names(domain_loss_frequency) <- names(domain_loss_frequency) %>% stringi::stri_trans_totitle()
+pander(domain_loss_frequency, caption = "Loss Events by Domain Summary Statistics")
+```
+
+The following figure shows the density of annualized loss events by domain. `r narrative`
 
 ```{r lef_by_domain, fig.width = 8, fig.height = 8, fig.cap="Loss Frequency by Domain", echo=FALSE}
 results %>% group_by(domain_id, simulation) %>%
@@ -466,9 +477,10 @@ plot_scenarios_by_domain(dat)
 
 Loss Magnitudes represent the economic impact when a loss materializes. Types of 
 losses include fines, response costs (notification & ID theft monitoring), 
-increased audit scrutiny, restoration costs, etc. While these types can all be 
-individually modeled, this analysis performs an aggregate modelling with an 
-absolute upper bound represented as the largest known HIPAA fine of 4.8M USD. 
+increased audit scrutiny, restoration costs, etc. Instead of modeling different 
+loss types (formally defined as primary and secondary losses), this 
+analysis takes an aggregate approach with an absolute upper bound for any 
+single loss event at the largest known HIPAA fine of 4.8M USD. 
 
 ### ALE Ranges per Scenario
 
@@ -608,7 +620,7 @@ scenarios %>% rowwise %>%
   arrange(domain_id, scenario_id) %>% 
   select("Domain ID" = domain_id, "Scenario ID" = scenario_id, 
          Scenario = scenario) %>% 
-  pander::pander(justify = c("left", "left", "left"), 
+  pander(justify = c("left", "left", "left"), 
                  split.cells = c("20%", "20%", "60%"), 
                  caption = "Fragile Scenarios")
 ```
