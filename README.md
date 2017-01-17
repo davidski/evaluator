@@ -43,7 +43,7 @@ Evaluator takes a domain-driven and framework-independent approach to strategic 
 Instructions
 ------------
 
-While not required, reviewing the OpenFAIR methodology and terminology is highly encouraged. This README does not go into depth on the definitions of terms, which the OpenFAIR documents provide.
+While not required, reviewing the OpenFAIR methodology and terminology is highly encouraged. This README does not go into depth on the definitions of terms, which the OpenFAIR documents provide. Familiarity with the R language is also highly encouraged.
 
 Running the toolkit involves six steps:
 
@@ -64,7 +64,7 @@ Obtain the Evaluator toolkit either by cloning this repository (`git clone https
 
 ### Defining Your Security Domains
 
-Evaluator needs to know the domains of your security program. These are the major buckets by which you subdivide your program, typically including areas such as Physical Security, Strategy, Policy, Business Continuity/Disaster Recover, Technical Security, and so forth. Out of the box, Evaluator comes with a demonstration model based upon the [HITRUST CSF](https://hitrustalliance.net/hitrust-csf/). If you have a different domain structure (ISO2700x, NIST CSF, COBIT, etc.) then you need to edit the `data\domains.csv` file to include the domain names and the domain IDs, a shorthand abbreviation for the domain, such as POL for the Policy domain.
+Evaluator needs to know the domains of your security program. These are the major buckets by which you subdivide your program, typically including areas such as Physical Security, Strategy, Policy, Business Continuity/Disaster Recover, Technical Security, and so forth. Out of the box, Evaluator comes with a demonstration model based upon the [HITRUST CSF](https://hitrustalliance.net/hitrust-csf/). If you have a different domain structure (e.g. ISO2700x, NIST CSF, or COBIT) then you need to edit the `data\domains.csv` file to include the domain names and the domain IDs, a shorthand abbreviation for the domain, such as POL for the Policy domain.
 
 ### Defining Your Controls and Risk Scenarios
 
@@ -72,7 +72,7 @@ The most critical piece is the identification of the controls (a/k/a capabilitie
 
 #### Controls Table
 
-The domain controls table is where you define the key objectives of each domain. While the specific controls will be unique to each organizationn, the provided sample spreadsheet may be used as inspiration. Try to avoid simply copying every technical control out of something like ISO 27001 or COBIT, as most such control frameworks are too fine grained to provide the high level overview Evaluator delivers. Typically 50 controls or less can describe organizations up to one to two billion USD in size. Each control must have a unique ID and should be assigned a difficulty (DIFF) score, ranking the maturity of the control from 1 - 5, with 5 being best of class.
+The domain controls table is where you define the key objectives of each domain. While the specific controls will be unique to each organizationn, the provided sample spreadsheet may be used as inspiration. Try to avoid simply copying every technical control out of something like ISO 27001 or COBIT, as most such control frameworks are too fine grained to provide the high level overview Evaluator delivers. Typically 50 controls or less can describe organizations up to one to two billion USD in size. Each control must have a unique ID and should be assigned a difficulty (DIFF) score, ranking the maturity of the control on a CMM scale from Initial (lowest score) to Optimized (best of class).
 
 #### Threats Table
 

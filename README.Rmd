@@ -60,7 +60,8 @@ and the threat scenarios for each domain, you can use Evaluator!
 
 While not required, reviewing the OpenFAIR methodology and terminology is 
 highly encouraged. This README does not go into depth on the definitions of 
-terms, which the OpenFAIR documents provide.
+terms, which the OpenFAIR documents provide. Familiarity with the R language 
+is also highly encouraged.
 
 Running the toolkit involves six steps:
 
@@ -94,7 +95,7 @@ such as Physical Security, Strategy, Policy, Business Continuity/Disaster
 Recover, Technical Security, and so forth. Out of the box, Evaluator comes 
 with a demonstration model based upon the 
 [HITRUST CSF](https://hitrustalliance.net/hitrust-csf/). If you have a 
-different domain structure (ISO2700x, NIST CSF, COBIT, etc.) then you 
+different domain structure (e.g. ISO2700x, NIST CSF, or COBIT) then you 
 need to edit the `data\domains.csv` file to include the domain names and the 
 domain IDs, a shorthand abbreviation for the domain, such as POL for the Policy 
 domain.
@@ -118,7 +119,8 @@ most such control frameworks are too fine grained to provide the high level
 overview Evaluator delivers. Typically 50 controls or less can describe 
 organizations up to one to two billion USD in size. Each control must have a 
 unique ID and should be assigned a difficulty (DIFF) score, ranking the 
-maturity of the control from 1 - 5, with 5 being best of class.
+maturity of the control on a CMM scale from Initial (lowest score) to 
+Optimized (best of class).
 
 #### Threats Table
 
