@@ -7,7 +7,15 @@
 *.pdf
 *.png
 *rsconnect*
+*.Rds
+
+#UE backup files
 *.bak
+
+#knitr caches
+*_cache
+
+#ignore data
 capabilities.csv
 scenarios.csv
-*.Rds
+
