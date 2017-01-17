@@ -61,7 +61,9 @@ scenarios <- read_csv("./data/scenarios.csv") %>% mutate(tef = tolower(tef),
 scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
 # store the `scenario_id` of manually identified outlier (super large upper 
 # risk exposure) scenarios.
-scenario_outliers <- c(11, 17)    # visually identified outliers
+scenario_outliers <- c(51, 11)  # visually identified outlier(s)
+focus_scenarios <- c(51, 11)    # if there are scenariso of particular interest, 
+                                # identify them here (or set to NA)
 # a text vector of numbers to english works
 numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight", 
              "nine")
@@ -94,7 +96,7 @@ data_frame("Maximum" = dollar(max(overall$ale)),
            "Mean" = dollar(mean(overall$ale)),
            "10th Percentile" = dollar(quantile(overall$ale, c(0.10))),
            "Minimum" = dollar(min(overall$ale))
-           ) %>% pander::pander(justify = "right", 
+           ) %>% t %>% pander::pander(justify = "right", 
                                 caption = paste("Range of Annual Loss", 
                                                 "Exposures Across all",
                                                 "Simulations"))
@@ -198,36 +200,35 @@ display_scenario_table <- function(scenario_summary, id) {
     "Median Annual Loss" = dollar(ale_median),
     "Maximum Single Loss" = dollar(sle_max),
     "Median Single Loss" = dollar(sle_median)
-  ) %>% t %>% pander(justify="right", 
-                     caption=paste("Scenario", id, "Overview"))
+  ) %>% t %>% pander(justify=c("left", "right"), caption=paste("Scenario", id, "Overview"))
 }
 ```
 
-### (Scenario A)
+### Key Scenarios A
 
-SOMETHING INTERESTING ABOUT A KEY REDACTED SCENARIO
+Scenario: `r filter(scenarios, scenario_id == focus_scenarios[1]) %>% select(scenario)`
 
 ```{r scenarioA_details, echo=FALSE}
-display_scenario_table(scenario_summary, "1")
+display_scenario_table(scenario_summary, focus_scenarios[1])
 ```
 
-### REDACTED (Scenario B)
+### Key Scenario B
 
-SOMETHING INTERESTING ABOUT A KEY REDACTED SCENARIO
+Scenario: `r filter(scenarios, scenario_id == focus_scenarios[2]) %>% select(scenario)`
 
 ```{r scenarioB_details, echo=FALSE}
-display_scenario_table(scenario_summary, "1")
+display_scenario_table(scenario_summary, focus_scenarios[2])
 ```
 
-## Recommendations
+# Recommendations
 
-Document the key risk management projects for the coming planning period 
+> Document the key risk management projects for the coming planning period 
 (typically yearly) that are either approved or proposed. These projects 
 should address the findings from the simulated scenarios by improving controls 
 or reducing loss. Describe each project in terms of its expected cost versus 
 the amount of loss exposure addressed by the control.
 
-### Project Recommendation (TBD)
+## Project Recommendation (TBD)
 
 - FOO
     + Description - 
@@ -258,7 +259,7 @@ the amount of loss exposure addressed by the control.
     + Cost -
     + Expected Risk Reduction
 
-### Analysis Improvement Opportunities
+## Analysis Improvement Opportunities
 
 Every analysis is imperfect. The point of analysis is to provide better 
 information and to reduce uncertainty, not to provide perfect information and 
@@ -283,20 +284,20 @@ a risk exposure quantified in terms of dollars for each  tracked risk.
 The security function and key subject matter experts met and formed a consensus 
 opinion on the maturity level of the `r nrow(capabilities)` capabilities over 
 the `r nrow(unique(domain_summary$domain_id))` security program areas. The 
-team assessed each capability on a 1-5 capability maturity model, ranging from 
-initial (level 1) through optimizing (level 5). For each valuation, notes were 
-taken on key observations supporting those  decisions.
+team assessed each capability against a five point capability maturity model 
+(patterned after the [CMMI](http://cmmiinstitute.com/) model), 
+ranging from initial (level 1) through optimizing (level 5).
 
-These capability mappings are used to create a distribution of actual 
+These capability ratings are used to create a distribution of simulated 
 capability effectiveness over the course of a year, ranging from 100% 
-(completely effective) to 0% (completely ineffective). When a scenario has
-multiple controls associated with the risk statement, the asthmatic mean across 
-the simulated effectiveness of all controls is used.
+(completely effective) to 0% (completely ineffective). For scenarios which 
+have multiple controls applied, the arithmatic mean across all the 
+relevant is used.
 
 ## Risk Scenarios
 
 Each domain of the security program has a list of multiple risk scenarios which 
-the program is meant to address. Each scenario consists of:
+the program is meant to address. These scenarios consists of:
 
 1. The threat community (e.g. internal workforce members, nature, partners) 
 performing the action.
@@ -304,7 +305,7 @@ performing the action.
 3. The program capabilities that resist harm by the threat and actor.
 4. The consequences of the action, should it occur.
 
-With this list of scenarios, ratings are created of the probability of the 
+With the scenario list, ratings are created of the probability of the 
 threat acting against the institution, the capabilities of the threat, and 
 the size of the loss should the attack overcome the capabilities. A beta pert 
 distribution is used to model each of these factors.
@@ -350,7 +351,8 @@ create_table <- function(label, id) {
 ```{r}
 create_table("Threat Frequencies", "tef")
 ```
-### Threat Frequencies
+
+### Threat Capabilities
 
 ```{r}
 create_table("Threat Capabilities", "tc")
@@ -376,7 +378,7 @@ Whether a loss occurs is a function of:
 
 1. Number of times a threat actor acts against the organization
 2. The capabilities of the threat actor
-3. The difficulty the relevant controls presents to the threat actor
+3. The difficulty the relevant controls present to the threat actor
 
 ### Loss Frequency by Domain
 
@@ -402,7 +404,7 @@ gg <- gg + theme(axis.ticks.y = element_blank(),
 print(gg)
 ```
 
-### Loss Frequency Per Scenario
+### Loss Frequency per Scenario
 
 Looking at the loss events for each individual scenario helps identify 
 particular scenarios within each domain worth closer scrutiny. FOO 24 and 
@@ -462,8 +464,8 @@ gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>%
 gg <- gg + facet_wrap(~domain_id, scales = "free_x", strip.position = "bottom")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5, 
-                        outlier.color = alpha("black", 1/2), 
-                        outlier.shape = NA)
+                        outlier.color = alpha(viridis(1), 1/2), 
+                        outlier.shape = 16)
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
@@ -533,11 +535,13 @@ gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5)
 #gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
 gg <- gg + scale_fill_viridis(discrete = TRUE)
-gg <- gg + theme_minimal()
 gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + theme_minimal()
 gg <- gg + labs(x = "Scenario ID", y = "Annual Exepected Loss", 
                 title = "Domains with Outlier Scenarios")
-gg <- gg + theme(panel.background = element_rect(fill = NA, color = "black"))
+gg <- gg + theme(panel.background = element_blank(),
+                 panel.grid = element_blank(),
+                 panel.border = element_blank())
 gg <- gg + theme(legend.position = "none")
 print(gg)
 ```
@@ -686,11 +690,12 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
                                             "domain_id" = "domain_id")) %>% 
   arrange(desc(ale_median), desc(ale_var)) %>% 
   mutate_each(funs(dollar), ale_median, ale_var) %>% 
-  select("ID" = domain_id, 
+  select("Domain" = domain_id, 
+         "ID" = scenario_id,
          "Scenario" = scenario, 
          "Median Annual Loss" = ale_median, 
          "95% Value at Risk" = ale_var) %>% 
-  pander::pander(justify = c("left", "left", "right", "right"), 
+  pander(split.cells=20, justify = c("left", "left", "left", "right", "right"), 
                  caption="Threat List")
   
   
