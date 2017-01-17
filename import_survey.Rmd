@@ -40,7 +40,11 @@ Set the name of the survey spreadsheet (located in the `survey` subdirectory)
 in the following code block:
 
 ```{r survey_sheet}
-survey_file_name <- 'HITRUST Survey Document.xlsx'
+survey_file_name <- if (file.exists(".evaluator")) {
+  yaml::yaml.load_file(".evaluator")$survey_file
+} else {
+  survey_file_name <- file.path('survey/HITRUST Survey Document.xlsx')
+}
 ```
 
 ## Read in Survey Spreadsheet
@@ -51,9 +55,8 @@ survey spreadsheet. Expecting one matching sheet per domain ID.
 ```{r read_spreadsheet, message = FALSE}
 domains <- read_csv("data/domains.csv", quote = "\"") # program domains
 raw_domains <- domains %>% 
-  mutate(raw_data = map(domain_id, 
-                        ~ read_excel(paste("survey", survey_file_name, sep = "/"),
-                                     skip=1, sheet=.)))
+  mutate(raw_data = map(domain_id, ~ read_excel(
+    paste(survey_file_name, sep="/"), skip=1, sheet=.)))
 raw_domains
 ```
 
@@ -167,8 +170,8 @@ if (length(capability_gaps) != 0) stop(paste("Capability gaps found:",
 
 # Are all the referenced capabilities from the scenarios defined?
 missing_capabilities <- scenarios %>% 
-  separate_rows(controls, sep = ",", convert=TRUE) %>% 
-  anti_join(capabilities, by=c("controls" = "id"))
+  separate_rows(controls, sep = ",", convert = TRUE) %>% 
+  anti_join(capabilities, by = c("controls" = "id"))
 if (nrow(missing_capabilities) != 0) stop(paste("Scenarios with undefined controls:", 
                                            missing_capabilities$scenario_id, 
                                            collapse = "\n"))
