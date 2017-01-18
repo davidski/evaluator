@@ -75,6 +75,18 @@ risk_tolerance <- c("medium" = 10 * 10 ^ 6,
                     "high" = 50 * 10 ^ 6)
 ```
 
+```{r enhance_summary_object_w_tolerances}
+scenario_summary %<>% 
+  mutate(annual_tolerance = ifelse(ale_median >= risk_tolerance["high"], 
+                                   "High", 
+                                   ifelse(ale_median >= risk_tolerance["medium"], 
+                                          "Medium", "Low"))) %>% 
+  mutate(annual_tolerance = factor(annual_tolerance, levels = c("High", "Medium", "Low"), ordered = TRUE)) 
+```
+
+```{r helper_functions}
+dollar_millions <- function(x) paste0("$", x / 10 ^ 6, "M")
+```
 # Summary
 
 > This report is based upon `r comma(attr(results, "simulation_count"))` 
@@ -239,57 +251,6 @@ Scenario: `r filter(scenarios, scenario_id == focus_scenarios[2]) %>% select(sce
 display_scenario_table(scenario_summary, focus_scenarios[2])
 ```
 
-# Recommendations
-
-> Document the key risk management projects for the coming planning period 
-(typically yearly) that are either approved or proposed. These projects 
-should address the findings from the simulated scenarios by improving controls, 
-reducing loss, or transferring risk. Describe each project in terms of its 
-expected cost versus the amount of loss exposure addressed by the control.
-
-## Project Recommendation (TBD)
-
-- FOO
-    + Description - 
-    + Cost
-    + Expected Risk Reduction
-- BAR
-    + Description - 
-    + Cost
-    + Expected Risk Reduction
-- BAZ
-    + Description - 
-    + Cost
-    + Expected Risk Reduction
-- QUX
-    + Description -
-    + Cost
-    + Expected Risk Reduction
-- UIER
-    + Description - 
-    + Cost
-    + Expected Risk Reduction
-- CORGE
-    + Description - 
-    + Cost
-    + Expected Risk Reduction
-- QUUX
-    + Description - 
-    + Cost -
-    + Expected Risk Reduction
-
-## Analysis Improvement Opportunities
-
-Every analysis is imperfect. The point of analysis is to provide better 
-information and to reduce uncertainty, not to provide perfect information and 
-complete confidence. Attempting to do the latter results in an inability to 
-complete the work. Identify gaps in your current data and estimates and call 
-out any areas where you wish to improve.
-
-- Control Effectiveness Refinement
-- Scenario Refinement
-- Loss Magnitude Refinement
-
 # Methodology
 
 The security team strategic risk assessment process is based upon the 
@@ -298,11 +259,21 @@ capabilities, and probable lose magnitudes associated with key risk scenarios.
 This information is used to create a Monte Carlo model which generates a 
 a risk exposure quantified in dollars for each tracked risk.
 
+## Domains
+
+The security program is divided into `r nrow(domains)` domains which provides 
+a framework for looking at the entire security program. These domains are:
+
+```{r domain_table}
+select(domains, "Domain ID" = domain_id, "Domain" = domain) %>%
+  arrange(Domain) %>% pander(caption="Domain Listing", justify="left")
+```
+
 ## Capabilities
 
 The security team and key subject matter experts met and formed a consensus 
-opinion on the maturity level of the `r nrow(capabilities)` capabilities over 
-the `r nrow(unique(domain_summary$domain_id))` security program areas. The 
+opinion on the maturity level of the `r nrow(capabilities)` capabilities 
+which make up over the mary$domain_id))` security program areas. The 
 team assessed each capability against a five point capability maturity model 
 (patterned after the [CMMI](http://cmmiinstitute.com/) model), 
 ranging from initial (level 1) through optimizing (level 5).
@@ -312,6 +283,16 @@ capability effectiveness over the course of a year, ranging from 100%
 (completely effective) to 0% (completely ineffective). For scenarios which 
 have multiple controls applied, the arithmatic mean across all the 
 relevant is used.
+
+These capabiltiies and their ratings are:
+
+```{r capabilities_table}
+arrange(capabilities, domain_id, id) %>%
+  select("Domain ID" = domain_id, "Capability" = capability, "Maturity" = diff) %>%
+  pander(., caption="Capability Listing", split.cells = c(10, 40, 10), 
+         justify = c('center', 'left', 'center'))
+
+```
 
 ## Risk Scenarios
 
@@ -329,18 +310,14 @@ threat acting against the institution, the capabilities of the threat, and
 the size of the loss should the attack overcome the capabilities. A beta pert 
 distribution is used to model each of these factors.
 
-## Risk Simulation
-
-We ran a Monte Carlo process of (`r comma(attr(results, "simulation_count"))`) 
-simulations of each risk scenario against the control strength for the domain 
-assigned to the threat scenario. This process generates the following outputs:
-
-* Threat Events: The number of times per year the threat presents itself
-* Loss Events: The number of times the threat results in a loss (the threat 
-  overcomes the controls)
-* Single Loss Expected (SLE): The size range of individual losses from each 
-  loss event
-* Annual Loss Expected (ALE): The annualized sum of all individual losses.
+```{r scenario_table}
+arrange(scenarios, domain_id, scenario_id) %>% 
+  mutate(scenario_id = paste(domain_id, scenario_id, sep=" - "), 
+         tef = stringi::stri_trans_totitle(tef),
+         lm = stringi::stri_trans_totitle(lm)) %>% 
+  select("Scenario ID" = scenario_id, "Scenario" = scenario, "Actor" = tcomm, "Actor Frequency" = tef, "Impact" = lm) %>% 
+  pander(caption = "All Scenarios", justify="left")
+```
 
 ## Assumptions
 
@@ -364,6 +341,30 @@ create_table <- function(label, id) {
                caption = paste(label, "table"))
 }
 ```
+
+## Simulation
+
+We ran a Monte Carlo process of (`r comma(attr(results, "simulation_count"))`) 
+simulations of each risk scenario against the control strength for the domain 
+assigned to the threat scenario. Whether a loss occurs is a function of:
+
+1. Number of times a threat actor acts against the organization
+2. The capabilities of the threat actor
+3. The difficulty the relevant controls present to the threat actor
+
+This process generates the following outputs:
+
+* Threat Events: The number of times per year the threat presents itself
+* Loss Events: The number of times the threat results in a loss (the threat 
+  overcomes the controls)
+* Single Loss Expected (SLE): The size range of individual losses from each 
+  loss event
+* Annual Loss Expected (ALE): The annualized sum of all individual losses.
+
+Risk is the annualized expected loss across all the scenarios in a domain. 
+Within a single domain, risk is capped at the maximum loss scenario within 
+that domain. This is a limitation of the interactions between scenarios and 
+domains not being defined.
 
 ### Threat Frequencies
 
@@ -389,15 +390,80 @@ create_table("Control Difficulties", "diff")
 create_table("Loss Magnitudes", "lm")
 ```
 
-# Exploratory Analysis
+# Results
+
+Scenarios are grouped based upon the frequency by which losses occur and the 
+size of those losses. This gives four buckets for detailed analysis:
+
+- Urgent Events: Scenarios with high frequency of losses as well as high 
+magnitude of loss.
+- Asteroid Events: Scenarios which occur infrequently, yet have high loss 
+magnitudes when the do occur.
+- Annoyance Events: Scenarios which incure losses often, but with low impact.
+- Handled Scenarios: Scenarios which occur infrequently (if at all), and which 
+have low impact upon the organization when they do occur.
+
+
+
+```{r frequency_and_impact_plot}
+gg <- ggplot(scenario_summary, aes(x=loss_events_median, y=sle_mean, size=ale_median, 
+                color=annual_tolerance, text=scenario_id))
+gg <- gg + geom_point()
+#gg <- gg + geom_text(data=filter(gg$data, annual_tolerance != "Low"), aes(loss_events_median, sle_median, label=scenario_id))
+gg <- gg + labs(title = "Loss Frequency vs Magnitude",
+           subtitle = "All Scenarios",
+           x = "Median Events per Year",
+           y = "Median Event Magnitude")
+gg <- gg + scale_x_continuous(labels = comma)
+gg <- gg + scale_y_continuous(labels = dollar)
+gg <- gg + scale_color_brewer(palette = "Set1", type = "qual", drop= FALSE)
+gg <- gg + scale_size_continuous(labels = dollar_millions)
+gg <- gg + guides(size = guide_legend(title="Median Annual Loss"))
+gg <- gg + guides(color = guide_legend(title="Total Losses vs Risk Tolerance"))
+gg <- gg + theme_minimal()
+gg
+```
+
+## High Frequency and High Impact
+
+Urgent scenarios
+
+```{r high_frequency_high_impact}
+dat <- filter(results, scenario_id %in% c(51, 11, 12))
+
+gg <- ggplot(dat, aes(x=loss_events, y=sle_median, size=ale ))
+gg <- gg + geom_point(alpha = 1/50)
+#gg <- gg + geom_text(data=filter(gg$data, annual_tolerance != "Low"), aes(loss_events_median, sle_median, label=scenario_id))
+gg <- gg + labs(title = "Loss Frequency vs Magnitude",
+           subtitle = "All Scenarios",
+           x = "Median Events per Year",
+           y = "Median Event Magnitude")
+gg <- gg + scale_x_discrete(labels = comma)
+gg <- gg + scale_y_continuous(labels = dollar)
+gg <- gg + scale_color_brewer(palette = "Set1", type = "qual", drop= FALSE)
+gg <- gg + scale_size_continuous(labels = dollar_millions)
+gg <- gg + guides(size = guide_legend(title="Median Annual Loss"))
+gg <- gg + guides(color = guide_legend(title="Total Losses vs Risk Tolerance"))
+gg <- gg + theme_minimal()
+gg
+```
+
+
+## Low Frequency and High Impact
+
+Asteroid scenarios
+
+## High Frequency and Low Impact
+
+Annoyances
+
+## Low Frequency and Low Impact
+
+Contained scenarios
 
 ## Loss Frequency
 
-Whether a loss occurs is a function of:
 
-1. Number of times a threat actor acts against the organization
-2. The capabilities of the threat actor
-3. The difficulty the relevant controls present to the threat actor
 
 ### Loss Frequency by Domain
 
@@ -406,7 +472,9 @@ domain_loss_frequency <- results %>% slice_rows("domain_id") %>%
   by_slice(~ describe(.x$loss_events), .collate="rows") %>% select(-vars)
 
 if (sum(domain_loss_frequency$Skew<=0, na.rm = TRUE) == 0) {
-  narrative <- "All domains are positive skewed, indicating loss events are clustered to the lower ranges."
+  narrative <- paste("All domains are positive skewed,",
+                     "indicating loss events are clustered to",
+                     "the lower ranges.")
 }
 
 names(domain_loss_frequency) <- names(domain_loss_frequency) %>% stringi::stri_trans_totitle()
@@ -417,8 +485,8 @@ The following figure shows the density of annualized loss events by domain. `r n
 
 ```{r lef_by_domain, fig.width = 8, fig.height = 8, fig.cap="Loss Frequency by Domain", echo=FALSE}
 results %>% group_by(domain_id, simulation) %>%
-  summarise(loss_events = sum(loss_events)) %>% 
-  ggplot(., aes(x = loss_events)) -> gg
+  summarise(loss_events_median = median(loss_events)) %>% 
+  ggplot(., aes(x = loss_events_median)) -> gg
 gg <- gg + facet_grid(domain_id ~ ., scales = "free_y", switch = "y")
 #gg <- gg + scale_fill_viridis(discrete = TRUE)
 gg <- gg + geom_density(alpha = 1/3, fill = viridis(1))
@@ -500,8 +568,7 @@ gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5,
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
-gg <- gg + scale_y_continuous(labels = function(x) { 
-  paste0("$", x / 10 ^ 6, "M")})
+gg <- gg + scale_y_continuous(labels = dollar_millions)
 #gg <- gg + scale_y_continuous(label = dollar)
 gg <- gg + labs(x = "Scenario ID", y = "ALE",
                 title = "Loss Ranges by Domain and Scenario",
@@ -511,10 +578,7 @@ print(gg)
 
 ## Risk
 
-Risk is the annualized expected loss across all the scenarios in a domain. 
-Within a single domain, risk is capped at the maximum loss scenario within 
-that domain. This is a limitation of the interactions between scenarios and 
-domains not being defined.
+
 
 ### Risk by Domains
 
@@ -546,8 +610,7 @@ gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(legend.position = "none")
-gg <- gg + scale_y_continuous(labels = function(x) { 
-  paste0("$", x / 10 ^ 6, "M")})
+gg <- gg + scale_y_continuous(labels = dollar_millions)
 gg <- gg + labs(x = "Domain", y = "Annual Expected Loss",
                 title = "Range of Annual Losses by Domain",
                 subtitle = "Outliers Included")
@@ -571,8 +634,7 @@ gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5)
 #gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
 gg <- gg + scale_fill_viridis(discrete = TRUE)
-gg <- gg + scale_y_continuous(labels = function(x) { 
-  paste0("$", x / 10 ^ 6, "M")})
+gg <- gg + scale_y_continuous(labels = dollar_millions)
 gg <- gg + theme_minimal()
 gg <- gg + labs(x = "Domain / Scenario ID", y = "Annual Expected Loss", 
                 title = "Illustrating Influences of Outliers on Domain Summaries",
@@ -606,8 +668,7 @@ gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.text.x = element_blank())
-gg <- gg + scale_y_continuous(labels = function(x) { 
-  paste0("$", x / 10 ^ 6, "M")})
+gg <- gg + scale_y_continuous(labels = dollar_millions)
 print(gg)
 ```
 
@@ -637,20 +698,19 @@ scenarios %>% rowwise %>%
 
 # scatter plot of median vs. max ALEs
 gg <- ggplot(scenario_summary, aes(x = ale_median, y = ale_max))
-gg <- gg + geom_point(position = "jitter", alpha = 1/5, aes(size = loss_events))
+gg <- gg + geom_point(position = "jitter", alpha = 1/5, aes(size = loss_events_median))
 #gg <- gg + stat_bin2d(bins = 50) + scale_fill_gradient(low = 'lightblue', high = 'red')
 #gg <- gg + stat_binhex(bins = 50) + scale_fill_viridis()
 #gg <- gg + geom_text(aes(label = title), size = 4)
 gg <- gg + scale_x_log10(labels = dollar)
-gg <- gg + scale_y_log10(labels = function(x) { 
-  paste0("$", x / 10 ^ 6, "M")})
-gg <- gg + expand_limits()
+#gg <- gg + scale_x_continuous(trans = "log10", labels = dollar, expand = c(000, 5 * 10 ^ 7))
+gg <- gg + scale_y_log10(labels = dollar_millions)
 gg <- gg + theme_minimal() 
 gg <- gg + scale_size_continuous(labels = comma)
 gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE", size = "Loss Event Count", 
                 title = "Median vs Maximum Annual Loss", 
                 subtitle = "Outliers Included")
-gg <- gg + expand_limits(x=-100000000)
+
 print(gg)
 ```
 
@@ -741,6 +801,57 @@ gg <- gg + theme(plot.margin = unit(rep(1, 4), "pt"))
 #gg <- gg + geom_point(aes(y=cumloss)) + geom_path(aes <- (y=cumloss, group=1))
 print(gg)
 ```
+
+# Recommendations
+
+> Document the key risk management projects for the coming planning period 
+(typically yearly) that are either approved or proposed. These projects 
+should address the findings from the simulated scenarios by improving controls, 
+reducing loss, or transferring risk. Describe each project in terms of its 
+expected cost versus the amount of loss exposure addressed by the control.
+
+## Project Recommendation (TBD)
+
+- FOO
+    + Description - 
+    + Cost
+    + Expected Risk Reduction
+- BAR
+    + Description - 
+    + Cost
+    + Expected Risk Reduction
+- BAZ
+    + Description - 
+    + Cost
+    + Expected Risk Reduction
+- QUX
+    + Description -
+    + Cost
+    + Expected Risk Reduction
+- UIER
+    + Description - 
+    + Cost
+    + Expected Risk Reduction
+- CORGE
+    + Description - 
+    + Cost
+    + Expected Risk Reduction
+- QUUX
+    + Description - 
+    + Cost -
+    + Expected Risk Reduction
+
+## Analysis Improvement Opportunities
+
+Every analysis is imperfect. The point of analysis is to provide better 
+information and to reduce uncertainty, not to provide perfect information and 
+complete confidence. Attempting to do the latter results in an inability to 
+complete the work. Identify gaps in your current data and estimates and call 
+out any areas where you wish to improve.
+
+- Control Effectiveness Refinement
+- Scenario Refinement
+- Loss Magnitude Refinement
 
 # Appendix
 
