@@ -212,7 +212,10 @@ simulations to descriptors.
 ```{r summarize_scenarios}
 scenario_summary <- results %>% group_by(domain_id, scenario_id) %>% 
   summarise(
-    loss_events = sum(loss_events, na.rm = TRUE),
+    loss_events_mean = mean(loss_events, na.rm = TRUE),
+    loss_events_min = min(loss_events, na.rm = TRUE),
+    loss_events_max = max(loss_events, na.rm = TRUE),
+    loss_events_median = median(loss_events, na.rm = TRUE),
     ale_median = median(ale, na.rm = TRUE),
     ale_max = max(ale, na.rm = TRUE),
     ale_var = quantile(ale, 0.95),
