@@ -45,6 +45,7 @@ survey_file_name <- if (file.exists(".evaluator")) {
 } else {
   survey_file_name <- file.path('survey/HITRUST Survey Document.xlsx')
 }
+message("Target file is ", survey_file_name)
 ```
 
 ## Read in Survey Spreadsheet
