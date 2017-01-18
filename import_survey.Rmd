@@ -28,7 +28,7 @@ by one blank row, the Threats table tile, then the threats table itself. All
 other  sheets (instructions, reference, etc.) are ignored.
 
 ```{r setup, include=FALSE}
-pacman::p_load(readxl, tidyverse, magrittr)
+pacman::p_load(readxl, tidyverse, magrittr, pander)
 if (!pacman::p_isinstalled(stringi)) {
   pacman::p_install(stringi)
 }
