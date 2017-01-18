@@ -23,3 +23,6 @@ scenarios.csv
 *.pdf
 *.html
 *.docx
+
+# ignore config files
+.evaluator*
