@@ -54,6 +54,7 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL,
   # RETURNS:
   #   List of - Number of succesfull attacks (i.e. loss events)
   #           - mean tc exceedance (how much TC > DIFF)
+  #           - mean control exceedance (how much DIFF > TC)
 
   # if there are no threat events to select from, then return NAs
   
@@ -61,7 +62,8 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL,
   
   if (n == 0) {
     return(list(loss_events = 0,
-                mean_tc_exceedance = 0))
+                mean_tc_exceedance = 0,
+                mean_diff_exceedance = 0))
   }
   
   # sample threat capability
@@ -98,9 +100,17 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL,
                                DIFFsamples[VULNsamples],
                              na.rm = TRUE)
   if (is.nan(mean_tc_exceedance)) mean_tc_exceedance <- 0
-
+  
+  # DIFF exceedance is DIFF - TC - how much more capable the capability 
+  # set is vs. the threat acting against it
+  mean_diff_exceedance <- mean(DIFFsamples[VULNsamples == FALSE] - 
+                               TCsamples[VULNsamples == FALSE],
+                             na.rm = TRUE)
+  if (is.nan(mean_diff_exceedance)) mean_diff_exceedance <- 0
+  
   return(list(loss_events = length(VULNsamples[VULNsamples == TRUE]),
-              mean_tc_exceedance = mean_tc_exceedance))
+              mean_tc_exceedance = mean_tc_exceedance,
+              mean_diff_exceedance = mean_diff_exceedance))
 }
 
 calculate_ale <- function(scenario,
@@ -174,6 +184,8 @@ calculate_ale <- function(scenario,
   LEF <- unlist(results)[attr(unlist(results), "names") == "loss_events"]
   mean_tc_exceedance <- unlist(results)[attr(unlist(results), "names") ==
                                           "mean_tc_exceedance"]
+  mean_diff_exceedance <- unlist(results)[attr(unlist(results), "names") ==
+                                          "mean_diff_exceedance"]
 
 
   # for the range of loss events, calculate the annual sum of losses across
@@ -197,6 +209,7 @@ calculate_ale <- function(scenario,
                              threat_events = TEFsamples,
                              loss_events = LEF,
                              mean_tc_exceedance = mean_tc_exceedance,
+                             mean_diff_exceedance = mean_diff_exceedance,
                              ale = loss_samples$ale,
                              sle_max = loss_samples$sle_max,
                              sle_min = loss_samples$sle_min,
