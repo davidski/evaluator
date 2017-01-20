@@ -1,6 +1,6 @@
 ---
 title: "Import Survey"
-author: "Evaluator Framework (https://github.com/davidski/evaluator)"
+author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 output:
   html_document: default
   html_notebook: default
@@ -111,8 +111,9 @@ split_sheet(raw_domains[[2, "raw_data"]], table_type = "threats")
 Apply the helper function to the raw Excel import.
 
 ```{r walk_the_frame}
-raw_domains %>% mutate(capabilities = map(.$raw_data, split_sheet),
-                       threats = map(.$raw_data, ~ split_sheet(dat = .x, table_type = "threats"))) %>% 
+raw_domains %>% 
+  mutate(capabilities = map(.$raw_data, split_sheet), 
+         threats = map(.$raw_data, ~ split_sheet(dat = .x, table_type = "threats"))) %>% 
   select(-raw_data) -> dat
 dat
 ```
@@ -196,7 +197,7 @@ if (exists("write_files") && write_files)  {
   scenarios %>% select(-control_count) %>% write_csv(path = "./data/scenarios.csv")
 
   file.info(c("data/capabilities.csv", "data/scenarios.csv")) %>% 
-    rownames_to_column("filename") %>% as_data_frame %>% pander::pander()
+    rownames_to_column("filename") %>% as_data_frame %>% pander
 } else {
   message("Write_files not set. Not writing to disk.")
 }

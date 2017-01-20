@@ -81,6 +81,8 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL,
       DIFFestimate$ml,
       DIFFestimate$h,
       DIFFestimate$conf)
+    # if we were supplied an array of controls, take the mean for the effective 
+    # control strength across the scenario
     DIFFsamples <- if (is.array(DIFFsamples)) {
       rowMeans(DIFFsamples)
     } else {
@@ -169,7 +171,7 @@ calculate_ale <- function(scenario,
   # fractional events per year is nonsensical, so round to the nearest integer
   TEFsamples <- round(TEFsamples)
 
-  # for each number of contacts (TEF), calculate how many of those succeed
+  # for each threat contact (TEF), calculate how many succeed
   # (become LEF counts)
   # LEF contains:  #er of threat events, # of times system is vuln
   if (is.null(diff_samples)) {
