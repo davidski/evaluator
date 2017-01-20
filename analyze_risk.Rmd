@@ -3,12 +3,14 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 output:
   word_document:
+    reference_docx: styles/word-styles-reference.docx
     toc: yes
     toc_depth: '3'
   pdf_document:
     fig_caption: yes
     toc: yes
   html_document:
+    css: styles/html-styles.css
     fig_caption: yes
     toc: yes
     toc_depth: 3
@@ -22,9 +24,12 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
+page_width <- 6  # page width in inches, used for figure scaling
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = FALSE,
-                      fig.align = 'center')
-# plotting, commas, binning, and color libraries
+                      fig.align = 'center',
+                      fig.width = .95 * page_width)
+
+# try to use pacman to install/load packages, if available
 if ("pacman" %in% installed.packages()) {
   pacman::p_load(ggplot2, scales, viridis, dplyr, purrr)
   pacman::p_load(extrafont)
@@ -41,7 +46,11 @@ if ("pacman" %in% installed.packages()) {
   library(tidyr)
   library(pander)
 }
-panderOptions('table.split.table', Inf)
+
+panderOptions('table.split.table', Inf) # allow pander to make pages wide
+panderOptions('table.alignment.default', function(df)
+    ifelse(sapply(df, is.numeric), 'right', 'left'))
+panderOptions('big.mark', ",")
 ```
 
 ```{r load_data, echo = FALSE, message = FALSE}
@@ -68,7 +77,7 @@ scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
 scenario_outliers <- c(51, 11)  # visually identified outlier(s)
 focus_scenarios <- c(51, 11)    # if there are scenarios of particular interest, 
                                 # identify them here (or set to NA)
-# a text vector of numbers to english works
+# a text vector of numbers to English words
 numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight", 
              "nine")
 # specify the bounds of our risk tolerances
@@ -122,7 +131,9 @@ loss_exceedance <- results %>%
 ```
 
 Total potential losses for a given year are estimated to exceed the 
-institution's high risk threshold `r percent(loss_exceedance[[loss_exceedance$tolerance == "High", "n"]] / max(results$simulation))` of the time.
+institution's major risk threshold 
+`r percent(loss_exceedance[loss_exceedance$tolerance == "High", ]$n/max(results$simulation))` 
+of the time.
 
 Interactions between risk scenarios, including an organization's response to a 
 major event, should one occur, are not modeled. The following table shows the 
@@ -360,19 +371,19 @@ display_scenario_table(scenario_summary, focus_scenarios[2])
 
 The security team strategic risk assessment process is based upon the 
 industry standard OpenFAIR methodology. Expert opinion is polled on the threats, 
-capabilities, and probable lose magnitudes associated with key risk scenarios. 
-This information is used to create a Monte Carlo model which generates a 
-a risk exposure quantified in dollars for each tracked risk.
+capabilities, and probable loss magnitudes associated with key risk scenarios. 
+This information is used to create a Monte Carlo model, generating a 
+a dollar-quantified risk exposure dollars for each tracked risk.
 
 ## Domains
 
 The security program is divided into `r nrow(domains)` domains which provides 
-a framework for looking at the entire security program. These domains are:
+a framework for reviewing the security program. These domains are:
 
 ```{r domain_table}
 select(domains, "Domain ID" = domain_id, "Domain" = domain) %>%
   arrange(Domain) %>% 
-  pander(caption = "Domain Listing", justify = "left")
+  pander(caption = "Domain Listing", justify = "left", split.cells=c("20%", "80%"))
 ```
 
 ## Capabilities
@@ -388,15 +399,8 @@ These capability ratings are used to create a distribution of simulated
 capability effectiveness over the course of a year, ranging from 100% 
 (completely effective) to 0% (completely ineffective).
 
-These capabiltiies and their ratings are:
+The full listing ofcapabilities and their ratings are included in [Appendix B](#capabilities_list).
 
-```{r capabilities_table}
-arrange(capabilities, domain_id, id) %>%
-  select("Domain ID" = domain_id, "Capability" = capability, "Maturity" = diff) %>%
-  pander(., caption = "Capability Listing", split.cells = c(10, 40, 10), 
-         justify = c('left', 'left', 'center'))
-
-```
 
 ## Risk Scenarios
 
@@ -474,19 +478,19 @@ create_table <- function(label, id) {
 
 ### Threat Frequencies
 
-```{r}
+```{r threat_frequencies_table}
 create_table("Threat Frequencies", "tef")
 ```
 
 ### Threat Capabilities
 
-```{r}
+```{r threat_capabilities_table}
 create_table("Threat Capabilities", "tc")
 ```
 
 ### Control Difficulties
 
-```{r}
+```{r control_difficulties_table}
 create_table("Control Difficulties", "diff")
 ```
 
@@ -499,7 +503,7 @@ loss types (formally defined as primary and secondary losses), this
 analysis takes an aggregate approach with an absolute upper bound for any 
 single loss event at the largest known HIPAA fine of $4.8 million. 
 
-```{r}
+```{r loss_magnitudes_table}
 create_table("Loss Magnitudes", "lm")
 ```
 
@@ -606,7 +610,7 @@ pander(domain_loss_frequency,
 
 The following figure shows the density of annualized loss events by domain. `r narrative`
 
-```{r lef_by_domain, fig.width = 8, fig.height = 8, fig.cap="Loss Frequency by Domain", echo=FALSE}
+```{r lef_by_domain, fig.cap="Loss Frequency by Domain"}
 results %>% group_by(domain_id, simulation) %>%
   summarise(loss_events_median = median(loss_events)) %>% 
   ggplot(., aes(x = loss_events_median)) -> gg
@@ -637,7 +641,7 @@ Note that larger than average loss events does not necessarily imply high risk,
 as the total size of all losses may be small. The size of losses is 
 explored in the loss magnitude section.
 
-```{r lef_by_scenario, fig.width = 8, fig.height = 8, fig.cap="Loss Frequency by Scenario", echo=FALSE}
+```{r lef_by_scenario, fig.cap="Loss Frequency by Scenario"}
 plot_scenarios_by_domain <- function(x) {
   gg <- ggplot(x, aes(x = loss_events, fill = domain_id))
   gg <- gg + facet_wrap(~domain_id + scenario_id,
@@ -674,7 +678,7 @@ plot_scenarios_by_domain(dat)
 This figure shows the range of expected annual losses (ALE) for each scenario, 
 with **outliers excluded**.
 
-```{r ale_range_by_scenario, fig.height = 8, fig.width=8, fig.cap="Annual Loss Range by Scenario", echo=FALSE}
+```{r ale_range_by_scenario, fig.cap="Annual Loss Range by Scenario"}
 gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>% 
   ggplot(., aes(x = as.character(scenario_id), 
                           y = ale + 1))
@@ -707,7 +711,7 @@ portion of each column represents where the losses are more likely to occur.
 For example, the FOO domain has expected losses not to exceed BAR, with 
 simulations extending down to zero (no loss).
 
-```{r risk_by_domain, echo=FALSE, fig.cap="Risk by Domain"}
+```{r risk_by_domain, fig.cap="Risk by Domain"}
 
 test_position <- domain_summary[[nrow(domain_summary), "domain_id"]]
 
@@ -826,7 +830,7 @@ scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>%
 
 ### Median vs Maximum Annual Losse Exposure
 
-```{r median_vs_max_ale, echo = FALSE, fig.cap="Median vs Maximum Annual Loss"}
+```{r median_vs_max_ale, fig.cap="Median vs Maximum Annual Loss"}
 
 # scatter plot of median vs. max ALEs
 gg <- ggplot(scenario_summary, aes(x = ale_median, y = ale_max))
@@ -993,11 +997,11 @@ This is a limitation of the interactions between scenarios and domains not being
 - Scenario Refinement
 - Loss Magnitude Refinement
 
-# Appendix
+# Appendicies
 
-Full risk scenario listing
+## Appendix A {#scenario_list}
 
-```{r risk_list,, echo=FALSE}
+```{r risk_list, echo=FALSE}
 left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
                                             "domain_id" = "domain_id")) %>% 
   arrange(desc(ale_median), desc(ale_var)) %>% 
@@ -1009,4 +1013,14 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
          "95% Value at Risk" = ale_var) %>% 
   pander(split.cells = 20, justify = c("left", "left", "right", "right"), 
                  caption = "Scenario List")
+```
+
+## Appendix B {#capabilities_list}
+
+```{r capabilities_table}
+arrange(capabilities, domain_id, id) %>%
+  select("Domain ID" = domain_id, "Capability" = capability, "Maturity" = diff) %>%
+  pander(., caption = "Capability Listing", split.cells = c(10, 40, 10), 
+         justify = c('left', 'left', 'center'))
+
 ```
