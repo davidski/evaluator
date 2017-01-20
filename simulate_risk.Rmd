@@ -231,12 +231,13 @@ scenario_summary <- results %>% group_by(domain_id, scenario_id) %>%
 scenario_summary
 ```
 
-Also aggregate all the scenarios in a domain to a single maximum expected 
-loss (ALE).
+Also aggregate all the scenarios in each domain to the total losses experienced 
+in a single simulation, giving the total annual expected loss (ALE per 
+domain + simulation).
 
 ```{r summarize_by_domain}
 domain_summary <- results %>% group_by(domain_id, simulation) %>% 
-  summarise(ale = max(ale)) %>%
+  summarise(ale = sum(ale)) %>%
   left_join(domains, by = c("domain_id" = "domain_id"))
 domain_summary
 ```

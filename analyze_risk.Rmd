@@ -107,21 +107,30 @@ theme_evaluator <- function(base_family="BentonSansRE") {
 simulations performed over `r comma(length(unique(results$scenario_id)))` 
 risk scenarios on `r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
 
-## Aggregate Loss Exposure
-
-Interactions between risk scenarios are not modeled. In lieu of complex 
-interactions, the calculated annualized losses for each individual scenario 
-are computed to show the distribution of potential losses. The following 
-table shows the maximum, 95% percentile, mean, 10th percentile, and minimum 
-losses for **any single scenario**. It is possible that multiple scenarios could 
-realize losses over the course of a single year resulting in higher total losses.
-
 In portions of this analysis, scenarios which are outliers are excluded. Graphs 
 and tables with these exclusions are clearly noted.
 
+## Total Loss Exposure
+
+```{r risk_tolerance_exceedance}
+loss_exceedance <- results %>% 
+  group_by(simulation) %>% 
+  summarize(loss = sum(ale)) %>% 
+  mutate(tolerance = ifelse(loss >= risk_tolerance["high"], "High", 
+                            ifelse(loss >= risk_tolerance["medium"], "Low"))) %>% 
+  count(tolerance)
+```
+
+Total potential losses for a given year are estimated to exceed the 
+institution's high risk threshold `r percent(loss_exceedance[[loss_exceedance$tolerance == "High", "n"]] / max(results$simulation))` of the time.
+
+Interactions between risk scenarios, including an organization's response to a 
+major event, should one occur, are not modeled. The following table shows the 
+maximum, 95% percentile, mean, 10th percentile, and minimum single year losses.
+
 ```{r overall_exposure, echo=FALSE}
 overall <- results %>% group_by(simulation) %>% 
-                     summarize(ale = max(ale)) %>% select(ale) %>%
+                     summarize(ale = sum(ale)) %>% select(ale) %>%
                      ungroup
 data_frame("Maximum" = dollar(max(overall$ale)),
            "95th Percentile" = dollar(quantile(overall$ale, c(0.95))),
@@ -129,7 +138,7 @@ data_frame("Maximum" = dollar(max(overall$ale)),
            "10th Percentile" = dollar(quantile(overall$ale, c(0.10))),
            "Minimum" = dollar(min(overall$ale))
            ) %>% t %>% pander(justify = "right", 
-                                caption = paste("Range of Annual Loss", 
+                                caption = paste("Annual Loss", 
                                                 "Exposures Across all",
                                                 "Simulations"))
 ```
@@ -139,14 +148,17 @@ max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%
   group_by(simulation) %>% 
   summarise(loss = max(ale),
             min_loss = min(ale),
-            max_loss = sum(ale)) %>%
+            max_loss = sum(ale),
+            outliers = FALSE) %>%
   ungroup
 max_loss_w_outliers <- results %>% 
   group_by(simulation) %>% 
   summarise(loss = max(ale),
             min_loss = min(ale),
-            max_loss = sum(ale)) %>%
+            max_loss = sum(ale),
+            outliers = TRUE) %>%
   ungroup
+#max_loss <- union(max_loss, max_loss_w_outliers)
 ```
 
 The following figure shows the frequency total losses will exceed a given 
@@ -161,9 +173,10 @@ loss_points <- seq(0, max(max_loss$loss), by = max(max_loss$loss / 50))
 
 # for each point in our range of losses, calculate the probability we'll 
 # incure losses greater than that amount
-dat <- map_df(loss_points, ~ data_frame(loss = .x, 
-                                        prob = sum(max_loss$loss > .x) / 
-                                          nrow(max_loss)))
+dat <- map_df(loss_points,
+              ~ data_frame(loss = .x, 
+                           prob = sum(max_loss$loss > .x) /  nrow(max_loss),
+                           outliers = FALSE))
 
 gg <- ggplot(dat, aes(x = prob, y = loss))
 gg <- gg + geom_path()
@@ -182,13 +195,13 @@ gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss",
 print(gg)
 ```
 
-## Largest Areas of Impact
+## Largest Loss Sources
 
 ```{r calculate_domain_impact}
 domain_impact <- domain_summary %>%
   group_by(domain_id) %>%
   select(domain_id, ale) %>%
-  summarize_each(funs(mean, max, sd)) %>%
+  summarize_each(funs(min, mean, max, sd)) %>%
   arrange(desc(mean)) %>% 
   ungroup %>% 
   left_join(domains, by = c("domain_id" = "domain_id")) %>% 
@@ -200,15 +213,15 @@ The top three domains by loss size are `r domain_impact[1, "domain"]`,
 
 ```{r domain_impact, echo = FALSE}
 mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>% 
-  select("Domain" = domain, 
+  select("Domain" = domain, "Minimum Annual Loss" = min,
          "Mean Annual Loss" = mean, "Maximum Annual Loss" = max, 
          "Loss Standard Deviation" = sd) %>% 
-  pander(justify = c(rep("left", 1), rep("right", 3)),
+  pander(justify = c(rep("left", 1), rep("right", 4)),
                  split.cells = 20,
                  caption = "Impact by Domain")
 ```
 
-## Key Areas of Capability Weakness
+## Key Capability Weaknesses
 
 ```{r calculate_weak_domains}
 # Can't calc mean of means this way!
@@ -221,7 +234,7 @@ mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>%
 control_weakness <- results %>% group_by(domain_id) %>% 
   summarize(loss_events = sum(loss_events), 
             threat_events = sum(threat_events)) %>% 
-  mutate(vuln = loss_events/ threat_events) %>% 
+  mutate(vuln = loss_events / threat_events) %>% 
   arrange(desc(vuln)) %>% 
   mutate(vuln = percent(vuln))
 # recalc domain_level tc_exceedance
@@ -230,7 +243,7 @@ tc_exceedance <- results %>% group_by(domain_id) %>%
   summarize(tc_exceedance = sum(mean_tc_exceedance * loss_events), 
             diff_exceedance = sum(mean_diff_exceedance * avoided_events),
             avoided_events = sum(avoided_events),
-            loss_events=sum(loss_events)) %>% 
+            loss_events = sum(loss_events)) %>% 
   mutate(tc_exceedance = tc_exceedance / loss_events,
          diff_exceedance = diff_exceedance / avoided_events ) %>% 
   mutate(tc_exceedance = ifelse(is.na(tc_exceedance), NA, 
@@ -238,9 +251,9 @@ tc_exceedance <- results %>% group_by(domain_id) %>%
          diff_exceedance = ifelse(is.na(diff_exceedance), NA, 
                                   percent(diff_exceedance / 100))) %>% 
   select(tc_exceedance, diff_exceedance, domain_id)
-left_join(control_weakness, tc_exceedance, by=c("domain_id"="domain_id")) %>% 
-  left_join(domains, by=c("domain_id"="domain_id")) %>% 
-  mutate(domain = paste0(domain, " (", domain_id, ")"))-> control_weakness
+left_join(control_weakness, tc_exceedance, by = c("domain_id" = "domain_id")) %>% 
+  left_join(domains, by = c("domain_id" = "domain_id")) %>% 
+  mutate(domain = paste0(domain, " (", domain_id, ")")) -> control_weakness
 ```
 
 Threats most frequently overcome the control capabilities, resulting in 
@@ -256,33 +269,45 @@ select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>%
   pander(justify = c("left", "right", "right", "right"), 
                  caption = "Domain Weaknesses")
 ```
-```{r}
+```{r events_contained_vs_losses}
 dat <- control_weakness %>% 
   arrange(desc(loss_events), desc(threat_events)) %>% 
-  mutate(domain_id = factor(domain_id, levels=rev(unique(domain_id)),
-                            ordered= TRUE)) %>% 
+  mutate(domain_id = factor(domain_id, levels = rev(unique(domain_id)),
+                            ordered = TRUE)) %>% 
   mutate(contained_events = threat_events - loss_events)
+
+# nudge labels 5% off from the end of the segment
+label_nudge = c(max(dat$loss_events) / 20 * -1, max(dat$contained_events) / 20)
+
+# set breakpoints to half of the range
+break_locations = c(max(dat$loss_events) / 2 * -1, max(dat$contained_events) / 2)
+
+# convert data into tidy-er format
 dat <- dat %>% gather(type, events, c(loss_events, contained_events)) %>% 
   mutate(actual_events = events) %>% 
-  mutate(events = events + 25000, events = ifelse(type=="loss_events", -1 * events, events)) %>% 
-  mutate(nudge = ifelse(type=="loss_events", -8000, 8000)) %>% 
-  mutate(hjust = ifelse(type=="loss_events", "right", "left")) %>% 
-  mutate(full_lab = ifelse(type=="loss_events",
+  mutate(events = events + 25000, events = ifelse(type == "loss_events", -1 * events, events)) %>% 
+  mutate(nudge = ifelse(type == "loss_events", label_nudge[1], label_nudge[2])) %>% 
+  mutate(hjust = ifelse(type == "loss_events", "right", "left")) %>% 
+  mutate(full_lab = ifelse(type == "loss_events",
                            sprintf("%s (%s)", comma(actual_events), tc_exceedance),
                            sprintf("%s (%s)", comma(actual_events), diff_exceedance)))
+
+# auto-calculate the limits of the plot
 event_range <- range(dat$events) * c(1.6, 1.3)
-gg <- ggplot(dat, aes(x = events, xend=0, 
-                y=domain_id)) -> gg
+
+# graph
+gg <- ggplot(dat, aes(x = events, xend = 0, y = domain_id)) -> gg
 gg <- gg + geom_segment(aes(yend = domain_id), color = "steelblue")
 gg <- gg + geom_point(color = "steelblue", size = 2)
-gg <- gg + geom_text(aes(label=full_lab, x = events + nudge, y=domain_id, hjust=hjust, 
-                         family="Museo Sans Cond 300"), size = 3)
-gg <- gg + geom_label(aes(x=0, y=domain_id, label=domain_id),  size=3, label.size=NA)
-gg <- gg + scale_x_continuous(expand=c(0,0), breaks=c(-200000, 0, 200000), 
-                              labels=c("←Loss Events", "Domain", "Contained Events →"),
-                              position="top",
+gg <- gg + geom_text(aes(label = full_lab, x = events + nudge, y = domain_id, 
+                         hjust = hjust), family = "Museo Sans Cond 300", size = 3)
+gg <- gg + geom_label(aes(x = 0, y = domain_id, label = domain_id), size = 3, 
+                      label.size = NA)
+gg <- gg + scale_x_continuous(expand = c(0,0), breaks = c(break_locations[1], 0, break_locations[2]), 
+                              labels = c("← Loss Events", "Domain", "Contained Events →"),
+                              position = "top",
                               limits = event_range)
-gg <- gg + labs(x=NULL, y=NULL, 
+gg <- gg + labs(x = NULL, y = NULL, 
                 title = "Simulated Events by Domain",
                 subtitle = "Losses vs. Contained",
                 caption = "Source: Evaluator toolkit")
@@ -294,7 +319,7 @@ gg <- gg + theme(axis.ticks.y = element_blank())
 gg
 ```
 
-## Key Added Risk Scenarios
+## Focus Risk Scenarios
 
 > Identify any scenarios of particular interest here. By highlighting scenarios 
 which your decission makers have expressed interest (e.g. ransomware), these 
@@ -346,30 +371,29 @@ a framework for looking at the entire security program. These domains are:
 
 ```{r domain_table}
 select(domains, "Domain ID" = domain_id, "Domain" = domain) %>%
-  arrange(Domain) %>% pander(caption="Domain Listing", justify="left")
+  arrange(Domain) %>% 
+  pander(caption = "Domain Listing", justify = "left")
 ```
 
 ## Capabilities
 
-The security team and key subject matter experts met and formed a consensus 
-opinion on the maturity level of the `r nrow(capabilities)` capabilities 
-which make up `r nrow(domains)` security program areas. The 
+The security team and key subject matter experts formed a consensus opinion on 
+the maturity level of the `r nrow(capabilities)` capabilities 
+which make up the `r nrow(domains)` security program domains. The 
 team assessed each capability against a five-level capability maturity model 
 (patterned after the [CMMI](http://cmmiinstitute.com/) model), 
 ranging from initial (level 1) through optimizing (level 5).
 
 These capability ratings are used to create a distribution of simulated 
 capability effectiveness over the course of a year, ranging from 100% 
-(completely effective) to 0% (completely ineffective). For scenarios which 
-have multiple controls applied, the arithmatic mean across all the 
-relevant is used.
+(completely effective) to 0% (completely ineffective).
 
 These capabiltiies and their ratings are:
 
 ```{r capabilities_table}
 arrange(capabilities, domain_id, id) %>%
   select("Domain ID" = domain_id, "Capability" = capability, "Maturity" = diff) %>%
-  pander(., caption="Capability Listing", split.cells = c(10, 40, 10), 
+  pander(., caption = "Capability Listing", split.cells = c(10, 40, 10), 
          justify = c('left', 'left', 'center'))
 
 ```
@@ -385,29 +409,33 @@ performing the action.
 3. The program capabilities that resist harm by the threat and actor.
 4. The consequences of the action, should it occur.
 
-With the scenario list, ratings are created of the probability of the 
-threat acting against the institution, the capabilities of the threat, and 
-the size of the loss should the attack overcome the capabilities. A beta pert 
-distribution is used to model each of these factors.
+Working against the scenario list, qualitative ratings are assigned for the 
+frequency of the threat acting against the institution, the capabilities of 
+the threat, and the size of the loss should the attack overcome the 
+security program's capabilities.
 
 ```{r scenario_table}
 arrange(scenarios, domain_id, scenario_id) %>% 
-  mutate(scenario_id = paste(domain_id, scenario_id, sep=" - "), 
+  mutate(scenario_id = paste(domain_id, scenario_id, sep = " - "), 
          tef = stringi::stri_trans_totitle(tef),
          lm = stringi::stri_trans_totitle(lm)) %>% 
-  select("Scenario ID" = scenario_id, "Scenario" = scenario, "Actor" = tcomm, "Actor Frequency" = tef, "Impact" = lm) %>% 
-  pander(caption = "All Scenarios", justify="left", split.cells=20)
+  select("Scenario ID" = scenario_id, "Scenario" = scenario, "Actor" = tcomm, 
+         "Actor Frequency" = tef, "Impact" = lm) %>% 
+  pander(caption = "All Scenarios", justify = "left", split.cells = 20)
 ```
 
 ## Simulation
 
-We ran a Monte Carlo process of (`r comma(attr(results, "simulation_count"))`) 
-simulations of each risk scenario against the control strength for the domain 
-assigned to the threat scenario. Whether a loss occurs is a function of:
+Each of the qualitative labels is mapped to a set of paremters describing a 
+beta pert distribution. These distributions are used to run `r comma(attr(results, "simulation_count"))` 
+simulations of each risk scenario. In a given simulation, each scenario is
+modeled for potential losses using:
 
-1. Number of times a threat actor acts against the organization
+1. The number of times the threat actor acts against the organization
 2. The capabilities of the threat actor
-3. The difficulty the relevant controls present to the threat actor
+3. The difficulty the relevant controls present to the threat actor. For 
+    scenarios which have multiple controls applied, the arithmatic mean of 
+    eac of the applied simulated capabilities is used.
 
 This process generates the following outputs:
 
@@ -418,13 +446,12 @@ This process generates the following outputs:
   loss event
 * Annual Loss Expected (ALE): The annualized sum of all individual losses.
 
-Risk is the annualized expected loss across all the scenarios in a domain. 
-When aggregated to the domain level, risk is taken as the maximum loss scenario 
-within that domain.
+Risk is the total annualized expected loss across all the scenarios in a domain. 
 
 ## Assumptions
 
-Parameters for each of the input distributions are displayed below.
+Each of the sets of parameters assigned to the qualitative labels is 
+displayed below.
 
 ```{r, table_helper, echo=FALSE}
 create_table <- function(label, id) {
@@ -444,8 +471,6 @@ create_table <- function(label, id) {
            caption = paste(label, "table"))
 }
 ```
-
-
 
 ### Threat Frequencies
 
@@ -472,7 +497,7 @@ losses include fines, response costs (notification & ID theft monitoring),
 increased audit scrutiny, restoration costs, etc. Instead of modeling different 
 loss types (formally defined as primary and secondary losses), this 
 analysis takes an aggregate approach with an absolute upper bound for any 
-single loss event at the largest known HIPAA fine of 4.8M USD. 
+single loss event at the largest known HIPAA fine of $4.8 million. 
 
 ```{r}
 create_table("Loss Magnitudes", "lm")
@@ -492,9 +517,9 @@ magnitudes when the do occur.
 have low impact upon the organization when they do occur.
 
 ```{r frequency_and_impact_plot}
-gg <- ggplot(scenario_summary, aes(x=loss_events_median, y=sle_mean, 
-                                   size=ale_median, color=annual_tolerance, 
-                                   text=scenario_id))
+gg <- ggplot(scenario_summary, aes(x = loss_events_median, y = sle_mean, 
+                                   size = ale_median, color = annual_tolerance, 
+                                   text = scenario_id))
 gg <- gg + geom_point()
 #gg <- gg + geom_text(data=filter(gg$data, annual_tolerance != "Low"), aes(loss_events_median, sle_median, label=scenario_id))
 gg <- gg + labs(title = "Loss Frequency vs Magnitude",
@@ -503,10 +528,12 @@ gg <- gg + labs(title = "Loss Frequency vs Magnitude",
            y = "Median Event Magnitude")
 gg <- gg + scale_x_continuous(labels = comma)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
-gg <- gg + scale_color_brewer(palette = "Set1", type = "qual", drop= FALSE)
+gg <- gg + scale_color_brewer(palette = "Set1", type = "qual", drop = FALSE)
 gg <- gg + scale_size_continuous(labels = dollar_millions)
-gg <- gg + guides(size = guide_legend(title="Median Annual Loss", title.position = "top"))
-gg <- gg + guides(color = guide_legend(title="Total Losses vs Risk Tolerance", title.position = "top"))
+gg <- gg + guides(size = guide_legend(title = "Median Annual Loss", 
+                                      title.position = "top"))
+gg <- gg + guides(color = guide_legend(title = "Total Losses vs Risk Tolerance", 
+                                       title.position = "top"))
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg
@@ -514,14 +541,15 @@ gg
 
 ## High Frequency and High Impact
 
-Urgent scenarios
+Urgent scenarios which require immediate treatment.
 
 ```{r high_frequency_high_impact}
 dat <- filter(results, scenario_id %in% c(51, 11, 12))
 
-gg <- ggplot(dat, aes(x=loss_events, y=sle_median, color=ale ))
+gg <- ggplot(dat, aes(x = loss_events, y = sle_median, color = ale))
 gg <- gg + geom_point(alpha = 1/50)
-#gg <- gg + geom_text(data=filter(gg$data, annual_tolerance != "Low"), aes(loss_events_median, sle_median, label=scenario_id))
+#gg <- gg + geom_text(data=filter(gg$data, annual_tolerance != "Low"), 
+#                     aes(loss_events_median, sle_median, label=scenario_id))
 gg <- gg + labs(title = "Loss Frequency vs Magnitude",
            subtitle = "All Scenarios",
            x = "Median Events per Year",
@@ -530,8 +558,8 @@ gg <- gg + scale_x_continuous(labels = comma)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
 #gg <- gg + scale_color_brewer(palette = "Blues", type="seq", drop= FALSE)
 gg <- gg + scale_color_continuous(labels = dollar_millions)
-gg <- gg + guides(color = guide_legend(title="Annual Loss Exposure"))
-gg <- gg + theme_evaluator(base_family="Myanmar Text")
+gg <- gg + guides(color = guide_legend(title = "Annual Loss Exposure"))
+gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg
 ```
@@ -539,15 +567,16 @@ gg
 
 ## Low Frequency and High Impact
 
-Asteroid scenarios
+Asteroid scenarios which 
 
 ## High Frequency and Low Impact
 
-Annoyances
+Annoyances where improvements can save not just loss impacts, but free up 
+operational time from not having to respond to events.
 
 ## Low Frequency and Low Impact
 
-Contained scenarios
+Contained scenarios where additional investments are likely unwarranted.
 
 ## Loss Frequency
 
@@ -558,9 +587,9 @@ scenario level.
 
 ```{r prepare_skewness_and_kurtosis}
 domain_loss_frequency <- results %>% slice_rows("domain_id") %>% 
-  by_slice(~ describe(.x$loss_events), .collate="rows") %>% select(-vars)
+  by_slice(~ describe(.x$loss_events), .collate = "rows") %>% select(-vars)
 
-if (sum(domain_loss_frequency$Skew<=0, na.rm = TRUE) == 0) {
+if (sum(domain_loss_frequency$Skew <= 0, na.rm = TRUE) == 0) {
   narrative <- paste("All domains are positive skewed,",
                      "indicating loss events are clustered to",
                      "the lower ranges.")
@@ -616,7 +645,7 @@ plot_scenarios_by_domain <- function(x) {
   gg <- gg + scale_fill_viridis(discrete = TRUE)
   gg <- gg + geom_density(alpha = 1/2)
   #gg <- gg + scale_y_log10(label = dollar)
-  gg <- gg + labs(x = "Loss Frequency", y=NULL,
+  gg <- gg + labs(x = "Loss Frequency", y = NULL,
                   title = "Distribution of Loss Event Frequencies",
                   caption = "Source: Evaluator toolkit")
   gg <- gg + theme_evaluator()
@@ -715,7 +744,7 @@ with annual loss ranges which far exceed the other scenarios. The domains that
 contain these scenarios are plotted separately to identify the outlying 
 scenarios.
 
-```{r risk_for_outlier_domains, eval = TRUE, echo=FALSE, fig.cap="Risk for Outliers"}
+```{r risk_for_outlier_domains, fig.cap="Risk for Outliers"}
 # box plot for the outlier domains
 outlier_domains <- scenario_summary %>% 
   filter(scenario_id %in% scenario_outliers) %>% group_by(domain_id) %>% 
@@ -782,7 +811,7 @@ While the single control may be effective against the threat community, these
 scenarios should be reviewed to see if additional controls are warranted.
 
 ```{r fragile_scenarios}
-scenarios %>% left_join(domains, by=c("domain_id" = "domain_id")) %>% 
+scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>% 
   rowwise %>% 
   mutate(n_controls = length(stringi::stri_split_fixed(controls, ", ")[[1]])) %>%
   filter(n_controls == 1) %>% 
@@ -830,7 +859,7 @@ gg <- gg + geom_histogram(binwidth = max(gg$data$ale_median) / 50,
                           aes(y = ..density..),
                           color = "black", fill = "white")
 gg <- gg + geom_density(fill = viridis(1), alpha = 1/5)
-gg <- gg + scale_x_continuous(labels = dollar) +
+gg <- gg + scale_x_continuous(labels = dollar_millions) +
   scale_y_continuous(labels = comma)
 gg <- gg + labs(x = "Median Annualized Loss", y = element_blank(), 
                 title = "Median Losses",
@@ -857,7 +886,7 @@ gg <- gg + geom_histogram(boundary = 0, binwidth = binwidth,
                           color = "white", 
                           fill = viridis(1), alpha = 1/5)
 gg <- gg + geom_density(fill = "black", alpha = 1/5, 
-                        aes(y = get("binwidth", envir=.GlobalEnv) * ..count..))
+                        aes(y = get("binwidth", envir = .GlobalEnv) * ..count..))
 gg <- gg + scale_x_continuous(labels = dollar_millions) 
 gg <- gg + scale_y_continuous(labels = comma)
 gg <- gg + labs(x = "Loss Exposure", 
@@ -892,7 +921,7 @@ gg <- gg + geom_histogram(boundary = 0, binwidth = binwidth,
                           color = "white", 
                           fill = viridis(1), alpha = 1/5)
 gg <- gg + geom_density(fill = "black", alpha = 1/5, 
-                        aes(y = get("binwidth", envir=.GlobalEnv) * ..count..))
+                        aes(y = get("binwidth", envir = .GlobalEnv) * ..count..))
 gg <- gg + scale_x_continuous(labels = dollar_millions) 
 gg <- gg + scale_y_continuous(labels = comma)
 gg <- gg + labs(x = "Annual Loss Exposure", 
