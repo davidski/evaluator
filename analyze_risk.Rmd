@@ -1,22 +1,24 @@
 ---
 title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
+mainfont: BentonSansRE
+monofont: Inconsolata
 output:
-  html_notebook: 
-    css: styles/html-styles.css
-  word_document:
-    reference_docx: styles/word-styles-reference.docx
-    toc: yes
-    toc_depth: '3'
   pdf_document:
     fig_caption: yes
     toc: yes
+  html_notebook:
+    css: styles/html-styles.css
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
     toc: yes
     toc_depth: 3
     toc_float: yes
+  word_document:
+    reference_docx: styles/word-styles-reference.docx
+    toc: yes
+    toc_depth: '3'
 subtitle: Evaluator Report Sample
 header-includes:
 - \usepackage{draftwatermark}
@@ -119,8 +121,8 @@ theme_evaluator <- function(base_family="BentonSansRE") {
 simulations performed over `r comma(length(unique(results$scenario_id)))` 
 risk scenarios on `r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
 
-In portions of this analysis, scenarios which are outliers are excluded. Graphs 
-and tables with these exclusions are clearly noted.
+Portions of this analysis exclude outlier scenarios. Graphs and tables 
+where this occurs are clearly noted.
 
 ## Total Simulated Loss Exposure
 

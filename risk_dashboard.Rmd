@@ -1,10 +1,11 @@
 ---
 title: "Strategic Security Risk Assessment"
-author: "Evaluator Framework (https://github.com/davidski/evaluator)"
+author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 output: 
   flexdashboard::flex_dashboard:
     orientation: row
     vertical_layout: fill
+    css: styles/html-styles.css
   pdf_document:
     toc: true
 ---
@@ -51,7 +52,7 @@ scenario_outliers <- c(11, 17)    # visually identified outliers
 numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight", 
              "nine")
 risk_tolerance <- c("medium" = 20 * 10 ^ 6,
-                    "high" = 100 * 10 ^6)
+                    "high" = 100 * 10 ^ 6)
 ```
 
 ```{r calculate_max_losses}

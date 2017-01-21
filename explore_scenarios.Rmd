@@ -1,9 +1,10 @@
 ---
 title: "Risk Scenario Explorer"
-author: "Evaluator Framework (https://github.com/davidski/evaluator)"
+author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 output:
   flexdashboard::flex_dashboard:
     orientation: columns
+    css: styles/html-styles.css
 runtime: shiny
 ---
 

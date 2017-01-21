@@ -1,0 +1,4 @@
+pdf_document:
+  latex_engine: xelatex
+  toc_depth: 3
+  toc: yes
