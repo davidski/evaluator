@@ -163,6 +163,18 @@ data_frame("Maximum" = dollar(max(overall$ale)),
                                               "Simulations"))
 ```
 
+## Top Five Risk Scenarios
+
+```{r top_5_risks}
+top_n(scenario_summary, 5, ale_median) %>% 
+  left_join(scenarios, by = c("scenario_id" = "scenario_id", 
+                              "domain_id" = "domain_id")) %>% 
+  mutate(ale_max = dollar(ale_max), ale_median = dollar(ale_median)) %>% 
+  select(Domain = domain_id, Scenario = scenario, 
+         "Median Annual Loss" = ale_median, "Maximum Annual Loss" = ale_max) %>% 
+  pander(justify = c(rep("left", 2), rep("right", 2)))
+```
+
 ```{r calculate_max_losses}
 max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%  
   group_by(simulation) %>% 
@@ -197,8 +209,7 @@ max_loss %>%
   geom_path() -> gg
 gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1.1) + 
   annotate("text", x = 0.8, y = max(max_loss$loss), label = percent(.8),
-           hjust = 1, size = 3)
-gg <- gg + scale_y_continuous(labels = dollar_millions)
+                               labels = c("Excluded", "Included"))
 gg <- gg + scale_color_viridis(discrete = TRUE, 
                                labels = c("Excluded", "Included"))
 gg <- gg + guides(color = guide_legend(title = "Outliers", 
