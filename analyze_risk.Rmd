@@ -3,6 +3,9 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
+  pdf_document:
+    fig_caption: yes
+    toc: yes
   html_notebook:
     code_folding: hide
     css: styles/html-styles.css
@@ -12,9 +15,6 @@ output:
     toc: yes
     toc_depth: 3
     toc_float: yes
-  pdf_document:
-    fig_caption: yes
-    toc: yes
   word_document:
     reference_docx: styles/word-styles-reference.docx
     toc: yes
@@ -31,8 +31,8 @@ header-includes:
 ```{r setup, include=FALSE}
 page_width <- 6  # page width in inches, used for figure scaling
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = FALSE,
-                      fig.align = 'center',
-                      fig.width = .95 * page_width)
+                      fig.align = 'center')
+                      #fig.width = .95 * page_width)
 
 # try to use pacman to install/load packages, if available
 if ("pacman" %in% installed.packages()) {
@@ -124,9 +124,6 @@ theme_evaluator <- function(base_family="BentonSansRE") {
 simulations performed over `r comma(length(unique(results$scenario_id)))` 
 risk scenarios on `r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
 
-Portions of this analysis exclude outlier scenarios. Graphs and tables 
-where this occurs are clearly noted. 
-
 ## Total Loss Exposure
 
 ```{r risk_tolerance_exceedance}
@@ -193,14 +190,29 @@ max_loss_w_outliers <- results %>%
 max_loss <- union(max_loss, max_loss_w_outliers)
 ```
 
+## Outliers
+
+Portions of this analysis exclude outlier scenarios. Graphs and tables 
+where this occurs are clearly noted. Outlier scenarios are:
+
+```{r show_outliers}
+filter(scenario_summary, outlier == TRUE) %>% 
+  left_join(scenarios, by = c("domain_id" = "domain_id", "scenario_id" = "scenario_id")) %>% 
+  select(domain_id, scenario_id, scenario, ale_var, ale_median, ale_max) %>% 
+  arrange(desc(ale_var)) %>% mutate_at(c("ale_var", "ale_median", "ale_max"), dollar) %>% 
+  rename("Domain ID" = domain_id, ID = scenario_id, "Description" = scenario, "VaR" = ale_var, 
+         "Median" = ale_median, "Maximum" = ale_max) %>% 
+  pander
+```
+
 ## Loss Exceedance Curve
 
 The following figure shows the frequency total losses will exceed a given 
 threshold during a given year, both with and without including the outliers. 
 The 80% line shows that a loss of no less than 
-`r dollar(quantile(filter(max_loss, outliers==FALSE)$loss, .2))` 
+`r dollar(quantile(filter(max_loss, outliers==FALSE)$max_loss, .2))` 
 occurs every four out of five years. This likely minimum loss with the 
-outliers included is `r dollar(quantile(filter(max_loss, outliers==TRUE)$loss, .2))`.
+outliers included is `r dollar(quantile(filter(max_loss, outliers==TRUE)$max_loss, .2))`.
 
 ```{r loss_exceedance_curve, fig.cap="Loss Exceedance Curve"}
 max_loss %>% 
@@ -302,6 +314,11 @@ select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>%
   pander(justify = c("left", "right", "right", "right"), 
                  caption = "Domain Weaknesses")
 ```
+
+## Simulation Outcomes
+
+
+
 ```{r events_contained_vs_losses}
 dat <- control_weakness %>% 
   arrange(desc(loss_events), desc(threat_events)) %>% 
@@ -341,8 +358,8 @@ gg <- gg + scale_x_continuous(expand = c(0,0), breaks = c(break_locations[1], 0,
                               position = "top",
                               limits = event_range)
 gg <- gg + labs(x = NULL, y = NULL, 
-                title = "Simulated Events by Domain",
-                subtitle = "Losses vs. Contained",
+                title = "Event Outcomes by Domain",
+                subtitle = "Losses/Contained (Control Gap/Surplus)",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid = element_blank())
@@ -404,7 +421,7 @@ a dollar-quantified risk exposure dollars for each tracked risk.
 ## Domains
 
 The security program is divided into `r nrow(domains)` domains which provides 
-a framework for reviewing the security program. These domains are:
+a framework for systematically reviewng risk. These domains are:
 
 ```{r domain_table}
 select(domains, "Domain ID" = domain_id, "Domain" = domain) %>%
@@ -535,17 +552,9 @@ create_table("Loss Magnitudes", "lm")
 
 # Results
 
-Taking all of the simulations and grouping them by their frequency and size 
-of losses generates four categories for describing all the loss scenarios. 
-These buckets are:
-
-- Urgent Events: Scenarios with high frequency of losses as well as high 
-magnitude of loss.
-- Asteroid Events: Scenarios which occur infrequently yet have high loss 
-magnitudes when the do occur.
-- Annoyance Events: Scenarios which incure losses often but with low impact.
-- Contained Scenarios: Scenarios which occur infrequently (if at all) and which 
-have low impact upon the organization when they do occur.
+Scenarios should be treated based upon size of the value at risk (VaR) 
+calculation. Ranking scenarios by VaR creates a prioritized list of scenarios to 
+address.
 
 ```{r frequency_and_impact_plot}
 gg <- ggplot(scenario_summary, aes(x = loss_events_median, y = sle_mean, 
@@ -568,42 +577,6 @@ gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg
 ```
-
-## High Frequency and High Impact
-
-Urgent scenarios which require immediate treatment.
-
-```{r high_frequency_high_impact}
-dat <- filter(results, scenario_id %in% c(51, 11, 12))
-
-gg <- ggplot(dat, aes(x = loss_events, y = sle_median, color = ale))
-gg <- gg + geom_point(alpha = 1/50)
-gg <- gg + labs(title = "Loss Frequency vs Magnitude",
-           subtitle = "All Scenarios",
-           x = "Median Events per Year",
-           y = "Median Event Magnitude")
-gg <- gg + scale_x_continuous(labels = comma)
-gg <- gg + scale_y_continuous(labels = dollar_millions)
-gg <- gg + scale_color_viridis(labels = dollar_millions)
-gg <- gg + guides(color = guide_legend(title = "Annual Loss Exposure"))
-gg <- gg + theme_evaluator()
-gg <- gg + theme(panel.grid.minor = element_blank())
-gg
-```
-
-
-## Low Frequency and High Impact
-
-Asteroid scenarios which 
-
-## High Frequency and Low Impact
-
-Annoyances where improvements can save not just loss impacts, but free up 
-operational time from not having to respond to events.
-
-## Low Frequency and Low Impact
-
-Contained scenarios where additional investments are likely unwarranted.
 
 ## Loss Frequency
 
@@ -737,7 +710,10 @@ gg <- gg + theme(panel.grid.minor = element_blank())
 print(gg)
 ```
 
-## Total Risk
+## Overall Risk
+
+This section helps the analyst review where the organization's security risk 
+is concentrated.
 
 ### Risk by Domain
 
@@ -841,25 +817,7 @@ gg <- gg + theme(axis.text.x = element_blank())
 print(gg)
 ```
 
-### Fragile Scenarios
 
-Fragile scenarios are scenarios where a single control protects against loss. 
-While the single control may be effective against the threat community, these 
-scenarios should be reviewed to see if additional controls are warranted.
-
-```{r fragile_scenarios}
-scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>% 
-  rowwise %>% 
-  mutate(n_controls = length(stringi::stri_split_fixed(controls, ", ")[[1]])) %>%
-  filter(n_controls == 1) %>% 
-  arrange(domain_id, scenario_id) %>% 
-  mutate("Domain" = paste0(domain, " (", domain_id, ")")) %>% 
-  select(Domain, "Scenario ID" = scenario_id, 
-         Scenario = scenario) %>% 
-  pander(justify = c("left", "left", "left"), 
-                 split.cells = c("45%", "5%", "50%"), 
-                 caption = "Fragile Scenarios")
-```
 
 ### Median vs Maximum Annual Loss Exposure
 
@@ -970,6 +928,28 @@ gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 print(gg)
+```
+
+## Special Considerations
+
+### Fragile Scenarios
+
+Fragile scenarios are scenarios where a single control protects against loss. 
+While the single control may be effective against the threat community, these 
+scenarios should be reviewed to see if additional controls are warranted.
+
+```{r fragile_scenarios}
+scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>% 
+  rowwise %>% 
+  mutate(n_controls = length(stringi::stri_split_fixed(controls, ", ")[[1]])) %>%
+  filter(n_controls == 1) %>% 
+  arrange(domain_id, scenario_id) %>% 
+  mutate("Domain" = paste0(domain, " (", domain_id, ")")) %>% 
+  select(Domain, "Scenario ID" = scenario_id, 
+         Scenario = scenario) %>% 
+  pander(justify = c("left", "left", "left"), 
+                 split.cells = c("45%", "5%", "50%"), 
+                 caption = "Fragile Scenarios")
 ```
 
 # Recommendations
