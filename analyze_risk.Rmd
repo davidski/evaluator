@@ -2,11 +2,7 @@
 title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
-monofont: Inconsolata
 output:
-  pdf_document:
-    fig_caption: yes
-    toc: yes
   html_notebook:
     css: styles/html-styles.css
   html_document:
@@ -15,10 +11,14 @@ output:
     toc: yes
     toc_depth: 3
     toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    toc: yes
   word_document:
     reference_docx: styles/word-styles-reference.docx
     toc: yes
     toc_depth: '3'
+monofont: Inconsolata
 subtitle: Evaluator Report Sample
 header-includes:
 - \usepackage{draftwatermark}
@@ -36,7 +36,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = FALSE,
 # try to use pacman to install/load packages, if available
 if ("pacman" %in% installed.packages()) {
   pacman::p_load(ggplot2, scales, viridis, dplyr, purrr)
-  pacman::p_load(extrafont)
+  pacman::p_load(magrittr, extrafont)
   pacman::p_load(psych, readr, tidyr, pander)
 } else  {
   library(ggplot2)
@@ -45,6 +45,7 @@ if ("pacman" %in% installed.packages()) {
   library(viridis)
   library(dplyr)
   library(purrr)
+  library(magrittr)
   library(readr)
   library(psych)
   library(tidyr)
@@ -96,7 +97,8 @@ scenario_summary %<>%
                                    levels = c("High", "Medium", "Low"), 
                                    ordered = TRUE)) 
 # assign outlier as 2 SD larger 95% VAR ALE
-scenario_summary$outlier <- scenario_summary$ale_var > sd(scenario_summary$ale_var) * 2
+scenario_summary %<>% mutate(ale_var_zscore = scale(ale_var), 
+                             outlier = ale_var_zscore >= 2)
 scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE), 
                                       "scenario_id"] %>% unlist %>% unname
 ```
@@ -192,13 +194,16 @@ max_loss %>%
              mutate(prob = 1 - percent_rank(loss)), .collate = "rows") %>% 
   ggplot(., aes(prob, loss, color = outliers)) + 
   geom_path() -> gg
-gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 2) + 
+gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1.1) + 
   annotate("text", x = 0.8, y = max(max_loss$loss), label = percent(.8),
            hjust = 1, size = 3)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
-gg <- gg + scale_color_discrete(guide = guide_colorbar())
+gg <- gg + scale_color_viridis(discrete = TRUE, 
+                               labels = c("Excluded", "Included"))
+gg <- gg + guides(color = guide_legend(title = "Outliers", 
+                                       override.aes = list(size = 5)))
 gg <- gg + scale_x_reverse(labels = percent)
-gg <- gg + theme_evaluator(base_family = "Helvetica")
+gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(panel.grid.major.x = element_blank())
 gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss", 
@@ -310,8 +315,8 @@ event_range <- range(dat$events) * c(1.6, 1.3)
 
 # graph
 gg <- ggplot(dat, aes(x = events, xend = 0, y = domain_id)) -> gg
-gg <- gg + geom_segment(aes(yend = domain_id), color = "steelblue")
-gg <- gg + geom_point(color = "steelblue", size = 2)
+gg <- gg + geom_segment(aes(yend = domain_id), color = viridis(1))
+gg <- gg + geom_point(color = viridis(1), size = 2)
 gg <- gg + geom_text(aes(label = full_lab, x = events + nudge, y = domain_id, 
                          hjust = hjust), family = "Museo Sans Cond 300", size = 3)
 gg <- gg + geom_label(aes(x = 0, y = domain_id, label = domain_id), size = 3, 
@@ -537,7 +542,7 @@ gg <- gg + labs(title = "Loss Frequency vs Magnitude",
            y = "Median Event Magnitude")
 gg <- gg + scale_x_continuous(labels = comma)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
-gg <- gg + scale_color_brewer(palette = "Set1", type = "qual", drop = FALSE)
+gg <- gg + scale_color_viridis(discrete = TRUE, drop = FALSE)
 gg <- gg + scale_size_continuous(labels = dollar_millions)
 gg <- gg + guides(size = guide_legend(title = "Median Annual Loss", 
                                       title.position = "top"))
@@ -563,7 +568,7 @@ gg <- gg + labs(title = "Loss Frequency vs Magnitude",
            y = "Median Event Magnitude")
 gg <- gg + scale_x_continuous(labels = comma)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
-gg <- gg + scale_color_continuous(labels = dollar_millions)
+gg <- gg + scale_color_viridis(labels = dollar_millions)
 gg <- gg + guides(color = guide_legend(title = "Annual Loss Exposure"))
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.minor = element_blank())
@@ -618,7 +623,7 @@ results %>% group_by(domain_id, simulation) %>%
   ggplot(., aes(x = loss_events_median)) -> gg
 gg <- gg + facet_grid(domain_id ~ ., scales = "free_y", switch = "y")
 #gg <- gg + scale_fill_viridis(discrete = TRUE)
-gg <- gg + geom_density(alpha = 1/3, fill = viridis(1))
+gg <- gg + geom_density(fill = viridis(1))
 gg <- gg + labs(x = "Loss Events Per Year", 
                 y = element_blank(),
                 title = "Median Loss Events",
@@ -635,9 +640,23 @@ print(gg)
 
 ### Loss Frequency by Scenario
 
-Looking at the loss events for each individual scenario helps identify 
-particular scenarios within each domain worth closer scrutiny. FOO 24 and 
-BAZ 38 have a larger than average number of losses.
+Looking at the number of loss events for each scenario helps identify 
+scenarios worth closer scrutiny. Scenarios which have larger number of losses 
+than typical for the entire simulation are:
+
+```{r loss_events_by_scenario_table}
+loss_events_by_scenario <- results %>% group_by(scenario_id) %>% 
+  tally(loss_events)
+loss_events_by_scenario %>% mutate(n_zscore = scale(n)) %>% 
+  filter(n_zscore >= 2) %>% 
+  arrange(desc(n)) %>% 
+  select("Loss Events" = n, scenario_id) %>% 
+  left_join(scenarios, by = c("scenario_id" = "scenario_id")) %>% 
+  mutate("Scenario ID" = paste0(domain_id, " - ", scenario_id),
+         "Mean Loss Events" = comma(`Loss Events`)) %>% 
+  select(`Scenario ID`, `Mean Loss Events`) %>% 
+  pander(justify = c("left", "right"))
+```
 
 Note that larger than average loss events does not necessarily imply high risk, 
 as the total size of all losses may be small. The size of losses is 
@@ -649,7 +668,7 @@ plot_scenarios_by_domain <- function(x) {
   gg <- gg + facet_wrap(~domain_id + scenario_id,
                         scales = "free_y", strip.position = "bottom")
   gg <- gg + scale_fill_viridis(discrete = TRUE)
-  gg <- gg + geom_density(alpha = 1/2)
+  gg <- gg + geom_density()
   #gg <- gg + scale_y_log10(label = dollar)
   gg <- gg + labs(x = "Loss Frequency", y = NULL,
                   title = "Distribution of Loss Event Frequencies",
@@ -686,7 +705,7 @@ gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>%
                           y = ale + 1))
 gg <- gg + facet_wrap(~domain_id, scales = "free_x", strip.position = "bottom")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
-gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5, 
+gg <- gg + geom_boxplot(fill = viridis(1),
                         outlier.color = viridis(1), outlier.alpha = 1/2, 
                         outlier.shape = 16)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
@@ -706,10 +725,7 @@ print(gg)
 
 ### Risk by Domain
 
-This figure shows the range of expected annual losses by domain. The wider 
-portion of each column represents where the losses are more likely to occur. 
-For example, the FOO domain has expected losses not to exceed BAR, with 
-simulations extending down to zero (no loss).
+This figure shows the range of expected annual losses by domain.
 
 ```{r risk_by_domain, fig.cap="Risk by Domain"}
 
@@ -725,9 +741,9 @@ gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]),
   annotate("text", x = test_position, y = risk_tolerance["medium"], 
            label = "Medium", vjust = "bottom", hjust = "right")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
-gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3,
+gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5,
                         outlier.color = "black", outlier.alpha = 1/2,
-                        outlier.shape = NA)
+                        outlier.shape = 16)
 #gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
 #gg <- gg + geom_violin(fill = viridis(1), alpha = 1/5)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
@@ -753,9 +769,10 @@ scenarios.
 outlier_domains <- scenario_summary %>% 
   filter(scenario_id %in% scenario_outliers) %>% group_by(domain_id) %>% 
   summarise() %>% ungroup()
+test_position <- tail(outlier_domains, n=1) %>% select(domain_id) %>%  unlist %>% unname
 gg <- results %>% filter(domain_id %in% outlier_domains$domain_id) %>% 
   ggplot(., aes(x = as.character(scenario_id), y = ale))
-#gg <- gg + facet_grid(. ~ domain_id, scales = "free_x", switch = "x")
+gg <- gg + facet_grid(. ~ domain_id, scales = "free_x", switch = "x")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5)
 #gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
@@ -797,7 +814,7 @@ gg <- gg + labs(x = NULL, y = "Annual Loss Exposure",
                 subtitle = "Outliers Excluded",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
-gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5, 
+gg <- gg + geom_boxplot(fill = viridis(1),
                         outlier.color = "black", outlier.size = 1/5, 
                         outlier.alpha = 1/20, outlier.shape = 16)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
@@ -828,7 +845,7 @@ scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>%
                  caption = "Fragile Scenarios")
 ```
 
-### Median vs Maximum Annual Losse Exposure
+### Median vs Maximum Annual Loss Exposure
 
 ```{r median_vs_max_ale, fig.cap="Median vs Maximum Annual Loss"}
 
@@ -893,7 +910,7 @@ gg <- gg + geom_density(fill = "black", alpha = 1/5,
                         aes(y = get("binwidth", envir = .GlobalEnv) * ..count..))
 gg <- gg + scale_x_continuous(labels = dollar_millions) 
 gg <- gg + scale_y_continuous(labels = comma)
-gg <- gg + labs(x = "Loss Exposure", 
+gg <- gg + labs(x = "Annual Loss Exposure", 
                 y = element_blank(), 
                 title = "Risk Exposure",
                 subtitle = "Outlier Scenarios Included, Zero Loss Scenarios Excluded",
