@@ -12,6 +12,7 @@ David F. Severski
         -   [Importing the Scenarios](#importing-the-scenarios)
         -   [Running the Simulations](#running-the-simulations)
         -   [Analyzing the Results](#analyzing-the-results)
+    -   [Advanced Customization](#advanced-customization)
 -   [Where to Go From Here](#where-to-go-from-here)
 -   [Contributing](#contributing)
 -   [License](#license)
@@ -95,7 +96,16 @@ Open the `explore_scenarios.Rmd` and click on `Run Document` to launch a local c
 | simulation\_results.Rds | Full details of each simulated scenario                                             |
 | scenarios\_summary.Rds  | Quantitative values of each scenario, as converted from the qualitative spreadsheet |
 
-These data files may be used for your own analysis, or as the data-driven foundation for your own risk report. Sample reports are included in the `analyze_risk.Rmd`, which is a template for an technical risk report, and the `risk_dashboard.Rmd`, which provides a skeleton dashboard for an executive-level risk summary.
+These data files may be used for your own analysis, or as the data-driven foundation for your own risk report. Sample reports are included in the `analyze_risk.Rmd`, which is a template for a technical risk report, and the `risk_dashboard.Rmd`, which provides a skeleton dashboard for an executive-level risk summary.
+
+Advanced Customization
+----------------------
+
+Evaluator makes several assumptions to get you up and running as quickly as possible. For advanced users, there are several different customizations which can be made:
+
+-   Risk tolerances - Organizational risk tolerances at a "medium" and "high" level are defined in `data/risk_tolerances.csv`. Risk tolerance are the levels of aggregate economic loss at which your organization cares. These are not necesarily the same as the size of potential losses from individual scenarios. A good proxy for risk tolerance is the budget authority used in your organization. The size of purchase signoff required at the executive level is generally a good indicator of the minimum floor of high risk tolerance.
+-   Qualitative mappings - The translation of qualitative labels such as "Frequent" threat events and "Optimized" controls are defined in `data/qualitative_mappings.csv`. All the values in this mapping can be changed, but they must agree with the values used in the survey spreadsheet. Changing the number of levels used for any qualitative label (e.g. changing High/ Medium/Low to High/Medium/Low/VeryLow) is also unsupported.
+-   Styling - The majority of the look and feel for fonts, colors, etc. are defined in the `styles/html-styles.css` and `styles/word-styles-reference.docx` files.
 
 Where to Go From Here
 =====================
