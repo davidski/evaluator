@@ -4,6 +4,9 @@ author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 output:
   html_document: default
   pdf_document: default
+params:
+  save_flag: TRUE
+  simulation_count: 10000
 ---
 
 ```{r setup, include=FALSE}
@@ -24,8 +27,8 @@ Set the number of simualations to run for each scenario in the `simulation_count
 variable.
 
 ```{r parameter_setup}
-save_flag <- TRUE
-simulation_count <- 10000
+save_flag <- params$save_flag
+simulation_count <- params$simulation_count
 ```
 
 ## Load Source Data

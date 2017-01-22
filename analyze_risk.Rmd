@@ -3,14 +3,15 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
-  html_notebook:
-    css: styles/html-styles.css
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
     toc: yes
     toc_depth: 3
     toc_float: yes
+  html_notebook:
+    code_folding: hide
+    css: styles/html-styles.css
   pdf_document:
     fig_caption: yes
     toc: yes
@@ -69,15 +70,16 @@ domain_summary <- readRDS(file = "./data/domain_summary.Rds")    # domain level 
 domains <- read_csv("./data/domains.csv") # domain catalog
 mappings <- read_csv("./data/qualitative_mappings.csv") # qualitative translations
 capabilities <- read_csv("data/capabilities.csv") # i.e. objectives & controls
+risk_tolerances <- read_csv("data/risk_tolerances.csv") # i.e. risk tolerances
 scenarios <- read_csv("./data/scenarios.csv") %>% mutate(tef = tolower(tef), 
                                                          lm = tolower(lm), 
                                                          tc = tolower(tc))
 ```
 
 ```{r useful_values}
-# specify the bounds of our risk tolerances
-risk_tolerance <- c("medium" = 10 * 10 ^ 6,
-                    "high" = 50 * 10 ^ 6)
+# assign risk tolerance dataframe as vector
+risk_tolerance <- risk_tolerances$amount
+names(risk_tolerance) <- risk_tolerances$level %>% tolower
 # Precalculate the standard order of scenarios (domain, then ID of the scenario)
 scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
 focus_scenarios <- c(51, 11)    # scenarios of particular management interest 
@@ -91,8 +93,7 @@ numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight",
 scenario_summary %<>% 
   mutate(annual_tolerance = ifelse(ale_median >= risk_tolerance["high"], 
                                    "High", 
-                                   ifelse(ale_median >= risk_tolerance["medium"], 
-                                          "Medium", "Low"))) %>% 
+                                   ifelse(ale_median >= risk_tolerance["medium"], "Medium", "Low"))) %>% 
   mutate(annual_tolerance = factor(annual_tolerance, 
                                    levels = c("High", "Medium", "Low"), 
                                    ordered = TRUE)) 
@@ -133,7 +134,7 @@ loss_exceedance <- results %>%
   group_by(simulation) %>% 
   summarize(loss = sum(ale)) %>% 
   mutate(tolerance = ifelse(loss >= risk_tolerance["high"], "High", 
-                            ifelse(loss >= risk_tolerance["medium"], "Low"))) %>% 
+                            ifelse(loss >= risk_tolerance["medium"], "Medium", "Low"))) %>% 
   count(tolerance)
 ```
 
@@ -646,14 +647,14 @@ than typical for the entire simulation are:
 
 ```{r loss_events_by_scenario_table}
 loss_events_by_scenario <- results %>% group_by(scenario_id) %>% 
-  tally(loss_events)
+   summarize(n = mean(loss_events))
 loss_events_by_scenario %>% mutate(n_zscore = scale(n)) %>% 
   filter(n_zscore >= 2) %>% 
   arrange(desc(n)) %>% 
   select("Loss Events" = n, scenario_id) %>% 
   left_join(scenarios, by = c("scenario_id" = "scenario_id")) %>% 
   mutate("Scenario ID" = paste0(domain_id, " - ", scenario_id),
-         "Mean Loss Events" = comma(`Loss Events`)) %>% 
+         "Mean Loss Events" = comma(round(`Loss Events`))) %>% 
   select(`Scenario ID`, `Mean Loss Events`) %>% 
   pander(justify = c("left", "right"))
 ```
@@ -1038,6 +1039,6 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
 arrange(capabilities, domain_id, id) %>%
   select("Domain ID" = domain_id, "Capability" = capability, "Maturity" = diff) %>%
   pander(., caption = "Capability Listing", split.cells = c(10, 40, 10), 
-         justify = c('left', 'left', 'center'))
+         justify = c('left', 'left', 'left'))
 
 ```

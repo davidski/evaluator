@@ -40,6 +40,7 @@ capabilities <- read_tsv("data/capabilities.tsv") # i.e. objectives & controls
 scenarios <- read_tsv("./data/scenarios.tsv") %>% mutate(tef = tolower(tef), 
                                                          lm = tolower(lm), 
                                                          tc = tolower(tc))
+risk_tolerances <- read_csv("data/risk_tolerances.csv") # i.e. risk tolerances
 ```
 
 ```{r useful_values}
@@ -47,12 +48,16 @@ scenarios <- read_tsv("./data/scenarios.tsv") %>% mutate(tef = tolower(tef),
 scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
 # store the `scenario_id` of manually identified outlier (super large upper 
 # risk exposure) scenarios.
-scenario_outliers <- c(11, 17)    # visually identified outliers
-# a text vector of numbers to english works
+# assign outlier as 2 SD larger 95% VAR ALE
+scenario_summary %<>% mutate(ale_var_zscore = scale(ale_var), 
+                             outlier = ale_var_zscore >= 2)
+scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE), 
+                                      "scenario_id"] %>% unlist %>% unname
+# a text vector of numbers to english words
 numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight", 
              "nine")
-risk_tolerance <- c("medium" = 20 * 10 ^ 6,
-                    "high" = 100 * 10 ^ 6)
+risk_tolerance <- risk_tolerances$amount
+names(risk_tolerance) <- risk_tolerances$level %>% tolower
 ```
 
 ```{r calculate_max_losses}

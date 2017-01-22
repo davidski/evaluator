@@ -2,9 +2,11 @@
 title: "Import Survey"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 output:
-  html_document: default
   html_notebook: default
+  html_document: default
   pdf_document: default
+params:
+  write_files: TRUE
 ---
 
 # Summary
@@ -12,12 +14,13 @@ output:
 Import scoring survey spreadsheet and generate the individual data files 
 needed for future simulation.
 
-If you wish to commit the results of this process to disk, set the following 
-varible to `TRUE`. A value of `FALSE` will run the process, but not write to 
-storage.
+If you wish to commit the results of this process to disk, set the `write_files` 
+parameter when knitting to `TRUE`. A value of `FALSE` will run the process, 
+but not write to storage.
 
 ```{r validate_flag}
-write_files <- TRUE
+write_files <- params$write_files
+message("Write files: ", write_files)
 ```
 ## File Format
 
