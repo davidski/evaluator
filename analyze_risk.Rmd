@@ -3,15 +3,15 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
+  html_notebook:
+    code_folding: hide
+    css: styles/html-styles.css
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
     toc: yes
     toc_depth: 3
     toc_float: yes
-  html_notebook:
-    code_folding: hide
-    css: styles/html-styles.css
   pdf_document:
     fig_caption: yes
     toc: yes
@@ -140,8 +140,8 @@ loss_exceedance <- results %>%
 
 Total potential losses for a given year are estimated to exceed the 
 institution's major risk threshold of `r dollar(risk_tolerance["high"])` 
-`r percent(loss_exceedance[loss_exceedance$tolerance == "High", ]$n/max(results$simulation))` 
-of the time.
+`r percent(loss_exceedance[loss_exceedance$tolerance == "High", ]$n /
+max(results$simulation))` of the time.
 
 Interactions between risk scenarios, including an organization's response to a 
 major event, should one occur, are not modeled. The following table shows the 
@@ -165,15 +165,20 @@ data_frame("Maximum" = dollar(max(overall$ale)),
 
 ## Top Five Risk Scenarios
 
+The top scenarios as measured by a standard finance 95% Value at Risk (VaR) 
+calculation are:
+
 ```{r top_5_risks}
-top_n(scenario_summary, 5, ale_median) %>% 
+top_n(scenario_summary, 5, ale_var) %>% 
   left_join(scenarios, by = c("scenario_id" = "scenario_id", 
                               "domain_id" = "domain_id")) %>% 
-  mutate(ale_max = dollar(ale_max), ale_median = dollar(ale_median)) %>% 
+  mutate(ale_var = dollar(ale_var), ale_median = dollar(ale_median)) %>% 
   select(Domain = domain_id, Scenario = scenario, 
-         "Median Annual Loss" = ale_median, "Maximum Annual Loss" = ale_max) %>% 
-  pander(justify = c(rep("left", 2), rep("right", 2)))
+         "Median Annual Loss" = ale_median, "Value at Risk" = ale_var) %>% 
+  pander(justify = c(rep("left", 2), rep("right", 2)), 
+         caption = "Top Five Scenarios by Value at Risk")
 ```
+The full list of evaluated risk scearios is located in [Appendix A](#scenario_list).
 
 ```{r calculate_max_losses}
 max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%  
