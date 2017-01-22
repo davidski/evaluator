@@ -127,7 +127,7 @@ risk scenarios on `r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
 Portions of this analysis exclude outlier scenarios. Graphs and tables 
 where this occurs are clearly noted.
 
-## Total Simulated Loss Exposure
+## Total Loss Exposure
 
 ```{r risk_tolerance_exceedance}
 loss_exceedance <- results %>% 
@@ -139,34 +139,29 @@ loss_exceedance <- results %>%
 ```
 
 Total potential losses for a given year are estimated to exceed the 
-institution's major risk threshold of `r dollar(risk_tolerance["high"])` 
-`r percent(loss_exceedance[loss_exceedance$tolerance == "High", ]$n /
-max(results$simulation))` of the time.
+institution's major risk threshold (`r dollar(risk_tolerance["high"])`) 
+`r percent(ifelse (nrow(filter(loss_exceedance, tolerance=="High"))==0, 0, loss_exceedance[loss_exceedance$tolerance == "High", ]$n / max(results$simulation)))` of the time.
 
-Interactions between risk scenarios, including an organization's response to a 
-major event, should one occur, are not modeled. The following table shows the 
-maximum, 95% percentile, mean, 10th percentile, and minimum single year losses.
+The following table shows the maximum, 95th percentile Value at Risk (VaR), mean, and minimum single year losses.
 
 ```{r overall_exposure, echo=FALSE}
 overall <- results %>% group_by(simulation) %>% 
                      summarize(ale = sum(ale)) %>% select(ale) %>%
                      ungroup
-data_frame("Maximum" = dollar(max(overall$ale)),
-           "95th Percentile" = dollar(quantile(overall$ale, c(0.95))),
-           "Mean" = dollar(mean(overall$ale)),
-           "10th Percentile" = dollar(quantile(overall$ale, c(0.10))),
-           "Minimum" = dollar(min(overall$ale))
-           ) %>% t %>% pander(justify = "right", 
-                              emphasize.rownames = FALSE,
-                              caption = paste("Annual Loss", 
-                                              "Exposures Across all",
-                                              "Simulations"))
+data_frame("95% VaR" = dollar(quantile(overall$ale, c(0.95))),
+           "Maximum Loss" = dollar(max(overall$ale)),
+           "Mean Loss" = dollar(mean(overall$ale)),
+           "Minimum Loss" = dollar(min(overall$ale))
+           ) %>% pander(justify = "right", 
+                        caption = paste("Annual Loss", 
+                                        "Exposures Across all",
+                                        "Simulations"))
 ```
 
 ## Top Five Risk Scenarios
 
-The top scenarios as measured by a standard finance 95% Value at Risk (VaR) 
-calculation are:
+The top scenarios, measured by a standard financial 95% Value at Risk (VaR) 
+calculation, are:
 
 ```{r top_5_risks}
 top_n(scenario_summary, 5, ale_var) %>% 
@@ -183,20 +178,22 @@ The full list of evaluated risk scearios is located in [Appendix A](#scenario_li
 ```{r calculate_max_losses}
 max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%  
   group_by(simulation) %>% 
-  summarise(loss = max(ale),
+  summarise(biggest_single_scenario_loss = max(ale),
             min_loss = min(ale),
             max_loss = sum(ale),
             outliers = FALSE) %>%
   ungroup
 max_loss_w_outliers <- results %>% 
   group_by(simulation) %>% 
-  summarise(loss = max(ale),
+  summarise(biggest_single_scenario_loss = max(ale),
             min_loss = min(ale),
             max_loss = sum(ale),
             outliers = TRUE) %>%
   ungroup
 max_loss <- union(max_loss, max_loss_w_outliers)
 ```
+
+## Loss Exceedance Curve
 
 The following figure shows the frequency total losses will exceed a given 
 threshold during a given year, both with and without including the outliers. 
@@ -208,24 +205,24 @@ outliers included is `r dollar(quantile(filter(max_loss, outliers==TRUE)$loss, .
 ```{r loss_exceedance_curve, fig.cap="Loss Exceedance Curve"}
 max_loss %>% 
   group_by(outliers) %>% 
-  by_slice(~ arrange(.x, loss) %>% 
-             mutate(prob = 1 - percent_rank(loss)), .collate = "rows") %>% 
-  ggplot(., aes(prob, loss, color = outliers)) + 
+  by_slice(~ arrange(.x, max_loss) %>% 
+             mutate(prob = 1 - percent_rank(max_loss)), .collate = "rows") %>% 
+  ggplot(., aes(prob, max_loss, color = outliers)) + 
   geom_path() -> gg
 gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1.1) + 
-  annotate("text", x = 0.8, y = max(max_loss$loss), label = percent(.8),
+  annotate("text", x = 0.8, y = max(max_loss$max_loss), label = percent(.8),
                                labels = c("Excluded", "Included"))
 gg <- gg + scale_color_viridis(discrete = TRUE, 
-                               labels = c("Excluded", "Included"))
-gg <- gg + guides(color = guide_legend(title = "Outliers", 
-                                       override.aes = list(size = 5)))
+                               labels = c("Excluded", "Included"), 
+                               guide = FALSE)
+#gg <- gg + geom_text(dat = (filter(gg$data, outliers==FALSE)), aes(x = 0, y = max(max_loss), label = "Foo"))
 gg <- gg + scale_x_reverse(labels = percent)
+gg <- gg + scale_y_continuous(labels = dollar_millions)
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(panel.grid.major.x = element_blank())
 gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss", 
                 title = "Loss Exceedance Curve",
-                subtitle = "Excluding Outlier Scenarios",
                 caption = "Source: Evaluator toolkit")
 gg
 ```
@@ -236,8 +233,9 @@ gg
 domain_impact <- domain_summary %>%
   group_by(domain_id) %>%
   select(domain_id, ale) %>%
-  summarize_each(funs(min, mean, max, sd)) %>%
-  arrange(desc(mean)) %>% 
+  summarize_each(funs(min, mean, max, sd, quantile(., probs=c(0.95)))) %>%
+  rename(var = quantile) %>% 
+  arrange(desc(var)) %>% 
   ungroup %>% 
   left_join(domains, by = c("domain_id" = "domain_id")) %>% 
   mutate(domain = paste0(domain, " (", domain_id, ")"))
@@ -248,10 +246,10 @@ The top three domains by loss size are `r domain_impact[[1, "domain"]]`,
 
 ```{r domain_impact, echo = FALSE}
 mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>% 
-  select("Domain" = domain, "Minimum" = min,
+  select("Domain" = domain, "Value at Risk" = var, "Minimum" = min,
          "Mean (Average)" = mean, "Maximum" = max, 
          "Standard Deviation" = sd) %>% 
-  pander(justify = c(rep("left", 1), rep("right", 4)),
+  pander(justify = c(rep("left", 1), rep("right", 5)),
                  split.cells = 20,
                  caption = "Annual Loss by Domain")
 ```
@@ -367,10 +365,11 @@ display_scenario_table <- function(scenario_summary, id) {
   summarise(
     "Vulnerability (% of events resulting in loss)" = percent(mean_vuln),
     "Mean Control Gap" = percent(mean_tc_exceedance / 100),
+    "Value at Risk" = dollar(ale_var),
     "Maximum Annual Loss" = dollar(ale_max),
-    "Median Annual Loss" = dollar(ale_median),
+    "Median Annual Loss" = dollar(round(ale_median)),
     "Maximum Single Loss" = dollar(sle_max),
-    "Median Single Loss" = dollar(sle_median)
+    "Median Single Loss" = dollar(round(sle_median))
   ) %>% t %>% pander(justify = c("left", "right"), 
                      emphasize.rownames = FALSE, 
                      caption = paste("Scenario", id, "Overview"))
@@ -944,7 +943,7 @@ print(gg)
 
 ### Risk Exposure without Outliers
 
-Histogram of all annual losses, across all scenarios and simulations. Zero 
+Histogram of annual losses across all scenarios and simulations. Zero 
 loss scenarios and outliers are **excluded**.
 
 ```{r histogram_no_outliers, echo = FALSE, fig.cap="Risk Exposure"}
