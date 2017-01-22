@@ -77,29 +77,29 @@ scenarios <- read_csv("./data/scenarios.csv") %>% mutate(tef = tolower(tef),
 ```
 
 ```{r useful_values}
+focus_scenarios <- c(51, 11)    # scenarios of particular management interest 
+
 # assign risk tolerance dataframe as vector
 risk_tolerance <- risk_tolerances$amount
 names(risk_tolerance) <- risk_tolerances$level %>% tolower
+
 # Precalculate the standard order of scenarios (domain, then ID of the scenario)
 scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
-focus_scenarios <- c(51, 11)    # scenarios of particular management interest 
+
 # text vector of numbers to English words
 numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight", 
              "nine")
 ```
 
 ```{r enhance_summary_object}
-# assign loss tolerance to median_ale size
+# assign loss tolerance to ALE VaR size
 scenario_summary %<>% 
-  mutate(annual_tolerance = ifelse(ale_median >= risk_tolerance["high"], 
+  mutate(annual_tolerance = ifelse(ale_var >= risk_tolerance["high"], 
                                    "High", 
-                                   ifelse(ale_median >= risk_tolerance["medium"], "Medium", "Low"))) %>% 
+                                   ifelse(ale_var >= risk_tolerance["medium"], "Medium", "Low"))) %>% 
   mutate(annual_tolerance = factor(annual_tolerance, 
                                    levels = c("High", "Medium", "Low"), 
                                    ordered = TRUE)) 
-# assign outlier as 2 SD larger 95% VAR ALE
-scenario_summary %<>% mutate(ale_var_zscore = scale(ale_var), 
-                             outlier = ale_var_zscore >= 2)
 scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE), 
                                       "scenario_id"] %>% unlist %>% unname
 ```
@@ -125,7 +125,7 @@ simulations performed over `r comma(length(unique(results$scenario_id)))`
 risk scenarios on `r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
 
 Portions of this analysis exclude outlier scenarios. Graphs and tables 
-where this occurs are clearly noted.
+where this occurs are clearly noted. 
 
 ## Total Loss Exposure
 

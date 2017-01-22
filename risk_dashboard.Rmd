@@ -46,11 +46,7 @@ risk_tolerances <- read_csv("data/risk_tolerances.csv") # i.e. risk tolerances
 ```{r useful_values}
 # Precalculate the standard order of scenarios (domain, then ID of the scenario)
 scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
-# store the `scenario_id` of manually identified outlier (super large upper 
-# risk exposure) scenarios.
-# assign outlier as 2 SD larger 95% VAR ALE
-scenario_summary %<>% mutate(ale_var_zscore = scale(ale_var), 
-                             outlier = ale_var_zscore >= 2)
+# store the `scenario_id` of outliers 
 scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE), 
                                       "scenario_id"] %>% unlist %>% unname
 # a text vector of numbers to english words

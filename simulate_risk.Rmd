@@ -197,6 +197,10 @@ scenario_summary <- results %>% group_by(domain_id, scenario_id) %>%
     mean_vuln = mean(vuln, na.rm = TRUE)) %>%
   mutate(sle_median = ifelse(is.nan(sle_median), NA, sle_median)) %>%
   ungroup()
+
+# calculate z-score for ALE VaR and assign outliers as >= 2 SD
+scenario_summary %<>% mutate(ale_var_zscore = scale(ale_var), 
+                             outlier = ale_var_zscore >= 2)
 scenario_summary
 ```
 
