@@ -3,22 +3,22 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
-  pdf_document:
-    fig_caption: yes
+  word_document:
+    reference_docx: styles/word-styles-reference.docx
     toc: yes
+    toc_depth: '3'
   html_notebook:
     code_folding: hide
     css: styles/html-styles.css
+  pdf_document:
+    fig_caption: yes
+    toc: yes
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
     toc: yes
     toc_depth: 3
     toc_float: yes
-  word_document:
-    reference_docx: styles/word-styles-reference.docx
-    toc: yes
-    toc_depth: '3'
 monofont: Inconsolata
 subtitle: Evaluator Report Sample
 header-includes:
@@ -104,6 +104,25 @@ scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE),
                                       "scenario_id"] %>% unlist %>% unname
 ```
 
+```{r calculate_max_losses}
+max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%  
+  group_by(simulation) %>% 
+  summarise(biggest_single_scenario_loss = max(ale),
+            min_loss = min(ale),
+            max_loss = sum(ale),
+            outliers = FALSE) %>%
+  ungroup
+max_loss_w_outliers <- results %>% 
+  group_by(simulation) %>% 
+  summarise(biggest_single_scenario_loss = max(ale),
+            min_loss = min(ale),
+            max_loss = sum(ale),
+            outliers = TRUE) %>%
+  ungroup
+max_loss <- union(max_loss, max_loss_w_outliers)
+rm(max_loss_w_outliers)
+```
+
 ```{r helper_functions}
 # format dollar amounts in terms of millions of USD
 dollar_millions <- function(x) paste0("$", x / 10 ^ 6, "M")
@@ -116,6 +135,39 @@ theme_evaluator <- function(base_family="BentonSansRE") {
       legend.position = "bottom"
     )
 }
+```
+
+```{r calculate_weak_domains}
+# Can't calc mean of means this way!
+# control_weakness <- scenario_summary %>% group_by(domain_id) %>% 
+#   summarize(vuln = round(mean(mean_vuln), 2)) %>% 
+#   arrange(desc(vuln)) %>% 
+#   mutate(vuln = percent(vuln)) %>% 
+#   ungroup()
+
+control_weakness <- results %>% group_by(domain_id) %>% 
+  summarize(loss_events = sum(loss_events), 
+            threat_events = sum(threat_events)) %>% 
+  mutate(vuln = loss_events / threat_events) %>% 
+  arrange(desc(vuln)) %>% 
+  mutate(vuln = percent(vuln))
+# recalc domain_level tc_exceedance
+tc_exceedance <- results %>% group_by(domain_id) %>% 
+  mutate(avoided_events = threat_events - loss_events) %>% 
+  summarize(tc_exceedance = sum(mean_tc_exceedance * loss_events), 
+            diff_exceedance = sum(mean_diff_exceedance * avoided_events),
+            avoided_events = sum(avoided_events),
+            loss_events = sum(loss_events)) %>% 
+  mutate(tc_exceedance = tc_exceedance / loss_events,
+         diff_exceedance = diff_exceedance / avoided_events ) %>% 
+  mutate(tc_exceedance = ifelse(is.na(tc_exceedance), NA, 
+                                percent(tc_exceedance / 100 )),
+         diff_exceedance = ifelse(is.na(diff_exceedance), NA, 
+                                  percent(diff_exceedance / 100))) %>% 
+  select(tc_exceedance, diff_exceedance, domain_id)
+left_join(control_weakness, tc_exceedance, by = c("domain_id" = "domain_id")) %>% 
+  left_join(domains, by = c("domain_id" = "domain_id")) %>% 
+  mutate(domain = paste0(domain, " (", domain_id, ")")) -> control_weakness
 ```
 
 # Summary
@@ -154,59 +206,6 @@ data_frame("Value at Risk" = dollar(quantile(overall$ale, c(0.95))),
                         caption = paste("Total Annual Loss Exposure"))
 ```
 
-## Top Five Risk Scenarios
-
-The top scenarios, measured by value at risk, are:
-
-```{r top_5_risks}
-top_n(scenario_summary, 5, ale_var) %>% 
-  left_join(scenarios, by = c("scenario_id" = "scenario_id", 
-                              "domain_id" = "domain_id")) %>% 
-  mutate(ale_var = dollar(ale_var), ale_median = dollar(ale_median)) %>% 
-  select("Domain ID" = domain_id, Scenario = scenario, 
-         "Median Annual Loss" = ale_median, "Value at Risk" = ale_var) %>% 
-  pander(justify = c(rep("left", 2), rep("right", 2)), 
-         caption = "Top Five Scenarios by Value at Risk")
-```
-The full list of evaluated risk scenarios is located in [Appendix A](#scenario_list).
-
-```{r calculate_max_losses}
-max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%  
-  group_by(simulation) %>% 
-  summarise(biggest_single_scenario_loss = max(ale),
-            min_loss = min(ale),
-            max_loss = sum(ale),
-            outliers = FALSE) %>%
-  ungroup
-max_loss_w_outliers <- results %>% 
-  group_by(simulation) %>% 
-  summarise(biggest_single_scenario_loss = max(ale),
-            min_loss = min(ale),
-            max_loss = sum(ale),
-            outliers = TRUE) %>%
-  ungroup
-max_loss <- union(max_loss, max_loss_w_outliers)
-```
-
-## Outliers
-
-Some scenarios have values at risk that are significantly higher than the 
-population mean of `r dollar(mean(scenario_summary$ale_var))`. To avoid 
-distorting the overall analysis, some sections exclude these outliers. Graphs 
-and tables are clearly noted when they display filtered data. The outlier 
-scenarios are:
-
-```{r show_outliers}
-filter(scenario_summary, outlier == TRUE) %>% 
-  left_join(scenarios, by = c("domain_id" = "domain_id", "scenario_id" = "scenario_id")) %>% 
-  select(domain_id, scenario_id, scenario, ale_var, ale_median, ale_max) %>% 
-  arrange(desc(ale_var)) %>% mutate_at(c("ale_var", "ale_median", "ale_max"), dollar) %>% 
-  rename("Domain ID" = domain_id, ID = scenario_id, "Description" = scenario, 
-         "Value at Risk" = ale_var, 
-         "Median" = ale_median, "Maximum" = ale_max) %>% 
-  pander
-```
-
 ## Loss Exceedance Curve
 
 The following figure shows the frequency total losses will exceed a given 
@@ -225,16 +224,19 @@ max_loss %>%
   geom_path() -> gg
 label_dat <- group_by(max_loss, outliers) %>% summarize(max_loss=max(max_loss)) %>% 
   mutate(text = ifelse(outliers==TRUE, "All Scenarios", "Outliers Excluded"))
-gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1.7) + 
-  annotate("text", x = 0.8, y = max(max_loss$max_loss), label = percent(.8),
-                               labels = c("Excluded", "Included"))
+
+# set 80% threshold line
+gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1.7) 
+gg <- gg + annotate("text", x = 0.8, y = max(max_loss$max_loss), label = percent(.8))
+
 #gg <- gg + scale_color_viridis(discrete = TRUE, 
 #                               labels = c("Excluded", "Included"), 
 #                               guide = FALSE)
+# add labels at end of each line
 gg <- gg + geom_label(data=label_dat, aes(x =0, y=max_loss, label=text), 
                       hjust="center", label.size = NA)
 gg <- gg + expand_limits(x=-.10)
-#gg <- gg + geom_text(dat = (filter(gg$data, outliers==FALSE)), aes(x = 0, y = max(max_loss), label = "Foo"))
+
 gg <- gg + scale_x_reverse(labels = percent)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
 gg <- gg + theme_evaluator()
@@ -246,7 +248,7 @@ gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss",
 gg
 ```
 
-## Largest Loss Domains
+## Risk By Domain
 
 ```{r calculate_domain_impact}
 domain_impact <- domain_summary %>%
@@ -273,58 +275,7 @@ mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>%
                  caption = "Annual Loss by Domain")
 ```
 
-## Key Capability Weaknesses
-
-```{r calculate_weak_domains}
-# Can't calc mean of means this way!
-# control_weakness <- scenario_summary %>% group_by(domain_id) %>% 
-#   summarize(vuln = round(mean(mean_vuln), 2)) %>% 
-#   arrange(desc(vuln)) %>% 
-#   mutate(vuln = percent(vuln)) %>% 
-#   ungroup()
-
-control_weakness <- results %>% group_by(domain_id) %>% 
-  summarize(loss_events = sum(loss_events), 
-            threat_events = sum(threat_events)) %>% 
-  mutate(vuln = loss_events / threat_events) %>% 
-  arrange(desc(vuln)) %>% 
-  mutate(vuln = percent(vuln))
-# recalc domain_level tc_exceedance
-tc_exceedance <- results %>% group_by(domain_id) %>% 
-  mutate(avoided_events = threat_events - loss_events) %>% 
-  summarize(tc_exceedance = sum(mean_tc_exceedance * loss_events), 
-            diff_exceedance = sum(mean_diff_exceedance * avoided_events),
-            avoided_events = sum(avoided_events),
-            loss_events = sum(loss_events)) %>% 
-  mutate(tc_exceedance = tc_exceedance / loss_events,
-         diff_exceedance = diff_exceedance / avoided_events ) %>% 
-  mutate(tc_exceedance = ifelse(is.na(tc_exceedance), NA, 
-                                percent(tc_exceedance / 100 )),
-         diff_exceedance = ifelse(is.na(diff_exceedance), NA, 
-                                  percent(diff_exceedance / 100))) %>% 
-  select(tc_exceedance, diff_exceedance, domain_id)
-left_join(control_weakness, tc_exceedance, by = c("domain_id" = "domain_id")) %>% 
-  left_join(domains, by = c("domain_id" = "domain_id")) %>% 
-  mutate(domain = paste0(domain, " (", domain_id, ")")) -> control_weakness
-```
-
-Threats most frequently overcome the control capabilities, resulting in 
-losses, in  the domains of `r control_weakness[[1, "domain"]]`, 
-`r control_weakness[[2, "domain"]]`, and `r control_weakness[[3, "domain"]]`.
-
-```{r domain_weakness, echo = FALSE}
-select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>% 
-  rename("Domain" = domain, 
-       "Succesful Threat Events" = vuln,
-       "Control Gap" = tc_exceedance,
-       "Surplus Control Strength" = diff_exceedance) %>% 
-  pander(justify = c("left", "right", "right", "right"), 
-                 caption = "Domain Weaknesses")
-```
-
-## Simulation Outcomes
-
-
+### Domain Outcomes 
 
 ```{r events_contained_vs_losses}
 dat <- control_weakness %>% 
@@ -370,12 +321,49 @@ gg <- gg + labs(x = NULL, y = NULL,
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid = element_blank())
-gg <- gg + theme(axis.text.x = element_text(hjust = .5))
+gg <- gg + theme(axis.text.x = element_text(family="Arial Narrow", hjust = .5))
 gg <- gg + theme(axis.text.y = element_blank())
 gg <- gg + theme(axis.ticks.x = element_blank())
 gg <- gg + theme(axis.ticks.y = element_blank())
 gg
 ```
+
+## Top Risk Scenarios
+
+The leading scenarios, measured by value at risk, are:
+
+```{r top_5_risks}
+top_n(scenario_summary, 5, ale_var) %>% 
+  left_join(scenarios, by = c("scenario_id" = "scenario_id", 
+                              "domain_id" = "domain_id")) %>% 
+  mutate(ale_var = dollar(ale_var), ale_median = dollar(ale_median)) %>% 
+  select("Domain ID" = domain_id, Scenario = scenario, 
+         "Median Annual Loss" = ale_median, "Value at Risk" = ale_var) %>% 
+  pander(justify = c(rep("left", 2), rep("right", 2)), 
+         caption = "Top Five Scenarios by Value at Risk")
+```
+
+The full list of evaluated risk scenarios is located in [Appendix A](#scenario_list).
+
+## Key Capability Weaknesses
+
+
+
+Threats most frequently overcome the control capabilities, resulting in 
+losses, in  the domains of `r control_weakness[[1, "domain"]]`, 
+`r control_weakness[[2, "domain"]]`, and `r control_weakness[[3, "domain"]]`.
+
+```{r domain_weakness, echo = FALSE}
+select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>% 
+  rename("Domain" = domain, 
+       "Succesful Threat Events" = vuln,
+       "Control Gap" = tc_exceedance,
+       "Surplus Control Strength" = diff_exceedance) %>% 
+  pander(justify = c("left", "right", "right", "right"), 
+                 caption = "Domain Weaknesses")
+```
+
+
 
 ## Focus Risk Scenarios
 
@@ -416,6 +404,25 @@ Scenario: `r filter(scenarios, scenario_id == focus_scenarios[2]) %>% select(sce
 
 ```{r scenarioB_details, echo=FALSE}
 display_scenario_table(scenario_summary, focus_scenarios[2])
+```
+
+## Outliers
+
+Some scenarios have values at risk that are significantly higher than the 
+population mean of `r dollar(mean(scenario_summary$ale_var))`. To avoid 
+distorting the overall analysis, some sections exclude these outliers. Graphs 
+and tables are clearly noted when they display filtered data. The outlier 
+scenarios are:
+
+```{r show_outliers}
+filter(scenario_summary, outlier == TRUE) %>% 
+  left_join(scenarios, by = c("domain_id" = "domain_id", "scenario_id" = "scenario_id")) %>% 
+  select(domain_id, scenario_id, scenario, ale_var, ale_median, ale_max) %>% 
+  arrange(desc(ale_var)) %>% mutate_at(c("ale_var", "ale_median", "ale_max"), dollar) %>% 
+  rename("Domain ID" = domain_id, ID = scenario_id, "Description" = scenario, 
+         "Value at Risk" = ale_var, 
+         "Median" = ale_median, "Maximum" = ale_max) %>% 
+  pander
 ```
 
 # Methodology
@@ -725,14 +732,16 @@ is concentrated.
 
 Heatmap of Value at Risk by domain.
 
-```{r domain_heatmap}
+```{r domain_heatmap, fig.height=2, fig.width=6.5}
 dat <- domain_impact %>% mutate(full_label = paste0(domain_id, "\n", "$", 
                                                     round(var/1000000), "M"))
 gg <- ggplot(dat, aes(x = domain, y = 1, fill = var)) 
-gg <- gg + geom_tile()
-gg <- gg + geom_text(aes(x = domain, y = 1, label = full_label), color = "white")
+gg <- gg + geom_tile(color="white")
+gg <- gg + geom_text(aes(x = domain, y = 1, label = full_label), 
+                     color = "white", size=3)
 gg <- gg + coord_equal()
-gg <- gg + scale_fill_viridis(guide = guide_legend(title=NULL), labels=dollar_millions)
+gg <- gg + scale_fill_viridis(guide = guide_legend(title=NULL), 
+                              labels=dollar_millions)
 gg <- gg + labs(x = NULL, y=NULL,
                 title = "Value at Risk by Domain",
                 caption = "Source: Evaluator toolkit") 
