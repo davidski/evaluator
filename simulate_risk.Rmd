@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r support_setup}
-pacman::p_load(tidyverse, pbapply, readr)
+pacman::p_load(tidyverse, pbapply, readr, magrittr)
 if (!pacman::p_isinstalled(stringi)) {
   pacman::p_install(stringi)
 }
