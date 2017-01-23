@@ -3,6 +3,9 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
+  pdf_document:
+    fig_caption: yes
+    toc: yes
   html_notebook:
     code_folding: hide
     css: styles/html-styles.css
@@ -12,9 +15,6 @@ output:
     toc: yes
     toc_depth: 3
     toc_float: yes
-  pdf_document:
-    fig_caption: yes
-    toc: yes
   word_document:
     reference_docx: styles/word-styles-reference.docx
     toc: yes
@@ -214,21 +214,26 @@ threshold during a given year. The 80% line shows that a loss of at least
 `r dollar(quantile(filter(max_loss, outliers==FALSE)$max_loss, .2))` 
 occurs every four out of five years without outliers, and at at least 
 `r dollar(quantile(filter(max_loss, outliers==TRUE)$max_loss, .2))` 
-with the outliers included.
+when the outliers are included.
 
 ```{r loss_exceedance_curve, fig.cap="Loss Exceedance Curve"}
 max_loss %>% 
   group_by(outliers) %>% 
   by_slice(~ arrange(.x, max_loss) %>% 
              mutate(prob = 1 - percent_rank(max_loss)), .collate = "rows") %>% 
-  ggplot(., aes(prob, max_loss, color = outliers)) + 
+  ggplot(., aes(prob, max_loss, group=outliers)) + 
   geom_path() -> gg
-gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1.1) + 
+label_dat <- group_by(max_loss, outliers) %>% summarize(max_loss=max(max_loss)) %>% 
+  mutate(text = ifelse(outliers==TRUE, "All Scenarios", "Outliers Excluded"))
+gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1.7) + 
   annotate("text", x = 0.8, y = max(max_loss$max_loss), label = percent(.8),
                                labels = c("Excluded", "Included"))
-gg <- gg + scale_color_viridis(discrete = TRUE, 
-                               labels = c("Excluded", "Included"), 
-                               guide = FALSE)
+#gg <- gg + scale_color_viridis(discrete = TRUE, 
+#                               labels = c("Excluded", "Included"), 
+#                               guide = FALSE)
+gg <- gg + geom_label(data=label_dat, aes(x =0, y=max_loss, label=text), 
+                      hjust="center", label.size = NA)
+gg <- gg + expand_limits(x=-.10)
 #gg <- gg + geom_text(dat = (filter(gg$data, outliers==FALSE)), aes(x = 0, y = max(max_loss), label = "Foo"))
 gg <- gg + scale_x_reverse(labels = percent)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
@@ -717,6 +722,24 @@ This section helps the analyst review where the organization's security risk
 is concentrated.
 
 ### Risk by Domain
+
+Heatmap of Value at Risk by domain.
+
+```{r domain_heatmap}
+dat <- domain_impact %>% mutate(full_label = paste0(domain_id, "\n", "$", 
+                                                    round(var/1000000), "M"))
+gg <- ggplot(dat, aes(x = domain, y = 1, fill = var)) 
+gg <- gg + geom_tile()
+gg <- gg + geom_text(aes(x = domain, y = 1, label = full_label), color = "white")
+gg <- gg + coord_equal()
+gg <- gg + scale_fill_viridis(guide = guide_legend(title=NULL), labels=dollar_millions)
+gg <- gg + labs(x = NULL, y=NULL,
+                title = "Value at Risk by Domain",
+                caption = "Source: Evaluator toolkit") 
+gg <- gg + theme_evaluator() 
+gg <- gg + theme(axis.text = element_blank(), panel.grid = element_blank())
+gg
+```
 
 This figure shows the range of expected annual losses by domain.
 
