@@ -13,6 +13,12 @@ output:
   pdf_document:
     fig_caption: yes
     toc: yes
+    latex_engine: xelatex
+    toc_depth: 3
+pdf_document:
+  latex_engine: xelatex
+  toc_depth: 3
+  toc: yes
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
