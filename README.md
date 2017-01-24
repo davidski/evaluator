@@ -24,7 +24,7 @@ Summary
 
 Evaluator is an open source information security strategic risk analysis toolkit. Based upon the OpenFAIR [taxonomy](https://www2.opengroup.org/ogsys/catalog/C13K) and risk assessment [standard](https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator provides a concrete process for an organization to perform a review of its security program that is quantifiable, repeatable, and data-driven.
 
-For a demonstration of one of the outputs of Evaluator, visit the demonstration copy of [Threat Explorer](https://davidski.shinyapps.io/threat_explorer) (running with dummy data, of course).
+For a demonstration of one of the outputs of Evaluator, visit the demonstration copy of [Scenario Explorer](https://davidski.shinyapps.io/threat_explorer) (running with dummy data, of course).
 
 Background
 ==========
@@ -59,7 +59,7 @@ Don't be daunted by the process. Evaluator is with you at every step!
 
 ### Preparing the Environment
 
-You will need a copy of R installed on your system. Evaluator should work on any reasonably current version of R (v3.3.2 as of this writing) on any supported platform (Windows, MacOS, or Linux). Using the [RStudio](https://www.rstudio.com/) IDE is strongly recommended, but not required.
+You will need a copy of the [R language](https://www.r-project.org/) installed on your system. Evaluator should work on any reasonably current version of R (v3.3.2 as of this writing) and on any supported platform (Windows, MacOS, or Linux). Having the `pacman` package installed will allow Evaluator to auto-install any missing dependencies, but is not required. This README assumes the use of [RStudio IDE](https://www.rstudio.com/), but it is not strictly required (advanced users may manually `knit` files if they so choose).
 
 Obtain the Evaluator toolkit either by cloning this repository (`git clone https://github.com/davidski/evaluator`) or by downloading and extracting the ZIP file from [GitHub](https://github.com/davidski/evaluator/archive/master.zip).
 
@@ -73,7 +73,7 @@ The most critical piece is the identification of the controls (a/k/a capabilitie
 
 #### Controls Table
 
-The domain controls table is where you define the key objectives of each domain. While the specific controls will be unique to each organizationn, the provided sample spreadsheet may be used as inspiration. Try to avoid simply copying every technical control out of something like ISO 27001 or COBIT, as most such control frameworks are too fine grained to provide the high level overview Evaluator delivers. Typically 50 controls or less can describe organizations up to one to two billion USD in size. Each control must have a unique ID and should be assigned a difficulty (DIFF) score, ranking the maturity of the control on a CMM scale from Initial (lowest score) to Optimized (best of class).
+The domain controls table is where you define the key objectives of each domain. While the specific controls will be unique to each organizationn, the provided sample spreadsheet may be used as inspiration. Try to avoid simply copying every technical control out of something like ISO 27001 or COBIT, as most such control frameworks are too fine grained to provide the high level overview Evaluator delivers. In practice, 50 controls or less can describe organizations up to one to two billion USD in size. Each control must have a unique ID and should be assigned a difficulty (DIFF) score, ranking the maturity of the control on a CMM scale from Initial (lowest score) to Optimized (best of class).
 
 #### Threats Table
 
@@ -81,22 +81,42 @@ The threats table consists of the potential loss scenarios that each domain of y
 
 ### Importing the Scenarios
 
-To extract the spreadsheet into tidy data files for further analysis, launch RStudio and open the `import_survey.Rmd` notebook, then click on the `Knit` button the notebook (a collection of descriptive text and R code). The notebook will perform perform basic data validation on the workbook and extract the data. If there are data validation errors, the process will abort and an error message will be displayed. To address the data validation errors, correct the spreadsheet and re-knit the notebook.
+To extract the spreadsheet into tidy data files for further analysis, launch RStudio and open the `0-import_survey.Rmd` notebook, then click on the `Knit` button the notebook (a collection of descriptive text and R code). The notebook will perform perform basic data validation on the workbook and extract the data. If there are data validation errors, the process will abort and an error message will be displayed. To address the data validation errors, correct the spreadsheet and re-knit the notebook.
 
 ### Running the Simulations
 
-With the data now ready for simulation, open the `simulate_risk.Rmd` notebook and click on the `Knit` button. By default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actor will come into contact with your assets, the strength of the threat actor, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process can be computationally intense. The sample data set takes approximately 5-7 minutes on my primary development machines (last generation Windows-based platforms).
+With the data now ready for simulation, open the `1-simulate_risk.Rmd` notebook and click on the `Knit` button. By default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actor will come into contact with your assets, the strength of the threat actor, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process can be computationally intense. The sample data set takes approximately 5-7 minutes on my primary development machines (last generation Windows-based platforms).
 
 ### Analyzing the Results
 
-Open the `explore_scenarios.Rmd` and click on `Run Document` to launch a local copy of the Scenario Explorer application to view information on the individual scenarios as well as a sample overview of the entire program. For more in depth analysis, review the following data files:
+A template for a technical risk report is provided in `2-analyze_risk.Rmd`. To use, open the document and click on `Knit to Word`. This will create a pre-populated risk report with key scenarios identified and initial plots for use in creating a final analysis report. For an executive summary, use the `risk_dashboard.Rmd` file for a skeleton dashboard.
 
-| Data File               | Purpose                                                                             |
-|:------------------------|:------------------------------------------------------------------------------------|
-| simulation\_results.Rds | Full details of each simulated scenario                                             |
-| scenarios\_summary.Rds  | Quantitative values of each scenario, as converted from the qualitative spreadsheet |
+For interactive exploration, open the `explore_scenarios.Rmd` file and click on `Run Document` to launch a local copy of the Scenario Explorer application. The Scenario Explorer app may be used to view information on the individual scenarios as well as a sample overview of the entire program.
 
-These data files may be used for your own analysis, or as the data-driven foundation for your own risk report. Sample reports are included in the `analyze_risk.Rmd`, which is a template for a technical risk report, and the `risk_dashboard.Rmd`, which provides a skeleton dashboard for an executive-level risk summary.
+For more in depth analysis, review the following data files, which may be used directly from R or from external programs such as Tableau:
+
+<table style="width:74%;">
+<colgroup>
+<col width="31%" />
+<col width="41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Data File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">simulation_results.Rds</td>
+<td align="left">Full details of each simulated scenario</td>
+</tr>
+<tr class="even">
+<td align="left">scenarios_summary.Rds</td>
+<td align="left">Quantitative values of each scenario, as converted from the qualitative spreadsheet</td>
+</tr>
+</tbody>
+</table>
 
 Advanced Customization
 ----------------------
@@ -120,6 +140,7 @@ Books/Training
 
 -   [Measuring and Managing Information Risk](https://smile.amazon.com/gp/product/0124202314)
 -   [OpenFAIR certification](http://www.opengroup.org/certifications/openfair)
+-   [Hubbard Decision Research calibration training](https://www.hubbardresearch.com/training/)
 
 Associations
 
