@@ -3,22 +3,25 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
-  word_document:
-    reference_docx: styles/word-styles-reference.docx
-    toc: yes
-    toc_depth: '3'
   html_notebook:
     code_folding: hide
     css: styles/html-styles.css
-  pdf_document:
-    fig_caption: yes
     toc: yes
+    toc_depth: 3
+    toc_float: yes
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
     toc: yes
     toc_depth: 3
     toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    toc: yes
+  word_document:
+    reference_docx: styles/word-styles-reference.docx
+    toc: yes
+    toc_depth: '3'
 monofont: Inconsolata
 subtitle: Evaluator Report Sample
 header-includes:
@@ -176,7 +179,8 @@ left_join(control_weakness, tc_exceedance, by = c("domain_id" = "domain_id")) %>
 
 > This report is based upon `r comma(attr(results, "simulation_count"))` 
 simulations performed over `r comma(length(unique(results$scenario_id)))` 
-risk scenarios on `r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
+risk scenarios and `r nrow(capabilities)` capabilites on 
+`r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
 
 ```{r risk_tolerance_exceedance}
 loss_exceedance <- results %>% 
@@ -322,7 +326,7 @@ gg <- gg + scale_x_continuous(expand = c(0,0), breaks = c(break_locations[1], 0,
                               limits = event_range)
 gg <- gg + labs(x = NULL, y = NULL, 
                 title = "Event Outcomes by Domain",
-                subtitle = "Losses/Contained (Control Gap/Surplus)",
+                subtitle = "Losses/Contained with Control Gap/Surplus",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid = element_blank())
@@ -545,7 +549,7 @@ create_table <- function(label, id) {
     rename("Category" = label, "Low" = l, "Most Likely" = ml, "High" = h, 
            "Confidence" = conf) %>% 
     pander(justify = c("left", rep("right", 4)),
-           caption = paste(label, "table"))
+           caption = label)
 }
 ```
 
@@ -580,7 +584,61 @@ single loss event at the largest known HIPAA fine of $4.8 million.
 create_table("Loss Magnitudes", "lm")
 ```
 
-# Results
+# Recommendations
+
+> Recommendations are left for the analyst to complete. Typical types of 
+recommendations include security improvement projects (projects that 
+increase the strenght of controls) and analysis improvement opportunities 
+(projects that increase the quality of the inputs).
+
+## Project Recommendation
+
+> Document the approved or proposed key risk management projects for the coming 
+planning period (typically yearly). These projects should address the findings 
+from the simulated scenarios by improving controls, reducing loss impact, or 
+transferring risk. Describe each project in terms of its cost versus 
+the expected amount of reduced loss exposure. 
+
+- FOO
+    + Description
+    + Cost
+    + Expected Loss Reduction
+- BAR
+    + Description
+    + Cost
+    + Expected Loss Reduction
+- BAZ
+    + Description
+    + Cost
+    + Expected Loss Reduction
+- QUX
+    + Description
+    + Cost
+    + Expected Loss Reduction
+- UIER
+    + Description 
+    + Cost
+    + Expected Loss Reduction
+
+## Analysis Improvement Opportunities
+
+> The objective of a risk analysis is to provide better information and to 
+reduce uncertainty in making strategic resource allocation decisions. 
+As part of this decision process, consider if additional information is 
+needed to perform a better risk analysis. Additional data or higher 
+confidence data may reduce the variability in your projections.
+
+Typical areas for additional data include:
+
+- Control Effectiveness Refinement - Can we benchmark our controls against other 
+organizations or otherwise better understand the maturity of our capabilities?
+- Scenario Refinement - Have we clearly identified the threat communities, 
+their capabilities and their frequency of action?
+- Loss Magnitude Refinement - Can we leverage either our own incident data or 
+data publicly (such as the VCDB) or semi-publicly (industry CIRTs) to better 
+understand our potential economic losses?
+
+# Supplemental Analysis
 
 Scenarios should be treated based upon size of the value at risk (VaR) 
 calculation. Ranking scenarios by VaR creates a prioritized list of scenarios to 
@@ -611,13 +669,14 @@ gg
 
 ```{r frequency_and_impact_plot}
 gg <- ggplot(scenario_summary, aes(x = loss_events_median, y = sle_mean, 
-                                   size = ale_median, color = annual_tolerance, 
                                    text = scenario_id))
-gg <- gg + geom_point()
+gg <- gg + geom_point(aes(color = annual_tolerance, size = ale_median))
+#gg <- gg + geom_text(aes(label=ifelse(annual_tolerance %in% c("High", "Medium"), 
+#                                      scenario_id, ''), hjust = 0, vjust = 0))
 gg <- gg + labs(title = "Loss Frequency vs Magnitude",
            subtitle = "All Scenarios",
            x = "Median Events per Year",
-           y = "Median Event Magnitude")
+           y = "Median Single Event Magnitude")
 gg <- gg + scale_x_continuous(labels = comma)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
 gg <- gg + scale_color_viridis(discrete = TRUE, drop = FALSE)
@@ -625,7 +684,8 @@ gg <- gg + scale_size_continuous(labels = dollar_millions)
 gg <- gg + guides(size = guide_legend(title = "Median Annual Loss", 
                                       title.position = "top"))
 gg <- gg + guides(color = guide_legend(title = "Total Losses vs Risk Tolerance", 
-                                       title.position = "top"))
+                                       title.position = "top", 
+                                       override.aes = list(size = 5)))
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg
@@ -636,10 +696,18 @@ gg
 Overall frequency of loss events is displayed at the domain and at the 
 scenario level.
 
-### Loss Frequency by Domain
+### Domain-Level Loss Frequency
+
+The number of loss events a domain experiences is the sum of all of the loss 
+events which occur for each scenario. To calculate the domain level loss 
+frequency, first summarize all of the events at the simulation level, then 
+roll up to the scenario level finally performing domain level aggregations.
 
 ```{r prepare_skewness_and_kurtosis}
-domain_loss_frequency <- results %>% slice_rows("domain_id") %>% 
+domain_loss_frequency <- results %>% group_by(domain_id, simulation) %>% 
+  summarize(loss_events = sum(loss_events)) %>% 
+  ungroup %>% 
+  slice_rows("domain_id") %>% 
   by_slice(~ describe(.x$loss_events), .collate = "rows") %>% select(-vars)
 
 if (sum(domain_loss_frequency$Skew <= 0, na.rm = TRUE) == 0) {
@@ -652,6 +720,8 @@ names(domain_loss_frequency) <- names(domain_loss_frequency) %>%
   stringi::stri_trans_totitle()
 ```
 
+Full descriptive statistics are shown on a domain-level summary of loss events.
+
 ```{r display_skew_kurt_table}
 pander(domain_loss_frequency, 
        caption = "Loss Events by Domain Summary Statistics") 
@@ -661,18 +731,18 @@ The following figure shows the density of annualized loss events by domain. `r n
 
 ```{r lef_by_domain, fig.cap="Loss Frequency by Domain"}
 results %>% group_by(domain_id, simulation) %>%
-  summarise(loss_events_median = median(loss_events)) %>% 
-  ggplot(., aes(x = loss_events_median)) -> gg
+  summarise(loss_events = sum(loss_events)) %>% 
+  ggplot(., aes(x = loss_events)) -> gg
 gg <- gg + facet_grid(domain_id ~ ., scales = "free_y", switch = "y")
 #gg <- gg + scale_fill_viridis(discrete = TRUE)
 gg <- gg + geom_density(fill = viridis(1))
 gg <- gg + labs(x = "Loss Events Per Year", 
                 y = element_blank(),
-                title = "Median Loss Events",
+                title = "Loss Events",
                 subtitle = "All Scenarios Included",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
-gg <- gg + theme(strip.text.y = element_text(angle = 180))
+gg <- gg + theme(strip.text.y = element_text(angle = 180, hjust=0))
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.ticks.y = element_blank(),
@@ -680,24 +750,30 @@ gg <- gg + theme(axis.ticks.y = element_blank(),
 print(gg)
 ```
 
-### Loss Frequency by Scenario
+### Scenario-Level Loss Frequency
 
 Looking at the number of loss events for each scenario helps identify 
-scenarios worth closer scrutiny. Scenarios which have larger number of losses 
-than typical for the entire simulation are:
+scenarios worth closer scrutiny. A z-score is calculated for each mean loss 
+frequency. Scenarios with a z-score of 2 or higher experience more frequent 
+loss events, on average.
+
+The average loss frequency and the associated z-scores, are shown for all 
+scenarios with an average loss frequency greater than 0.5 per year.
 
 ```{r loss_events_by_scenario_table}
 loss_events_by_scenario <- results %>% group_by(scenario_id) %>% 
-   summarize(n = mean(loss_events))
-loss_events_by_scenario %>% mutate(n_zscore = scale(n)) %>% 
-  filter(n_zscore >= 2) %>% 
+  summarize(n = mean(loss_events))
+loss_events_by_scenario %>% mutate(n_zscore = round(scale(n), 2)) %>% 
+  filter(n >= 0.5 ) %>% 
   arrange(desc(n)) %>% 
-  select("Loss Events" = n, scenario_id) %>% 
+  select("Loss Events" = n, scenario_id, "Z Score" = n_zscore) %>% 
   left_join(scenarios, by = c("scenario_id" = "scenario_id")) %>% 
   mutate("Scenario ID" = paste0(domain_id, " - ", scenario_id),
          "Mean Loss Events" = comma(round(`Loss Events`))) %>% 
-  select(`Scenario ID`, `Mean Loss Events`) %>% 
-  pander(justify = c("left", "right"))
+  select(`Scenario ID`, Scenario = scenario, `Mean Loss Events`, `Z Score`) %>% 
+  pander(justify=c("left", "left", "right", "right"), 
+         emphasize.strong.rows = which(.$`Z Score` > 2), 
+         caption = "Scenario Mean Loss Frequency")
 ```
 
 Note that larger than average loss events does not necessarily imply high risk, 
@@ -762,23 +838,23 @@ print(gg)
 
 ## Overall Risk
 
-This section helps the analyst review where the organization's security risk 
-is concentrated.
+This section provides additional analysis into the organization's security risk 
+profile.
 
-### Risk by Domain
+### Domain Level Risk Concentration
 
 Heatmap of Value at Risk by domain.
 
 ```{r domain_heatmap, fig.height=2, fig.width=6.5}
 dat <- domain_impact %>% mutate(full_label = paste0(domain_id, "\n", "$", 
-                                                    round(var/1000000), "M"))
+                                                    round(var / 10^6), "M"))
 gg <- ggplot(dat, aes(x = domain, y = 1, fill = var)) 
 gg <- gg + geom_tile(color="white")
 gg <- gg + geom_text(aes(x = domain, y = 1, label = full_label), 
-                     color = "white", size=3)
+                     color = "white", size = 3)
 gg <- gg + coord_equal()
 gg <- gg + scale_fill_viridis(guide = guide_legend(title=NULL), 
-                              labels=dollar_millions)
+                              labels = dollar_millions)
 gg <- gg + labs(x = NULL, y=NULL,
                 title = "Value at Risk by Domain",
                 caption = "Source: Evaluator toolkit") 
@@ -833,6 +909,7 @@ outlier_domains <- scenario_summary %>%
   summarise() %>% ungroup()
 
 test_position <- tail(outlier_domains, n = 1) %>% select(domain_id) %>% unlist %>% unname
+#test_position <- outlier_domains$domain_id
 
 gg <- results %>% filter(domain_id %in% outlier_domains$domain_id) %>% 
   ggplot(., aes(x = as.character(scenario_id), y = ale))
@@ -894,7 +971,8 @@ print(gg)
 
 # scatter plot of median vs. max ALEs
 gg <- ggplot(scenario_summary, aes(x = ale_median, y = ale_max))
-gg <- gg + geom_point(position = "jitter", alpha = 1/5, aes(size = loss_events_median))
+gg <- gg + geom_point(position = "jitter", alpha = 1/5, 
+                      aes(size = loss_events_median))
 #gg <- gg + stat_bin2d(bins = 50) + scale_fill_gradient(low = 'lightblue', high = 'red')
 #gg <- gg + stat_binhex(bins = 50) + scale_fill_viridis()
 #gg <- gg + geom_text(aes(label = title), size = 4)
@@ -902,7 +980,8 @@ gg <- gg + scale_x_continuous(labels = dollar_millions)
 #gg <- gg + scale_x_continuous(trans = "log10", labels = dollar, expand = c(000, 5 * 10 ^ 7))
 gg <- gg + scale_y_continuous(labels = dollar_millions)
 gg <- gg + scale_size_continuous(labels = comma)
-gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE", size = "Loss Event Count", 
+gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE", 
+                size = "Loss Event Count", 
                 title = "Median vs Maximum Annual Loss", 
                 subtitle = "Outliers Included",
                 caption = "Source: Evaluator toolkit")
@@ -1021,59 +1100,7 @@ scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>%
                  caption = "Fragile Scenarios")
 ```
 
-# Recommendations
 
-> Recommendations are left for the analyst to complete. Typical types of 
-recommendations include security improvement projects (projects that 
-increase the strenght of controls) and analysis improvement opportunities 
-(projects that increase the quality of the inputs).
-
-## Project Recommendation
-
-> Document the key risk management projects for the coming planning period 
-(typically yearly) that are either approved or proposed. These projects 
-should address the findings from the simulated scenarios by improving controls, 
-reducing loss impact, or transferring risk. Describe each project in terms of 
-its expected cost versus the amount of loss exposure addressed by the control.
-
-- FOO
-    + Description
-    + Cost
-    + Expected Risk Reduction
-- BAR
-    + Description
-    + Cost
-    + Expected Risk Reduction
-- BAZ
-    + Description
-    + Cost
-    + Expected Risk Reduction
-- QUX
-    + Description -
-    + Cost
-    + Expected Risk Reduction
-- UIER
-    + Description - 
-    + Cost
-    + Expected Risk Reduction
-
-## Analysis Improvement Opportunities
-
->The objective of a risk analysis is to provide better information and to 
-reduce uncertainty in making strategic resource allocation decisions. 
-As part of this decision process, consider if additional information is 
-needed to perform a better risk analysis. Additional data or higher 
-confidence data may reduce the variability in your projections.
-
-Typical areas for additional data include:
-
-- Control Effectiveness Refinement - Can we benchmark our controls against other 
-organizations or otherwise better understand the maturity of our capabilities?
-- Scenario Refinement - Have we clearly identified the threat communities, 
-their capabilities and their frequency of action?
-- Loss Magnitude Refinement - Can we leverage either our own incident data or 
-data publicly (such as the VCDB) or semi-publicly (industry CIRTs) to better 
-understand our potential economic losses?
 
 # Appendicies
 
