@@ -13,12 +13,6 @@ output:
   pdf_document:
     fig_caption: yes
     toc: yes
-    latex_engine: xelatex
-    toc_depth: 3
-pdf_document:
-  latex_engine: xelatex
-  toc_depth: 3
-  toc: yes
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
@@ -42,11 +36,12 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = FALSE,
 
 # try to use pacman to install/load packages, if available
 if ("pacman" %in% installed.packages()) {
-  pacman::p_load(ggplot2, scales, viridis, dplyr, purrr)
+  pacman::p_load(ggplot2, ggalt, scales, viridis, dplyr, purrr)
   pacman::p_load(magrittr, extrafont)
   pacman::p_load(psych, readr, tidyr, pander)
 } else  {
   library(ggplot2)
+  library(ggalt)
   library(extrafont)
   library(scales)
   library(viridis)
@@ -131,14 +126,15 @@ rm(max_loss_w_outliers)
 
 ```{r helper_functions}
 # format dollar amounts in terms of millions of USD
-dollar_millions <- function(x) paste0("$", x / 10 ^ 6, "M")
+dollar_millions <- function(x) paste0("$", x / 10 ^ 6,  "M")
 
 #default theme
 theme_evaluator <- function(base_family="BentonSansRE") {
   theme_minimal(base_family = base_family) %+replace% 
     theme(
       panel.border = element_blank(),
-      legend.position = "bottom"
+      legend.position = "bottom",
+      plot.caption = element_text(size = 9, hjust=1)
     )
 }
 ```
@@ -182,8 +178,6 @@ left_join(control_weakness, tc_exceedance, by = c("domain_id" = "domain_id")) %>
 simulations performed over `r comma(length(unique(results$scenario_id)))` 
 risk scenarios on `r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
 
-## Total Loss Exposure
-
 ```{r risk_tolerance_exceedance}
 loss_exceedance <- results %>% 
   group_by(simulation) %>% 
@@ -226,22 +220,24 @@ max_loss %>%
   group_by(outliers) %>% 
   by_slice(~ arrange(.x, max_loss) %>% 
              mutate(prob = 1 - percent_rank(max_loss)), .collate = "rows") %>% 
-  ggplot(., aes(prob, max_loss, group=outliers)) + 
-  geom_path() -> gg
+  ggplot(., aes(prob, max_loss, group=outliers)) -> gg
+gg <- gg + geom_path()
+
 label_dat <- group_by(max_loss, outliers) %>% summarize(max_loss=max(max_loss)) %>% 
   mutate(text = ifelse(outliers==TRUE, "All Scenarios", "Outliers Excluded"))
 
 # set 80% threshold line
-gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1.7) 
-gg <- gg + annotate("text", x = 0.8, y = max(max_loss$max_loss), label = percent(.8))
+gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1) 
+gg <- gg + annotate("text", x = 0.8, y = max(max_loss$max_loss), 
+                    label = percent(.8), hjust="right")
 
 #gg <- gg + scale_color_viridis(discrete = TRUE, 
 #                               labels = c("Excluded", "Included"), 
 #                               guide = FALSE)
 # add labels at end of each line
-gg <- gg + geom_label(data=label_dat, aes(x =0, y=max_loss, label=text), 
-                      hjust="center", label.size = NA)
-gg <- gg + expand_limits(x=-.10)
+gg <- gg + geom_label(data=label_dat, aes(x=0, y=max_loss, label=text), 
+                      hjust="right", vjust=0.5, label.size = NA)
+#gg <- gg + expand_limits(x=-.10)
 
 gg <- gg + scale_x_reverse(labels = percent)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
@@ -273,8 +269,11 @@ The top three domains by loss size are `r domain_impact[[1, "domain"]]`,
 
 ```{r domain_impact, echo = FALSE}
 mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>% 
-  select("Domain" = domain, "Value at Risk" = var, "Minimum" = min,
-         "Mean (Average)" = mean, "Maximum" = max, 
+  select("Domain" = domain, 
+         "Value at Risk" = var,
+         "Maximum" = max, 
+         "Mean (Average)" = mean,
+         "Minimum" = min,
          "Standard Deviation" = sd) %>% 
   pander(justify = c(rep("left", 1), rep("right", 5)),
                  split.cells = 20,
@@ -294,7 +293,7 @@ dat <- control_weakness %>%
 label_nudge = c(max(dat$loss_events) / 20 * -1, max(dat$contained_events) / 20)
 
 # set breakpoints to half of the range
-break_locations = c(max(dat$loss_events) / 2 * -1, max(dat$contained_events) / 2 * 1.5)
+break_locations = c(max(dat$loss_events) / 2 * -1.5, max(dat$contained_events) / 2 * 1.5)
 
 # convert data into tidy-er format
 dat <- dat %>% gather(type, events, c(loss_events, contained_events)) %>% 
@@ -318,7 +317,7 @@ gg <- gg + geom_text(aes(label = full_lab, x = events + nudge, y = domain_id,
 gg <- gg + geom_label(aes(x = 0, y = domain_id, label = domain_id), size = 3, 
                       label.size = NA)
 gg <- gg + scale_x_continuous(expand = c(0,0), breaks = c(break_locations[1], 0, break_locations[2]), 
-                              labels = c("← Loss Events", "Domain", "Contained Events →"),
+                              labels = c("Loss Events", "Domain", "Contained Events"),
                               position = "top",
                               limits = event_range)
 gg <- gg + labs(x = NULL, y = NULL, 
@@ -327,7 +326,7 @@ gg <- gg + labs(x = NULL, y = NULL,
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid = element_blank())
-gg <- gg + theme(axis.text.x = element_text(family="Arial Narrow", hjust = .5))
+gg <- gg + theme(axis.text.x = element_text(hjust = .5))
 gg <- gg + theme(axis.text.y = element_blank())
 gg <- gg + theme(axis.ticks.x = element_blank())
 gg <- gg + theme(axis.ticks.y = element_blank())
@@ -340,8 +339,9 @@ The leading scenarios, measured by value at risk, are:
 
 ```{r top_5_risks}
 top_n(scenario_summary, 5, ale_var) %>% 
+  arrange(desc(ale_var)) %>% 
   left_join(scenarios, by = c("scenario_id" = "scenario_id", 
-                              "domain_id" = "domain_id")) %>% 
+                              "domain_id" = "domain_id")) %>%
   mutate(ale_var = dollar(ale_var), ale_median = dollar(ale_median)) %>% 
   select("Domain ID" = domain_id, Scenario = scenario, 
          "Median Annual Loss" = ale_median, "Value at Risk" = ale_var) %>% 
@@ -424,11 +424,12 @@ scenarios are:
 filter(scenario_summary, outlier == TRUE) %>% 
   left_join(scenarios, by = c("domain_id" = "domain_id", "scenario_id" = "scenario_id")) %>% 
   select(domain_id, scenario_id, scenario, ale_var, ale_median, ale_max) %>% 
-  arrange(desc(ale_var)) %>% mutate_at(c("ale_var", "ale_median", "ale_max"), dollar) %>% 
+  arrange(desc(ale_var)) %>% 
+  mutate_at(c("ale_var", "ale_median", "ale_max"), dollar) %>% 
   rename("Domain ID" = domain_id, ID = scenario_id, "Description" = scenario, 
-         "Value at Risk" = ale_var, 
+         "Value at Risk" = ale_var,
          "Median" = ale_median, "Maximum" = ale_max) %>% 
-  pander
+  pander(justify=c("left", "right", "left", rep("right", 3)))
 ```
 
 # Methodology
@@ -439,10 +440,17 @@ capabilities, and probable loss magnitudes associated with key risk scenarios.
 This information is used to create a Monte Carlo model, generating a 
 a dollar-quantified risk exposure for each tracked risk.
 
+A Value at Risk (VaR) model is used to rank risks. As VaR is a summary 
+statistic (the 95 percentile), different groupings are not directly comparable. 
+For instance, the VaR totals for domain summary will not match precisely with 
+the VaR total for the simulation, nor will either of those statistics match 
+the VaR calculated at the scenario level. VaRs should only be compared at a 
+consistent level of grouping.
+
 ## Domains
 
-The security program is divided into `r nrow(domains)` domains which provides 
-a framework for systematically reviewing risk. These domains are:
+The security program is divided into `r nrow(domains)` domains as a framework 
+for systematically reviewing risk. These domains are:
 
 ```{r domain_table}
 select(domains, "Domain ID" = domain_id, "Domain" = domain) %>%
@@ -577,6 +585,29 @@ create_table("Loss Magnitudes", "lm")
 Scenarios should be treated based upon size of the value at risk (VaR) 
 calculation. Ranking scenarios by VaR creates a prioritized list of scenarios to 
 address.
+
+```{r scenarios_ranked_by_var_plot}
+scenario_summary %>% arrange(desc(ale_var)) %>% 
+  filter(ale_var!=0) %>% 
+  mutate(scenario_label = paste0(domain_id, " - ", scenario_id)) %>% 
+  top_n(20, ale_var) %>% 
+  ggplot(., aes(x = ale_var, y = reorder(scenario_label, ale_var), color=annual_tolerance)) -> gg
+gg <- gg + geom_lollipop(horizontal = TRUE, point.size = 3)
+#gg <- gg + geom_text(aes(label = dollar_millions(ale_var) ), color = "black",  hjust=0)
+gg <- gg + scale_x_continuous(labels = dollar_millions)
+gg <- gg + scale_color_viridis(discrete = TRUE, drop = FALSE, 
+                               breaks=c("Low", "Medium", "High"))
+gg <- gg + guides(color = guide_legend(title = "Risk Tolerance", 
+                                       override.aes = list(size=5)))
+gg <- gg + theme_evaluator()
+gg <- gg + theme(panel.grid.major.y = element_blank())
+gg <- gg + labs(x=NULL, y="Scenario ID",
+                title="Top Scenarios",
+                subtitle="Ranked by VaR",
+                caption="Source: Evaluator toolkit")
+gg
+
+```
 
 ```{r frequency_and_impact_plot}
 gg <- ggplot(scenario_summary, aes(x = loss_events_median, y = sle_mean, 
