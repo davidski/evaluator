@@ -587,10 +587,9 @@ create_table("Loss Magnitudes", "lm")
 
 # Recommendations
 
-> Recommendations are left for the analyst to complete. Typical types of 
-recommendations include security improvement projects (projects that 
-increase the strenght of controls) and analysis improvement opportunities 
-(projects that increase the quality of the inputs).
+> Recommendations are left for the analyst to complete. Include security 
+improvement (increasing the strength of controls) and analysis improvement 
+projects (increase data input quality) projects.
 
 ## Project Recommendation
 
@@ -756,8 +755,8 @@ gg
 
 Looking at the number of loss events for each scenario helps identify 
 scenarios worth closer scrutiny. A z-score is calculated for each mean loss 
-frequency. Scenarios with a z-score of 2 or higher experience more frequent 
-loss events, on average.
+frequency. Scenarios with a z-score of 2 or higher experience, on average, 
+more frequent loss events.
 
 The average loss frequency and the associated z-scores, are shown for all 
 scenarios with an average loss frequency greater than 0.5 per year.
@@ -975,116 +974,47 @@ gg <- gg + theme(axis.text.x = element_blank())
 gg
 ```
 
-### Median vs Maximum Annual Loss Exposure
+### Alternative Risk Measures
 
-```{r median_vs_max_ale, fig.cap="Median vs Maximum Annual Loss"}
+Risk is reported as the 95th percentile Value at Risk measure across 
+all of the simulated scenarios (sum of scenario ALEs). While this is generally 
+the best representation of an organization's  risk exposure, alternative 
+measures are possible. The following graph shows a histogram for all non-zero 
+loss events with an overlaid density plot for both the standard VaR and the 
+median ALE measure as an alternative.
 
-# scatter plot of median vs. max ALEs
-gg <- ggplot(scenario_summary, aes(x = ale_median, y = ale_max))
-gg <- gg + geom_point(position = "jitter", alpha = 1/5, 
-                      aes(size = loss_events_median))
-#gg <- gg + stat_bin2d(bins = 50) + scale_fill_gradient(low = 'lightblue', high = 'red')
-#gg <- gg + stat_binhex(bins = 50) + scale_fill_viridis()
-#gg <- gg + geom_text(aes(label = title), size = 4)
-gg <- gg + scale_x_continuous(labels = dollar_millions)
-#gg <- gg + scale_x_continuous(trans = "log10", labels = dollar, expand = c(000, 5 * 10 ^ 7))
-gg <- gg + scale_y_continuous(labels = dollar_millions)
-gg <- gg + scale_size_continuous(labels = comma)
-gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE", 
-                size = "Loss Event Count", 
-                title = "Median vs Maximum Annual Loss", 
-                subtitle = "Outliers Included",
-                caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator() 
-gg <- gg + theme(panel.grid.minor = element_blank())
-gg
-```
-
-### Median Annual Losses
-
-```{r median_ale_histogram, echo = FALSE, fig.cap="Median Losses"}
+```{r var_vs_median_plot, fig.cap="VaR vs Median"}
 # prepare data and init graph
-scenario_summary %>% filter(!scenario_id %in% scenario_outliers) %>% 
-  ggplot(., aes(x = ale_median)) -> gg
+results %>% group_by(scenario_id, simulation) %>% 
+  summarize(ale = sum(ale)) %>% 
+  filter(ale > 0) %>% 
+  summarize(var = quantile(ale, 0.95), median = median(ale)) %>% 
+  gather(measure, value, var:median) -> dat
+
+measure_names <- c(
+  "median" = "Median",
+  "var" = "Value at Risk"
+)
+
+gg <- ggplot(dat, aes(value))
 
 # graph options
-gg <- gg + geom_histogram(binwidth = max(gg$data$ale_median) / 50, 
+gg <- gg + geom_histogram(binwidth = max(gg$data$value) / 50, 
                           aes(y = ..density..),
-                          color = "black", fill = "white")
-gg <- gg + geom_density(fill = viridis(1), alpha = 1/5)
+                          color = "black", fill = viridis(2)[1], alpha = 1/5)
+gg <- gg + geom_density(fill=viridis(2)[2], alpha = 1/5)
+gg <- gg + facet_wrap(~measure, nrow=2, "free_x", strip.position = "left", labeller = as_labeller(measure_names))
 gg <- gg + scale_x_continuous(labels = dollar_millions)
-gg <- gg + scale_y_continuous(labels = comma)
-gg <- gg + labs(x = "Median Annualized Loss", y = element_blank(), 
-                title = "Median Losses",
-                subtitle = "Outliers Excluded",
+#gg <- gg + scale_y_continuous(labels = comma)
+gg <- gg + labs(x = "Loss Size", y = element_blank(), 
+                title = "Scenario Level Losses",
+                subtitle = "Median vs. Value at Risk Measures",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
-gg
-```
-
-### Risk Exposure with Outliers
-
-Histogram of all annual losses, across all scenarios and simulations. Zero 
-loss scenarios are **excluded** while outliers are **included**.
-
-```{r density_all, echo = FALSE, fig.cap="Risk Exposure"}
-# init graph
-results %>% filter(ale != 0) %>% ggplot(., aes(x = ale)) -> gg
-binwidth <- max(range(gg$data$ale) / 50)
-
-# graph options
-gg <- gg + geom_histogram(boundary = 0, binwidth = binwidth, 
-                          color = "white", 
-                          fill = viridis(1), alpha = 1/5)
-gg <- gg + geom_density(fill = "black", alpha = 1/5, 
-                        aes(y = get("binwidth", envir = .GlobalEnv) * ..count..))
-gg <- gg + scale_x_continuous(labels = dollar_millions) 
-gg <- gg + scale_y_continuous(labels = comma)
-gg <- gg + labs(x = "Annual Loss Exposure", 
-                y = element_blank(), 
-                title = "Risk Exposure",
-                subtitle = "Outlier Scenarios Included, Zero Loss Scenarios Excluded",
-                caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator()
-gg <- gg + theme(panel.grid.major = element_blank())
-gg <- gg + theme(panel.grid.minor = element_blank())
-#gg <- gg + theme(axis.line.y = element_line(color = "black", size = 0.15))
-#gg <- gg + theme(axis.line.x = element_line(color = "black", size = 0.15))
-#gg <- gg + theme(plot.margin = unit(rep(1, 4), "pt"))
-#gg <- gg + geom_point(aes(y=cumloss)) + geom_path(aes <- (y=cumloss, group=1))
-gg
-```
-
-### Risk Exposure without Outliers
-
-Histogram of annual losses across all scenarios and simulations. Zero 
-loss scenarios and outliers are **excluded**.
-
-```{r histogram_no_outliers, echo = FALSE, fig.cap="Risk Exposure"}
-# prepare data and init graph
-results %>% filter(!scenario_id %in% scenario_outliers) %>% 
-  filter(ale != 0) %>% 
-  ggplot(., aes(x = ale)) -> gg
-binwidth <- max(range(gg$data$ale) / 50)
-
-#graph options
-gg <- gg + geom_histogram(boundary = 0, binwidth = binwidth, 
-                          color = "white", 
-                          fill = viridis(1), alpha = 1/5)
-gg <- gg + geom_density(fill = "black", alpha = 1/5, 
-                        aes(y = get("binwidth", envir = .GlobalEnv) * ..count..))
-gg <- gg + scale_x_continuous(labels = dollar_millions) 
-gg <- gg + scale_y_continuous(labels = comma)
-gg <- gg + labs(x = "Annual Loss Exposure", 
-                y = NULL, 
-                title = "Risk Exposure",
-                subtitle = "Outliers and Zero Loss Scenarios Excluded",
-                caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator()
-gg <- gg + theme(panel.grid.major = element_blank())
-gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + theme(strip.text.y = element_text(angle = 180, hjust = 0))
+gg <- gg + theme(axis.text.y = element_blank())
 gg
 ```
 
@@ -1109,8 +1039,6 @@ scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>%
                  split.cells = c("45%", "5%", "50%"), 
                  caption = "Fragile Scenarios")
 ```
-
-
 
 # Appendicies
 
