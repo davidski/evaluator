@@ -284,7 +284,7 @@ mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>%
                  caption = "Annual Loss by Domain")
 ```
 
-### Domain Outcomes 
+### Simulation Outcomes by Domain 
 
 ```{r events_contained_vs_losses}
 dat <- control_weakness %>% 
@@ -316,16 +316,17 @@ event_range <- range(dat$events) * c(1.4, 1.5)
 gg <- ggplot(dat, aes(x = events, xend = 0, y = domain_id)) -> gg
 gg <- gg + geom_segment(aes(yend = domain_id), color = viridis(1))
 gg <- gg + geom_point(color = viridis(1), size = 2)
-gg <- gg + geom_text(aes(label = full_lab, x = events + nudge, y = domain_id, 
-                         hjust = hjust), family = "Museo Sans Cond 300", size = 3)
+gg <- gg + geom_label(aes(label = full_lab, x = events + nudge, y = domain_id, 
+                         hjust = hjust), family = "Museo Sans Cond 300", size = 3,
+                      label.size = NA)
 gg <- gg + geom_label(aes(x = 0, y = domain_id, label = domain_id), size = 3, 
                       label.size = NA)
-gg <- gg + scale_x_continuous(expand = c(0,0), breaks = c(break_locations[1], 0, break_locations[2]), 
+gg <- gg + scale_x_continuous(breaks = c(break_locations[1], 0, break_locations[2]), 
                               labels = c("Loss Events", "Domain", "Contained Events"),
                               position = "top",
                               limits = event_range)
 gg <- gg + labs(x = NULL, y = NULL, 
-                title = "Event Outcomes by Domain",
+                title = "Simulation Outcomes by Domain",
                 subtitle = "Losses/Contained with Control Gap/Surplus",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
@@ -508,8 +509,8 @@ arrange(scenarios, domain_id, scenario_id) %>%
 
 Each of the qualitative labels is mapped to a set of parameters describing a 
 beta pert distribution. These distributions are used to run `r comma(attr(results, "simulation_count"))` 
-simulations of each risk scenario. In a given simulation, each scenario is
-modeled for potential losses using:
+simulations over each risk scenario. Within a given simulation, a scenario is
+evaluated for potential losses using:
 
 1. The number of times the threat actor acts against the organization.
 2. The capabilities of the threat actor.
@@ -671,8 +672,9 @@ gg
 gg <- ggplot(scenario_summary, aes(x = loss_events_median, y = sle_mean, 
                                    text = scenario_id))
 gg <- gg + geom_point(aes(color = annual_tolerance, size = ale_median))
-#gg <- gg + geom_text(aes(label=ifelse(annual_tolerance %in% c("High", "Medium"), 
-#                                      scenario_id, ''), hjust = 0, vjust = 0))
+gg <- gg + geom_text(aes(label=ifelse(annual_tolerance %in% c("High", "Medium"), 
+                                      paste0(domain_id, " - ", scenario_id), '')), 
+                     hjust = "right", vjust = 0.5, nudge_x = -0.35, size = 3)
 gg <- gg + labs(title = "Loss Frequency vs Magnitude",
            subtitle = "All Scenarios",
            x = "Median Events per Year",
@@ -683,7 +685,7 @@ gg <- gg + scale_color_viridis(discrete = TRUE, drop = FALSE)
 gg <- gg + scale_size_continuous(labels = dollar_millions)
 gg <- gg + guides(size = guide_legend(title = "Median Annual Loss", 
                                       title.position = "top"))
-gg <- gg + guides(color = guide_legend(title = "Total Losses vs Risk Tolerance", 
+gg <- gg + guides(color = guide_legend(title = "Risk Tolerance", 
                                        title.position = "top", 
                                        override.aes = list(size = 5)))
 gg <- gg + theme_evaluator()
@@ -747,7 +749,7 @@ gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.ticks.y = element_blank(),
                  axis.text.y = element_blank())
-print(gg)
+gg
 ```
 
 ### Scenario-Level Loss Frequency
@@ -778,18 +780,20 @@ loss_events_by_scenario %>% mutate(n_zscore = round(scale(n), 2)) %>%
 
 Note that larger than average loss events does not necessarily imply high risk, 
 as the total size of all losses may be small. The size of losses is 
-explored in the loss magnitude section.
+explored in the loss magnitude section. In the following figure, density 
+diagrams are displayed for each individual scenario, allowing visual inspection 
+of which scenarios occur with higher frequency.
 
-```{r lef_by_scenario, fig.cap="Loss Frequency by Scenario"}
+```{r lef_by_scenario, fig.height=7, fig.cap="Loss Frequency by Scenario"}
 plot_scenarios_by_domain <- function(x) {
   gg <- ggplot(x, aes(x = loss_events, fill = domain_id))
-  gg <- gg + facet_wrap(~domain_id + scenario_id,
+  gg <- gg + facet_wrap(~paste0(domain_id, " - ",  scenario_id),
                         scales = "free_y", strip.position = "bottom")
   gg <- gg + scale_fill_viridis(discrete = TRUE)
   gg <- gg + geom_density()
   #gg <- gg + scale_y_log10(label = dollar)
   gg <- gg + labs(x = "Loss Frequency", y = NULL,
-                  title = "Distribution of Loss Event Frequencies",
+                  title = "Loss Event Frequency by Scenario",
                   caption = "Source: Evaluator toolkit")
   gg <- gg + theme_evaluator()
   gg <- gg + theme(panel.grid.major = element_blank())
@@ -799,41 +803,44 @@ plot_scenarios_by_domain <- function(x) {
                    axis.text.x = element_blank(),
                    axis.text.y = element_blank(),
                    strip.text.y = element_blank())
-  print(gg)
+  gg
 }
 
 results %>% 
+  #filter(!(scenario_id %in% c(scenario_outliers, 57))) %>% 
   mutate(scenario_id = factor(as.character(scenario_id), 
                               levels = scenario_order$scenario_id)) %>%
   arrange(domain_id, scenario_id) %>% 
   plot_scenarios_by_domain(.)
 ```
 
-## Loss Magnitudes
+## Loss Scenario Distributions
 
 This figure shows the range of expected annual losses (ALE) for each scenario, 
 with **outliers excluded**.
 
 ```{r ale_range_by_scenario, fig.cap="Annual Loss Range by Scenario"}
 gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>% 
-  ggplot(., aes(x = as.character(scenario_id), 
-                          y = ale + 1))
-gg <- gg + facet_wrap(~domain_id, scales = "free_x", strip.position = "bottom")
+  ggplot(., aes(y = as.character(scenario_id), x = ale))
+#gg <- gg + facet_grid(~domain_id, scales = "free", space="free", strip.position = "bottom")
+gg <- gg + facet_grid(domain_id ~ .,  scales = "free", space="free")
+#gg <- gg + coord_flip()
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1),
                         outlier.color = viridis(1), outlier.alpha = 1/2, 
                         outlier.shape = 16)
-gg <- gg + scale_y_continuous(labels = dollar_millions)
+gg <- gg + scale_x_continuous(labels = dollar_millions)
 #gg <- gg + scale_y_continuous(label = dollar)
-gg <- gg + labs(x = "Scenario ID", y = "Annual Loss Exposure",
+gg <- gg + labs(y = "Scenario ID", x = "Annual Loss Exposure",
                 title = "Loss Ranges by Domain and Scenario",
                 subtitle = "Outliers excluded",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + theme(strip.text.y = element_text(angle=0, hjust=0))
 
-print(gg)
+gg
 ```
 
 ## Overall Risk
@@ -893,7 +900,7 @@ gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(legend.position = "none")
-print(gg)
+gg
 ```
 
 There are `r numbers[length(scenario_outliers)]` domains 
@@ -908,12 +915,15 @@ outlier_domains <- scenario_summary %>%
   filter(scenario_id %in% scenario_outliers) %>% group_by(domain_id) %>% 
   summarise() %>% ungroup()
 
-test_position <- tail(outlier_domains, n = 1) %>% select(domain_id) %>% unlist %>% unname
+#test_position <- tail(outlier_domains, n = 1) %>% select(domain_id) %>% unlist %>% unname
 #test_position <- outlier_domains$domain_id
+dat <- results %>% filter(domain_id %in% outlier_domains$domain_id) %>% 
+  mutate(full_label = paste0(domain_id, " - ", scenario_id)) %>% 
+  arrange(full_label)
+test_position <- tail(dat, n = 1) %>% select(full_label) %>% unlist %>% unname
 
-gg <- results %>% filter(domain_id %in% outlier_domains$domain_id) %>% 
-  ggplot(., aes(x = as.character(scenario_id), y = ale))
-gg <- gg + facet_grid(. ~ domain_id, scales = "free_x", switch = "x")
+gg <- ggplot(dat, aes(x = full_label, y = ale))
+#gg <- gg + facet_grid(. ~ domain_id, scales = "free_x", switch = "x")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5)
 #gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
@@ -935,7 +945,7 @@ gg <- gg + theme(panel.background = element_blank(),
                  panel.grid = element_blank(),
                  panel.border = element_blank())
 gg <- gg + theme(legend.position = "none")
-print(gg)
+gg
 ```
 
 ### Risk by Domain without Outliers
@@ -962,7 +972,7 @@ gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.text.x = element_blank())
-print(gg)
+gg
 ```
 
 ### Median vs Maximum Annual Loss Exposure
@@ -987,7 +997,7 @@ gg <- gg + labs(x = "Median ALE", y = "Maxmium ALE",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator() 
 gg <- gg + theme(panel.grid.minor = element_blank())
-print(gg)
+gg
 ```
 
 ### Median Annual Losses
@@ -1011,7 +1021,7 @@ gg <- gg + labs(x = "Median Annualized Loss", y = element_blank(),
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
-print(gg)
+gg
 ```
 
 ### Risk Exposure with Outliers
@@ -1044,7 +1054,7 @@ gg <- gg + theme(panel.grid.minor = element_blank())
 #gg <- gg + theme(axis.line.x = element_line(color = "black", size = 0.15))
 #gg <- gg + theme(plot.margin = unit(rep(1, 4), "pt"))
 #gg <- gg + geom_point(aes(y=cumloss)) + geom_path(aes <- (y=cumloss, group=1))
-print(gg)
+gg
 ```
 
 ### Risk Exposure without Outliers
@@ -1075,7 +1085,7 @@ gg <- gg + labs(x = "Annual Loss Exposure",
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
-print(gg)
+gg
 ```
 
 ## Special Considerations
