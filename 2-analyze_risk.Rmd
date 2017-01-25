@@ -3,6 +3,9 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
+  pdf_document:
+    fig_caption: yes
+    toc: yes
   html_notebook:
     code_folding: hide
     css: styles/html-styles.css
@@ -15,9 +18,6 @@ output:
     toc: yes
     toc_depth: 3
     toc_float: yes
-  pdf_document:
-    fig_caption: yes
-    toc: yes
   word_document:
     reference_docx: styles/word-styles-reference.docx
     toc: yes
@@ -129,7 +129,9 @@ rm(max_loss_w_outliers)
 
 ```{r helper_functions}
 # format dollar amounts in terms of millions of USD
-dollar_millions <- function(x) paste0("$", x / 10 ^ 6,  "M")
+dollar_millions <- function(x) {
+    paste0("$", x / 10 ^ 6,  "M")
+}
 
 #default theme
 theme_evaluator <- function(base_family="BentonSansRE") {
@@ -649,9 +651,10 @@ scenario_summary %>% arrange(desc(ale_var)) %>%
   filter(ale_var!=0) %>% 
   mutate(scenario_label = paste0(domain_id, " - ", scenario_id)) %>% 
   top_n(20, ale_var) %>% 
-  ggplot(., aes(x = ale_var, y = reorder(scenario_label, ale_var), color=annual_tolerance)) -> gg
+  ggplot(., aes(x = ale_var, y = reorder(scenario_label, ale_var), 
+                color = annual_tolerance)) -> gg
 gg <- gg + geom_lollipop(horizontal = TRUE, point.size = 3)
-#gg <- gg + geom_text(aes(label = dollar_millions(ale_var) ), color = "black",  hjust=0)
+#gg <- gg + geom_text(aes(label = dollar_millions(ale_var)), color = "black",  hjust=0)
 gg <- gg + scale_x_continuous(labels = dollar_millions)
 gg <- gg + scale_color_viridis(discrete = TRUE, drop = FALSE, 
                                breaks=c("Low", "Medium", "High"))
@@ -661,7 +664,7 @@ gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major.y = element_blank())
 gg <- gg + labs(x=NULL, y="Scenario ID",
                 title="Top Scenarios",
-                subtitle="Ranked by VaR",
+                subtitle="Ranked by Vale at Risk",
                 caption="Source: Evaluator toolkit")
 gg
 
@@ -815,29 +818,26 @@ results %>%
 
 ## Loss Scenario Distributions
 
-This figure shows the range of expected annual losses (ALE) for each scenario, 
-with **outliers excluded**.
+This figure shows the range of expected annual losses (ALE) for each scenario 
+which has loss events.
 
-```{r ale_range_by_scenario, fig.cap="Annual Loss Range by Scenario"}
-gg <- results %>% filter(!scenario_id %in% scenario_outliers) %>% 
-  ggplot(., aes(y = as.character(scenario_id), x = ale))
-#gg <- gg + facet_grid(~domain_id, scales = "free", space="free", strip.position = "bottom")
-gg <- gg + facet_grid(domain_id ~ .,  scales = "free", space="free")
-#gg <- gg + coord_flip()
+```{r ale_range_by_scenario, fig.height=7, fig.cap="Annual Loss Range by Scenario"}
+gg <- results %>% group_by(scenario_id) %>% filter(sum(ale) >0) %>% 
+  ggplot(., aes(x = as.character(scenario_id), y = ale))
+gg <- gg + facet_wrap(~domain_id, ncol = 4, scales = "free", strip.position = "top")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1),
-                        outlier.color = viridis(1), outlier.alpha = 1/2, 
+                        outlier.color = viridis(1), outlier.alpha = 1/3, 
                         outlier.shape = 16)
-gg <- gg + scale_x_continuous(labels = dollar_millions)
-#gg <- gg + scale_y_continuous(label = dollar)
+gg <- gg + scale_y_continuous(labels = dollar_millions, limits = c(0, NA))
 gg <- gg + labs(y = "Scenario ID", x = "Annual Loss Exposure",
                 title = "Loss Ranges by Domain and Scenario",
-                subtitle = "Outliers excluded",
+                subtitle = "Outliers Included",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
-gg <- gg + theme(strip.text.y = element_text(angle=0, hjust=0))
+gg <- gg + theme(strip.text.y = element_text(angle = 0, hjust = 0))
 
 gg
 ```
