@@ -3,9 +3,6 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
-  pdf_document:
-    fig_caption: yes
-    toc: yes
   html_notebook:
     code_folding: hide
     css: styles/html-styles.css
@@ -18,6 +15,9 @@ output:
     toc: yes
     toc_depth: 3
     toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    toc: yes
   word_document:
     reference_docx: styles/word-styles-reference.docx
     toc: yes
@@ -61,23 +61,13 @@ panderOptions('table.split.table', Inf) # allow pander to make pages wide
 panderOptions('table.alignment.default', function(df)
     ifelse(sapply(df, is.numeric), 'right', 'left'))
 panderOptions('big.mark', ",")
+
+knitr::read_chunk("./bin/load_data.R")
+knitr::read_chunk("./bin/common_graphs.R")
+knitr::read_chunk("./bin/utils.R")
 ```
 
 ```{r load_data, echo = FALSE, message = FALSE}
-# Simulations and pre-computed summary views are created via the 
-# `strat_risk.Rmd` notebook.
-results <- readRDS(file = "./data/simulation_results.Rds") # full results
-scenario_summary <- readRDS(file = "./data/scenario_summary.Rds")  # scenario level summary
-domain_summary <- readRDS(file = "./data/domain_summary.Rds")    # domain level summary
-
-# details on our scenarios
-domains <- read_csv("./data/domains.csv") # domain catalog
-mappings <- read_csv("./data/qualitative_mappings.csv") # qualitative translations
-capabilities <- read_csv("data/capabilities.csv") # i.e. objectives & controls
-risk_tolerances <- read_csv("data/risk_tolerances.csv") # i.e. risk tolerances
-scenarios <- read_csv("./data/scenarios.csv") %>% mutate(tef = tolower(tef), 
-                                                         lm = tolower(lm), 
-                                                         tc = tolower(tc))
 ```
 
 ```{r useful_values}
@@ -127,54 +117,10 @@ max_loss <- union(max_loss, max_loss_w_outliers)
 rm(max_loss_w_outliers)
 ```
 
-```{r helper_functions}
-# format dollar amounts in terms of millions of USD
-dollar_millions <- function(x) {
-    paste0("$", x / 10 ^ 6,  "M")
-}
-
-#default theme
-theme_evaluator <- function(base_family="BentonSansRE") {
-  theme_minimal(base_family = base_family) %+replace% 
-    theme(
-      panel.border = element_blank(),
-      legend.position = "bottom",
-      plot.caption = element_text(size = 9, hjust=1)
-    )
-}
+```{r common_functions}
 ```
 
 ```{r calculate_weak_domains}
-# Can't calc mean of means this way!
-# control_weakness <- scenario_summary %>% group_by(domain_id) %>% 
-#   summarize(vuln = round(mean(mean_vuln), 2)) %>% 
-#   arrange(desc(vuln)) %>% 
-#   mutate(vuln = percent(vuln)) %>% 
-#   ungroup()
-
-control_weakness <- results %>% group_by(domain_id) %>% 
-  summarize(loss_events = sum(loss_events), 
-            threat_events = sum(threat_events)) %>% 
-  mutate(vuln = loss_events / threat_events) %>% 
-  arrange(desc(vuln)) %>% 
-  mutate(vuln = percent(vuln))
-# recalc domain_level tc_exceedance
-tc_exceedance <- results %>% group_by(domain_id) %>% 
-  mutate(avoided_events = threat_events - loss_events) %>% 
-  summarize(tc_exceedance = sum(mean_tc_exceedance * loss_events), 
-            diff_exceedance = sum(mean_diff_exceedance * avoided_events),
-            avoided_events = sum(avoided_events),
-            loss_events = sum(loss_events)) %>% 
-  mutate(tc_exceedance = tc_exceedance / loss_events,
-         diff_exceedance = diff_exceedance / avoided_events ) %>% 
-  mutate(tc_exceedance = ifelse(is.na(tc_exceedance), NA, 
-                                percent(tc_exceedance / 100 )),
-         diff_exceedance = ifelse(is.na(diff_exceedance), NA, 
-                                  percent(diff_exceedance / 100))) %>% 
-  select(tc_exceedance, diff_exceedance, domain_id)
-left_join(control_weakness, tc_exceedance, by = c("domain_id" = "domain_id")) %>% 
-  left_join(domains, by = c("domain_id" = "domain_id")) %>% 
-  mutate(domain = paste0(domain, " (", domain_id, ")")) -> control_weakness
 ```
 
 # Summary
@@ -259,15 +205,6 @@ gg
 ## Risk By Domain
 
 ```{r calculate_domain_impact}
-domain_impact <- domain_summary %>%
-  group_by(domain_id) %>%
-  select(domain_id, ale) %>%
-  summarize_each(funs(min, mean, max, sd, quantile(., probs = c(0.95)))) %>%
-  rename(var = quantile) %>% 
-  arrange(desc(var)) %>% 
-  ungroup %>% 
-  left_join(domains, by = c("domain_id" = "domain_id")) %>% 
-  mutate(domain = paste0(domain, " (", domain_id, ")"))
 ```
 
 The top three domains by loss size are `r domain_impact[[1, "domain"]]`, 
@@ -852,21 +789,6 @@ profile.
 Heatmap of Value at Risk by domain.
 
 ```{r domain_heatmap, fig.height=2, fig.width=6.5}
-dat <- domain_impact %>% mutate(full_label = paste0(domain_id, "\n", "$", 
-                                                    round(var / 10^6), "M"))
-gg <- ggplot(dat, aes(x = domain, y = 1, fill = var)) 
-gg <- gg + geom_tile(color="white")
-gg <- gg + geom_text(aes(x = domain, y = 1, label = full_label), 
-                     color = "white", size = 3)
-gg <- gg + coord_equal()
-gg <- gg + scale_fill_viridis(guide = guide_legend(title=NULL), 
-                              labels = dollar_millions)
-gg <- gg + labs(x = NULL, y=NULL,
-                title = "Value at Risk by Domain",
-                caption = "Source: Evaluator toolkit") 
-gg <- gg + theme_evaluator() 
-gg <- gg + theme(axis.text = element_blank(), panel.grid = element_blank())
-gg
 ```
 
 This figure shows the range of expected annual losses by domain.
