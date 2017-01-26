@@ -3,15 +3,15 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
-  html_notebook:
-    code_folding: hide
-    css: styles/html-styles.css
-    toc: yes
-    toc_depth: 3
-    toc_float: yes
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  html_notebook:
+    code_folding: hide
+    css: styles/html-styles.css
     toc: yes
     toc_depth: 3
     toc_float: yes
@@ -99,22 +99,6 @@ scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE),
 ```
 
 ```{r calculate_max_losses}
-max_loss <- results %>% filter(!scenario_id %in% scenario_outliers) %>%  
-  group_by(simulation) %>% 
-  summarise(biggest_single_scenario_loss = max(ale),
-            min_loss = min(ale),
-            max_loss = sum(ale),
-            outliers = FALSE) %>%
-  ungroup
-max_loss_w_outliers <- results %>% 
-  group_by(simulation) %>% 
-  summarise(biggest_single_scenario_loss = max(ale),
-            min_loss = min(ale),
-            max_loss = sum(ale),
-            outliers = TRUE) %>%
-  ungroup
-max_loss <- union(max_loss, max_loss_w_outliers)
-rm(max_loss_w_outliers)
 ```
 
 ```{r common_functions}

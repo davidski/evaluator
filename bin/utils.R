@@ -2,7 +2,9 @@
 
 # format dollar amounts in terms of millions of USD
 dollar_millions <- function(x) {
-  paste0("$", x / 10 ^ 6,  "M")
+  #paste0("$", x / 10 ^ 6,  "M")
+  x <- (x / 10 ^ 6) %>% round(digits=2)
+  paste0("$", x, "M")
 }
 
 #default theme

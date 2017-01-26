@@ -24,7 +24,14 @@ p {
 	color: #333D47;
 }
 
+body {
+  color: #333D47;
+}
+
 /* flexdashboard styles */
+.bg-danger {
+  background-color: #d60057;
+}
 
 .bg-warning {
   background-color: #c227b9;
