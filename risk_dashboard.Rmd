@@ -4,8 +4,8 @@ author: "Evaluator toolkit"
 output:
   flexdashboard::flex_dashboard:
     css: styles/html-styles.css
-    favicon: ./img/evaluator_logo.jpg
-    logo: ./img/evaluator_logo.jpg
+    favicon: ./img/evaluator_logo_48px.png
+    logo: ./img/evaluator_logo_48px.png
     navbar:
     - align: right
       href: https://github.com/davidski/evaluator
@@ -77,46 +77,59 @@ Executive Summary
 Row
 -----------------------------------------------------------------------
 
-### Aggregate Value at Risk
+### Aggregate 95% Value at Risk
 
 ````{r }
 agg_risk <- 100000000
-valueBox(dollar_millions(agg_risk), icon = "fa-pencil",
-         color = ifelse(agg_risk > risk_tolerance["high"], "warning", "primary"))
+valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
+         color = ifelse(agg_risk > risk_tolerance["high"], "danger", ifelse(
+           agg_risk > risk_tolerance["medium"], "warning", "success")))
 ```
 
-### 80% Loss Exceedance
+### Minimum Annual Loss (80% Likelyhood)
 
 ```{r}
 loss_exceedance <- 42000000
-valueBox(dollar_millions(loss_exceedance), icon = "fa_pencil",
-         color = ifelse(loss_exceedance > risk_tolerance["high"], "warning", "primary"))
+valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
+         color = ifelse(loss_exceedance > risk_tolerance["high"], "danger", ifelse(
+           loss_exceedance > risk_tolerance["medium"], "warning", "success")))
 ```
 
-Row {data-height=200}
+### Median Loss Events Per Year
+
+```{r median_aggregate_loss_events}
+loss_events <- group_by(results, simulation) %>% 
+  summarise(n = sum(loss_events)) %>% summarize(loss = median(n)) %>% 
+  unlist %>% unname
+valueBox(comma(loss_events), icon = "glyphicon-flag",
+         color = "info")
+
+```
+
+Row {data-height=150}
 -----------------------------------------------------------------------
 
-### Domains Heatmap {.no-padding}
+### Domain Heatmap {.no-padding}
 
-```{r domain_heatmap, fig.width=8, fig.height=4}
+```{r domain_heatmap, fig.width=12, fig.height=2}
 ```
 
 Row
 -----------------------------------------------------------------------
 
-### Scenarios
+### Loss Ranges Across All Scenarios {.no-padding}
 
-```{r loss_across_domains}
+```{r loss_across_domains, fig.width=15, fig.height=4, cache=TRUE}
 gg <- ggplot(results, aes(x = as.character(scenario_id), y = ale))
-gg <- gg + scale_y_continuous(label = dollar)
-gg <- gg + labs(x = "Risk Scenario", y = "Annual Loss")
+gg <- gg + scale_y_continuous(label = dollar_millions)
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3)
-gg <- gg + theme_minimal()
+gg <- gg + labs(x = "Risk Scenario", y = "Annual Loss", 
+                caption = "Source: Evaluator toolkit")
+gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
-gg <- gg + facet_grid(~ domain_id, scales = "free_x", space = "free_x", 
-                      switch = "x")
+gg <- gg + facet_grid(~ domain_id, scales = "free_x", space = "free_x", switch = "x")
 gg
 ```
 
@@ -124,7 +137,7 @@ gg
 Row
 -----------------------------------------------------------------------
 
-### Controls
+### Control Gaps/Surplus by Domain
 
 ```{r control_table}
 select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>% 
@@ -133,7 +146,7 @@ select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>%
        "Control Gap" = tc_exceedance,
        "Surplus Control Strength" = diff_exceedance) %>% 
   pander(justify = c("left", "right", "right", "right"), 
-                 caption = "Domain Weaknesses")
+         split.cells = c(35, rep(10, 3)))
 ```
 
 ### Projects
