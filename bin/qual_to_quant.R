@@ -10,8 +10,9 @@ convert_qual_to_quant <- function(qual_label, qual_type) {
   
   
   
-  filtered_mappings <- filter(mappings, type==qual_type)
-  filtered_mappings <- left_join(qual_label, mappings, by=c("label" = "label")) %>%  
+  filtered_mappings <- filter(mappings, type == qual_type)
+  filtered_mappings <- left_join(qual_label, filtered_mappings, 
+                                 by = c("label" = "label")) %>%  
     select(l, ml, h, conf)
   return(filtered_mappings)
 }
