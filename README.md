@@ -26,8 +26,8 @@ Evaluator is an open source information security strategic risk analysis toolkit
 
 There are three sample of outputs of this toolkit:
 
-1.  The detailed risk analysis template, located at [samples/analyze\_risk.html](samples/analyze_risk.html)
-2.  The one page risk dashboard, located at [samples/risk\_dashboard.html](samples/risk_dashboard.html)
+1.  The detailed risk analysis template, located at [RPubs](http://rpubs.com/davidski/evaluator_risk_analysis)
+2.  The one page risk dashboard, also located at [RPubs](http://rpubs.com/davidski/evaluator_risk_dashboard)
 3.  The demonstration copy of [Scenario Explorer](https://davidski.shinyapps.io/scenario_explorer)
 
 Background
