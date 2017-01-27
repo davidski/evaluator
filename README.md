@@ -24,7 +24,11 @@ Summary
 
 Evaluator is an open source information security strategic risk analysis toolkit. Based upon the OpenFAIR [taxonomy](https://www2.opengroup.org/ogsys/catalog/C13K) and risk assessment [standard](https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator provides a concrete process for an organization to perform a review of its security program that is quantifiable, repeatable, and data-driven.
 
-For a demonstration of one of the outputs of Evaluator, visit the demonstration copy of [Scenario Explorer](https://davidski.shinyapps.io/threat_explorer) (running with dummy data, of course).
+There are three sample of outputs of this toolkit:
+
+1.  The detailed risk analysis template, located at [samples/analyze\_risk.html](samples/analyze_risk.html)
+2.  The one page risk dashboard, located at [samples/risk\_dashboard.html](samples/risk_dashboard.html)
+3.  The demonstration copy of [Scenario Explorer](https://davidski.shinyapps.io/scenario_explorer)
 
 Background
 ==========
