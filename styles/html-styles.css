@@ -29,6 +29,11 @@ body {
 }
 
 /* flexdashboard styles */
+.section.sidebar {
+  top: 51px;
+  background-color: #C3C5C8;
+}
+
 .bg-danger {
   background-color: #d60057;
 }
