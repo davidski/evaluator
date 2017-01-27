@@ -70,7 +70,7 @@ valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
            agg_risk > risk_tolerance["medium"], "warning", "success")))
 ```
 
-### Minimum Annual Loss (80% Likelyhood)
+### Minimum Annual Loss (80% Likelihood)
 
 ```{r}
 loss_exceedance <- quantile(filter(max_loss, outliers==FALSE)$max_loss, .2)
