@@ -13,16 +13,18 @@ output:
     orientation: row
     source_code: embed
     vertical_layout: fill
+  pdf_document: default
 ---
 
 Sample narrative section.
 
 ```{r setup, include=FALSE}
-library(flexdashboard)
 if ("pacman" %in% installed.packages()) {
+  pacman::p_load(flexdashboard)
   pacman::p_load(ggplot2, scales, extrafont, viridis, dplyr, purrr)
   pacman::p_load(readr, pander)
 } else  {
+  library(flexdashboard)
   library(ggplot2)
   library(scales)
   library(extrafont)
@@ -32,6 +34,8 @@ if ("pacman" %in% installed.packages()) {
   library(readr)
   library(pander)
 }
+knitr::opts_chunk$set(echo = FALSE) 
+
 knitr::read_chunk("./bin/load_data.R")
 knitr::read_chunk("./bin/common_graphs.R")
 knitr::read_chunk("./bin/utils.R")
@@ -52,15 +56,15 @@ knitr::read_chunk("./bin/utils.R")
 ```{r calculate_max_losses}
 ```
 
-Executive Summary
+Risk Dashboard
 =======================================================================
 
-Row
+Value Boxes
 -----------------------------------------------------------------------
 
 ### Aggregate 95% Value at Risk
 
-````{r}
+````{r var_valuebox}
 overall <- results %>% group_by(simulation) %>% 
                      summarize(ale = sum(ale)) %>% select(ale) %>%
                      ungroup
@@ -72,7 +76,7 @@ valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
 
 ### Minimum Annual Loss (80% Likelihood)
 
-```{r}
+```{r ale_exceedance_valuebox}
 loss_exceedance <- quantile(filter(max_loss, outliers==FALSE)$max_loss, .2)
 valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
          color = ifelse(loss_exceedance > risk_tolerance["high"], "danger", ifelse(
@@ -90,15 +94,23 @@ valueBox(comma(loss_events), icon = "glyphicon-flag",
 
 ```
 
-Row {data-height=150}
+Domain Summary {data-height=150}
 -----------------------------------------------------------------------
 
 ### Domain Heatmap {.no-padding}
 
-```{r domain_heatmap, fig.width=12, fig.height=2}
+```{r domain_heatmap, include = FALSE}
 ```
 
-Row
+```{r display, fig.width=15, fig.height=1}
+# modify the base plot for displaying on the dashboard
+gg <- gg + labs(title=NULL, caption = NULL)
+gg <- gg + theme(legend.position = "right")
+gg <- gg + guides(fill = FALSE)
+gg
+```
+
+Scenario Results
 -----------------------------------------------------------------------
 
 ### Scenarios with Simulated Losses {.no-padding}
@@ -119,8 +131,7 @@ gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3)
 gg <- gg + facet_wrap(~ full_label, nrow=2, scales = "free_x")
 #gg <- gg + facet_grid(~ domain_id, scales = "free", space = "free")
 gg <- gg + scale_y_continuous(label = dollar_millions)
-gg <- gg + labs(x = "Risk Scenario", y = "Annual\nLoss", 
-                caption = "Source: Evaluator toolkit")
+gg <- gg + labs(x = "Risk Scenario", y = "Annual\nLoss") 
 gg <- gg + theme_evaluator()
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
@@ -130,7 +141,7 @@ gg
 ```
 
 
-Row
+Details
 -----------------------------------------------------------------------
 
 ### Control Gaps/Surplus by Domain
@@ -145,9 +156,15 @@ select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>%
          split.cells = c(35, rep(10, 3)))
 ```
 
-### Projects
+### Top Risk Scenarios
 
-```{r}
-data(iris)
-pander(iris)
+```{r top_risk_scenarios}
+top_n(scenario_summary, 5, ale_var) %>% 
+  arrange(desc(ale_var)) %>% 
+  left_join(scenarios, by = c("scenario_id" = "scenario_id", 
+                              "domain_id" = "domain_id")) %>%
+  mutate(ale_var = dollar(ale_var), ale_median = dollar(ale_median)) %>% 
+  select("Domain ID" = domain_id, Scenario = scenario, 
+         "Median Annual Loss" = ale_median, "Value at Risk" = ale_var) %>% 
+  pander(justify = c(rep("left", 2), rep("right", 2)))
 ```
