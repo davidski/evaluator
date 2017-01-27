@@ -35,11 +35,14 @@ if ("pacman" %in% installed.packages()) {
   library(DT)
 }
 knitr::read_chunk("./bin/load_data.R")
+knitr::read_chunk("./bin/utils.R")
 ```
 
 ```{r load_data, include=FALSE}
 ```
 
+```{r common_functions, include=FALSE}
+```
 
 ```{r helper_functions, include=FALSE}
 mappings <<- mappings
@@ -87,7 +90,8 @@ get_summary_table <- reactive({
                                               get_scenario_id(input$input_scenario))
   # add pretty formatting
   summary_data <- mutate_each(summary_data, funs(dollar), 
-                              c(ale_median, ale_max, ale_var, sle_mean, sle_max, sle_min)) %>% 
+                              c(ale_median, ale_max, ale_var, sle_mean, 
+                                sle_median, sle_max, sle_min)) %>% 
      mutate(mean_tc_exceedance = custom_percent(mean_tc_exceedance)) %>% 
      mutate(mean_vuln = percent(mean_vuln))
   
@@ -154,7 +158,7 @@ get_loss_distribution_table <- reactive({
 All Scenarios {data-icon="fa-users" data-orientation=rows}
 =======================================================================
 
-Row
+Loss Distribution Scatterplot
 -----------------------------------------------------------------------
 
 ### Loss Distributions Across All Threat Scenarios {.no-title}
@@ -162,23 +166,23 @@ Row
 ```{r show_all_boxplot, fig.height=4}
 renderPlot({
   gg <- ggplot(results, aes(x = as.character(scenario_id), y = ale))
-  gg <- gg + scale_y_continuous(label = dollar)
+  gg <- gg + scale_y_continuous(label = dollar_millions)
   gg <- gg + labs(x = "Risk Scenario", y = "Annual Loss")
   gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
   gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3)
-  gg <- gg + theme_minimal()
-  gg <- gg + theme(panel.grid.major = element_blank())
-  gg <- gg + theme(panel.grid.minor = element_blank())
   gg <- gg + facet_grid(~ domain_id, scales = "free_x", space = "free_x", 
                         switch = "x")
+  gg <- gg + theme_evaluator()
+  gg <- gg + theme(panel.grid.major = element_blank())
+  gg <- gg + theme(panel.grid.minor = element_blank())
   print(gg)
 })
 ```
 
-Row
+All Scenarios Data Table
 -----------------------------------------------------------------------
 
-### All Risk Scenarios {.no-padding}
+### All Risk Scenarios
 
 ```{r show_all_table}
 DT::renderDataTable({
@@ -188,9 +192,12 @@ DT::renderDataTable({
    mutate(mean_tc_exceedance = custom_percent(mean_tc_exceedance)) %>% 
    mutate(mean_vuln = percent(mean_vuln))
  names(dat) <- stri_trans_totitle(names(dat))
- DT::datatable(dat, options = list(
-    bPaginate = FALSE
-  ))
+ DT::datatable(dat, rownames = FALSE,
+               options = list( 
+                 scrollX = TRUE,
+                 sScrollY = "300px",
+                 fixedColumns = list(leftColumns = 2)), 
+               extensions = c("Scroller", "FixedColumns"))
 })
 ```
 
@@ -198,7 +205,7 @@ Individual Risk Scenarios {data-icon="fa-user"}
 =======================================================================
 
 
-Column {.sidebar data-width=500}
+Input Sidebar {.sidebar data-width=500}
 -----------------------------------------------------------------------
 Select a specific risk scenario for detailed analysis.
 
@@ -226,7 +233,7 @@ renderText({
 })
 renderTable({
   get_threat_table()
-}, include.rownames = FALSE)
+}, include.rownames = FALSE, width=500)
 ```
 
 #### Controls
@@ -234,7 +241,7 @@ renderTable({
 ```{r controls}
 renderTable({
   get_control_table()
-}, include.rownames = FALSE)
+}, include.rownames = FALSE, width=500)
 ```
 
 #### Loss Magnitude
@@ -242,13 +249,13 @@ renderTable({
 ```{r loss_magnitude}
 renderTable({
   get_loss_distribution_table()
-}, include.rownames = FALSE)
+}, include.rownames = FALSE, width=500)
 ```
 
 > Simulation data generated on `r format(attr(results, "generated_on"), 
 "%b %d, %Y %H:%M:%S")`
 
-Column {data-width=450}
+Main Display {data-width=450}
 -----------------------------------------------------------------------
 
 ### Loss Scatterplot
@@ -263,7 +270,7 @@ renderPlot({
   # draw the scatterplot for this threat scenario
   gg <- ggplot(plot_data, aes(x = loss_events, y = ale))
   gg <- gg + geom_point(alpha = 1/4)
-  gg <- gg + scale_y_continuous(label = dollar,
+  gg <- gg + scale_y_continuous(label = dollar_millions,
                                 limits = c(NA, max(results$ale, na.rm = TRUE)))
   gg <- gg + scale_x_continuous(label = comma,
                                 limits = c(NA, max(results$loss_events, na.rm = TRUE)))
@@ -273,7 +280,7 @@ renderPlot({
   #gg <- gg + stat_binhex(bins = 50) + scale_fill_gradient(low = 'lightblue', high = 'red')
   #gg <- gg + geom_text(aes(label = threat_id), size = 4)
   #gg <- gg + scale_x_log10(labels = comma) + scale_y_log10(labels = comma)
-  gg <- gg + theme_bw()
+  gg <- gg + theme_evaluator()
   gg
 })
 ```
@@ -284,8 +291,12 @@ renderPlot({
 renderValueBox({
   scenario_id <- get_scenario_id(input$input_scenario)
   scenario_data <- get_scenario_data(scenario_id)
-  valueBox(dollar(quantile(scenario_data$ale, 0.95, na.rm = TRUE)), 
-           caption = "Value at Risk", icon = "fa-pencil")
+  dat <- quantile(scenario_data$ale, 0.95, na.rm = TRUE)
+  if(is.na(dat)) dat <- 0
+  valueBox(dollar(dat),
+           caption = "Value at Risk", icon = "fa-pencil", 
+           color = ifelse(dat >= risk_tolerance[["high"]], "danger", ifelse(
+             dat >= risk_tolerance[["medium"]], "warning", "success")))
 })
 ```
 
@@ -294,13 +305,17 @@ renderValueBox({
 ```{r vuln_value}
 renderValueBox({
   scenario_id <- get_scenario_id(input$input_scenario)
-  valueBox(percent(scenario_summary[scenario_summary$scenario_id == scenario_id,
-                                    "mean_vuln"]$mean_vuln), 
-           caption = "Vulnerability", icon = "ion-nuclear")
+  dat <- scenario_summary[scenario_summary$scenario_id == scenario_id,
+                          "mean_vuln"]$mean_vuln
+  if(is.na(dat)) dat <- 0
+  valueBox(percent(dat),
+           caption = "Vulnerability", icon = "ion-nuclear",
+           color = ifelse(dat >= .75, "danger", ifelse(
+             dat >= .50, "warning", "success")))
 })
 ```
 
-Column {data-width=350}
+Detailed Display {data-width=350}
 -----------------------------------------------------------------------
 
 ### Summary Data
