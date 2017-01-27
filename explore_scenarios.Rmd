@@ -3,6 +3,7 @@ title: "Risk Scenario Explorer"
 author: "Evaluator toolkit"
 output:
   flexdashboard::flex_dashboard:
+    vertical-layout: fill
     favicon: ./img/evaluator_logo_48px.png
     logo: ./img/evaluator_logo_48px.png
     navbar:
@@ -85,12 +86,14 @@ get_summary_table <- reactive({
   summary_data <- scenario_summary %>% filter(scenario_id == 
                                               get_scenario_id(input$input_scenario))
   # add pretty formatting
-  summary_data <- mutate_each(summary_data, funs(dollar), starts_with("ale"), starts_with("sle")) %>% 
+  summary_data <- mutate_each(summary_data, funs(dollar), 
+                              c(ale_median, ale_max, ale_var, sle_mean, sle_max, sle_min)) %>% 
      mutate(mean_tc_exceedance = custom_percent(mean_tc_exceedance)) %>% 
      mutate(mean_vuln = percent(mean_vuln))
   
   names(summary_data) <- stri_trans_totitle(gsub("_", " ", names(summary_data)))
-  summary_data <- summary_data %>% gather(key = "Parameter", value = "Value")
+  summary_data <- summary_data %>% mutate_each(funs(as.character)) %>% 
+    gather(key = "Parameter", value = "Value")
   return(summary_data)
 })
 
@@ -98,21 +101,14 @@ get_threat_table <- reactive({
   #filter_input <- get_threat_id(input$input_threat)
   threat_data <- scenarios %>%
     filter(scenario_id == get_scenario_id(input$input_scenario)) %>% 
-    select(scenario_id, starts_with("tef_"), starts_with("tc_")) %>% 
-    gather(key, value, -scenario_id) %>% 
-    extract(key, c("type", "param"), "(..+)_(.+)") %>%
-    mutate(value = ifelse(type == "tef" | param == "conf", as.integer(value), custom_percent(value))) %>% 
+    select(scenario_id, tef, tc) %>% 
+    gather(type, label, c(tef, tc)) %>% 
+    left_join(mappings, by = c("label" = "label", "type" = "type")) %>% 
+    gather(param, value, c(l:conf)) %>% 
+    mutate(value = ifelse(type == "tef" | param == "conf", 
+                          as.integer(value), custom_percent(value))) %>% 
     spread(param, value) %>% 
     mutate(type = ifelse(type == "tc", "Capability", "Frequency"))
-  # tef <- select(threat_data, starts_with("tef_")) %>% 
-  #   mutate(name = "Frequency") %>% 
-  #   rename(l = tef_l, ml = tef_ml, h = tef_h, conf = tef_conf) %>% 
-  #   mutate_each(funs(as.integer), -name, -conf)
-  # tc <- select(threat_data, starts_with("tc_")) %>% 
-  #   mutate(name = "Capability") %>%
-  #   rename(l = tc_l, ml = tc_ml, h = tc_h, conf = tc_conf) %>% 
-  #   mutate_each(funs(custom_percent), -name, -conf)
-  #rownames(threat_data) <- threat_data$type
   threat_data <- threat_data %>% select(Type = type, Low = l, "Most Likely" = ml,
                                         "High" = h, Confidence = conf)
   return(threat_data)
@@ -136,8 +132,10 @@ get_control_table <- reactive({
     mutate(conf = as.integer(conf))
   control_data$control <- as.numeric(control_list)
   # add control description
-  control_data <- left_join(control_data, capabilities, by = c("control" = "id")) %>% 
-    select(Control = capability, Low = l, "Most Likely" = ml, High = h, Confidence = conf)
+  control_data <- left_join(control_data, capabilities, 
+                            by = c("control" = "id")) %>% 
+    select(Control = capability, Low = l, "Most Likely" = ml, High = h, 
+           Confidence = conf)
   return(control_data)
 })
 
@@ -146,7 +144,7 @@ get_loss_distribution_table <- reactive({
   loss_list <- scenarios %>% 
     filter(scenario_id == get_scenario_id(input$input_scenario)) %>% 
     mutate(label = as.character(lm)) %>% 
-    convert_qual_to_quant(qual_type="lm") %>% 
+    convert_qual_to_quant(qual_type = "lm") %>% 
     mutate_each(funs(dollar), c(l, ml, h)) %>% 
     select(Low = l, "Most Likely" = ml, "High" = h, "Confidence" = conf)
   return(loss_list)
@@ -161,7 +159,7 @@ Row
 
 ### Loss Distributions Across All Threat Scenarios {.no-title}
 
-```{r show_all_boxplot}
+```{r show_all_boxplot, fig.height=4}
 renderPlot({
   gg <- ggplot(results, aes(x = as.character(scenario_id), y = ale))
   gg <- gg + scale_y_continuous(label = dollar)
@@ -171,7 +169,8 @@ renderPlot({
   gg <- gg + theme_minimal()
   gg <- gg + theme(panel.grid.major = element_blank())
   gg <- gg + theme(panel.grid.minor = element_blank())
-  gg <- gg + facet_grid(~ domain_id, scales = "free_x", space = "free_x", switch = "x")
+  gg <- gg + facet_grid(~ domain_id, scales = "free_x", space = "free_x", 
+                        switch = "x")
   print(gg)
 })
 ```
@@ -179,21 +178,20 @@ renderPlot({
 Row
 -----------------------------------------------------------------------
 
-### All Risk Scenarios
+### All Risk Scenarios {.no-padding}
 
 ```{r show_all_table}
-#renderTable({scenario_summary}, include.rownames = FALSE)
- DT::renderDataTable({
-   mutate_each(scenario_summary, funs(dollar), starts_with("ale"), 
-               starts_with("sle")) %>% 
-     mutate(loss_events_mean = comma(loss_events_mean)) %>% 
-     mutate(mean_tc_exceedance = custom_percent(mean_tc_exceedance)) %>% 
-     mutate(mean_vuln = percent(mean_vuln)) %>% 
-     DT::datatable(rownames = FALSE, 
-                   colnames = stri_trans_totitle(gsub("_", " ", 
-                                                      names(scenario_summary)))
-                   )
- })
+DT::renderDataTable({
+ dat <- mutate_each(scenario_summary, funs(dollar), starts_with("ale"), 
+             starts_with("sle")) %>% 
+   mutate(loss_events_mean = comma(loss_events_mean)) %>% 
+   mutate(mean_tc_exceedance = custom_percent(mean_tc_exceedance)) %>% 
+   mutate(mean_vuln = percent(mean_vuln))
+ names(dat) <- stri_trans_totitle(names(dat))
+ DT::datatable(dat, options = list(
+    bPaginate = FALSE
+  ))
+})
 ```
 
 Individual Risk Scenarios {data-icon="fa-user"}
@@ -283,7 +281,6 @@ renderPlot({
 ### Value at Risk
 
 ```{r var_values}
-
 renderValueBox({
   scenario_id <- get_scenario_id(input$input_scenario)
   scenario_data <- get_scenario_data(scenario_id)
