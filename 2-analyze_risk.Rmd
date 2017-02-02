@@ -637,7 +637,7 @@ domain_loss_frequency <- results %>% group_by(domain_id, simulation) %>%
   slice_rows("domain_id") %>% 
   by_slice(~ describe(.x$loss_events), .collate = "rows") %>% select(-vars)
 
-if (sum(domain_loss_frequency$Skew <= 0, na.rm = TRUE) == 0) {
+if (sum(domain_loss_frequency$skew <= 0, na.rm = TRUE) == 0) {
   narrative <- paste("All domains are positive skewed,",
                      "indicating loss events are clustered to",
                      "the lower ranges.")
