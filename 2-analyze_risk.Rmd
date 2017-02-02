@@ -3,22 +3,22 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
-  pdf_document:
-    latex_engine: xelatex
-    fig_caption: yes
-    toc: yes
-  html_notebook:
-    code_folding: hide
-    css: styles/html-styles.css
-    toc: yes
-    toc_depth: 3
-    toc_float: yes
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
     toc: yes
     toc_depth: 3
     toc_float: yes
+  html_notebook:
+    code_folding: hide
+    css: styles/html-styles.css
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    latex_engine: xelatex
+    toc: yes
   word_document:
     reference_docx: styles/word-styles-reference.docx
     toc: yes
@@ -72,6 +72,9 @@ knitr::read_chunk("./bin/utils.R")
 ```{r load_data, echo = FALSE, message = FALSE}
 ```
 
+```{r common_functions}
+```
+
 ```{r useful_values}
 focus_scenarios <- c(51, 11)    # scenarios of particular management interest 
 
@@ -85,6 +88,9 @@ scenario_order <- results %>% group_by(domain_id, scenario_id) %>% summarise()
 # text vector of numbers to English words
 numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight", 
              "nine")
+
+# determine the correct base font family to use
+basefont <- get_base_fontfamily()
 ```
 
 ```{r enhance_summary_object}
@@ -101,9 +107,6 @@ scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE),
 ```
 
 ```{r calculate_max_losses}
-```
-
-```{r common_functions}
 ```
 
 ```{r calculate_weak_domains}
@@ -179,7 +182,7 @@ gg <- gg + geom_label(data=label_dat, aes(x=0, y=max_loss, label=text),
 
 gg <- gg + scale_x_reverse(labels = percent)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(panel.grid.major.x = element_blank())
 gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss", 
@@ -254,7 +257,7 @@ gg <- gg + labs(x = NULL, y = NULL,
                 title = "Simulation Outcomes by Domain",
                 subtitle = "Losses/Contained with Control Gap/Surplus",
                 caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid = element_blank())
 gg <- gg + theme(axis.text.x = element_text(hjust = .5))
 gg <- gg + theme(axis.text.y = element_blank())
@@ -583,7 +586,7 @@ gg <- gg + scale_color_viridis(discrete = TRUE, drop = FALSE,
                                breaks=c("Low", "Medium", "High"))
 gg <- gg + guides(color = guide_legend(title = "Risk Tolerance", 
                                        override.aes = list(size=5)))
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major.y = element_blank())
 gg <- gg + labs(x=NULL, y="Scenario ID",
                 title="Top Scenarios",
@@ -613,7 +616,7 @@ gg <- gg + guides(size = guide_legend(title = "Median Annual Loss",
 gg <- gg + guides(color = guide_legend(title = "Risk Tolerance", 
                                        title.position = "top", 
                                        override.aes = list(size = 5)))
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg
 ```
@@ -638,7 +641,7 @@ domain_loss_frequency <- results %>% group_by(domain_id, simulation) %>%
   by_slice(~ describe(.x$loss_events), .collate = "rows") %>% select(-vars)
 
 if (sum(domain_loss_frequency$skew <= 0, na.rm = TRUE) == 0) {
-  narrative <- paste("All domains are positive skewed,",
+  narrative <- paste("All domains are skewed positively,",
                      "indicating loss events are clustered to",
                      "the lower ranges.")
 }
@@ -668,7 +671,7 @@ gg <- gg + labs(x = "Loss Events Per Year",
                 title = "Loss Events",
                 subtitle = "All Scenarios Included",
                 caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(strip.text.y = element_text(angle = 180, hjust=0))
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
@@ -720,7 +723,7 @@ plot_scenarios_by_domain <- function(x) {
   gg <- gg + labs(x = "Loss Frequency", y = NULL,
                   title = "Loss Event Frequency by Scenario",
                   caption = "Source: Evaluator toolkit")
-  gg <- gg + theme_evaluator()
+  gg <- gg + theme_evaluator(base_family = basefont)
   gg <- gg + theme(panel.grid.major = element_blank())
   gg <- gg + theme(panel.grid.minor = element_blank())
   gg <- gg + theme(legend.position = "none")
@@ -757,7 +760,7 @@ gg <- gg + labs(y = "Scenario ID", x = "Annual Loss Exposure",
                 title = "Loss Ranges by Domain and Scenario",
                 subtitle = "Outliers Included",
                 caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(strip.text.y = element_text(angle = 0, hjust = 0))
@@ -803,7 +806,7 @@ gg <- gg + labs(x = "Domain", y = "Annual Loss Exposure",
                 title = "Range of Annual Losses by Domain",
                 subtitle = "Outliers Included",
                 caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(legend.position = "none")
@@ -847,7 +850,7 @@ gg <- gg + labs(x = "Domain / Scenario ID", y = "Annual Loss Exposure",
                 title = "Domain with Outlier Scenarios",
                 subtitle = "Single scenarios within domains can dwarf other scenarios",
                 caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.background = element_blank(),
                  panel.grid = element_blank(),
                  panel.border = element_blank())
@@ -875,7 +878,7 @@ gg <- gg + geom_boxplot(fill = viridis(1),
                         outlier.color = "black", outlier.size = 1/5, 
                         outlier.alpha = 1/20, outlier.shape = 16)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.text.x = element_blank())
@@ -918,7 +921,7 @@ gg <- gg + labs(x = "Loss Size", y = element_blank(),
                 title = "Scenario Level Losses",
                 subtitle = "Median vs. Value at Risk Measures",
                 caption = "Source: Evaluator toolkit")
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(strip.text.y = element_text(angle = 180, hjust = 0))

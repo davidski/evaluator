@@ -54,6 +54,10 @@ knitr::read_chunk("./bin/utils.R")
 ```{r common_functions}
 ```
 
+```{r font_detection}
+basefont <- get_base_fontfamily()
+```
+
 ```{r calculate_max_losses}
 ```
 
@@ -201,7 +205,7 @@ gg <- gg + scale_y_log10(label = dollar, minor_breaks = minor_breaks)
 gg <- gg + guides(fill = FALSE)
 #gg <- gg + coord_flip()
 gg <- gg + labs(x = NULL, y = "Annual\nLoss") 
-gg <- gg + theme_evaluator()
+gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major.x = element_line())
 gg <- gg + theme(panel.grid.minor.x = element_line(color="grey92"))
 #gg <- gg + theme(panel.grid.major = element_blank())
