@@ -56,87 +56,137 @@ knitr::read_chunk("./bin/utils.R")
 ```{r calculate_max_losses}
 ```
 
-Risk Dashboard
+risk dashboard
 =======================================================================
 
-Value Boxes
+value boxes
 -----------------------------------------------------------------------
 
-### Aggregate 95% Value at Risk
+### aggregate 95% value at risk
 
 ````{r var_valuebox}
 overall <- results %>% group_by(simulation) %>% 
                      summarize(ale = sum(ale)) %>% select(ale) %>%
                      ungroup
 agg_risk <- quantile(overall$ale, 0.95)
-valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
+valuebox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
          color = ifelse(agg_risk > risk_tolerance["high"], "danger", ifelse(
            agg_risk > risk_tolerance["medium"], "warning", "success")))
 ```
 
-### Minimum Annual Loss (80% Likelihood)
+### minimum annual loss (80% likelihood)
 
 ```{r ale_exceedance_valuebox}
-loss_exceedance <- quantile(filter(max_loss, outliers==FALSE)$max_loss, .2)
-valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
+loss_exceedance <- quantile(filter(max_loss, outliers==false)$max_loss, .2)
+valuebox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
          color = ifelse(loss_exceedance > risk_tolerance["high"], "danger", ifelse(
            loss_exceedance > risk_tolerance["medium"], "warning", "success")))
 ```
 
-### Median Loss Events Per Year
+### median loss events per year
 
 ```{r median_aggregate_loss_events}
 loss_events <- group_by(results, simulation) %>% 
   summarise(n = sum(loss_events)) %>% summarize(loss = median(n)) %>% 
   unlist %>% unname
-valueBox(comma(loss_events), icon = "glyphicon-flag",
+valuebox(comma(loss_events), icon = "glyphicon-flag",
          color = "info")
 
 ```
 
-Domain Summary {data-height=150}
+domain summary {data-height=150}
 -----------------------------------------------------------------------
 
-### Domain Heatmap {.no-padding}
+### domain heatmap {.no-padding}
 
-```{r domain_heatmap, include = FALSE}
+```{r domain_heatmap, include = false}
 ```
 
 ```{r display, fig.width=15, fig.height=1}
 # modify the base plot for displaying on the dashboard
-gg <- gg + labs(title=NULL, caption = NULL)
+gg <- gg + labs(title=null, caption = null)
 gg <- gg + theme(legend.position = "right")
-gg <- gg + guides(fill = FALSE)
+gg <- gg + guides(fill = false)
 gg
 ```
 
-Scenario Results
+scenario results
 -----------------------------------------------------------------------
 
-### Scenarios with Simulated Losses {.no-padding}
+### top 10 scenarios with simulated losses {.no-padding}
 
-```{r loss_across_domains, fig.width=15, fig.height=4, cache=TRUE}
+```{r loss_across_domains, fig.width=10, fig.height=3, cache=true}
+sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
+  cluster_hack <- max(dat$cluster_id)
+  full_label <- "full_label"
+  
+  # assign a flag on outliers
+  keep_nokeep <- dat %>% group_by_(full_label) %>% 
+    summarise_(foo= ~max(sortby)) %>% 
+    mutate(keep = ifelse(row_number() <= top_n, true, false)) %>% 
+    select(-foo)
+  
+  # sum up the outliers
+  others <- filter(keep_nokeep, keep==false) %>% 
+    left_join(dat, by="full_label") %>% 
+    group_by(simulation) %>% summarize(ale = max(ale), scenario_count = n()) %>% 
+    mutate(full_label = paste0("others (", scenario_count, ")")) %>% 
+    mutate(cluster_id = cluster_hack)
+  
+  # combine the outliers with the top_n items
+  union_all(filter(keep_nokeep, keep==TRUE) %>% 
+              left_join(dat, by="full_label"), others)
+}
+
+
+# assign the text label to scenarios and order
 results %>% mutate(full_label = paste0(domain_id, " - ", scenario_id)) %>% 
   arrange(domain_id, scenario_id) -> dat 
-dat <- group_by(dat, full_label) %>% filter(sum(ale) != 0)
-gg <- ggplot(dat, aes(x = full_label, y = ale))
-# gg <- gg + geom_rect(aes(ymin=risk_tolerance["medium"], ymax=risk_tolerance["high"], 
-#                          xmin=as.character(min(scenario_id)), xmax=as.character(max(scenario_id))), 
-#                      fill="#c227b9", alpha = 1/10)
-# gg <- gg + geom_rect(aes(ymin=risk_tolerance["high"], ymax = Inf, 
-#                          xmin=as.character(min(scenario_id)), xmax=as.character(max(scenario_id))), 
-#                      fill="#d60057", alpha = 1/10)
-gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
-gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3)
-gg <- gg + facet_wrap(~ full_label, nrow=2, scales = "free_x")
-#gg <- gg + facet_grid(~ domain_id, scales = "free", space = "free")
-gg <- gg + scale_y_continuous(label = dollar_millions)
-gg <- gg + labs(x = "Risk Scenario", y = "Annual\nLoss") 
+
+# remove no loss scenarios, enhance, and cluster
+dat <- group_by(dat, full_label) %>% filter(sum(ale) != 0) %>% 
+  mutate(var = quantile(ale, 0.95), max_ale = max(ale), ale_median = median(ale)) %>% 
+  ungroup %>% 
+  mutate(cluster_id = kmeans(max_ale, 3)$cluster)
+
+# assign labels to the clusters
+text_labels <- c("high", "medium", "low")
+cluster_descriptions <- group_by(dat, cluster_id, full_label) %>% 
+  summarize(ale = max(max_ale)) %>% 
+  summarise(highest_ale = max(ale), n=n()) %>% 
+  arrange(desc(highest_ale)) %>% 
+  mutate(cluster_labels=factor(text_labels, levels = text_labels),
+         top_n = min(last(n), n))
+
+summed_dat <- group_by(dat, cluster_id) %>% 
+  left_join(cluster_descriptions, by="cluster_id") %>% do(sum_bottom_n(., top_n=max(.$top_n))) %>% 
+  select(-c(cluster_labels, n, top_n, highest_ale)) %>% 
+  left_join(cluster_descriptions, by="cluster_id") %>% ungroup
+
+summed_dat <- group_by(summed_dat, full_label) %>% mutate(ale_median = median(ale))
+  
+filter(dat, ale!=0) %>% group_by(full_label) %>% 
+  mutate(ale_median = median(ale)) %>% ungroup %>%  
+         mutate(full_label = fct_reorder(full_label, ale_median)) -> minimal_dat
+
+ggplot(minimal_dat, aes(x = full_label, y = ale + 1)) -> gg
+#gg <- ggplot(summed_dat, aes(x = fct_reorder(full_label, ale_median), y = ale))
+
+gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.4)
+#gg <- gg + geom_boxplot(aes(fill = keep), alpha = 1/3)
+gg <- gg + geom_boxplot(fill = viridis(1), coef = 0, alpha = 1/3)
+gg <- gg + scale_fill_viridis(discrete = TRUE)
+#gg <- gg + facet_wrap(~ cluster_labels, nrow=1, scales = "free")
+gg <- gg + scale_y_log10(label = dollar, minor_breaks = seq(1, max(gg$data$ale), 100000))
+gg <- gg + guides(fill = FALSE)
+gg <- gg + coord_flip()
+gg <- gg + labs(x = NULL, y = "Annual\nLoss") 
 gg <- gg + theme_evaluator()
-gg <- gg + theme(panel.grid.major = element_blank())
-gg <- gg + theme(panel.grid.minor = element_blank())
+gg <- gg + theme(panel.grid.major.x = element_line())
+gg <- gg + theme(panel.grid.minor.x = element_line(color="grey92"))
+#gg <- gg + theme(panel.grid.major = element_blank())
+#gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 0))
-gg <- gg + theme(strip.text.x = element_blank())
 gg
 ```
 
