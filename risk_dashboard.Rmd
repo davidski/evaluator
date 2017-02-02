@@ -107,11 +107,12 @@ Domain Summary {data-height=150}
 # modify the base plot for displaying on the dashboard
 gg <- gg + labs(title = NULL, caption = NULL)
 gg <- gg + theme(legend.position = "right")
+gg <- gg + scale_fill_viridis(guide = FALSE, end = 0.75, option = "D")
 gg <- gg + guides(fill = FALSE)
 gg
 ```
 
-Scenario Results
+Scenario Results {.data-height=250}
 -----------------------------------------------------------------------
 
 ### Loss Ranges for Top 10 Scenarios {.no-padding}
