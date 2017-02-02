@@ -62,7 +62,7 @@ Don't be intimidated by the process. Evaluator is with you at every step!
 
 ### Prepare the Environment
 
-A working [R interpreter](https://www.r-project.org/) is required. Evaluator should work on any current version of R (v3.3.2 as of this writing) and on any supported platform (Windows, MacOS, or Linux). If the `pacman` package is installed, Evaluator will auto-install any missing dependencies. This README assumes the use of [RStudio IDE](https://www.rstudio.com/), but it is not strictly required (advanced users may manually `knit` files if they so choose).
+A working [R interpreter](https://www.r-project.org/) is required. Evaluator should work on any current version of R (v3.3.2 as of this writing) and on any supported platform (Windows, MacOS, or Linux). If the `pacman` package is installed (`install.packages("pacman")`), Evaluator will auto-install any missing dependencies. This README assumes the use of [RStudio IDE](https://www.rstudio.com/), but it is not strictly required (advanced users may manually `knit` files if they so choose).
 
 Obtain the Evaluator toolkit by either cloning this repository (`git clone https://github.com/davidski/evaluator`) or downloading and extracting the ZIP file from [GitHub](https://github.com/davidski/evaluator/archive/master.zip).
 
