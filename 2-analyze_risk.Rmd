@@ -245,7 +245,7 @@ gg <- ggplot(dat, aes(x = events, xend = 0, y = domain_id)) -> gg
 gg <- gg + geom_segment(aes(yend = domain_id), color = viridis(1))
 gg <- gg + geom_point(color = viridis(1), size = 2)
 gg <- gg + geom_label(aes(label = full_lab, x = events + nudge, y = domain_id, 
-                         hjust = hjust), family = "Museo Sans Cond 300", size = 3,
+                         hjust = hjust), family = "Arial Narrow", size = 3,
                       label.size = NA)
 gg <- gg + geom_label(aes(x = 0, y = domain_id, label = domain_id), size = 3, 
                       label.size = NA)
