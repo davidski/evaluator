@@ -182,6 +182,11 @@ minimal_dat <- filter(dat, full_label %in% top_n_scenarios, ale != 0) %>%
   mutate(ale_median = median(ale)) %>% ungroup %>% 
   mutate(full_label = fct_reorder(full_label, ale_median))
 
+# create sequential break points for our scale
+minor_breaks <- map(seq(ceiling(log10(max(minimal_dat$ale)))), 
+                    ~ cumsum(rep(10^.x, each=10))) %>% unique %>% unlist
+minor_breaks <- minor_breaks[minor_breaks <= max(minimal_dat$ale)]
+
 # plot!
 gg <- ggplot(minimal_dat, aes(x = fct_reorder(full_label, desc(ale_median)), y = ale + 1))
 #gg <- ggplot(summed_dat, aes(x = fct_reorder(full_label, ale_median), y = ale))
@@ -191,7 +196,8 @@ gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.4)
 gg <- gg + geom_boxplot(fill = viridis(1), coef = 0, alpha = 1/3, outlier.shape = NA)
 gg <- gg + scale_fill_viridis(discrete = TRUE)
 #gg <- gg + facet_wrap(~ cluster_labels, nrow=1, scales = "free")
-gg <- gg + scale_y_log10(label = dollar, minor_breaks = seq(1, max(gg$data$ale), 100000))
+gg <- gg + scale_y_log10(label = dollar, minor_breaks = minor_breaks)
+#gg <- gg + scale_y_log10(label = dollar, minor_breaks = seq(1, max(gg$data$ale), 100000))
 gg <- gg + guides(fill = FALSE)
 #gg <- gg + coord_flip()
 gg <- gg + labs(x = NULL, y = "Annual\nLoss") 
