@@ -56,66 +56,67 @@ knitr::read_chunk("./bin/utils.R")
 ```{r calculate_max_losses}
 ```
 
-risk dashboard
+Risk Dashboard
 =======================================================================
 
-value boxes
+Value Boxes
 -----------------------------------------------------------------------
 
-### aggregate 95% value at risk
+### Aggregate 95% Value at Risk
 
 ````{r var_valuebox}
 overall <- results %>% group_by(simulation) %>% 
                      summarize(ale = sum(ale)) %>% select(ale) %>%
                      ungroup
 agg_risk <- quantile(overall$ale, 0.95)
-valuebox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
+valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
          color = ifelse(agg_risk > risk_tolerance["high"], "danger", ifelse(
-           agg_risk > risk_tolerance["medium"], "warning", "success")))
+           agg_risk > risk_tolerance["medium"], "warning", "info")))
 ```
 
-### minimum annual loss (80% likelihood)
+### Minimum Annual Loss (80% likelihood)
 
 ```{r ale_exceedance_valuebox}
-loss_exceedance <- quantile(filter(max_loss, outliers==false)$max_loss, .2)
-valuebox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
+loss_exceedance <- quantile(filter(max_loss, outliers==FALSE)$max_loss, .2)
+valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
          color = ifelse(loss_exceedance > risk_tolerance["high"], "danger", ifelse(
-           loss_exceedance > risk_tolerance["medium"], "warning", "success")))
+           loss_exceedance > risk_tolerance["medium"], "warning", "info")))
 ```
 
-### median loss events per year
+### Median Loss Events per Year
 
 ```{r median_aggregate_loss_events}
 loss_events <- group_by(results, simulation) %>% 
   summarise(n = sum(loss_events)) %>% summarize(loss = median(n)) %>% 
   unlist %>% unname
-valuebox(comma(loss_events), icon = "glyphicon-flag",
+valueBox(comma(loss_events), icon = "glyphicon-flag",
          color = "info")
 
 ```
 
-domain summary {data-height=150}
+Domain Summary {data-height=150}
 -----------------------------------------------------------------------
 
-### domain heatmap {.no-padding}
+### Domain Heatmap {.no-padding}
 
-```{r domain_heatmap, include = false}
+```{r domain_heatmap, include = FALSE}
 ```
 
 ```{r display, fig.width=15, fig.height=1}
 # modify the base plot for displaying on the dashboard
-gg <- gg + labs(title=null, caption = null)
+gg <- gg + labs(title = NULL, caption = NULL)
 gg <- gg + theme(legend.position = "right")
-gg <- gg + guides(fill = false)
+gg <- gg + guides(fill = FALSE)
 gg
 ```
 
-scenario results
+Scenario Results
 -----------------------------------------------------------------------
 
-### top 10 scenarios with simulated losses {.no-padding}
+### Top 10 Scenarios with Simulated Losses Ranges {.no-padding}
 
-```{r loss_across_domains, fig.width=10, fig.height=3, cache=true}
+```{r loss_across_scenarios, fig.width=10, fig.height=3, cache=TRUE}
+# helper function to roll up scenarios that aren't in the top_n
 sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
   cluster_hack <- max(dat$cluster_id)
   full_label <- "full_label"
@@ -123,11 +124,11 @@ sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
   # assign a flag on outliers
   keep_nokeep <- dat %>% group_by_(full_label) %>% 
     summarise_(foo= ~max(sortby)) %>% 
-    mutate(keep = ifelse(row_number() <= top_n, true, false)) %>% 
+    mutate(keep = ifelse(row_number() <= top_n, TRUE, FALSE)) %>% 
     select(-foo)
   
   # sum up the outliers
-  others <- filter(keep_nokeep, keep==false) %>% 
+  others <- filter(keep_nokeep, keep==FALSE) %>% 
     left_join(dat, by="full_label") %>% 
     group_by(simulation) %>% summarize(ale = max(ale), scenario_count = n()) %>% 
     mutate(full_label = paste0("others (", scenario_count, ")")) %>% 
@@ -137,7 +138,6 @@ sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
   union_all(filter(keep_nokeep, keep==TRUE) %>% 
               left_join(dat, by="full_label"), others)
 }
-
 
 # assign the text label to scenarios and order
 results %>% mutate(full_label = paste0(domain_id, " - ", scenario_id)) %>% 
@@ -150,7 +150,7 @@ dat <- group_by(dat, full_label) %>% filter(sum(ale) != 0) %>%
   mutate(cluster_id = kmeans(max_ale, 3)$cluster)
 
 # assign labels to the clusters
-text_labels <- c("high", "medium", "low")
+text_labels <- c("High", "Medium", "Low")
 cluster_descriptions <- group_by(dat, cluster_id, full_label) %>% 
   summarize(ale = max(max_ale)) %>% 
   summarise(highest_ale = max(ale), n=n()) %>% 
@@ -158,18 +158,23 @@ cluster_descriptions <- group_by(dat, cluster_id, full_label) %>%
   mutate(cluster_labels=factor(text_labels, levels = text_labels),
          top_n = min(last(n), n))
 
+# roll up on a per-cluster basis, addng descriptive text to the cluster
 summed_dat <- group_by(dat, cluster_id) %>% 
-  left_join(cluster_descriptions, by="cluster_id") %>% do(sum_bottom_n(., top_n=max(.$top_n))) %>% 
+  left_join(cluster_descriptions, by="cluster_id") %>% 
+  do(sum_bottom_n(., top_n=max(.$top_n))) %>% 
   select(-c(cluster_labels, n, top_n, highest_ale)) %>% 
-  left_join(cluster_descriptions, by="cluster_id") %>% ungroup
+  left_join(cluster_descriptions, by="cluster_id") %>% 
+  ungroup
 
 summed_dat <- group_by(summed_dat, full_label) %>% mutate(ale_median = median(ale))
   
-filter(dat, ale!=0) %>% group_by(full_label) %>% 
-  mutate(ale_median = median(ale)) %>% ungroup %>%  
-         mutate(full_label = fct_reorder(full_label, ale_median)) -> minimal_dat
+# slimmed down alternative view of the dataset
+minimal_dat <- filter(dat, ale!=0) %>% group_by(full_label) %>% 
+  mutate(ale_median = median(ale)) %>% ungroup %>% 
+  mutate(full_label = fct_reorder(full_label, ale_median))
 
-ggplot(minimal_dat, aes(x = full_label, y = ale + 1)) -> gg
+# plot!
+gg <- ggplot(minimal_dat, aes(x = full_label, y = ale + 1))
 #gg <- ggplot(summed_dat, aes(x = fct_reorder(full_label, ale_median), y = ale))
 
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.4)
