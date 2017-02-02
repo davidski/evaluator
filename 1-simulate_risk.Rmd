@@ -1,5 +1,5 @@
 ---
-title: "Strategic Risk OpenFAIR Simulation"
+title: "Strategic Information Security Risk Simulation"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 output:
   html_document: default
