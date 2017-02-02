@@ -838,17 +838,21 @@ gg <- ggplot(dat, aes(x = full_label, y = ale))
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5)
 #gg <- gg + geom_boxplot(aes(fill = domain_id), alpha = 1/5, outlier.shape = NA)
-gg <- gg + geom_hline(aes(yintercept = risk_tolerance["high"]), color = "red") +
-  annotate("text", x = test_position, y = risk_tolerance["high"], 
-           label = "High", vjust = "bottom", hjust = "right")
-gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]), 
-                      color = "lightsteelblue") +
-  annotate("text", x = test_position, y = risk_tolerance["medium"], 
-           label = "Medium", vjust = "bottom", hjust = "right")
+if (max(dat$ale) >= risk_tolerance["high"] * .9) {
+    gg <- gg + geom_hline(aes(yintercept = risk_tolerance["high"]), color = "red") +
+      annotate("text", x = test_position, y = risk_tolerance["high"], 
+               label = "High", vjust = "bottom", hjust = "right")
+}
+if (max(dat$ale) >= risk_tolerance["medium"] * .9) {
+  gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]), 
+                        color = "lightsteelblue") +
+    annotate("text", x = test_position, y = risk_tolerance["medium"], 
+             label = "Medium", vjust = "bottom", hjust = "right")
+}
 gg <- gg + scale_fill_viridis(discrete = TRUE)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
 gg <- gg + labs(x = "Domain / Scenario ID", y = "Annual Loss Exposure", 
-                title = "Domain with Outlier Scenarios",
+                title = "Domains with Outlier Scenarios",
                 subtitle = "Single scenarios within domains can dwarf other scenarios",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator(base_family = basefont)
