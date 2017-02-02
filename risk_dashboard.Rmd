@@ -226,8 +226,9 @@ top_n(scenario_summary, 5, ale_var) %>%
   arrange(desc(ale_var)) %>% 
   left_join(scenarios, by = c("scenario_id" = "scenario_id", 
                               "domain_id" = "domain_id")) %>%
-  mutate(ale_var = dollar(ale_var), ale_median = dollar(ale_median)) %>% 
-  select("Domain ID" = domain_id, Scenario = scenario, 
+  mutate(ale_var = dollar(ale_var), ale_median = dollar(ale_median),
+         full_label = paste(domain_id, scenario_id, sep = " - ")) %>% 
+  select("ID" = full_label, Scenario = scenario, 
          "Median Annual Loss" = ale_median, "Value at Risk" = ale_var) %>% 
-  pander(justify = c(rep("left", 2), rep("right", 2)))
+  pander(justify = c(rep("left", 2), rep("right", 2)), split.cells=c(12, rep(30, 3)))
 ```
