@@ -19,10 +19,12 @@ output:
     fig_caption: yes
     latex_engine: xelatex
     toc: yes
-  word_document:
-    reference_docx: styles/word-styles-reference.docx
+  html_document:
+    css: styles/html-styles.css
+    fig_caption: yes
     toc: yes
-    toc_depth: '3'
+    toc_depth: 3
+    toc_float: yes
 monofont: Inconsolata
 subtitle: Evaluator Report Sample
 header-includes:
@@ -114,7 +116,7 @@ scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE),
 
 # Summary
 
-> This report is based upon `r comma(attr(results, "simulation_count"))` 
+> This report is based on `r comma(attr(results, "simulation_count"))` 
 simulations performed over `r comma(length(unique(results$scenario_id)))` 
 risk scenarios and `r nrow(capabilities)` capabilites on 
 `r format(attr(results, "generated_on"), "%F %H:%M:%S%z")`.
@@ -164,13 +166,14 @@ max_loss %>%
   ggplot(., aes(prob, max_loss, group=outliers)) -> gg
 gg <- gg + geom_path()
 
-label_dat <- group_by(max_loss, outliers) %>% summarize(max_loss=max(max_loss)) %>% 
+label_dat <- group_by(max_loss, outliers) %>% 
+  summarize(max_loss=max(max_loss)) %>% 
   mutate(text = ifelse(outliers==TRUE, "All Scenarios", "Outliers Excluded"))
 
 # set 80% threshold line
 gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1) 
 gg <- gg + annotate("text", x = 0.8, y = max(max_loss$max_loss), 
-                    label = percent(.8), hjust="right")
+                    label = percent(.8), hjust = "right")
 
 #gg <- gg + scale_color_viridis(discrete = TRUE, 
 #                               labels = c("Excluded", "Included"), 
@@ -287,8 +290,6 @@ The full list of evaluated risk scenarios is located in [Appendix A](#scenario_l
 
 ## Key Capability Weaknesses
 
-
-
 Threats most frequently overcome the control capabilities, resulting in 
 losses, in  the domains of `r control_weakness[[1, "domain"]]`, 
 `r control_weakness[[2, "domain"]]`, and `r control_weakness[[3, "domain"]]`.
@@ -303,14 +304,12 @@ select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>%
                  caption = "Domain Weaknesses")
 ```
 
-
-
 ## Focus Risk Scenarios
 
-> Identify any scenarios of particular interest here. By highlighting 
-those scenarios in which your decission makers have expressed 
-interest (e.g. ransomware), these scenarios can be analyzed without losing 
-sight of the overall risk picture.
+> Identify any scenarios here that are of particular interest. By highlighting 
+scenarios in which your decission makers have expressed interest 
+(e.g. ransomware), these can be analyzed without losing sight of the overall 
+risk picture.
 
 ```{r make_scenario_table, echo=FALSE}
 display_scenario_table <- function(scenario_summary, id) {
@@ -366,6 +365,7 @@ filter(scenario_summary, outlier == TRUE) %>%
   pander(justify=c("left", "right", "left", rep("right", 3)))
 ```
 
+\newpage
 # Methodology
 
 The security strategic risk assessment process is based upon the industry 
@@ -390,7 +390,7 @@ for systematically reviewing risk. These domains are:
 select(domains, "Domain ID" = domain_id, "Domain" = domain) %>%
   arrange(Domain) %>% 
   pander(caption = "Domain Listing", justify = "left", 
-         split.cells = c("20%", "80%"))
+         split.cells = c(10, 40))
 ```
 
 ## Capabilities
@@ -503,8 +503,8 @@ create_table("Control Difficulties", "diff")
 
 ### Loss Magnitudes
 
-Loss Magnitudes represent the economic impact when a loss event occurs. Types of 
-losses include fines, response costs (notification & ID theft monitoring), 
+Loss Magnitudes represent the economic impact when a loss event occurs. Types 
+of losses include fines, response costs (notification & ID theft monitoring), 
 increased audit scrutiny, restoration costs, etc. Instead of modeling different 
 loss types (formally defined as primary and secondary losses), this 
 analysis takes an aggregate approach with an absolute upper bound for any 
@@ -514,6 +514,7 @@ single loss event at the largest known HIPAA fine of $4.8 million.
 create_table("Loss Magnitudes", "lm")
 ```
 
+\newpage
 # Recommendations
 
 > Recommendations are left for the analyst to complete. Include security 
@@ -567,6 +568,7 @@ their capabilities and their frequency of action?
 data publicly (such as the VCDB) or semi-publicly (industry CIRTs) to better 
 understand our potential economic losses?
 
+\newpage
 # Supplemental Analysis
 
 Scenarios should be treated based upon size of the value at risk (VaR) 
@@ -789,13 +791,17 @@ test_position <- domain_summary[[nrow(domain_summary), "domain_id"]]
 
 # plot of all ales
 gg <- ggplot(domain_summary, aes(x = domain_id, y = ale + 1))
-gg <- gg + geom_hline(aes(yintercept = risk_tolerance["high"]), color = "red") +
-  annotate("text", x = test_position, y = risk_tolerance["high"], 
-           label = "High", vjust = "bottom", hjust = "right")
-gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]), 
-                      color = "lightsteelblue") +
-  annotate("text", x = test_position, y = risk_tolerance["medium"], 
-           label = "Medium", vjust = "bottom", hjust = "right")
+if (max(domain_summary$ale) >= risk_tolerance["high"] * .9) {
+  gg <- gg + geom_hline(aes(yintercept = risk_tolerance["high"]), color = "red") +
+    annotate("text", x = test_position, y = risk_tolerance["high"], 
+             label = "High", vjust = "bottom", hjust = "right")
+}
+if (max(domain_summary$ale) >= risk_tolerance["medium"] * .9) {
+  gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]), 
+                        color = "lightsteelblue") +
+    annotate("text", x = test_position, y = risk_tolerance["medium"], 
+             label = "Medium", vjust = "bottom", hjust = "right")
+}
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/5,
                         outlier.color = "black", outlier.alpha = 1/2,
@@ -952,10 +958,11 @@ scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>%
   select(Domain, "Scenario ID" = scenario_id, 
          Scenario = scenario) %>% 
   pander(justify = c("left", "left", "left"), 
-                 split.cells = c("45%", "5%", "50%"), 
+                 split.cells = c(35, 15, 40), 
                  caption = "Fragile Scenarios")
 ```
 
+\newpage
 # Appendicies
 
 Additional details that are of tangential use are included as appendices.
@@ -976,6 +983,7 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
                  caption = "Scenario List")
 ```
 
+\newpage
 ## Appendix B {#capabilities_list}
 
 ```{r capabilities_table}
