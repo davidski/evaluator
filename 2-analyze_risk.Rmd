@@ -591,7 +591,7 @@ gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major.y = element_blank())
 gg <- gg + labs(x=NULL, y="Scenario ID",
                 title="Top Scenarios",
-                subtitle="Ranked by Vale at Risk",
+                subtitle="Ranked by Value at Risk",
                 caption="Source: Evaluator toolkit")
 gg
 
@@ -604,7 +604,7 @@ gg <- gg + geom_point(aes(color = annual_tolerance, size = ale_median))
 gg <- gg + geom_text(aes(label=ifelse(annual_tolerance %in% c("High", "Medium"), 
                                       paste0(domain_id, " - ", scenario_id), '')), 
                      hjust = "right", vjust = 0.5, nudge_x = -0.35, size = 3)
-gg <- gg + labs(title = "Loss Frequency vs Magnitude",
+gg <- gg + labs(title = "Loss Frequency vs. Magnitude",
            subtitle = "All Scenarios",
            x = "Median Events per Year",
            y = "Median Single Event Magnitude")
@@ -895,7 +895,7 @@ measures are possible. The following graph shows a histogram for all non-zero
 loss events with an overlaid density plot for both the standard VaR and the 
 median ALE measure as an alternative.
 
-```{r var_vs_median_plot, fig.cap="VaR vs Median"}
+```{r var_vs_median_plot, fig.cap="VaR vs. Median"}
 # prepare data and init graph
 results %>% group_by(scenario_id, simulation) %>% 
   summarize(ale = sum(ale)) %>% 
