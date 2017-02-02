@@ -39,7 +39,8 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = FALSE,
 
 # try to use pacman to install/load packages, if available
 if ("pacman" %in% installed.packages()) {
-  pacman::p_load(ggplot2, ggalt, scales, viridis, dplyr, purrr)
+  pacman::p_load(ggplot2, scales, viridis, dplyr, purrr)
+  pacman::p_load_current_gh("hrbrmstr/ggalt")
   pacman::p_load(magrittr, extrafont)
   pacman::p_load(psych, readr, tidyr, pander)
 } else  {
