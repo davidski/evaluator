@@ -3,25 +3,24 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 mainfont: BentonSansRE
 output:
-  html_document:
-    css: styles/html-styles.css
+  pdf_document:
     fig_caption: yes
     toc: yes
-    toc_depth: 3
-    toc_float: yes
   html_notebook:
     code_folding: hide
     css: styles/html-styles.css
     toc: yes
     toc_depth: 3
     toc_float: yes
-  pdf_document:
-    fig_caption: yes
-    latex_engine: xelatex
-    toc: yes
   html_document:
     css: styles/html-styles.css
     fig_caption: yes
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  word_document:
+    reference_docx: styles/word-styles-reference.docx
     toc: yes
     toc_depth: 3
     toc_float: yes

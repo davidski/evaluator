@@ -2,14 +2,14 @@ type,label,l,ml,h,conf
 tef,frequent,10,24,52,4
 tef,occasional,1,6,12,4
 tef,rare,0,0.1,1,4
-tc,high,50,60,98,3
+tc,high,50,75,98,3
 tc,medium,33,50,60,3
 tc,low,0,16,30,4
-diff,5 - Optimized,70,85,98,4
-diff,4 - Managed,50,70,84,4
-diff,3 - Defined,33,50,60,4
-diff,2 - Repeatable,20,30,50,4
-diff,1 - Initial,0,10,30,4
+diff,Optimized,70,85,98,4
+diff,Managed,50,70,84,4
+diff,Defined,33,50,60,4
+diff,Repeatable,20,30,50,4
+diff,Initial,0,10,30,4
 lm,high,1000000,2.00E+06,5000000,4
 lm,medium,10000,2.00E+04,500000,4
 lm,low,100,200,10000,1

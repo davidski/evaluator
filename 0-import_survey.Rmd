@@ -191,8 +191,8 @@ if (nrow(missing_capabilities) != 0) stop(paste("Scenarios with undefined contro
 
 # Verify there are no duplicate controls
 capabilities %>% group_by(id) %>% tally %>% 
-  filter(n > 1) %>% left_join(capabilities) %>% rename(times_duplicated = n) -> 
-  duplicate_capabilities
+  filter(n > 1) %>% left_join(capabilities, by = c("id" = "id")) %>% 
+  rename(times_duplicated = n) -> duplicate_capabilities
 if (nrow(duplicate_capabilities) != 0) stop(paste("Duplicate capabilities found:", 
                                            duplicate_capabilities$id, 
                                            collapse = "\n"))
