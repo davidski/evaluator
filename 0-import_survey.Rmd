@@ -1,12 +1,13 @@
 ---
 title: "Import Survey"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
+params:
+  write_files: yes
 output:
+  pdf_document: default
   html_notebook: default
   html_document: default
-  pdf_document: default
-params:
-  write_files: TRUE
+  word_document: default
 ---
 
 # Summary
@@ -196,6 +197,43 @@ capabilities %>% group_by(id) %>% tally %>%
 if (nrow(duplicate_capabilities) != 0) stop(paste("Duplicate capabilities found:", 
                                            duplicate_capabilities$id, 
                                            collapse = "\n"))
+```
+
+### Cross-Validate with Qualitative Mappings Table
+
+Cross validate the qualitative terms used in the spreadsheet with the 
+mappings data file, `qualitative_mappings.csv`.
+
+```{r check_qualitative_mappings}
+mappings <- read_csv("data/qualitative_mappings.csv", 
+                     col_types = cols( .default = col_integer(),
+                                       type = col_character(),
+                                       label = col_character(),
+                                       ml = col_double()
+                                       )
+                     )
+stop_message <- NULL
+
+# TEF
+if (!sum((tolower(distinct(scenarios, tef)$tef) %in% filter(mappings, type=="tef")$label))) {
+  stop_message <- paste(stop_message, "TEF values from spreadsheet not found in qualitative_mappings.csv", sep="\n") 
+}
+# TC
+if (!sum((tolower(distinct(scenarios, tc)$tc) %in% filter(mappings, type=="tc")$label))) {
+  stop_message <- paste(stop_message, "TC values from spreadsheet not found in qualitative_mappings.csv", sep="\n") 
+}
+# DIFF
+if (!sum((tolower(distinct(capabilities, diff)$diff) %in% tolower(filter(mappings, type=="diff")$label)))) {
+  stop_message <- paste(stop_message, "DIFF values from spreadsheet not found in qualitative_mappings.csv", sep="\n") 
+}
+# LM
+if (!sum((tolower(distinct(scenarios, lm)$lm) %in% filter(mappings, type=="lm")$label))) {
+  stop_message <- paste(stop_message, "LM values from spreadsheet not found in qualitative_mappings.csv", sep="\n") 
+}
+
+if (!is.null(stop_message)) {
+  stop(stop_message)
+}
 ```
 
 ## Output to Storage
