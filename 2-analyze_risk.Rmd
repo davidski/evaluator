@@ -23,7 +23,6 @@ output:
     reference_docx: styles/word-styles-reference.docx
     toc: yes
     toc_depth: 3
-    toc_float: yes
 monofont: Inconsolata
 subtitle: Evaluator Report Sample
 header-includes:
@@ -64,7 +63,9 @@ panderOptions('table.split.table', Inf) # allow pander to make pages wide
 panderOptions('table.alignment.default', function(df)
     ifelse(sapply(df, is.numeric), 'right', 'left'))
 panderOptions('big.mark', ",")
+```
 
+```{r load_external_chunks}
 knitr::read_chunk("./bin/load_data.R")
 knitr::read_chunk("./bin/common_graphs.R")
 knitr::read_chunk("./bin/utils.R")
