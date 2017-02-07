@@ -324,6 +324,7 @@ display_scenario_table <- function(scenario_summary, id) {
     "Median Single Loss" = dollar(round(sle_median))
   ) %>% t %>% pander(justify = c("left", "right"), 
                      emphasize.rownames = FALSE, 
+                     style = 'rmarkdown',
                      caption = paste("Scenario", id, "Overview"))
 }
 ```
