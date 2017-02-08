@@ -205,13 +205,7 @@ Cross validate the qualitative terms used in the spreadsheet with the
 mappings data file, `qualitative_mappings.csv`.
 
 ```{r check_qualitative_mappings}
-mappings <- read_csv("data/qualitative_mappings.csv", 
-                     col_types = cols( .default = col_integer(),
-                                       type = col_character(),
-                                       label = col_character(),
-                                       ml = col_double()
-                                       )
-                     )
+mappings <- read_csv("data/qualitative_mappings.csv")
 stop_message <- NULL
 
 # TEF
