@@ -15,13 +15,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r support_setup}
 if ("pacman" %in% installed.packages()) {
-  pacman::p_load(tidyverse, pbapply, readr, magrittr)
+  pacman::p_load(tidyverse, tcltk, readr, magrittr)
   if (!pacman::p_isinstalled(stringi)) {
     pacman::p_install(stringi)
   }
 } else {
   library(tidyverse)
-  library(pbapply)
+  library(tcltk)
   library(readr)
   library(magrittr)
   library(stringi)
@@ -142,19 +142,23 @@ is returned with metadata (attributes on the object) to note the date when these
 simulations were peformed.
 
 ```{r run_simulations}
-# the use of the list and the pblapply vs pbapply is a hack
-# for some reason, pbapply over rows wasn't giving x as a dataframe
-scen_list <- split(scenarios, seq(nrow(scenarios)))
-results <- pblapply(scen_list, function(x) {
-    calculate_ale(scenario = x,
-                  diff_estimates = control_params[[as.character(x$scenario_id)]],
-                  n = simulation_count,
-                  title = x$scenario_id,
-                  verbose = FALSE)
-})
-rm(scen_list)
+pb <- tkProgressBar(title = "Evaluator simulations", 
+                    label = "Working on simulation ",
+                    min = 1, max = nrow(scenarios), initial = 1)
 
-results <- bind_rows(results)
+results <- by_row(scenarios, function(x) {
+  #info <- sprintf("%d%% done", round(i))
+  setTkProgressBar(pb, x$scenario_id, 
+                   label = sprintf("Running scenario %s of %s", 
+                                   x$scenario_id, nrow(scenarios)))
+  calculate_ale(scenario = x,
+                diff_estimates = control_params[[as.character(x$scenario_id)]],
+                n = simulation_count,
+                title = x$scenario_id,
+                verbose = FALSE)}
+)
+
+close(pb)
 
 # convert title back to scenario_id
 results <- results %>% mutate(title = as.integer(title)) %>% 
@@ -176,7 +180,6 @@ results <- results %>% mutate(vuln = 1 - (threat_events - loss_events) /
 attr(results, "generated_on") <- Sys.time()
 # store how many simulations ran on each scenario
 attr(results, "simulation_count") <- simulation_count
-
 ```
 
 ## Create summary views
