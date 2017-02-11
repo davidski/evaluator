@@ -62,7 +62,7 @@ Don't be intimidated by the process. Evaluator is with you at every step!
 
 ### Prepare the Environment
 
-A working [R interpreter](https://www.r-project.org/) is required. Evaluator should work on any current version of R (v3.3.2 as of this writing) and on any supported platform (Windows, MacOS, or Linux). If the `pacman` package is installed, Evaluator will auto-install any missing dependencies. This README assumes the use of [RStudio IDE](https://www.rstudio.com/), but it is not strictly required (advanced users may manually `knit` files if they so choose).
+A working [R interpreter](https://www.r-project.org/) is required. Evaluator should work on any current version of R (v3.3.2 as of this writing) and on any supported platform (Windows, MacOS, or Linux). If the `pacman` package is installed (`install.packages("pacman")`), Evaluator will auto-install any missing dependencies. This README assumes the use of [RStudio IDE](https://www.rstudio.com/), but it is not strictly required (advanced users may manually `knit` files if they so choose).
 
 Obtain the Evaluator toolkit by either cloning this repository (`git clone https://github.com/davidski/evaluator`) or downloading and extracting the ZIP file from [GitHub](https://github.com/davidski/evaluator/archive/master.zip).
 
@@ -127,7 +127,7 @@ Advanced Customization
 Evaluator makes several assumptions to get you up and running as quickly as possible. Advanced users may implement several different customizations including:
 
 -   Risk tolerances - Organizational risk tolerances at a "medium" and "high" level are defined in `data/risk_tolerances.csv`. Risk tolerances are the aggregate economic loss thresholds defined by your organization. These are not necessarily the same as the size of potential losses from individual scenarios. A good proxy for risk tolerance is the budget authority implemented in your organization. The size of purchase signoff required at the executive level is generally a good indicator of the minimum floor for high risk tolerance.
--   Qualitative mappings - The translation of qualitative labels such as "Frequent" threat events and "Optimized" controls are defined in `data/qualitative_mappings.csv`. The values in this mapping may be changed but they must agree with the values used in the survey spreadsheet. Changing the number of levels used for any qualitative label (e.g. changing High/ Medium/Low to High/Medium/Low/VeryLow) is unsupported.
+-   Qualitative mappings - The translation of qualitative labels such as "Frequent" threat events and "Optimized" controls are defined in `data/qualitative_mappings.csv`. The values in this mapping may be changed but they must use lowercase and agree with the values used in the survey spreadsheet. Changing the number of levels used for any qualitative label (e.g. changing High/Medium/Low to High/Medium/Low/VeryLow) is unsupported.
 -   Styling - Look and feel (fonts, colors, etc.) is defined in the `styles/html-styles.css` and `styles/word-styles-reference.docx` files.
 
 Where to Go From Here
@@ -137,10 +137,11 @@ While Evaluator is a powerful tool, it does not explicitly attempt to address co
 
 Commercial Software
 
--   [RiskLens](http://www.risklens.com/), founded by the original creator of the FAIR methodology.
+-   [RiskLens](http://www.risklens.com/), founded by the original creator of the FAIR methodology
 
-Books/Training
+Blogs/Books/Training
 
+-   Russell C. Thomas's excellent and provocative blog post on systemic [Risk Management](http://exploringpossibilityspace.blogspot.com/2013/08/risk-management-out-with-old-in-with-new.html)
 -   [Measuring and Managing Information Risk](https://smile.amazon.com/gp/product/0124202314)
 -   [OpenFAIR certification](http://www.opengroup.org/certifications/openfair)
 -   [Hubbard Decision Research calibration training](https://www.hubbardresearch.com/training/)

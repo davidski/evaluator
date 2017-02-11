@@ -14,7 +14,7 @@ gg <- gg + scale_fill_viridis(guide = FALSE)
 gg <- gg + labs(x = NULL, y = NULL,
                 title = "Value at Risk by Domain",
                 caption = "Source: Evaluator toolkit") 
-gg <- gg + theme_evaluator() 
+gg <- gg + theme_evaluator(base_family = basefont) 
 gg <- gg + theme(axis.text = element_blank())
 gg <- gg + theme(panel.grid = element_blank())
 gg

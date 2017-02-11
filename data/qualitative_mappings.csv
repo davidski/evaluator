@@ -2,7 +2,7 @@ type,label,l,ml,h,conf
 tef,frequent,10,24,52,4
 tef,occasional,1,6,12,4
 tef,rare,0,0.1,1,4
-tc,high,50,60,98,3
+tc,high,50,75,98,3
 tc,medium,33,50,60,3
 tc,low,0,16,30,4
 diff,5 - Optimized,70,85,98,4

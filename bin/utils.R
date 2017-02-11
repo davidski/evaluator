@@ -7,13 +7,21 @@ dollar_millions <- function(x) {
   paste0("$", x, "M")
 }
 
+# determine fonts we can/should use
+get_base_fontfamily <- function() {
+  if ("BentonSansRE" %in% extrafont::fonts()) {
+    "BentonSansRE" 
+  } else 
+    "Arial Narrow"
+}
+
 #default theme
 theme_evaluator <- function(base_family="BentonSansRE") {
   theme_minimal(base_family = base_family) %+replace% 
     theme(
       panel.border = element_blank(),
       legend.position = "bottom",
-      plot.caption = element_text(size = 9, hjust=1)
+      plot.caption = element_text(size = 9, hjust = 1)
     )
 }
 

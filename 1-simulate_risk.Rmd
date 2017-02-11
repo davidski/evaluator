@@ -13,6 +13,7 @@ params:
     max: !r 1 * 10^5
 output:
   html_document: default
+  word_document: default
   pdf_document: default
 ---
 
@@ -97,6 +98,14 @@ control_params <- map2(scenarios$controls, scenarios$scenario_id,
                        ~derive_controls(.x, .y)) %>%
   flatten
 names(control_params) <- scenarios$scenario_id
+
+# verify that we were able to encode everything
+unencoded_params <- control_params %>% map(~ sum(!complete.cases(.))) %>% 
+  unlist(use.names=FALSE) %>% sum
+if (unencoded_params > 0) {
+  stop("Not able to translate all capabilities to parameters. ", 
+       "Does qualitative_mappings.csv match what the values in the spreadsheet?")
+}
 ```
 
 ### Threats Encoding
