@@ -47,6 +47,11 @@ if ("pacman" %in% installed.packages()) {
   library(pander)
   library(stringi)
 }
+
+panderOptions('table.split.table', Inf) # allow pander to make pages wide
+panderOptions('table.alignment.default', function(df)
+    ifelse(sapply(df, is.numeric), 'right', 'left'))
+panderOptions('big.mark', ",")
 ```
 
 # Process
