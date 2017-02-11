@@ -2,11 +2,14 @@
 title: "Import Survey"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 params:
-  write_files: yes
+  write_files:
+    label: "Write results to disk"
+    value: TRUE
+    choices: [TRUE, FALSE]
 output:
+  html_document: default
   pdf_document: default
   html_notebook: default
-  html_document: default
   word_document: default
 ---
 

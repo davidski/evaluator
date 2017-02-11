@@ -2,7 +2,7 @@
 title: "Strategic Information Security Risk Simulation"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 params:
-  save_flag:
+  write_files:
     label: "Write results to disk"
     value: TRUE
     choices: [TRUE, FALSE]
@@ -38,12 +38,12 @@ source("bin/qual_to_quant.R")  # custom quant/qual conversions
 source("bin/openfair.R")       # OpenFAIR simulator
 ```
 
-If you want to save the simulation run, set the `save_flag` variable to `TRUE`.
+If you want to save the simulation run, set the `write_files` variable to `TRUE`.
 Set the number of simualations to run for each scenario in the `simulation_count` 
 variable.
 
 ```{r parameter_setup}
-save_flag <- params$save_flag
+save_flag <- params$write_files
 simulation_count <- params$simulation_count
 ```
 
