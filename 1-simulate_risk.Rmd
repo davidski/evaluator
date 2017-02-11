@@ -1,12 +1,19 @@
 ---
 title: "Strategic Information Security Risk Simulation"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
+params:
+  save_flag:
+    label: "Write results to disk"
+    value: TRUE
+    choices: [TRUE, FALSE]
+  simulation_count: 
+    label: "Number of simulations to run on each scenarios"
+    value: 10000
+    min: 1
+    max: !r 1 * 10^5
 output:
   html_document: default
   pdf_document: default
-params:
-  save_flag: TRUE
-  simulation_count: 10000
 ---
 
 ```{r setup, include=FALSE}
