@@ -155,11 +155,15 @@ results <- by_row(scenarios, function(x) {
                 diff_estimates = control_params[[as.character(x$scenario_id)]],
                 n = simulation_count,
                 title = x$scenario_id,
-                verbose = FALSE)}
+                verbose = FALSE)},
+  .labels = FALSE, .collate = "rows"
 )
 
 close(pb)
+results %<>% select(-`.row`)
+```
 
+```{r tidy_results}
 # convert title back to scenario_id
 results <- results %>% mutate(title = as.integer(title)) %>% 
   rename(scenario_id = title)
