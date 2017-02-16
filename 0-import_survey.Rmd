@@ -132,8 +132,8 @@ Apply the helper function to the raw Excel import.
 
 ```{r walk_the_frame}
 raw_domains %>% 
-  mutate(capabilities = map(.$raw_data, split_sheet), 
-         threats = map(.$raw_data, ~ split_sheet(dat = .x, table_type = "threats"))) %>% 
+  mutate(capabilities = map(raw_data, split_sheet), 
+         threats = map(raw_data, ~ split_sheet(dat = .x, table_type = "threats"))) %>% 
   select(-raw_data) -> dat
 dat
 ```

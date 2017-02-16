@@ -341,5 +341,3 @@ loss_table <- reactive({
 
 renderTable({loss_table()}, include.rownames = FALSE)
 ```
-
-

@@ -185,10 +185,8 @@ results <- results %>% mutate(title = as.integer(title)) %>%
   rename(scenario_id = title)
 
 # add the domain_id column
-scenarios2 <- scenarios %>% select(scenario_id, domain_id)
-results <- results %>% left_join(scenarios2, 
-                                 by = c("scenario_id" = "scenario_id"))
-rm(scenarios2)
+results %>% left_join(select(scenarios, c(scenario_id, domain_id)), 
+                      by = c("scenario_id" = "scenario_id")) %>% View
 
 # calculate the vuln percentage
 # note that for no threat events, we report a NA vuln value

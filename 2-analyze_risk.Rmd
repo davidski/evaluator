@@ -963,7 +963,8 @@ gg <- gg + geom_histogram(binwidth = max(gg$data$value) / 50,
                           aes(y = ..density..),
                           color = "black", fill = viridis(2)[1], alpha = 1/5)
 gg <- gg + geom_density(fill=viridis(2)[2], alpha = 1/5)
-gg <- gg + facet_wrap(~measure, nrow=2, "free_x", strip.position = "left", labeller = as_labeller(measure_names))
+gg <- gg + facet_wrap(~measure, nrow=2, "free_x", strip.position = "left", 
+                      labeller = as_labeller(measure_names))
 gg <- gg + scale_x_continuous(labels = dollar_millions)
 #gg <- gg + scale_y_continuous(labels = comma)
 gg <- gg + labs(x = "Loss Size", y = element_blank(), 
@@ -1041,7 +1042,7 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
 ```{r capabilities_table}
 arrange(capabilities, domain_id, id) %>%
   select("Domain ID" = domain_id, "Capability" = capability, "Maturity" = diff) %>%
-  pander(., caption = "Capability Listing", split.cells = c(10, 40, 15), 
+  pander(caption = "Capability Listing", split.cells = c(10, 40, 15), 
          justify = c('left', 'left', 'left'))
 
 ```
