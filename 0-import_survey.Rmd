@@ -32,7 +32,7 @@ The survey spreadsheet must have one tab for each domain ID defined in the
 `data/domains.csv` file. Each domain tab must have a capabilities table 
 beginning at row 2 (with row 1 ignored as the table title), followed 
 by one blank row, the Threats table tile, then the threats table itself. All 
-other  sheets (instructions, reference, etc.) are ignored.
+other sheets (instructions, reference, etc.) are ignored.
 
 ```{r setup, include=FALSE}
 if ("pacman" %in% installed.packages()) {
@@ -167,7 +167,7 @@ scenarios
 Perform some minimal data validation between the capabilites and scenarios 
 tables.
 
-```{r valdiate}
+```{r valdiate_spreadsheet}
 # Check that scenario IDs have no gaps
 scenario_gaps <- setdiff(seq(range(scenarios$scenario_id)[1], 
                               range(scenarios$scenario_id)[2]), 
@@ -254,6 +254,6 @@ if (exists("write_files") && write_files)  {
   file.info(c("data/capabilities.csv", "data/scenarios.csv")) %>% 
     rownames_to_column("filename") %>% as_data_frame %>% pander
 } else {
-  message("Write_files not set. Not writing to disk.")
+  message("Write_files not set to TRUE. Not writing to disk.")
 }
 ```
