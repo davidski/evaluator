@@ -1,4 +1,7 @@
 language: r
+branches:
+  only:
+  - heroku
 cache: packages
 deploy:
   provider: heroku
