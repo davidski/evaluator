@@ -217,20 +217,24 @@ mappings <- read_csv("data/qualitative_mappings.csv")
 stop_message <- NULL
 
 # TEF
-if (!sum((tolower(distinct(scenarios, tef)$tef) %in% filter(mappings, type=="tef")$label))) {
-  stop_message <- paste(stop_message, "TEF values from spreadsheet not found in qualitative_mappings.csv", sep="\n") 
+if (!all((tolower(distinct(scenarios, tef)$tef) %in% filter(mappings, type=="tef")$label))) {
+  stop_message <- paste(stop_message, 
+                        "There are TEF values in the scenarios spreadsheet which are not in qualitative_mappings.csv", sep="\n") 
 }
 # TC
-if (!sum((tolower(distinct(scenarios, tc)$tc) %in% filter(mappings, type=="tc")$label))) {
-  stop_message <- paste(stop_message, "TC values from spreadsheet not found in qualitative_mappings.csv", sep="\n") 
+if (!all((tolower(distinct(scenarios, tc)$tc) %in% filter(mappings, type=="tc")$label))) {
+  stop_message <- paste(stop_message, 
+                        "There are TC values in the scenarios spreadsheet not found in qualitative_mappings.csv", sep="\n") 
 }
 # DIFF
-if (!sum((tolower(distinct(capabilities, diff)$diff) %in% tolower(filter(mappings, type=="diff")$label)))) {
-  stop_message <- paste(stop_message, "DIFF values from spreadsheet not found in qualitative_mappings.csv", sep="\n") 
+if (!all((tolower(distinct(capabilities, diff)$diff) %in% tolower(filter(mappings, type=="diff")$label)))) {
+  stop_message <- paste(stop_message, 
+                        "There are DIFF values in the scenarios spreadsheet not found in qualitative_mappings.csv", sep="\n") 
 }
 # LM
-if (!sum((tolower(distinct(scenarios, lm)$lm) %in% filter(mappings, type=="lm")$label))) {
-  stop_message <- paste(stop_message, "LM values from spreadsheet not found in qualitative_mappings.csv", sep="\n") 
+if (!all((tolower(distinct(scenarios, lm)$lm) %in% filter(mappings, type=="lm")$label))) {
+  stop_message <- paste(stop_message, 
+                        "There are LM values in the scenarios spreadsheet not found in qualitative_mappings.csv", sep="\n") 
 }
 
 if (!is.null(stop_message)) {
