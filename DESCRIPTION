@@ -1,0 +1,43 @@
+Package: evaluator
+Title: Information Security Quantified Risk Assessment Toolkit
+Version: 0.0.0.9000
+Authors@R: person("David", "Severski", email = "davidski@deadheaven.com", role = c("aut", "cre"))
+Description: Evaluator is an open source information security strategic risk 
+  analysis toolkit. Based on the OpenFAIR taxonomy 
+  (https://www2.opengroup.org/ogsys/catalog/C13K) and risk assessment standard 
+  (https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator empowers an 
+  organization to perform a quantifiable, repeatable, and data-driven review 
+  of its security program.
+Depends: R (>= 3.3.2)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+  dplyr, 
+  extrafont,
+  ggalt (>= 0.4.0),
+  ggplot2,
+  magrittr,
+  mc2d,
+  pander,
+  purrr,
+  psych,
+  readr,
+  readxl,
+  rmarkdown,
+  scales, 
+  stringi,
+  tibble,
+  tidyr,
+  tcltk,
+  viridis
+RoxygenNote: 6.0.1
+Suggests:
+    DT,
+    flexdashboard (>= 0.4),
+    modeest,
+    knitr,
+    rmarkdown,
+    shiny,
+    testthat
+VignetteBuilder: knitr

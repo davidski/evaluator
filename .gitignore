@@ -1,28 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
-.Ruserdata   
-*.Rdata
-*.html
-*.pdf
-*.png
-*rsconnect*
-*.Rds
-
-#UE backup files
+input_files
 *.bak
-
-#knitr caches
-*_cache
-
-#ignore data
-capabilities.csv
-scenarios.csv
-
-# ignore knited files
-*.pdf
-*.html
-*.docx
-
-# ignore config files
-.evaluator*
+inst/doc

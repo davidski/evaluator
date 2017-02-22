@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+.travis.yml
+CODE_OF_CONDUCT.md
+INSTALL_EXTRAS.md
+README.Rmd
