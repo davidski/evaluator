@@ -8,19 +8,22 @@
 #' @return List of data objects
 #' @export
 load_data <- function(input_directory, results_directory) {
+  # full results
   simulation_results <- NULL
-  load(file = file.path(results_directory, "simulation_results.Rdata"))  # full results
-  scenario_summary <- NULL
-  load(file = file.path(results_directory, "scenario_summary.Rdata"))  # scenario level summary
+  load(file.path(results_directory, "simulation_results.rda"))
+  # scenario level summary
+  sceanrio_summary <- NULL
+  load(file.path(results_directory, "scenario_summary.rda"))
+  # domain level summary
   domain_summary <- NULL
-  load(file = file.path(results_directory, "domain_summary.Rdata"))  # domain level summary
+  load(file.path(results_directory, "domain_summary.rda"))
 
   # details on our scenarios
   domains <- readr::read_csv(file.path(input_directory, "domains.csv"))  # domain catalog
   mappings <- readr::read_csv(file.path(input_directory, "qualitative_mappings.csv"))  # qualitative translations
   capabilities <- readr::read_csv(file.path(input_directory, "capabilities.csv"))  # i.e. objectives & controls
   risk_tolerances <- readr::read_csv(file.path(input_directory, "risk_tolerances.csv"))  # i.e. risk tolerances
-  scenarios <- readr::read_csv(file.path(input_directory, "scenarios.csv")) %>%
+  scenarios <- readr::read_csv(file.path(input_directory, "qualitative_scenarios.csv")) %>%
     mutate_("tef" = ~ tolower(tef), "lm" = ~ tolower(lm), "tc" = ~ tolower(tc))
 
   # Precalculate the standard order of scenarios (domain, then ID of the scenario)

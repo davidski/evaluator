@@ -4,7 +4,8 @@
 \alias{generate_report}
 \title{Generate sample analysis report.}
 \usage{
-generate_report(input_directory = "data", results_directory = "results",
+generate_report(input_directory = file.path(getwd(), "data"),
+  results_directory = file.path(getwd(), "results"),
   output_file = "risk_report.html", ...)
 }
 \arguments{

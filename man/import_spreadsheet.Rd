@@ -19,5 +19,7 @@ subdirectory in the current working direction.}
 Dataframe of generated files (capabilities.csv and scenarios.csv)
 }
 \description{
-Import the scenario spreadsheet.
+This is a wrapper function around \code{import_scenarios} and
+\code{import_capabilities}, calling both functions and writting the dataframes
+to a location on disk.
 }

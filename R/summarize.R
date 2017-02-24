@@ -2,7 +2,7 @@
 #'
 #' @import dplyr
 #' @importFrom magrittr "%<>%"
-#' @param simulation_results Input directory
+#' @param simulation_results Simulation results dataframe
 #' @export
 #' @return Simulation results summarized by scenario
 summarize_scenarios <- function(simulation_results) {
@@ -38,8 +38,7 @@ summarize_scenarios <- function(simulation_results) {
 #' Create domain level summary of simulation results.
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
-#' @param simulation_results Input directory
+#' @param simulation_results Simulation results dataframe
 #' @param domains Domain mappings
 #' @export
 #' @return Simulation results summarized by domain
@@ -48,4 +47,31 @@ summarize_domains <- function(simulation_results, domains) {
     summarise_(ale = ~ sum(ale)) %>%
     left_join(domains, by = c("domain_id" = "domain_id")) %>%
     select_("domain_id", "domain", "simulation", "ale", ~ everything())
+}
+
+#' Create all summary files and write to disk.
+#'
+#' This is a wrapper function around \code{summarize_scenarios} and
+#' \code{summarize_domains}, calling both functions and writting the dataframes
+#' to a location on disk.
+#'
+#' @importFrom magrittr "%>%"
+#' @param simulation_results Simulation results dataframe
+#' @param domains Domain mappings dataframe
+#' @param results_dir Directory to place simulation files
+#' @export
+#' @return Simulation results summarized by domain
+summarize_all <- function(simulation_results, domains, results_dir =
+                            file.path(getwd(), "results")) {
+  if (!dir.exists(results_dir)) dir.create(results_dir)
+
+  scenario_summary <- summarize_scenarios(simulation_results)
+  save(scenario_summary, file = file.path(results_dir, "scenario_summary.rda"))
+
+  domain_summary <- summarize_domains(simulation_results, domains)
+  save(domain_summary, file = file.path(results_dir, "domain_summary.rda"))
+
+  file.info(c(file.path(results_dir, "scenario_summary.rda"),
+              file.path(results_dir, "domain_summary.rda"))) %>%
+    tibble::rownames_to_column("filename") %>% tibble::as_data_frame()
 }

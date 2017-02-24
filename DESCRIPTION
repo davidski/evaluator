@@ -24,7 +24,6 @@ Imports:
   psych,
   readr,
   readxl,
-  rmarkdown,
   scales, 
   stringi,
   tibble,

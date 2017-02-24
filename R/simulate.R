@@ -45,17 +45,17 @@ run_simulations <- function(scenario, simulation_count = 10000L) {
   simulation_results %<>% mutate_("title" = ~ as.integer(title)) %>%
     rename_("scenario_id" = "title")
 
-  # add the domain_id column
-  simulation_results %<>% left_join(select_(scenario, 'c(scenario_id, domain_id)'),
-                                    by = c("scenario_id" = "scenario_id")) %>%
-    select_("domain_id", "scenario_id", "simulation", "threat_events",
-            "loss_events", "vuln", everything())
-
   # calculate the vuln percentage
   # note that for no threat events, we report a NA vuln value
   simulation_results %<>% mutate_(vuln = ~ 1 - (threat_events - loss_events) /
                                     threat_events,
                                   vuln = ~ ifelse(vuln < 0, 0, vuln))
+
+  # add the domain_id column
+  simulation_results %<>% left_join(select_(scenario, 'c(scenario_id, domain_id)'),
+                                    by = c("scenario_id" = "scenario_id")) %>%
+    select_("domain_id", "scenario_id", "simulation", "threat_events",
+            "loss_events", "vuln", ~everything())
 
   # store the date on which this simulation set was generated
   attr(simulation_results, "generated_on") <- Sys.time()

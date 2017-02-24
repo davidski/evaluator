@@ -48,7 +48,7 @@ calculate_weak_domains <- function(simulation_results, domains) {
 #' @return Dataframe
 #' @export
 calculate_domain_impact <- function(domain_summary, domains) {
-  domain_summary %>% group_by_("domain_id") %>% select_("domain_id", "ale") %>%
+  domain_summary %>% group_by_(~domain_id) %>% select_("domain_id", "ale") %>%
     summarize_at(vars(ale), funs(min, mean, max, sd, var = quantile(., probs = 0.95))) %>%
     arrange_("desc(var)") %>% ungroup %>%
     left_join(domains, by = c(domain_id = "domain_id")) %>%

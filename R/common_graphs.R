@@ -52,19 +52,17 @@ generate_heatmap <- function(domain_impact){
 #' @return ggplot object
 #' @export
 generate_scatterplot <- function(simulation_results, scenario_id){
-  plot_data    <- simulation_results[scenario_id, ]
-  gg <- ggplot(plot_data, aes(x = loss_events, y = ale))
+  dat <- simulation_results[simulation_results$scenario_id == scenario_id, ]
+
+  gg <- ggplot(dat, aes_(x = quote(loss_events), y = quote(ale)))
   gg <- gg + geom_point(alpha = 1/4)
   gg <- gg + scale_y_continuous(labels = dollar_millions,
-                                limits = c(NA, max(simulation_results$ale, na.rm = TRUE)))
-  gg <- gg + scale_x_continuous(labels = comma,
-                                limits = c(NA, max(simulation_results$loss_events, na.rm = TRUE)))
+                                limits = c(NA, max(simulation_results$ale,
+                                                   na.rm = TRUE)))
+  gg <- gg + scale_x_continuous(labels = scales::comma,
+                                limits = c(NA, max(simulation_results$loss_events,
+                                                   na.rm = TRUE)))
   gg <- gg + labs(x = "Loss Frequency (Annualized)", y = "Total Annual Loss Size")
-  #gg <- gg + geom_point(position = "jitter", alpha = 0.1)
-  #gg <- gg + stat_bin2d(bins = 50) + scale_fill_gradient(low = 'lightblue', high = 'red')
-  #gg <- gg + stat_binhex(bins = 50) + scale_fill_gradient(low = 'lightblue', high = 'red')
-  #gg <- gg + geom_text(aes(label = threat_id), size = 4)
-  #gg <- gg + scale_x_log10(labels = comma) + scale_y_log10(labels = comma)
   gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
   gg
 }
@@ -78,10 +76,10 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' @export
 generate_event_outcomes_plot <- function(control_weakness) {
   dat <- control_weakness %>%
-    arrange(desc(loss_events), desc(threat_events)) %>%
-    mutate(domain_id = factor(domain_id, levels = rev(unique(domain_id)),
+    arrange_("desc(loss_events)", "desc(threat_events)") %>%
+    mutate_(domain_id = ~ factor(domain_id, levels = rev(unique(domain_id)),
                               ordered = TRUE)) %>%
-    mutate(contained_events = threat_events - loss_events)
+    mutate_(contained_events = ~ threat_events - loss_events)
 
   # nudge labels 5% off from the end of the segment
   label_nudge = c(max(dat$loss_events) / 20 * -1, max(dat$contained_events) / 20)
@@ -90,10 +88,10 @@ generate_event_outcomes_plot <- function(control_weakness) {
   break_locations = c(max(dat$loss_events) / 2 * -1.5, max(dat$contained_events) / 2 * 1.5)
 
   # convert data into tidy-er format
-  dat <- dat %>% gather(type, events, c(loss_events, contained_events)) %>%
-    mutate(actual_events = events,
-           events = events + 25000,
-           events = ifelse(type == "loss_events", -1 * events, events)) %>%
+  dat <- tidyr::gather_(dat, "type", "events", c("loss_events", "contained_events")) %>%
+    mutate_(actual_events = "events",
+           events = ~ events + 25000,
+           events = ~ ifelse(type == "loss_events", -1 * events, events)) %>%
     mutate_("nudge" = ~ ifelse(type == "loss_events", label_nudge[1], label_nudge[2])) %>%
     mutate_("hjust" = ~ ifelse(type == "loss_events", "right", "left")) %>%
     mutate_("full_lab" = ~ ifelse(type == "loss_events",
@@ -104,14 +102,15 @@ generate_event_outcomes_plot <- function(control_weakness) {
   event_range <- range(dat$events) * c(1.4, 1.5)
 
   # graph
-  gg <- ggplot(dat, aes(x = events, xend = 0, y = domain_id)) -> gg
-  gg <- gg + geom_segment(aes(yend = domain_id), color = viridis::viridis(1))
+  gg <- ggplot(dat, aes_(x = ~events, xend = 0, y = ~domain_id)) -> gg
+  gg <- gg + geom_segment(aes_(yend = ~domain_id), color = viridis::viridis(1))
   gg <- gg + geom_point(color = viridis::viridis(1), size = 2)
-  gg <- gg + geom_label(aes(label = full_lab, x = events + nudge, y = domain_id,
-                            hjust = hjust), family = "Arial Narrow", size = 3,
+  gg <- gg + geom_label(aes_(label = ~full_lab, x = ~events + nudge,
+                             y = ~domain_id, hjust = ~hjust),
+                        family = "Arial Narrow", size = 3,
                         label.size = NA)
-  gg <- gg + geom_label(aes(x = 0, y = domain_id, label = domain_id), size = 3,
-                        label.size = NA)
+  gg <- gg + geom_label(aes_(x = 0, y = ~domain_id, label = ~domain_id),
+                        size = 3, label.size = NA)
   gg <- gg + scale_x_continuous(breaks = c(break_locations[1], 0, break_locations[2]),
                                 labels = c("Loss Events", "Domain", "Contained Events"),
                                 position = "top",

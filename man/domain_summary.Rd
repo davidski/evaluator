@@ -3,7 +3,7 @@
 \docType{data}
 \name{domain_summary}
 \alias{domain_summary}
-\title{Domain-level Risk Summary}
+\title{Domain-level risk summary}
 \format{An object of class \code{grouped_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 140000 rows and 4 columns.}
 \usage{
 domain_summary

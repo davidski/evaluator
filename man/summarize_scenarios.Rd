@@ -7,7 +7,7 @@
 summarize_scenarios(simulation_results)
 }
 \arguments{
-\item{simulation_results}{Input directory}
+\item{simulation_results}{Simulation results dataframe}
 }
 \value{
 Simulation results summarized by scenario

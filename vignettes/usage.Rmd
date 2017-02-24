@@ -44,14 +44,15 @@ This README does not define terms commonly used in an OpenFAIR analysis.
 While not a prerequisite, a review of OpenFAIR methodology and terminology is 
 highly recommended. Familiarity with the R language is also very helpful.
 
-Follow these six steps to running the toolkit:
+Follow these seven steps to run the toolkit:
 
-1. Prepare the environment
-2. Define your security domains
-3. Define your controls and risk scenarios
-4. Import the scenarios
+1. Define your controls and risk scenarios
+2. Import the scenarios
+3. Validate the data is ready for simulation
+4. Encode the qualitative labels into quantiative parameters
 5. Run the simulations
-6. Analyze the results
+6. Summarize the simulation outputs
+7. Analyze the results
 
 Don't be intimidated by the process. Evaluator is with you at every step!
 
@@ -65,7 +66,30 @@ required.
 
 Obtain the Evaluator toolkit by installing via `devtools::install_github('davidski/evaluator')`.
 
-### Define Your Security Domains
+If you would like to work with the supplied sample data files, execute 
+the following code:
+```{r prepare_sample_environement, eval=FALSE}
+library(dplyr)     # piping
+library(readr)     # better CSV handling
+library(evaluator) # core evaluator toolkit
+
+# create default directories
+if (!dir.exists("data")) dir.create("data")
+if (!dir.exists("results")) dir.create("results")
+
+# copy sample files
+file.copy(system.file("extdata", "domains.csv", package="evaluator"), 
+          "data/")
+file.copy(system.file("extdata", "qualitative_mappings.csv", 
+                      package="evaluator"), 
+          "data/")
+file.copy(system.file("extdata", "risk_tolerances.csv", package="evaluator"), 
+          "data/")
+file.copy(system.file("survey", "survey.xlsx", package = "evaluator"),
+          "data/")
+```
+
+### Define Your Controls and Security Domains
 
 Evaluator needs to know the domains of your security program. These are the 
 major buckets into which you subdivide your program, typically including areas 
@@ -75,13 +99,11 @@ with a demonstration model based upon the
 [HITRUST CSF](https://hitrustalliance.net/hitrust-csf/). If you have a 
 different domain structure (e.g. ISO2700x, NIST CSF, or COBIT), you will
 need to edit the `data/domains.csv` file to include the domain names and the 
-domain IDs, and a shorthand abbreviation for the domain (such as POL for the Policy 
-domain).
+domain IDs, and a shorthand abbreviation for the domain (such as POL for the 
+Policy domain).
 
-### Define Your Controls and Risk Scenarios
-
-Indentifying the controls (or capabilities) and key risk scenarios associated 
-with each of your domains is critical to the final analysis. The elements are 
+Indentifying the controls (or capabilities) and risk scenarios associated  with 
+each of your domains is critical to the final analysis. The elements are 
 documented in an Excel workbook. The workbook includes one tab per domain, with 
 each tab named after the domain IDs defined in the previous step. Each tab 
 consists of a controls table and a threats table.
@@ -113,26 +135,23 @@ the scenario.
 ### Import the Scenarios
 
 To extract the spreadsheet into data files for further analysis, run 
-`import_spreadsheet("PATH", domains)`. Evaluator The notebook will extract the data. 
+`import_spreadsheet("PATH", domains)`. Evaluator will extract the data and 
+save two comma seperated files in a `data` directory with the results. 
 
 ```{r import, eval=FALSE}
-library(dplyr)     # piping
-library(readr)     # better CSV handling
-library(evaluator) # core evaluator toolkit
-
-domains <- system.file("extdata", "domains.csv", package="evaluator") %>% 
-  read_csv()
+domains <-  readr::read_csv("data/domains.csv")
 system.file("survey", "survey.xlsx", package = "evaluator") %>% 
   import_spreadsheet(., domains)
 ```
 
 ### Validate the Data
-`validate_scenarios()`. If there are data validation errors, the process will 
-abort and an error message will be displayed. Correct the spreadsheet, reimport, 
-and repeat validation process until there are no errors. 
+Run the command `validate_scenarios()`. If there are data validation errors, 
+the process will abort and an error message will be displayed. Correct the 
+errors displayed, reimport, and repeat the validation process until there are 
+no errors reported. 
  
 ```{r validate, eval=FALSE}
-mappings <- system.file("extdata", "qualitative_mappings.csv", package="evaluator") %>% readr::read_csv()
+mappings <-  readr::read_csv("data/qualitative_mappings.csv")
 qualitative_scenarios <- readr::read_csv("./data/qualitative_scenarios.csv")
 capabilities <- readr::read_csv("./data/capabilities.csv")
 validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
@@ -148,30 +167,36 @@ quantitative_scenarios <- encode_scenarios(qualitative_scenarios,
 
 ### Run the Simulations
 
-Once the data is ready for the simulations, open the `1-simulate_risk.Rmd` 
-notebook and click `knit`. By default, Evaluator puts each scenario through 
-10,000 individual simulated years, modelling how often the threat actor will 
-come into contact with your assets, the strength of the threat actor, the 
-strength of your controls, and the losses involved in any situation where the 
-threat strength exceeds your control strength. This simulation process can be 
-computationally intense. The sample data set takes approximately five minutes on 
-my primary development machines (last generation Windows-based platforms).
+Once the data is translated into quantitative scenarios and ready for 
+simulation, run `run_simulations(quantitative_scenarios)`. By default, 
+Evaluator puts each scenario through 10,000 individual simulated years, 
+modelling how often the threat actor will come into contact with your assets,
+the strength of the threat actor, the strength of your controls, and the 
+losses involved in any situation where the threat strength exceeds your 
+control strength. This simulation process can be  computationally intense. The 
+sample data set takes approximately five minutes on my primary development 
+machines (last generation Windows-based platforms).
 
 ```{r simulate, eval = FALSE}
-results <- run_simulations(quantitative_scenarios, simulation_count = 1000L)
+simulation_results <- run_simulations(quantitative_scenarios, 
+                                      simulation_count = 1000L)
 ```
 
 ### Analyze the Results
 
-A template for a technical risk report is provided in `2-analyze_risk.Rmd`. 
-To use, open the document and click on `Knit to Word`. This will create a 
-pre-populated risk report that identifies key scenarios and generates 
-initial plots for to be used in creating a final analysis report. The 
-`risk_dashboard.Rmd` file builds an executive summary dashboard.
+Several analysis functions are provided, including a template for a technical 
+risk report. Assuming that the input files have been placed in a `data` 
+directory and the simulation results and summary files in a `results` directory, 
+the risk report can be generated via 
+`generate_report(input_directory = "~/data", results_directory = "~/PATH")`.
+This will create a pre-populated risk report that identifies key scenarios 
+and generates initial plots for to be used in creating a final analysis report. 
+Other included report tools include `risk_dashboard()`.
 
-For interactive exploration, open the `explore_scenarios.Rmd` file and click 
-on `Run Document` to launch a local copy of the Scenario Explorer application.
-The Scenario Explorer app may be used to view information about the individual 
+For interactive exploration, run 
+`explore_scenarios(input_directory = "~/data", results_directory = "~/results")` 
+to launch a local copy of the Scenario Explorer application. The Scenario 
+Explorer app may be used to view information about the individual 
 scenarios and provides a sample overview of the entire program. 
 
 For more in depth analysis, the following data files may be used directly 
@@ -181,8 +206,9 @@ from R or from external programs such as Tableau:
 pacman::p_load(tidyr)
 tibble::tribble(
     ~`Data File`, ~Purpose,
-    'simulation_results.Rds', 'Full details of each simulated scenario',
-    'scenarios_summary.Rds', 'Quantitative values of each scenario, as converted from the qualitative spreadsheet'
+    'simulation_results.rda', 'Full details of each simulated scenario',
+    'scenario_summary.rda', 'Simulation results, summarized at the scenario level'
+    'domain_summary.rda', 'Simulation results, summarized at the domain level'
 ) %>% pander::pander(., justify = "left")
 ```
 
@@ -190,6 +216,9 @@ tibble::tribble(
 # summarize
 scenario_summary <- summarize_scenarios(results)
 domain_summary <- summarize_domains(results, domains)
+
+# or to save the summary files directly to disk
+summarize_all(simulation_results = simulation_results, domains = domains)
 
 # define risk tolerances
 risk_tolerances <- system.file("extdata", "risk_tolerances.csv", 
@@ -202,6 +231,11 @@ explore_scenarios()
 generate_report(input_directory, results_directory) %>% rstudio::viewer()
 ```
 
+Or, to view that same report as a Word document for editting, use 
+`generate_report(input_directory, results_directory, output_format = "word_document")`.
+
+If you'ld rather work on the source RMarkdown file or direct editting and 
+graphics tweaking, use `system.file("rmd, "analyze_risk.Rmd", package = "evaluator")` to find he location of the native template on your system.
 
 ## Advanced Customization
 
@@ -210,7 +244,7 @@ possible. Advanced users may implement several different customizations
 including:
 
 - Risk tolerances - Organizational risk tolerances at a "medium" and "high" 
-level are defined in `data/risk_tolerances.csv`. Risk tolerances are the
+level are defined in `risk_tolerances.csv`. Risk tolerances are the
 aggregate economic loss thresholds defined by your organization. These are not 
 necessarily the same as the size of potential losses from individual 
 scenarios. A good proxy for risk tolerance is the budget authority implemented 
@@ -219,7 +253,7 @@ level is generally a good indicator of the minimum floor for high risk
 tolerance.
 - Qualitative mappings - The translation of qualitative labels such as 
 "Frequent" threat events and "Optimized" controls are defined in 
-`data/qualitative_mappings.csv`. The values in this mapping may be changed 
+`qualitative_mappings.csv`. The values in this mapping may be changed 
 but they must use lowercase and agree with the values used in the survey 
 spreadsheet. Changing the number of levels used for any qualitative label 
 (e.g. changing High/Medium/Low to High/Medium/Low/VeryLow) is unsupported.

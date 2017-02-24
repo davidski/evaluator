@@ -2,6 +2,7 @@ language: r
 branches:
   only:
   - heroku
+  - master
 cache: packages
 deploy:
   provider: heroku

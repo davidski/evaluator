@@ -1,4 +1,14 @@
-#' Domain-level Risk Summary
+#' Domain mappings
+#'
+#' A dataset of domains and domain IDs.
+#'
+#' \describe{
+#'   \item{domain_id}{abbreviated name of the domain}
+#'   \item{domain}{full title of the domain}
+#' }
+"domains"
+
+#' Domain-level risk summary
 #'
 #' A dataset of quantified information security risk, summarized at the
 #' domain level.
@@ -11,7 +21,7 @@
 #' }
 "domain_summary"
 
-#' Scenario-level Risk Summary
+#' Scenario-level risk summary
 #'
 #' A dataset of quantified information security risk, summarized at the
 #' scenario level.
@@ -38,9 +48,9 @@
 #' }
 "scenario_summary"
 
-#' Information Security Risk Scenarios
+#' Information security risk scenarios
 #'
-#' A dataset of information security risk scenarios, with parameters
+#' A dataset of quantified information security risk scenarios, with parameters
 #' describing the distribution of each input.
 #'
 #' \describe{
@@ -62,7 +72,7 @@
 #'   \item{tef_h}{threat event frequency - high}
 #'   \item{tef_conf}{threat event frequency - confidence}
 #' }
-"scenarios_full"
+"quantitative_scenarios"
 
 #' Information security risk simulation results
 #'

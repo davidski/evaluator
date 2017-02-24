@@ -6,8 +6,8 @@
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
-generate_report <- function(input_directory = "data",
-                            results_directory = "results",
+generate_report <- function(input_directory = file.path(getwd(), "data"),
+                            results_directory = file.path(getwd(), "results"),
                             output_file = "risk_report.html", ...) {
   rmarkdown::render(system.file("rmd", "analyze_risk.Rmd", package = "evaluator"),
                     output_file = output_file, output_dir = getwd(),
@@ -33,7 +33,7 @@ explore_scenarios <- function(input_directory = "data",
                  render_args = list(
                    params = list(input_directory = input_directory,
                                results_directory = results_directory)))
-  invisibile(NULL)
+  invisible(NULL)
 }
 
 #' Launch OpenFAIR demonstration web application.

@@ -3,7 +3,7 @@
 \docType{data}
 \name{scenario_summary}
 \alias{scenario_summary}
-\title{Scenario-level Risk Summary}
+\title{Scenario-level risk summary}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 18 columns.}
 \usage{
 scenario_summary
