@@ -1,4 +1,6 @@
 language: r
+sudo: required
+
 branches:
   only:
   - heroku
