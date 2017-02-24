@@ -6,8 +6,22 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-There was 1 NOTE:
+There were 2 NOTEs:
 
+* checking CRAN incoming feasibility ... NOTE
+  Maintainer: 'David Severski <davidski@deadheaven.com>'
+  
+  New submission
+  
+  License components with restrictions and base license permitting such:
+    MIT + file LICENSE
+  File 'LICENSE':
+    YEAR: 2017
+    COPYRIGHT HOLDER: David F. Severski
+  
+  This is a new CRAN submission as well as my first submission to CRAN.
+  
+  
 * checking R code for possible problems ... NOTE
   calculate_domain_impact: no visible binding for global variable 'ale'
   calculate_domain_impact: no visible binding for global variable '.'
