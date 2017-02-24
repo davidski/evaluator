@@ -4,6 +4,10 @@ branches:
   - heroku
   - master
 cache: packages
+
+apt_packages:
+  - libproj-dev
+
 deploy:
   provider: heroku
   app: scenario-explorer
