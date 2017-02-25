@@ -4,8 +4,8 @@ Version: 0.1.0
 Authors@R: person("David", "Severski", email = "davidski@deadheaven.com", role = c("aut", "cre"))
 Description: An open source information security strategic risk analysis 
   toolkit based on the OpenFAIR taxonomy 
-  (https://www2.opengroup.org/ogsys/catalog/C13K) and risk assessment standard 
-  (https://www2.opengroup.org/ogsys/catalog/C13G). Evaluator empowers an 
+  <https://www2.opengroup.org/ogsys/catalog/C13K> and risk assessment standard 
+  <https://www2.opengroup.org/ogsys/catalog/C13G>. Evaluator empowers an 
   organization to perform a quantifiable, repeatable, and data-driven review 
   of its security program.
 Depends: R (>= 3.3.2)
@@ -40,3 +40,5 @@ Suggests:
     shiny,
     testthat
 VignetteBuilder: knitr
+URL: http://github.com/davidski/evaluator
+BugReports: https://github.com/davidski/evaluator/issues
