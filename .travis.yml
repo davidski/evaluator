@@ -1,5 +1,5 @@
 language: r
-sudo: required
+sudo: false
 
 branches:
   only:
@@ -7,8 +7,10 @@ branches:
   - master
 cache: packages
 
-apt_packages:
-  - libproj-dev
+addins:
+  apt:
+    packages:
+    	- libproj-dev
 
 deploy:
   provider: heroku
