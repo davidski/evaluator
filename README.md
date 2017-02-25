@@ -17,10 +17,12 @@ David F. Severski
 -   [Contributing](#contributing)
 -   [License](#license)
 
+[![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator)
+
 Summary
 =======
 
-<img alt="Evaluator Logo" title="Evaluator" src="img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
+<img alt="Evaluator Logo" title="Evaluator" src="inst/rmd/img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
 
 Evaluator is an open source information security strategic risk analysis toolkit. Based on the OpenFAIR [taxonomy](https://www2.opengroup.org/ogsys/catalog/C13K) and risk assessment [standard](https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator empowers an organization to perform a quantifiable, repeatable, and data-driven review of its security program.
 
