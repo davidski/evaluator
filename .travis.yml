@@ -7,10 +7,10 @@ branches:
   - master
 cache: packages
 
-addins:
+addons:
   apt:
     packages:
-    	- libproj-dev
+    - libproj-dev
 
 deploy:
   provider: heroku
