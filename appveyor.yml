@@ -40,3 +40,8 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
+
+notifications:
+  - provider: Slack
+    incoming_webhook:
+      secure: 9dX5FdgTPlXuH7hBLKRLLPdBO+EpkMqNUYEvz62Rfuy8iDZoA+e8oB6GvBhh7SwIXeDsl1aXMCKDa6nN4W1pUnIdj//XhAMl4NNO82OcqFo=
