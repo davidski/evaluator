@@ -2,13 +2,13 @@
 
 This is a resubmission, with the following changes:
 
-* Corrected URL markup on the DESCRIPTION file
+* Modified the language of the Description per CRAN request.
 
-* Corrected NOTE on missing variables from global scope
 
 ## Test environments
 * local Windows 64 install, R 3.3.2
-* ubuntu 12.04 (on travis-ci), R 3.3.2
+* ubuntu 12.04  and 14.x (on travis-ci), R 3.3.2
+* OS X 10.11 (on travis-ci), R 3.3.2
 * win-builder (devel and release)
 
 ## R CMD check results
