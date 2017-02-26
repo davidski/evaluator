@@ -7,6 +7,15 @@ branches:
   - master
 cache: packages
 
+matrix:
+  include:
+    - os: osx
+      brew_packages: gdal
+    - os: linux
+      dist: trusty
+    - os: linux
+      dist: precise
+
 addons:
   apt:
     packages:
