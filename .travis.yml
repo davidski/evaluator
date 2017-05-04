@@ -10,7 +10,9 @@ cache: packages
 matrix:
   include:
     - os: osx
-      brew_packages: gdal
+      before_install:
+        - brew update
+        - brew outdated gdal || brew upgrade gdal
     - os: linux
       dist: trusty
     - os: linux
