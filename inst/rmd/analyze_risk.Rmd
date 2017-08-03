@@ -32,8 +32,8 @@ header-includes:
 - \pagestyle{fancy}
 - \fancyfoot[C]{Sample - \thepage}
 params:
-  input_directory: "data"
-  results_directory: "results"
+  input_directory: "/Users/dseversk/rstats/evaluator/vignettes/data"
+  results_directory: "/Users/dseversk/rstats/evaluator/vignettes/results"
   focus_scenario_ids: !r c(51, 12)
 ---
 
@@ -167,7 +167,7 @@ outliers are included.
 ```{r loss_exceedance_curve, fig.cap="Loss Exceedance Curve"}
 max_loss %>% 
   group_by(outliers) %>% 
-  purrr::by_slice(~ arrange(.x, max_loss) %>% 
+  purrrlyr::by_slice(~ arrange(.x, max_loss) %>% 
              mutate(prob = 1 - percent_rank(max_loss)), .collate = "rows") %>% 
   ggplot(., aes(prob, max_loss, group=outliers)) -> gg
 gg <- gg + geom_path()
@@ -620,8 +620,8 @@ then re-summarized at the domain level.
 domain_loss_frequency <- simulation_results %>% group_by(domain_id, simulation) %>% 
   summarize(loss_events = sum(loss_events)) %>% 
   ungroup %>% 
-  purrr::slice_rows("domain_id") %>% 
-  purrr::by_slice(~ describe(.x$loss_events), .collate = "rows") %>% select(-vars)
+  purrrlyr::slice_rows("domain_id") %>% 
+  purrrlyr::by_slice(~ describe(.x$loss_events), .collate = "rows") %>% select(-vars)
 
 if (sum(domain_loss_frequency$skew <= 0, na.rm = TRUE) == 0) {
   narrative <- paste("All domains are skewed positively,",
@@ -641,8 +641,7 @@ select(domain_loss_frequency, -c(N, Trimmed, Mad, Se)) %>%
   purrr::map_if(is.numeric, ~ round(., digits = 2)) %>% 
   bind_cols %>% 
   rename(Domain = Domain_id) %>% 
-  pander(domain_loss_frequency, 
-       caption = "Loss Events by Domain, Summary Statistics") 
+  pander(caption = "Loss Events by Domain, Summary Statistics") 
 ```
 
 The following figure shows the kernel density of annualized loss events by 

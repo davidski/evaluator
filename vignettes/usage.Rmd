@@ -173,13 +173,14 @@ Evaluator puts each scenario through 10,000 individual simulated years,
 modelling how often the threat actor will come into contact with your assets,
 the strength of the threat actor, the strength of your controls, and the 
 losses involved in any situation where the threat strength exceeds your 
-control strength. This simulation process can be  computationally intense. The 
+control strength. This simulation process can be computationally intense. The 
 sample data set takes approximately five minutes on my primary development 
 machines (last generation Windows-based platforms).
 
 ```{r simulate, eval = FALSE}
 simulation_results <- run_simulations(quantitative_scenarios, 
-                                      simulation_count = 1000L)
+                                      simulation_count = 10000L)
+save(simulation_results, file = "results/simulation_results.rda")
 ```
 
 ### Analyze the Results
@@ -188,7 +189,7 @@ Several analysis functions are provided, including a template for a technical
 risk report. Assuming that the input files have been placed in a `data` 
 directory and the simulation results and summary files in a `results` directory, 
 the risk report can be generated via 
-`generate_report(input_directory = "~/data", results_directory = "~/PATH")`.
+`generate_report(input_directory = "~/data", results_directory = "~/results")`.
 This will create a pre-populated risk report that identifies key scenarios 
 and generates initial plots for to be used in creating a final analysis report. 
 Other included report tools include `risk_dashboard()`.
@@ -203,22 +204,21 @@ For more in depth analysis, the following data files may be used directly
 from R or from external programs such as Tableau:
 
 ```{r data_files, eval = FALSE, echo=FALSE}
-pacman::p_load(tidyr)
 tibble::tribble(
-    ~`Data File`, ~Purpose,
-    'simulation_results.rda', 'Full details of each simulated scenario',
-    'scenario_summary.rda', 'Simulation results, summarized at the scenario level'
-    'domain_summary.rda', 'Simulation results, summarized at the domain level'
+    ~"Data File", ~Purpose,
+    "simulation_results.rda", "Full details of each simulated scenario",
+    "scenario_summary.rda", "Simulation results, summarized at the scenario level",
+    "domain_summary.rda", "Simulation results, summarized at the domain level"
 ) %>% pander::pander(., justify = "left")
 ```
 
 ```{r analyze, eval=FALSE}
 # summarize
-scenario_summary <- summarize_scenarios(results)
-domain_summary <- summarize_domains(results, domains)
+scenario_summary <- summarize_scenarios(simulation_results)
+domain_summary <- summarize_domains(simulation_results, domains)
 
 # or to save the summary files directly to disk
-summarize_all(simulation_results = simulation_results, domains = domains)
+evaluator::summarize_all(simulation_results = simulation_results, domains = domains)
 
 # define risk tolerances
 risk_tolerances <- system.file("extdata", "risk_tolerances.csv", 
@@ -228,7 +228,7 @@ risk_tolerances <- system.file("extdata", "risk_tolerances.csv",
 explore_scenarios()
 
 # Sample Report
-generate_report(input_directory, results_directory) %>% rstudio::viewer()
+generate_report(input_directory = "data", results_directory ="results") %>% rstudioapi::viewer()
 ```
 
 Or, to view that same report as a Word document for editting, use 

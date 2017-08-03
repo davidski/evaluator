@@ -1,7 +1,6 @@
 #' Run simulations for all scenarios.
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
 #' @param scenario Quantitative scenarios
 #' @param simulation_count Number of simulations for each scenario
 #' @export
@@ -14,7 +13,7 @@ run_simulations <- function(scenario, simulation_count = 10000L) {
                       label = "Working on scenario ",
                       min = 1, max = nrow(scenario), initial = 1)
 
-  simulation_results <- purrr::by_row(scenario, function(x) {
+  simulation_results <- purrrlyr::by_row(scenario, function(x) {
     #info <- sprintf("%d%% done", round(i))
     tcltk::setTkProgressBar(pb, x$scenario_id,
                      label = sprintf("Running scenario %s of %s",

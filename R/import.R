@@ -78,7 +78,7 @@ import_scenarios <- function(survey_file = system.file("survey", "survey.xlsx", 
             controls = "Capabilities") %>%
     mutate_("scenario_id" = ~ as.integer(scenario_id)) %>% arrange_("scenario_id")
 
-  scenarios %<>% mutate_each_(funs(tolower), ~ c(tef, lm, tc)) # risk scenarios
+  scenarios <- mutate_at(scenarios, funs(tolower), .vars = vars(tef, lm, tc)) # risk scenarios
 
   scenarios
 
@@ -125,7 +125,6 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
 #' Split a sheet of the survey spreadsheet into capabilities or threats.
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
 #' @param dat Raw sheet input from \code{readxl}.
 #' @param table_type Either \code{capabilities} or \code{threats}
 #' @return Extracted table as a data_Frame
@@ -145,7 +144,7 @@ split_sheet <- function(dat, table_type = "capabilities") {
         unique = TRUE,
         allow_ = TRUE
       )
-    capabilities_data %<>% select(matches("^[^X]"))
+    capabilities_data <- select(capabilities_data, matches("^[^X]"))
     capabilities_data
   } else {
     # generate threats_data

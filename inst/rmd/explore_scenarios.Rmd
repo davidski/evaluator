@@ -92,14 +92,14 @@ get_summary_table <- reactive({
   summary_data <- scenario_summary %>% filter(scenario_id == 
                                               get_scenario_id(input$input_scenario))
   # add pretty formatting
-  summary_data <- mutate_each(summary_data, funs(dollar), 
-                              c(ale_median, ale_max, ale_var, sle_mean, 
-                                sle_median, sle_max, sle_min)) %>% 
+  summary_data <- mutate_at(summary_data, .funs = funs(dollar), 
+                            .vars = vars(ale_median, ale_max, ale_var, sle_mean, 
+                            sle_median, sle_max, sle_min)) %>% 
      mutate(mean_tc_exceedance = custom_percent(mean_tc_exceedance)) %>% 
      mutate(mean_vuln = percent(mean_vuln))
   
   names(summary_data) <- stringi::stri_trans_totitle(gsub("_", " ", names(summary_data)))
-  summary_data <- summary_data %>% mutate_each(funs(as.character)) %>% 
+  summary_data <- summary_data %>% mutate_all(funs(as.character)) %>% 
     tidyr::gather(key = "Parameter", value = "Value")
   return(summary_data)
 })
@@ -135,7 +135,7 @@ get_control_table <- reactive({
   #                                          as.numeric(control_list), 
   #                                        "diff"]$diff)
   # format percentages
-  control_data <- mutate_each(control_data, funs(custom_percent), -conf) %>%
+  control_data <- mutate_at(control_data, vars(-conf), funs(custom_percent)) %>%
     mutate(conf = as.integer(conf))
   control_data$control <- as.numeric(control_list)
   # add control description
@@ -152,7 +152,7 @@ get_loss_distribution_table <- reactive({
     filter(scenario_id == get_scenario_id(input$input_scenario)) %>% 
     mutate(label = as.character(lm)) %>% 
     convert_qual_to_quant(qual_type = "lm", mappings) %>% 
-    mutate_each(funs(dollar), c(l, ml, h)) %>% 
+    mutate_at(vars(l, ml, h), funs(dollar)) %>% 
     select(Low = l, "Most Likely" = ml, "High" = h, "Confidence" = conf)
   return(loss_list)
 })
@@ -189,8 +189,8 @@ All Scenarios Data Table
 
 ```{r show_all_table}
 DT::renderDataTable({
- dat <- mutate_each(scenario_summary, funs(dollar), starts_with("ale"), 
-             starts_with("sle")) %>% 
+ dat <- mutate_at(scenario_summary, .funs = funs(dollar), 
+                  .vars = vars(starts_with("ale"), starts_with("sle"))) %>% 
    mutate(loss_events_mean = comma(loss_events_mean)) %>% 
    mutate(mean_tc_exceedance = custom_percent(mean_tc_exceedance)) %>% 
    mutate(mean_vuln = percent(mean_vuln))
