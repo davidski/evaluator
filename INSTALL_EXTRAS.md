@@ -1,16 +1,14 @@
 # Installation Extras
 
 This is a work-in-progress set of notes for installing a minimum functioning 
-R environment for working with the Evaluator toolkit. While the official 
-instructions from the R Project and RStudio sites are cannon, these notes 
-may be of use to speed the process.
+R environment for the Evaluator toolkit. While the official instructions from 
+the R Project and RStudio sites are canonical, these notes may be of use to 
+speed the process.
 
 # MacOS
 
 For Mac users running homebrew, the following terminal commands can be used to 
-set up a functional environment. When running Evaluator, other pacakges will 
-be installed on initial use when necessary.
-
+set up a functional environment.
 
 ```
 # R and RStudio under homebrew derived from @hrbrmstr's post
@@ -29,7 +27,7 @@ R CMD javareconf JAVA_CPPFLAGS=-I/System/Library/Frameworks/JavaVM.framework/Hea
 # Latex required for PDF knitting
 brew cask install mactex
  
-# extra libraries to make other packages easier to work woth 
+# extra libraries to make other packages easier to work with 
 brew install libsvg curl libxml2 gdal geos boost
  
 # font installation
@@ -37,15 +35,22 @@ brew tap caskroom/fonts
 brew cask install font-fira-code font-iosevka font-inconsolata font-open-sans-condensed font-open-sans font-roboto-condensed
 R -e 'install.package("extrafont", repos="http://cran.cnr.berkeley.edu")'
 R -e 'extrafont::font_import(prompt = FALSE)'
-
-# ensure pacman is available
-R -e 'install.package("pacman", repos="http://cran.cnr.berkeley.edu")'
 ```
 
 # Windows
 
+Windows users may use chocolately for a homebrew-like experience.
+
 - Install R
 
 ```
-choco install --yes r.studio miktex
+choco install --yes r
 ```
+
+- Install miktex for PDF knitting
+
+```
+choco install --yes miktex
+```
+
+- Install R Studio (not available on Chocolately)
