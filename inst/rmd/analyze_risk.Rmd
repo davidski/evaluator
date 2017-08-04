@@ -211,7 +211,7 @@ losses are `r domain_impact[[1, "domain"]]`, `r domain_impact[[2, "domain"]]`, a
 program are described in the following table.
 
 ```{r domain_impact, echo = FALSE}
-mutate_each(domain_impact, funs(dollar), -domain_id, -domain) %>% 
+mutate_at(domain_impact, vars(-one_of("domain_id", "domain")), funs(dollar)) %>% 
   select("Domain" = domain, 
          "Value at Risk" = var,
          "Maximum" = max, 
@@ -983,7 +983,7 @@ arrange(scenarios, domain_id, scenario_id) %>%
 left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
                                             "domain_id" = "domain_id")) %>% 
   arrange(desc(ale_median), desc(ale_var)) %>% 
-  mutate_each(funs(dollar), ale_median, ale_var) %>% 
+  mutate_at(vars("ale_median", "ale_var"), funs(dollar)) %>% 
   mutate("Domain" = paste(domain_id, scenario_id, sep = " - ")) %>% 
   select(Domain,
          "Scenario" = scenario, 
