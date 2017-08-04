@@ -21,6 +21,7 @@ Imports:
   mc2d,
   pander,
   purrr,
+  purrrlyr,
   psych,
   readr,
   readxl,
@@ -30,6 +31,8 @@ Imports:
   tidyr,
   tcltk,
   viridis
+Remotes:
+  Rapporter/pander
 RoxygenNote: 6.0.1
 Suggests:
     DT,
