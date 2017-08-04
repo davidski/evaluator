@@ -37,6 +37,12 @@ explore_scenarios <- function(input_directory = "data",
   if (!requireNamespace("DT", quietly = TRUE)) {
     stop("DT is required to run the Scenario Explorer.")
   }
+  if (!requireNamespace("modeest", quietly = TRUE)) {
+    stop("modeest is required to run the Scenario Explorer.")
+  }
+  if (!requireNamespace("flexdashboard", quietly = TRUE)) {
+    stop("flexdashboard is required to run the Scenario Explorer.")
+  }
   rmarkdown::run(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator"),
                  #dir = file.path(basename(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator")), ".."),
                  render_args = list(
