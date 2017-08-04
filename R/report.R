@@ -9,6 +9,9 @@
 generate_report <- function(input_directory = file.path(getwd(), "data"),
                             results_directory = file.path(getwd(), "results"),
                             output_file = "risk_report.html", ...) {
+  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
+    stop("Install the rmarkdown package to generate reports.")
+  }
   rmarkdown::render(system.file("rmd", "analyze_risk.Rmd", package = "evaluator"),
                     output_file = output_file, output_dir = getwd(),
                     params = list(input_directory = input_directory,
@@ -25,8 +28,14 @@ generate_report <- function(input_directory = file.path(getwd(), "data"),
 #' @export
 explore_scenarios <- function(input_directory = "data",
                               results_directory = "results") {
+  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
+    stop("Install the rmarkdown package to generate reports.")
+  }
   if (!requireNamespace("shiny", quietly = TRUE)) {
-    stop("shiny is required to run the Scenario Explorer")
+    stop("shiny is required to run the Scenario Explorer.")
+  }
+  if (!requireNamespace("DT", quietly = TRUE)) {
+    stop("DT is required to run the Scenario Explorer.")
   }
   rmarkdown::run(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator"),
                  #dir = file.path(basename(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator")), ".."),
@@ -41,6 +50,9 @@ explore_scenarios <- function(input_directory = "data",
 #' @return Invisible NULL
 #' @export
 openfair_example <- function() {
+  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
+    stop("Install the rmarkdown package to generate reports.")
+  }
   if (!requireNamespace("shiny", quietly = TRUE)) {
     stop("shiny is required to run the OpenFAIR demonstration application.")
   }
@@ -58,6 +70,9 @@ openfair_example <- function() {
 #' @export
 risk_dashboard <- function(input_directory = "data",
                            results_directory = "results", ...) {
+  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
+    stop("Install the rmarkdown package to generate reports.")
+  }
   if (!requireNamespace("flexdashboard", quietly = TRUE)) {
     stop("flexdashboard is required to generate the risk dashboard")
   }
