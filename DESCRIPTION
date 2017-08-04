@@ -19,7 +19,7 @@ Imports:
   ggplot2,
   magrittr,
   mc2d,
-  pander,
+  pander (>= 0.7.0),
   purrr,
   purrrlyr,
   psych,
