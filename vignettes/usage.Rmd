@@ -59,12 +59,13 @@ Don't be intimidated by the process. Evaluator is with you at every step!
 ### Prepare the Environment
 
 A working [R interpreter](https://www.r-project.org/) is required. 
-Evaluator should work on any current version of R (v3.3.2 as of this writing) 
+Evaluator should work on any current version of R (v3.4.1 as of this writing) 
 and on any supported platform (Windows, MacOS, or Linux). This vignette assumes 
-the use of [RStudio IDE](https://www.rstudio.com/), but it is not strictly 
-required.
+the use of [RStudio IDE](https://www.rstudio.com/) for some presentation details, 
+but the core Evaluator functions may be used with any IDE.
 
-Obtain the Evaluator toolkit by installing via `devtools::install_github('davidski/evaluator')`.
+Obtain the Evaluator toolkit either from CRAN via `install.packages("evaluator")` or 
+the current development version via `devtools::install_github('davidski/evaluator')`.
 
 If you would like to work with the supplied sample data files, execute 
 the following code:
@@ -74,19 +75,20 @@ library(readr)     # better CSV handling
 library(evaluator) # core evaluator toolkit
 
 # create default directories
-if (!dir.exists("data")) dir.create("data")
-if (!dir.exists("results")) dir.create("results")
+input_directory <- "~/evaluator/data"
+results_directory <- "~/evaluator/results"
+if (!dir.exists(input_directory)) dir.create(input_directory, recursive = TRUE)
+if (!dir.exists(results_directory)) dir.create(results_directory, recursive = TRUE)
 
 # copy sample files
-file.copy(system.file("extdata", "domains.csv", package="evaluator"), 
-          "data/")
-file.copy(system.file("extdata", "qualitative_mappings.csv", 
-                      package="evaluator"), 
-          "data/")
-file.copy(system.file("extdata", "risk_tolerances.csv", package="evaluator"), 
-          "data/")
+file.copy(system.file("extdata", "domains.csv", package = "evaluator"), 
+          input_directory)
+file.copy(system.file("extdata", "qualitative_mappings.csv", package="evaluator"), 
+          input_directory)
+file.copy(system.file("extdata", "risk_tolerances.csv", package = "evaluator"), 
+          input_directory)
 file.copy(system.file("survey", "survey.xlsx", package = "evaluator"),
-          "data/")
+          input_directory)
 ```
 
 ### Define Your Controls and Security Domains
@@ -118,7 +120,7 @@ since most control frameworks are too fine-grained to provide the high level
 overview that Evaluator delivers. In practice, 50 controls or less will 
 usually be sufficient to describe organizations of up to one to two billion 
 USD in size. Each control must have a unique ID and should be assigned a 
-difficulty (DIFF) score thta ranks the maturity of the control on a CMM 
+difficulty (DIFF) score that ranks the maturity of the control on a CMM 
 scale from Initial (lowest score) to Optimized (best of class).
 
 #### Threats Table
@@ -139,9 +141,9 @@ To extract the spreadsheet into data files for further analysis, run
 save two comma seperated files in a `data` directory with the results. 
 
 ```{r import, eval=FALSE}
-domains <-  readr::read_csv("data/domains.csv")
+domains <-  readr::read_csv(file.path(input_directory, "domains.csv"))
 system.file("survey", "survey.xlsx", package = "evaluator") %>% 
-  import_spreadsheet(., domains)
+  import_spreadsheet(., domains, output_dir = input_directory)
 ```
 
 ### Validate the Data
@@ -151,9 +153,9 @@ errors displayed, reimport, and repeat the validation process until there are
 no errors reported. 
  
 ```{r validate, eval=FALSE}
-mappings <-  readr::read_csv("data/qualitative_mappings.csv")
-qualitative_scenarios <- readr::read_csv("./data/qualitative_scenarios.csv")
-capabilities <- readr::read_csv("./data/capabilities.csv")
+mappings <-  readr::read_csv(file.path(input_directory, "qualitative_mappings.csv"))
+qualitative_scenarios <- readr::read_csv(file.path(input_directory, "qualitative_scenarios.csv"))
+capabilities <- readr::read_csv(file.path(input_directory, "capabilities.csv"))
 validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
 ```
 
@@ -180,7 +182,7 @@ machines (last generation Windows-based platforms).
 ```{r simulate, eval = FALSE}
 simulation_results <- run_simulations(quantitative_scenarios, 
                                       simulation_count = 10000L)
-save(simulation_results, file = "results/simulation_results.rda")
+save(simulation_results, file = file.path(results_directory, "simulation_results.rda"))
 ```
 
 ### Analyze the Results
@@ -189,19 +191,19 @@ Several analysis functions are provided, including a template for a technical
 risk report. Assuming that the input files have been placed in a `data` 
 directory and the simulation results and summary files in a `results` directory, 
 the risk report can be generated via 
-`generate_report(input_directory = "~/data", results_directory = "~/results")`.
+`generate_report(input_directory, results_directory)`.
 This will create a pre-populated risk report that identifies key scenarios 
 and generates initial plots for to be used in creating a final analysis report. 
 Other included report tools include `risk_dashboard()`.
 
 For interactive exploration, run 
-`explore_scenarios(input_directory = "~/data", results_directory = "~/results")` 
+`explore_scenarios(input_directory, results_directory)` 
 to launch a local copy of the Scenario Explorer application. The Scenario 
 Explorer app may be used to view information about the individual 
 scenarios and provides a sample overview of the entire program. 
 
 For more in depth analysis, the following data files may be used directly 
-from R or from external programs such as Tableau:
+from R or from external business intelligence programs such as Tableau:
 
 ```{r data_files, eval = FALSE, echo=FALSE}
 tibble::tribble(
@@ -218,24 +220,25 @@ scenario_summary <- summarize_scenarios(simulation_results)
 domain_summary <- summarize_domains(simulation_results, domains)
 
 # or to save the summary files directly to disk
-evaluator::summarize_all(simulation_results = simulation_results, domains = domains)
+summarize_to_disk(simulation_results = simulation_results, domains = domains, results_directory)
 
 # define risk tolerances
 risk_tolerances <- system.file("extdata", "risk_tolerances.csv", 
                                package="evaluator") %>% read_csv()
 
 # Explorer
-explore_scenarios()
+explore_scenarios(input_directory, results_directory)
 
 # Sample Report
-generate_report(input_directory = "data", results_directory ="results") %>% rstudioapi::viewer()
+generate_report(input_directory, results_directory) %>% rstudioapi::viewer()
 ```
 
-Or, to view that same report as a Word document for editting, use 
+Or, to view that same report as a Word document for editing, use 
 `generate_report(input_directory, results_directory, output_format = "word_document")`.
 
-If you'ld rather work on the source RMarkdown file or direct editting and 
-graphics tweaking, use `system.file("rmd, "analyze_risk.Rmd", package = "evaluator")` to find he location of the native template on your system.
+If you would rather work on the source RMarkdown file or direct editing and 
+graphics tweaking, use `system.file("rmd, "analyze_risk.Rmd", package = "evaluator")` 
+to find he location of the native template on your system.
 
 ## Advanced Customization
 
