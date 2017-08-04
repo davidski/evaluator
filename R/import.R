@@ -78,7 +78,7 @@ import_scenarios <- function(survey_file = system.file("survey", "survey.xlsx", 
             controls = "Capabilities") %>%
     mutate_("scenario_id" = ~ as.integer(scenario_id)) %>% arrange_("scenario_id")
 
-  scenarios <- mutate_at(scenarios, funs(tolower), .vars = vars(tef, lm, tc)) # risk scenarios
+  scenarios <- mutate_at(scenarios, vars("tef", "lm", "tc"), funs(tolower)) # risk scenarios
 
   scenarios
 
