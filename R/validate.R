@@ -2,7 +2,6 @@
 #' Validate scenario data.
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
 #' @param scenarios Dataframe of scenarios
 #' @param capabilities Dataframe of capabilities
 #' @param domains Dataframe of domain mappings
@@ -56,22 +55,22 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   # TEF
   if (!all((tolower(distinct_(scenarios, "tef")$tef) %in% filter_(mappings, ~ type=="tef")$label))) {
     stop_message <- paste(stop_message,
-                          "There are TEF values in the scenarios spreadsheet which are not in the mappings", sep="\n")
+                          "There are TEF values in the scenarios spreadsheet which are not in the mappings", sep = "\n")
   }
   # TC
   if (!all((tolower(distinct_(scenarios, "tc")$tc) %in% filter_(mappings, ~ type=="tc")$label))) {
     stop_message <- paste(stop_message,
-                          "There are TC values in the scenarios spreadsheet not found in the mappings", sep="\n")
+                          "There are TC values in the scenarios spreadsheet not found in the mappings", sep = "\n")
   }
   # DIFF
   if (!all((tolower(distinct_(capabilities, "diff")$diff) %in% tolower(filter_(mappings, ~ type=="diff")$label)))) {
     stop_message <- paste(stop_message,
-                          "There are DIFF values in the scenarios spreadsheet not found in the mappings", sep="\n")
+                          "There are DIFF values in the scenarios spreadsheet not found in the mappings", sep = "\n")
   }
   # LM
   if (!all((tolower(distinct_(scenarios, "lm")$lm) %in% filter_(mappings, ~ type=="lm")$label))) {
     stop_message <- paste(stop_message,
-                          "There are LM values in the scenarios spreadsheet not found in qualitative_mappings.csv", sep="\n")
+                          "There are LM values in the scenarios spreadsheet not found in qualitative_mappings.csv", sep = "\n")
   }
 
   if (!is.null(stop_message)) {
@@ -80,7 +79,8 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
 
 
   # add the number of controls applicable to each scenario as a validation step
-  scenarios %<>% rowwise %>%
+  scenarios <- scenarios %>%
+    rowwise %>%
     mutate_("control_count" =
               ~ length(stringi::stri_split_fixed(controls, ", ", simplify = TRUE))) %>%
     ungroup

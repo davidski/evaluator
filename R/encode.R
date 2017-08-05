@@ -2,7 +2,6 @@
 #' Encode qualitative data to quantitative parameters.
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
 #' @param scenarios Qualitative risk scenarios dataframe
 #' @param capabilities Qualitative program capabilities dataframe
 #' @param mappings Number of simulations for each scenario
@@ -30,19 +29,19 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   # scenarios$diff_params <- diff_params
 
   # fetch TEF params
-  scenarios %<>% left_join(mappings[mappings$type == "tef",],
-                           by = c("tef" = "label")) %>%
+  scenarios <- left_join(scenarios, mappings[mappings$type == "tef",],
+                         by = c("tef" = "label")) %>%
     rename_("tef_l" = "l", "tef_ml" = "ml", "tef_h" = "h", "tef_conf" = "conf") %>%
     select_('-c(tef, type)')
 
   # fetch TC params
-  scenarios %<>% left_join(mappings[mappings$type == "tc",],
-                           by = c("tc" = "label")) %>%
+  scenarios <- left_join(scenarios, mappings[mappings$type == "tc",],
+                         by = c("tc" = "label")) %>%
     rename_("tc_l" = "l", "tc_ml" = "ml", "tc_h" = "h", "tc_conf" = "conf") %>%
     select_('-c(tc, type)')
 
   # fetch LM params
-  scenarios %<>% left_join(mappings[mappings$type == "lm",],
+  scenarios <- left_join(senarios, mappings[mappings$type == "lm",],
                            by = c("lm" = "label")) %>%
     rename_("lm_l" = "l", "lm_ml" = "ml", "lm_h" = "h", "lm_conf" = "conf") %>%
     select_('-c(lm, type)')

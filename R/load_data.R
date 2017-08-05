@@ -2,7 +2,6 @@
 #' Load input and results files
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
 #' @param input_directory Location of input files
 #' @param results_directory Location of simulation results
 #' @return List of data objects
@@ -37,10 +36,10 @@ load_data <- function(input_directory, results_directory) {
   names(risk_tolerance) <- risk_tolerances$level %>% tolower
 
   # enhance scenario_summary assign loss tolerance to ALE VaR size
-  scenario_summary %<>% mutate_(annual_tolerance = ~ ifelse(ale_var >= risk_tolerance["high"],
-                                                           "High",
-                                                           ifelse(ale_var >= risk_tolerance["medium"],
-                                                                  "Medium", "Low"))) %>%
+  scenario_summary <- mutate_(scenario_summary,
+                              annual_tolerance = ~ ifelse(ale_var >= risk_tolerance["high"],
+                                                          "High",
+                                                          ifelse(ale_var >= risk_tolerance["medium"], "Medium", "Low"))) %>%
     mutate_(annual_tolerance = ~factor(annual_tolerance, levels = c("High", "Medium", "Low"), ordered = TRUE))
 
   list(simulation_results = simulation_results,

@@ -5,7 +5,6 @@
 #' to a location on disk.
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
 #' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @param output_dir Output file directory. Defaults to a \code{data}
@@ -43,7 +42,6 @@ import_spreadsheet <- function(survey_file = system.file("survey", "survey.xlsx"
 #' Import scenarios from survey spreadsheet.
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
 #' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @export
@@ -87,7 +85,6 @@ import_scenarios <- function(survey_file = system.file("survey", "survey.xlsx", 
 #' Import capabilities from survey spreadsheet.
 #'
 #' @import dplyr
-#' @importFrom magrittr "%<>%"
 #' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @export
