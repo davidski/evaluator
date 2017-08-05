@@ -52,7 +52,7 @@ summarize_domains <- function(simulation_results, domains) {
 #' \code{summarize_domains}, calling both functions and writting the dataframes
 #' to a location on disk.
 #'
-#' @importFrom magrittr "%>%"
+#' @importFrom dplyr "%>%"
 #' @param simulation_results Simulation results dataframe
 #' @param domains Domain mappings dataframe
 #' @param results_dir Directory to place simulation files
