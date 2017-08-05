@@ -41,7 +41,7 @@ run_simulations <- function(scenario, simulation_count = 10000L) {
 
   ## ----tidy_results--------------------------------------------------------
   # convert title back to scenario_id
-  simulation_results <- mutate_(sumulation_results, "title" = ~ as.integer(title)) %>%
+  simulation_results <- mutate_(simulation_results, "title" = ~ as.integer(title)) %>%
     rename_("scenario_id" = "title")
 
   # calculate the vuln percentage
