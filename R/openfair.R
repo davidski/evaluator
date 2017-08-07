@@ -1,12 +1,12 @@
 #' Given a number of loss events and a loss distribution, calculate losses
 #'
 #' @importFrom stats median
-#' @param n Numer of threat events to evaluate
+#' @param n Numer of loss events to evaluate
 #' @param l Low boundary
 #' @param ml Most likely
 #' @param h High boundary
 #' @param conf Confidence
-#' @return List of total loss, min/max/mean of sle
+#' @return List of total loss, min/max/mean/median of sle
 sample_lm <- function(n, l, ml, h, conf) {
 
     if (is.na(n)) { n <- 0 }
