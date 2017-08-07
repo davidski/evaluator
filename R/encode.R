@@ -41,8 +41,8 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
     select_('-c(tc, type)')
 
   # fetch LM params
-  scenarios <- left_join(senarios, mappings[mappings$type == "lm",],
-                           by = c("lm" = "label")) %>%
+  scenarios <- left_join(scenarios, mappings[mappings$type == "lm",],
+                         by = c("lm" = "label")) %>%
     rename_("lm_l" = "l", "lm_ml" = "ml", "lm_h" = "h", "lm_conf" = "conf") %>%
     select_('-c(lm, type)')
 
