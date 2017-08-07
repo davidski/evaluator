@@ -2,20 +2,23 @@
 #'
 #' @param input_directory Location of input files
 #' @param results_directory Location of simulation results
-#' @param output_file Name of the output file to generate.
+#' @param output_file Name of the output file to generate
+#' @param focus_scenario_ids IDs of scenarios of special interest
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
 generate_report <- function(input_directory = file.path(getwd(), "data"),
                             results_directory = file.path(getwd(), "results"),
-                            output_file = "risk_report.html", ...) {
+                            output_file = "risk_report.html",
+                            focus_scenario_ids = c(51, 12), ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
   }
   rmarkdown::render(system.file("rmd", "analyze_risk.Rmd", package = "evaluator"),
                     output_file = output_file, output_dir = getwd(),
                     params = list(input_directory = input_directory,
-                                  results_directory = results_directory), ...)
+                                  results_directory = results_directory,
+                                  focus_scenario_ids = focus_scenario_ids), ...)
 }
 
 #' Launch the Scenario Explorer web application.
