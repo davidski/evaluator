@@ -18,7 +18,7 @@ Imports:
   ggalt (>= 0.4.0),
   ggplot2,
   mc2d,
-  pander (>= 0.7.0),
+  pander (>= 0.6.1),
   purrr,
   purrrlyr,
   psych,
@@ -30,8 +30,6 @@ Imports:
   tidyr,
   tcltk,
   viridis
-Remotes:
-  Rapporter/pander
 RoxygenNote: 6.0.1
 Suggests:
     DT,
