@@ -5,7 +5,7 @@
 \title{Import the scenario spreadsheet.}
 \usage{
 import_spreadsheet(survey_file = system.file("survey", "survey.xlsx", package
-  = "evaluator"), domains = NULL, output_dir = file.path(getwd(), "data"))
+  = "evaluator"), domains = NULL, output_dir = "~/data")
 }
 \arguments{
 \item{survey_file}{Path to survey XLSX file. Defaults to a sample file if not supplied.}

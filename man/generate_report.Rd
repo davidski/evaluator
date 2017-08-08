@@ -4,16 +4,17 @@
 \alias{generate_report}
 \title{Generate sample analysis report.}
 \usage{
-generate_report(input_directory = file.path(getwd(), "data"),
-  results_directory = file.path(getwd(), "results"),
-  output_file = "risk_report.html", ...)
+generate_report(input_directory = "~/data", results_directory = "~/results",
+  output_file = "risk_report.html", focus_scenario_ids = c(51, 12), ...)
 }
 \arguments{
 \item{input_directory}{Location of input files}
 
 \item{results_directory}{Location of simulation results}
 
-\item{output_file}{Name of the output file to generate.}
+\item{output_file}{Name of the output file to generate}
+
+\item{focus_scenario_ids}{IDs of scenarios of special interest}
 
 \item{...}{Any other parameters to pass straight to \code{rmarkdown::render}}
 }

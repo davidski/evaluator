@@ -7,15 +7,15 @@
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
-generate_report <- function(input_directory = file.path(getwd(), "data"),
-                            results_directory = file.path(getwd(), "results"),
+generate_report <- function(input_directory = "~/data",
+                            results_directory = "~/results",
                             output_file = "risk_report.html",
                             focus_scenario_ids = c(51, 12), ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
   }
   rmarkdown::render(system.file("rmd", "analyze_risk.Rmd", package = "evaluator"),
-                    output_file = output_file, output_dir = getwd(),
+                    output_file = output_file,
                     params = list(input_directory = input_directory,
                                   results_directory = results_directory,
                                   focus_scenario_ids = focus_scenario_ids), ...)
@@ -77,8 +77,8 @@ openfair_example <- function() {
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
-risk_dashboard <- function(input_directory = "data",
-                           results_directory = "results", ...) {
+risk_dashboard <- function(input_directory = "~/data",
+                           results_directory = "~/results", ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
   }

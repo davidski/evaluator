@@ -13,7 +13,7 @@
 #' @return Dataframe of generated files (capabilities.csv and scenarios.csv)
 import_spreadsheet <- function(survey_file = system.file("survey", "survey.xlsx", package = "evaluator"),
                                domains = NULL,
-                               output_dir = file.path(getwd(), "data")){
+                               output_dir = "~/data"){
 
   ## ----survey_sheet--------------------------------------------------------
   #message("Target file is ", survey_file)

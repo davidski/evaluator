@@ -4,8 +4,7 @@
 \alias{summarize_to_disk}
 \title{Create all summary files and write to disk.}
 \usage{
-summarize_to_disk(simulation_results, domains,
-  results_dir = file.path(getwd(), "results"))
+summarize_to_disk(simulation_results, domains, results_dir = "~/results")
 }
 \arguments{
 \item{simulation_results}{Simulation results dataframe}

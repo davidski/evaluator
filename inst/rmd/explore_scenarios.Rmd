@@ -14,8 +14,8 @@ output:
     css: styles/html-styles.css
 runtime: shiny
 params:
-  input_directory: "data"
-  results_directory: "results"
+  input_directory: "~/data"
+  results_directory: "~/results"
 ---
 
 ```{r setup, include=FALSE}

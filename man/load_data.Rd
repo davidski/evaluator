@@ -4,7 +4,7 @@
 \alias{load_data}
 \title{Load input and results files}
 \usage{
-load_data(input_directory, results_directory)
+load_data(input_directory = "~/data", results_directory = "~/data")
 }
 \arguments{
 \item{input_directory}{Location of input files}
