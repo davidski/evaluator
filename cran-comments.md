@@ -8,10 +8,11 @@ This is a resubmission, with the following changes:
 
 ## Test environments
 
-* local Windows 64 install, R 3.3.2
-* Windows 64 (on appveyor), R 3.3.2
-* ubuntu 12.04 and 14.04 (on travis-ci), R 3.3.2
-* OS X 10.11 (on travis-ci), R 3.3.2
+* local Windows 10 64 install, R 3.4.1
+* local OS X, R 3.4.1
+* Windows 64 (on appveyor), R 3.4.1
+* Ubuntu 14.04 (on travis-ci), R 3.4.1
+* OS X 10.11 (on travis-ci), R 3.4.1
 * win-builder (devel and release)
 
 ## R CMD check results

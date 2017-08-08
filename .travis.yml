@@ -15,8 +15,6 @@ matrix:
         - brew outdated gdal || brew upgrade gdal
     - os: linux
       dist: trusty
-    - os: linux
-      dist: precise
 
 addons:
   apt:
