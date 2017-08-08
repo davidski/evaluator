@@ -85,6 +85,9 @@ risk_dashboard <- function(input_directory = "~/data",
   if (!requireNamespace("flexdashboard", quietly = TRUE)) {
     stop("flexdashboard is required to generate the risk dashboard")
   }
+  if (!requireNamespace("forcats", quietly = TRUE)) {
+    stop("forcats is required to generate the risk dashboard")
+  }
   rmarkdown::render(system.file("rmd", "risk_dashboard.Rmd", package = "evaluator"),
                     output_dir = getwd(),
                     params = list(input_directory = input_directory,
