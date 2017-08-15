@@ -7,7 +7,7 @@
 sample_lm(n, l, ml, h, conf)
 }
 \arguments{
-\item{n}{Numer of threat events to evaluate}
+\item{n}{Numer of loss events to evaluate}
 
 \item{l}{Low boundary}
 
@@ -18,7 +18,7 @@ sample_lm(n, l, ml, h, conf)
 \item{conf}{Confidence}
 }
 \value{
-List of total loss, min/max/mean of sle
+List of total loss, min/max/mean/median of sle
 }
 \description{
 Given a number of loss events and a loss distribution, calculate losses

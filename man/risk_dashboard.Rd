@@ -4,7 +4,8 @@
 \alias{risk_dashboard}
 \title{Launch a single page summary risk dashboard.}
 \usage{
-risk_dashboard(input_directory = "data", results_directory = "results", ...)
+risk_dashboard(input_directory = "~/data", results_directory = "~/results",
+  ...)
 }
 \arguments{
 \item{input_directory}{Location of input files}

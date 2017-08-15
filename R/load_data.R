@@ -6,7 +6,7 @@
 #' @param results_directory Location of simulation results
 #' @return List of data objects
 #' @export
-load_data <- function(input_directory, results_directory) {
+load_data <- function(input_directory = "~/data", results_directory = "~/data") {
   # load simulation results and default summary objects
   simulation_results <- NULL # detailed sumulation results
   load(file.path(results_directory, "simulation_results.rda"))

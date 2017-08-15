@@ -32,8 +32,8 @@ header-includes:
 - \pagestyle{fancy}
 - \fancyfoot[C]{Sample - \thepage}
 params:
-  input_directory: "/Users/dseversk/rstats/evaluator/vignettes/data"
-  results_directory: "/Users/dseversk/rstats/evaluator/vignettes/results"
+  input_directory: "~/data"
+  results_directory: "~/results"
   focus_scenario_ids: !r c(51, 12)
 ---
 

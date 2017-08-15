@@ -58,8 +58,8 @@ summarize_domains <- function(simulation_results, domains) {
 #' @param results_dir Directory to place simulation files
 #' @export
 #' @return Simulation results summarized by domain
-summarize_to_disk <- function(simulation_results, domains, results_dir =
-                            file.path(getwd(), "results")) {
+summarize_to_disk <- function(simulation_results, domains,
+                              results_dir = "~/results") {
   if (!dir.exists(results_dir)) dir.create(results_dir)
 
   scenario_summary <- summarize_scenarios(simulation_results)

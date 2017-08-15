@@ -15,8 +15,8 @@ output:
     vertical_layout: scroll
   pdf_document: default
 params:
-  input_directory: "data"
-  results_directory: "results"
+  input_directory: "~/data"
+  results_directory: "~/results"
 ---
 
 Sample narrative section.
