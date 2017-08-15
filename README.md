@@ -2,6 +2,13 @@ Evaluator README
 ================
 David F. Severski
 
+NOTE: This README is out of date with the MASTER (development) version of Evaluator. Running 
+the dev version (via `devtools::install_github("davidski/evaluator")` is required for current 
+R installation and highly suggested for a better experience. Please view the usage vignette 
+(`vignette("usage")`) after installation for a walk through guide. Updates to this README are 
+coming!
+
+
 -   [Summary](#summary)
 -   [Background](#background)
 -   [How to Use](#how-to-use)
