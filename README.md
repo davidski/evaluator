@@ -2,13 +2,6 @@ Evaluator README
 ================
 David F. Severski
 
-NOTE: This README is out of date with the MASTER (development) version of Evaluator. Running 
-the dev version (via `devtools::install_github("davidski/evaluator")` is required for current 
-R installation and highly suggested for a better experience. Please view the usage vignette 
-(`vignette("usage")`) after installation for a walk through guide. Updates to this README are 
-coming!
-
-
 -   [Summary](#summary)
 -   [Background](#background)
 -   [How to Use](#how-to-use)
@@ -24,7 +17,10 @@ coming!
 -   [Contributing](#contributing)
 -   [License](#license)
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 [![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator) ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/evaluator)
+
+> NOTE: This README is out of date with the MASTER (development) version of Evaluator. Running the dev version (via `devtools::install_github("davidski/evaluator")` is required for current R installation and highly suggested for a better experience. Please view the usage vignette (`vignette("usage")`) after installation for a walk through guide. Updates to this README are coming!
 
 Summary
 =======
@@ -107,10 +103,10 @@ For interactive exploration, open the `explore_scenarios.Rmd` file and click on 
 
 For more in depth analysis, the following data files may be used directly from R or from external programs such as Tableau:
 
-<table style="width:74%;">
+<table style="width:79%;">
 <colgroup>
-<col width="31%" />
-<col width="41%" />
+<col width="34%" />
+<col width="44%" />
 </colgroup>
 <thead>
 <tr class="header">

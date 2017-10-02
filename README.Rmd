@@ -9,10 +9,26 @@ output:
     toc_float: yes
 ---
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
 [![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/evaluator)
+
+> NOTE: This README is out of date with the MASTER (development) version of Evaluator. Running 
+> the dev version (via `devtools::install_github("davidski/evaluator")` is required for current 
+> R installation and highly suggested for a better experience. Please view the usage vignette 
+> (`vignette("usage")`) after installation for a walk through guide. Updates to this README are 
+> coming!
 
 # Summary
 
@@ -170,8 +186,8 @@ scenarios and provides a sample overview of the entire program.
 For more in depth analysis, the following data files may be used directly 
 from R or from external programs such as Tableau:
 
-```{r data_files, echo=FALSE}
-pacman::p_load(tidyr)
+```{r data_files, echo=FALSE, message=FALSE}
+library(dplyr)
 tibble::tribble(
     ~`Data File`, ~Purpose,
     'simulation_results.Rds', 'Full details of each simulated scenario',
