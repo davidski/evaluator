@@ -1,7 +1,6 @@
 ---
 title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
-mainfont: BentonSansRE
 output:
   html_document:
     css: styles/html-styles.css

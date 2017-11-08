@@ -35,7 +35,7 @@ Suggests:
     DT,
     flexdashboard (>= 0.4),
     forcats,
-    modeest,
+    statip,
     knitr,
     rmarkdown,
     shiny,

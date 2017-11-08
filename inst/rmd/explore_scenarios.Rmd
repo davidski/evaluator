@@ -67,9 +67,9 @@ get_loss_table <- function(tid) {
                                    Mean = c(mean(scenario_data$loss_events, na.rm = TRUE), 
                                                 mean(scenario_data$sle_mean, na.rm = TRUE) %>% dollar,
                                       mean(scenario_data$ale, na.rm = TRUE) %>% dollar),
-                                   Mode = c(modeest::mfv(scenario_data$loss_events)[1], 
-                                       modeest::mfv(scenario_data$sle_median)[1] %>% as.numeric %>% dollar,
-                                       modeest::mfv(scenario_data$ale)[1] %>% as.numeric %>% dollar),
+                                   Mode = c(statip::mfv(scenario_data$loss_events)[1], 
+                                       statip::mfv(scenario_data$sle_median)[1] %>% as.numeric %>% dollar,
+                                       statip::mfv(scenario_data$ale)[1] %>% as.numeric %>% dollar),
                                    Maximum = c(max(scenario_data$loss_events), 
                                        max(scenario_data$sle_max) %>% dollar,
                                        max(scenario_data$ale) %>% dollar)

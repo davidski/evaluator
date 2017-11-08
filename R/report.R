@@ -40,8 +40,8 @@ explore_scenarios <- function(input_directory = "data",
   if (!requireNamespace("DT", quietly = TRUE)) {
     stop("DT is required to run the Scenario Explorer.")
   }
-  if (!requireNamespace("modeest", quietly = TRUE)) {
-    stop("modeest is required to run the Scenario Explorer.")
+  if (!requireNamespace("statip", quietly = TRUE)) {
+    stop("statip required to run the Scenario Explorer.")
   }
   if (!requireNamespace("flexdashboard", quietly = TRUE)) {
     stop("flexdashboard is required to run the Scenario Explorer.")
