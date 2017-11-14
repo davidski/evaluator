@@ -35,16 +35,16 @@ explore_scenarios <- function(input_directory = "data",
     stop("Install the rmarkdown package to generate reports.")
   }
   if (!requireNamespace("shiny", quietly = TRUE)) {
-    stop("shiny is required to run the Scenario Explorer.")
+    stop("Install the shiny package to run the Scenario Explorer.")
   }
   if (!requireNamespace("DT", quietly = TRUE)) {
-    stop("DT is required to run the Scenario Explorer.")
+    stop("Install the DT package to run the Scenario Explorer.")
   }
   if (!requireNamespace("statip", quietly = TRUE)) {
-    stop("statip required to run the Scenario Explorer.")
+    stop("Install the statip package to run the Scenario Explorer.")
   }
   if (!requireNamespace("flexdashboard", quietly = TRUE)) {
-    stop("flexdashboard is required to run the Scenario Explorer.")
+    stop("Install the flexdashboard package to run the Scenario Explorer.")
   }
   rmarkdown::run(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator"),
                  #dir = file.path(basename(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator")), ".."),
