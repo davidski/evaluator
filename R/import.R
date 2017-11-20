@@ -1,7 +1,7 @@
 #' Import the scenario spreadsheet.
 #'
 #' This is a wrapper function around \code{import_scenarios} and
-#' \code{import_capabilities}, calling both functions and writting the dataframes
+#' \code{import_capabilities}, calling both functions and writing the dataframes
 #' to a location on disk.
 #'
 #' @import dplyr

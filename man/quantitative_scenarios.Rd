@@ -18,7 +18,7 @@ describing the distribution of each input.
   \item{scenario_id}{id of the scenario, primary key}
   \item{tcomm}{full text name of threat community}
   \item{domain_id}{domain abbreviation}
-  \item{controls}{comma seperated list of control ids that apply to this scenario}
+  \item{controls}{comma separated list of control ids that apply to this scenario}
   \item{lm_l}{loss magnitude - low}
   \item{lm_ml}{loss magnitude - most likely}
   \item{lm_h}{loss magnitude - high}

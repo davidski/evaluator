@@ -18,7 +18,7 @@ simulations of information security risk scenarios.
   \item{scenario_id}{id of the scenario}
   \item{simulation}{id of the simulation}
   \item{threat_events}{number of threat events}
-  \item{loss_events}{number of loss events occuring in the simulation}
+  \item{loss_events}{number of loss events occurring in the simulation}
   \item{vuln}{percentage of threat events that result in losses}
   \item{mean_tc_exceedance}{mean amount of TC > DIFF}
   \item{mean_diff_exceedance}{mean amount of DIFF > TC}

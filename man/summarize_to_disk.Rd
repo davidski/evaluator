@@ -18,6 +18,6 @@ Simulation results summarized by domain
 }
 \description{
 This is a wrapper function around \code{summarize_scenarios} and
-\code{summarize_domains}, calling both functions and writting the dataframes
+\code{summarize_domains}, calling both functions and writing the dataframes
 to a location on disk.
 }

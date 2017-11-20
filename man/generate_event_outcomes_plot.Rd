@@ -7,7 +7,7 @@
 generate_event_outcomes_plot(control_weakness)
 }
 \arguments{
-\item{control_weakness}{Domain level control weakenss from \code{calculate_control_weakness}}
+\item{control_weakness}{Domain-level control weakness from \code{calculate_control_weakness}}
 }
 \value{
 ggplot object

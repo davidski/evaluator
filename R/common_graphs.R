@@ -71,7 +71,7 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #'
 #' @import dplyr
 #' @import ggplot2
-#' @param control_weakness Domain level control weakenss from \code{calculate_control_weakness}
+#' @param control_weakness Domain-level control weakness from \code{calculate_control_weakness}
 #' @return ggplot object
 #' @export
 generate_event_outcomes_plot <- function(control_weakness) {

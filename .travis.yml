@@ -10,6 +10,7 @@ cache: packages
 matrix:
   include:
     - os: osx
+      osx_iamge: xcode9.1
       before_install:
         - brew update
         - brew outdated gdal || brew upgrade gdal
