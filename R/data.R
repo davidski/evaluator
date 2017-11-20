@@ -58,7 +58,7 @@
 #'   \item{scenario_id}{id of the scenario, primary key}
 #'   \item{tcomm}{full text name of threat community}
 #'   \item{domain_id}{domain abbreviation}
-#'   \item{controls}{comma seperated list of control ids that apply to this scenario}
+#'   \item{controls}{comma separated list of control ids that apply to this scenario}
 #'   \item{lm_l}{loss magnitude - low}
 #'   \item{lm_ml}{loss magnitude - most likely}
 #'   \item{lm_h}{loss magnitude - high}
@@ -84,7 +84,7 @@
 #'   \item{scenario_id}{id of the scenario}
 #'   \item{simulation}{id of the simulation}
 #'   \item{threat_events}{number of threat events}
-#'   \item{loss_events}{number of loss events occuring in the simulation}
+#'   \item{loss_events}{number of loss events occurring in the simulation}
 #'   \item{vuln}{percentage of threat events that result in losses}
 #'   \item{mean_tc_exceedance}{mean amount of TC > DIFF}
 #'   \item{mean_diff_exceedance}{mean amount of DIFF > TC}
