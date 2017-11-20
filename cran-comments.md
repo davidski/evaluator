@@ -1,18 +1,14 @@
-## Resubmission
+## Update
 
-This is a resubmission, with the following changes:
-
-* Modified the language of the Description per CRAN request.
-* Expanded the test platforms on Travis CI to include OS X and Ubuntu 14.04
-
+This is a bug-fix update for an existing package.
 
 ## Test environments
 
-* local Windows 10 64 install, R 3.4.1
-* local OS X, R 3.4.1
-* Windows 64 (on appveyor), R 3.4.1
-* Ubuntu 14.04 (on travis-ci), R 3.4.1
-* OS X 10.11 (on travis-ci), R 3.4.1
+* local Windows 10 64 install, R 3.4.2
+* local OS X, R 3.4.2
+* Windows 64 (on appveyor), R 3.4.2
+* Ubuntu 14.04 (on travis-ci), R 3.4.2
+* OS X 10.12 (on travis-ci), R 3.4.2
 * win-builder (devel and release)
 
 ## R CMD check results
