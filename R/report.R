@@ -11,6 +11,15 @@ generate_report <- function(input_directory = "~/data",
                             results_directory = "~/results",
                             output_file = "risk_report.html",
                             focus_scenario_ids = c(51, 12), ...) {
+  if (!requireNamespace("psych", quietly = TRUE)) {
+    stop("Install the psych package to generate reports.")
+  }
+  if (!requireNamespace("pander", quietly = TRUE)) {
+    stop("Install the pander package to generate reports.")
+  }
+  if (!requireNamespace("ggalt", quietly = TRUE)) {
+    stop("Install the ggalt package to generate reports.")
+  }
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
   }

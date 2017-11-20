@@ -15,13 +15,10 @@ LazyData: true
 Imports:
   dplyr, 
   extrafont,
-  ggalt (>= 0.4.0),
   ggplot2,
   mc2d,
-  pander (>= 0.6.1),
   purrr,
   purrrlyr,
-  psych,
   readr,
   readxl,
   scales, 
@@ -33,6 +30,9 @@ Imports:
 RoxygenNote: 6.0.1
 Suggests:
     DT,
+    pander (>= 0.6.1),
+    psych,
+    ggalt (>= 0.4.0),
     flexdashboard (>= 0.4),
     forcats,
     statip,
