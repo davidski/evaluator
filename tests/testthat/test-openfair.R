@@ -2,68 +2,64 @@ context("Sample TEF")
 test_that("Sample TEF", {
   set.seed(1234)
   tef <- sample_tef(params = list(10, 1, 10, 100))
-  expect_that(tef, is_a("list"))
+  expect_is(tef, "list")
   # ensure that the list has the required elements
-  expect_that(names(tef), equals(c("type", "samples", "details")))
+  expect_equal(names(tef), c("type", "samples", "details"))
   # ensure that the samples matches the number requested
-  expect_that(length(tef$samples), equals(10))
+  expect_equal(length(tef$samples), 10)
   # ensure that values of samples is correct
-  expect_that(unlist(tef$samples), equals(c(6.58476034295649, 30.043491618616,
-                                            1.78473018566469, 34.1131016153908,
-                                            36.3088944002633, 13.3732140003123,
-                                            13.7715514319784, 13.5179511213919,
-                                            9.49877054112384, 14.7953439798899))
-              )
+  expect_equal(unlist(tef$samples), c(6.58476034295649, 30.043491618616,
+                                      1.78473018566469, 34.1131016153908,
+                                      36.3088944002633, 13.3732140003123,
+                                      13.7715514319784, 13.5179511213919,
+                                      9.49877054112384, 14.7953439798899))
 })
 
 context("Sample DIFF")
 test_that("Sample DIFF", {
   set.seed(1234)
   dat <- sample_diff(params = list(10, 50, 70, 75, 3))
-  expect_that(dat, is_a("list"))
+  expect_is(dat, "list")
   # ensure that the list has the required elements
-  expect_that(names(dat), equals(c("type", "samples", "details")))
+  expect_equal(names(dat), c("type", "samples", "details"))
   # ensure that the samples matches the number requested
-  expect_that(length(dat$samples), equals(10))
+  expect_equal(length(dat$samples), 10)
   # ensure that values of samples is correct
-  expect_that(unlist(dat$samples), equals(c(72.5519454551502, 65.1852603020272,
-                                            59.1564180836877, 74.5816023178688,
-                                            64.1192226440207, 63.561355776164,
-                                            70.1284833577168, 69.9960887031119,
-                                            70.0802721600923, 71.4683219144408))
-  )
+  expect_equal(unlist(dat$samples), c(72.5519454551502, 65.1852603020272,
+                                      59.1564180836877, 74.5816023178688,
+                                      64.1192226440207, 63.561355776164,
+                                      70.1284833577168, 69.9960887031119,
+                                      70.0802721600923, 71.4683219144408))
 })
 
 context("Sample TC")
 test_that("Sample TC", {
   set.seed(1234)
   tc <- sample_tef(params = list(10, 50, 75, 100, 4))
-  expect_that(tc, is_a("list"))
+  expect_is(tc, "list")
   # ensure that the list has the required elements
-  expect_that(names(tc), equals(c("type", "samples", "details")))
+  expect_equal(names(tc), c("type", "samples", "details"))
   # ensure that the samples matches the number requested
-  expect_that(length(tc$samples), equals(10))
+  expect_equal(length(tc$samples), 10)
   # ensure that values of samples is correct
-  expect_that(unlist(tc$samples), equals(c(61.7026564773373, 78.188740471894,
-                                           87.0623477417219, 53.1987199785052,
-                                           79.9184628308895, 80.7889924652588,
-                                           68.4387021948896, 68.7541469869603,
-                                           68.554057026653, 64.9764652390671))
-              )
+  expect_equal(unlist(tc$samples), c(61.7026564773373, 78.188740471894,
+                                     87.0623477417219, 53.1987199785052,
+                                     79.9184628308895, 80.7889924652588,
+                                     68.4387021948896, 68.7541469869603,
+                                     68.554057026653, 64.9764652390671))
 })
 
 context("Sample VULN")
 test_that("Sample VULN works with binom", {
   set.seed(1234)
   dat <- sample_vuln(params = list(10, 1, .5))
-  expect_that(dat, is_a("list"))
+  expect_is(dat, "list")
   # ensure that the list has the required elements
-  expect_that(names(dat), equals(c("type", "samples", "details")))
+  expect_equal(names(dat), c("type", "samples", "details"))
   # ensure that the samples matches the number requested
-  expect_that(length(dat$samples), equals(10))
+  expect_equal(length(dat$samples), 10)
   # ensure that values of samples is correct
-  expect_that(sum(dat$samples), equals(7)
-  )
+  expect_equal(sum(dat$samples), 7)
 })
 test_that("Sample VULN works with TC and DIFF", {
   set.seed(1234)
