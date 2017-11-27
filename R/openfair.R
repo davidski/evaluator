@@ -27,6 +27,23 @@ sample_lm <- function(n, l, ml, h, conf) {
     return(results)
 }
 
+#' Calculate the number of simulated threat event frequencies (TEF)
+#'
+#' @importFrom purrr invoke
+#' @importFrom purrr rerun
+#' @importFrom mc2d rpert
+#' @param n Number of periods to simulate. Defaults to 1.
+#' @param func Function to use to simulate TEF, defaults to mc2d::rpert
+#' @param params Optional parameters to pass to `func`
+#' @return List containing type ("tef"), samples (as a list), and details (as a list).
+#' @export
+sample_tef <- function(n = 1, func = NULL, params = NULL) {
+  if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
+  list(type = "tef",
+       samples = purrr::rerun(n, invoke(func, params)),
+       details = list())
+}
+
 #' Calculate the threat capability and whether the control(s) resist the attack
 #'
 #' @import dplyr
@@ -121,7 +138,11 @@ calculate_ale <- function(scenario, diff_samples = NULL, diff_estimates = NULL, 
     }
 
     # TEF - how many contacts do we have in each simulated year
-    TEFsamples <- mc2d::rpert(n, TEFestimate$l, TEFestimate$ml, TEFestimate$h, shape = TEFestimate$conf)
+    TEFsamples <- sample_tef(n, params = list(1, TEFestimate$l, TEFestimate$ml,
+                                           TEFestimate$h,
+                                           shape = TEFestimate$conf))
+    # convert from new-style reponse to old-style results
+    TEFsamples <- unlist(TEFsamples$samples)
     # fractional events per year is nonsensical, so round to the nearest integer
     TEFsamples <- round(TEFsamples)
 

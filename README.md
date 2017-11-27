@@ -18,7 +18,7 @@ David F. Severski
 -   [License](#license)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator) ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/evaluator)
+[![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator) [![Coverage Status](https://img.shields.io/codecov/c/github/davidski/evaluator/master.svg)](https://codecov.io/github/davidski/evaluator?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator) ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/evaluator)
 
 > NOTE: This README is out of date with the MASTER (development) version of Evaluator. Running the dev version (via `devtools::install_github("davidski/evaluator")` is required for current R installation and highly suggested for a better experience. Please view the usage vignette (`vignette("usage")`) after installation for a walk through guide. Updates to this README are coming!
 

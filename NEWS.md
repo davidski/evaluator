@@ -1,3 +1,8 @@
+# evaluator 0.1.1.900 (unreleased)
+
+* new sample_tef exported function
+* Tests and code coverage reporting added
+
 # evaluator 0.1.1
 
 * Replaced dependency on `modeest` with a slimmer `statip` dependency

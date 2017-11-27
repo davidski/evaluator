@@ -1,6 +1,6 @@
 Package: evaluator
 Title: Information Security Quantified Risk Assessment Toolkit
-Version: 0.1.1
+Version: 0.1.1.900
 Authors@R: person("David", "Severski", email = "davidski@deadheaven.com", role = c("aut", "cre"))
 Description: An open source information security strategic risk analysis 
   toolkit based on the OpenFAIR taxonomy 
@@ -39,7 +39,8 @@ Suggests:
     knitr,
     rmarkdown,
     shiny,
-    testthat
+    testthat,
+    covr
 VignetteBuilder: knitr
 URL: http://github.com/davidski/evaluator
 BugReports: https://github.com/davidski/evaluator/issues
