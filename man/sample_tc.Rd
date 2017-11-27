@@ -4,17 +4,15 @@
 \alias{sample_tc}
 \title{Sample threat capabilities (TC) from a distribution function.}
 \usage{
-sample_tc(n = 1, func = NULL, params = NULL)
+sample_tc(func = NULL, params = NULL)
 }
 \arguments{
-\item{n}{Number of periods to simulate. Defaults to 1.}
-
 \item{func}{Function to use to simulate TC, defaults to mc2d::rpert}
 
 \item{params}{Optional parameters to pass to `func`}
 }
 \value{
-List containing type ("t"), samples (as a list), and details (as a list).
+List containing type ("tc"), samples (as a vector), and details (as a list).
 }
 \description{
 Sample threat capabilities (TC) from a distribution function.

@@ -4,11 +4,9 @@
 \alias{sample_diff}
 \title{Calculate the difficulty for a loss event, given a function and parameters for that function.}
 \usage{
-sample_diff(n = 1, func = NULL, params = NULL)
+sample_diff(func = NULL, params = NULL)
 }
 \arguments{
-\item{n}{Number of periods to simulate. Defaults to 1.}
-
 \item{func}{Function to use to simulate DIFF, defaults to mc2d::rpert}
 
 \item{params}{Optional parameters to pass to `func`}

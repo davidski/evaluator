@@ -4,6 +4,7 @@
 * new sample_lm function
 * new sample_tc function
 * new sample_diff function
+* new sample_vuln function (and detail_vuln composition function)
 * Tests and code coverage reporting added
 
 # evaluator 0.1.1

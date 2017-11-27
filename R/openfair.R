@@ -1,20 +1,53 @@
 #' Calculate the difficulty for a loss event, given a function and parameters for that function.
 #'
 #' @importFrom purrr invoke
-#' @importFrom purrr rerun
 #' @importFrom purrr as_vector
 #' @importFrom stats median
 #' @importFrom mc2d rpert
-#' @param n Number of periods to simulate. Defaults to 1.
 #' @param func Function to use to simulate DIFF, defaults to mc2d::rpert
 #' @param params Optional parameters to pass to `func`
 #' @return List containing type ("diff"), samples (as a vector), and details (as a list).
 #' @export
-sample_diff <- function(n = 1, func = NULL, params = NULL) {
+sample_diff <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
   list(type = "diff",
-       samples = purrr::as_vector(purrr::rerun(n, invoke(func, params))),
+       samples = invoke(func, params),
        details = list())
+}
+
+#' Calculate the vulnerability
+#'
+#' @importFrom purrr invoke
+#' @importFrom dplyr if_else
+#' @importFrom purrr is_list
+#' @param func Function to use to simulate DIFF, defaults to `rbinom``
+#' @param params Optional parameters to pass to `func`
+#' @return List containing type ("diff"), samples (as a vector), and details (as a list).
+#' @export
+sample_vuln <- function(func = NULL, params = NULL) {
+  if (is.null(func)) func <- get("rbinom", asNamespace("stats"))
+  dat <- invoke(func, params)
+  list(type = "vuln",
+       samples = if(purrr::is_list(dat)) dat$samples else dat,
+       details = if(purrr::is_list(dat)) dat$details else list()
+  )
+}
+
+#' Calculate the vulnerability
+#'
+#' Composition function for use in sample_vuln, does a simple compare of
+#' all occurances where the threat capability (TC) is greater than the
+#' difficulty (DIFF).
+#'
+#' @param tc Threat capability (as a percentage)
+#' @param diff Difficult (as a percentage)
+#' @return List containing samples (as a vector) and details (as a list)
+#' @export
+detail_vuln <- function(tc, diff) {
+  samples = tc > diff
+  list(samples = samples,
+       details = list(mean_tc_exceedance = mean(tc[samples] - diff[samples]),
+                      mean_diff_exceedance = mean(diff[!samples] - tc[!samples])))
 }
 
 #' Given a number of loss events and a loss distribution, calculate losses
@@ -53,36 +86,33 @@ sample_lm <- function(n = 0, func = NULL, params = NULL) {
 #' Calculate the number of simulated threat event frequencies (TEF)
 #'
 #' @importFrom purrr invoke
-#' @importFrom purrr rerun
 #' @importFrom mc2d rpert
-#' @param n Number of periods to simulate. Defaults to 1.
 #' @param func Function to use to simulate TEF, defaults to mc2d::rpert
 #' @param params Optional parameters to pass to `func`
 #' @return List containing type ("tef"), samples (as a list), and details (as a list).
 #' @export
-sample_tef <- function(n = 1, func = NULL, params = NULL) {
+sample_tef <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
   list(type = "tef",
-       samples = purrr::rerun(n, invoke(func, params)),
+       samples = invoke(func, params),
        details = list())
 }
 
 #' Sample threat capabilities (TC) from a distribution function.
 #'
 #' @importFrom purrr invoke
-#' @importFrom purrr rerun
 #' @importFrom mc2d rpert
-#' @param n Number of periods to simulate. Defaults to 1.
 #' @param func Function to use to simulate TC, defaults to mc2d::rpert
 #' @param params Optional parameters to pass to `func`
-#' @return List containing type ("t"), samples (as a list), and details (as a list).
+#' @return List containing type ("tc"), samples (as a vector), and details (as a list).
 #' @export
-sample_tc <- function(n = 1, func = NULL, params = NULL) {
+sample_tc <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
   list(type = "tc",
-       samples = purrr::rerun(n, invoke(func, params)),
+       samples = invoke(func, params),
        details = list())
 }
+
 #' Calculate the threat capability and whether the control(s) resist the attack
 #'
 #' @import dplyr
@@ -105,13 +135,13 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL, DIFFestimate = NULL
 
     # sample threat capability
     # convert from new-style reponse to old-style results
-    TCsamples <- sample_tc(n, params = list(1, TCestimate$l, TCestimate$ml, TCestimate$h, shape = TCestimate$conf))
-    TCsamples <- unlist(TCsamples$samples)
+    TCsamples <- sample_tc(params = list(n, TCestimate$l, TCestimate$ml, TCestimate$h, shape = TCestimate$conf))
+    TCsamples <- TCsamples$samples
 
     # sample difficulty, either by sampling from a precomputed vector or from a list of probability distributions
     if (is.null(DIFFsamples)) {
         DIFFsamples <- mapply(function(l, ml, h, conf) {
-            sample_diff(n, params=list(1, l, ml, h, conf))$samples
+            sample_diff(params=list(n, l, ml, h, conf))$samples
         }, DIFFestimate$l, DIFFestimate$ml, DIFFestimate$h, DIFFestimate$conf)
         # if we were supplied an array of controls, take the mean for the effective control strength across the scenario
         DIFFsamples <- if (is.array(DIFFsamples)) { rowMeans(DIFFsamples)
@@ -123,19 +153,24 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL, DIFFestimate = NULL
     }
 
     # loss events occur whenever TC > DIFF
-    VULNsamples <- TCsamples > DIFFsamples
+    #VULNsamples <- TCsamples > DIFFsamples
+    VULNsamples <- sample_vuln(detail_vuln, params = list(tc = TCsamples, diff = DIFFsamples))
 
     # TC exceedance is TC - DIFF - how much more capable the threat actor is vs. the capability defending against it
-    mean_tc_exceedance <- mean(TCsamples[VULNsamples == TRUE] - DIFFsamples[VULNsamples], na.rm = TRUE)
-    if (is.nan(mean_tc_exceedance))
-        mean_tc_exceedance <- 0
+    mean_tc_exceedance <- VULNsamples$details$mean_tc_exceedance
+    #mean_tc_exceedance <- mean(TCsamples[VULNsamples == TRUE] - DIFFsamples[VULNsamples], na.rm = TRUE)
+    #if (is.nan(mean_tc_exceedance))
+    #    mean_tc_exceedance <- 0
 
     # DIFF exceedance is DIFF - TC - how much more capable the capability set is vs. the threat acting against it
-    mean_diff_exceedance <- mean(DIFFsamples[VULNsamples == FALSE] - TCsamples[VULNsamples == FALSE], na.rm = TRUE)
-    if (is.nan(mean_diff_exceedance))
-        mean_diff_exceedance <- 0
+    mean_diff_exceedance <- VULNsamples$details$mean_diff_exceedance
+    #mean_diff_exceedance <- mean(DIFFsamples[VULNsamples == FALSE] - TCsamples[VULNsamples == FALSE], na.rm = TRUE)
+    #if (is.nan(mean_diff_exceedance))
+    #    mean_diff_exceedance <- 0
 
-    return(list(loss_events = length(VULNsamples[VULNsamples == TRUE]), mean_tc_exceedance = mean_tc_exceedance, mean_diff_exceedance = mean_diff_exceedance))
+    return(list(loss_events = length(VULNsamples[VULNsamples$samples == TRUE]),
+                mean_tc_exceedance = mean_tc_exceedance,
+                mean_diff_exceedance = mean_diff_exceedance))
 }
 
 #' Run an OpenFAIR simulation
@@ -179,7 +214,7 @@ calculate_ale <- function(scenario, diff_samples = NULL, diff_estimates = NULL, 
     }
 
     # TEF - how many contacts do we have in each simulated year
-    TEFsamples <- sample_tef(n, params = list(1, TEFestimate$l, TEFestimate$ml,
+    TEFsamples <- sample_tef(params = list(n, TEFestimate$l, TEFestimate$ml,
                                            TEFestimate$h,
                                            shape = TEFestimate$conf))
     # convert from new-style reponse to old-style results

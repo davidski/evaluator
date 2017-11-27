@@ -4,11 +4,9 @@
 \alias{sample_tef}
 \title{Calculate the number of simulated threat event frequencies (TEF)}
 \usage{
-sample_tef(n = 1, func = NULL, params = NULL)
+sample_tef(func = NULL, params = NULL)
 }
 \arguments{
-\item{n}{Number of periods to simulate. Defaults to 1.}
-
 \item{func}{Function to use to simulate TEF, defaults to mc2d::rpert}
 
 \item{params}{Optional parameters to pass to `func`}
