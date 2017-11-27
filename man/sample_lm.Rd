@@ -4,21 +4,17 @@
 \alias{sample_lm}
 \title{Given a number of loss events and a loss distribution, calculate losses}
 \usage{
-sample_lm(n, l, ml, h, conf)
+sample_lm(n = 0, func = NULL, params = NULL)
 }
 \arguments{
-\item{n}{Numer of loss events to evaluate}
+\item{n}{Number of periods to simulate. Defaults to 1.}
 
-\item{l}{Low boundary}
+\item{func}{Function to use to simulate TEF, defaults to mc2d::rpert}
 
-\item{ml}{Most likely}
-
-\item{h}{High boundary}
-
-\item{conf}{Confidence}
+\item{params}{Optional parameters to pass to `func`}
 }
 \value{
-List of total loss, min/max/mean/median of sle
+List containing type ("lm"), samples (as a vector), and details (as a list).
 }
 \description{
 Given a number of loss events and a loss distribution, calculate losses

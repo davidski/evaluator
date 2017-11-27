@@ -1,30 +1,34 @@
 #' Given a number of loss events and a loss distribution, calculate losses
 #'
+#' @importFrom purrr invoke
+#' @importFrom purrr rerun
+#' @importFrom purrr as_vector
 #' @importFrom stats median
-#' @param n Numer of loss events to evaluate
-#' @param l Low boundary
-#' @param ml Most likely
-#' @param h High boundary
-#' @param conf Confidence
-#' @return List of total loss, min/max/mean/median of sle
-sample_lm <- function(n, l, ml, h, conf) {
+#' @importFrom mc2d rpert
+#' @param n Number of periods to simulate. Defaults to 1.
+#' @param func Function to use to simulate TEF, defaults to mc2d::rpert
+#' @param params Optional parameters to pass to `func`
+#' @return List containing type ("lm"), samples (as a vector), and details (as a list).
+#' @export
+sample_lm <- function(n = 0, func = NULL, params = NULL) {
 
-    if (is.na(n)) { n <- 0 }
-    samples <- mc2d::rpert(n, l, ml, h, shape = conf)
+  if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
+  if (is.na(n)) { n <- 0 }
+  samples <- purrr::as_vector(purrr::rerun(n, invoke(func, params)))
 
-    # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
-    results <- if (length(samples) == 0) {
-        list(ale = 0, sle_max = 0, sle_min = 0, sle_mean = 0, sle_median = 0)
-    } else {
-        list(ale = sum(samples),
-             sle_max = max(samples),
-             sle_min = min(samples[samples > 0]),
-             sle_mean = mean(samples[samples > 0]),
-             sle_median = median(samples[samples > 0])
-             )
+  # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
+  details <- if (length(samples) == 0) {
+      list(ale = 0, sle_max = 0, sle_min = 0, sle_mean = 0, sle_median = 0)
+  } else {
+      list(ale = sum(samples),
+           sle_max = max(samples),
+           sle_min = min(samples[samples > 0]),
+           sle_mean = mean(samples[samples > 0]),
+           sle_median = stats::median(samples[samples > 0])
+           )
     }
 
-    return(results)
+    return(list(type = "lm", samples = samples, details = details))
 }
 
 #' Calculate the number of simulated threat event frequencies (TEF)
@@ -177,11 +181,14 @@ calculate_ale <- function(scenario, diff_samples = NULL, diff_estimates = NULL, 
 
 
     # for the range of loss events, calculate the annual sum of losses across the range of possible LMs
-    loss_samples <- map_df(unname(LEF), function(x) sample_lm(x, l = LMestimate$l,
-                                                              ml = LMestimate$ml,
-                                                              h = LMestimate$h,
-                                                              conf = LMestimate$conf))
-    loss_samples <- bind_rows(loss_samples)
+    loss_samples <- map_df(unname(LEF),
+                           function(x) sample_lm(x,
+                                                 params = list(1,
+                                                               LMestimate$l,
+                                                               LMestimate$ml,
+                                                               LMestimate$h,
+                                                               LMestimate$conf))$details)
+    loss_samples <- dplyr::bind_rows(loss_samples)
 
     # summary stats for ALE
     if (verbose) {

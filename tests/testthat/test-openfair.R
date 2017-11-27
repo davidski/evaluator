@@ -33,6 +33,23 @@ test_that("Sample TC", {
               )
 })
 
+context("Sample LM")
+test_that("Sample LM", {
+  set.seed(1234)
+  lm <- sample_lm(n = 10, params = list(1, 1*10^4, 5*10^4, 1*10^7, 3))
+  expect_that(lm, is_a("list"))
+  # ensure that the list has the required elements
+  expect_that(names(lm), equals(c("type", "samples", "details")))
+  # ensure that the samples matches the number requested
+  expect_that(length(lm$samples), equals(10))
+  # ensure that values of samples is correct
+  expect_that(unlist(lm$samples), equals(c(332422.727880636, 2831751.79415706,
+                                           35602.2608120876, 3349352.73654269,
+                                           3632631.71769846, 927503.010814968,
+                                           966756.805719722, 941718.366417413,
+                                           569057.598433507, 1069488.76293628)))
+})
+
 context("Main simulation")
 test_that("Simulation", {
   sim <- calculate_ale(list(tef_l = 1, tef_ml=10, tef_h=100, tef_conf=4,
