@@ -1,4 +1,4 @@
-#' Given a number of loss events and a loss distribution, calculate losses
+#' Calculate the difficulty for a loss event, given a function and parameters for that function.
 #'
 #' @importFrom purrr invoke
 #' @importFrom purrr rerun
@@ -6,6 +6,25 @@
 #' @importFrom stats median
 #' @importFrom mc2d rpert
 #' @param n Number of periods to simulate. Defaults to 1.
+#' @param func Function to use to simulate DIFF, defaults to mc2d::rpert
+#' @param params Optional parameters to pass to `func`
+#' @return List containing type ("diff"), samples (as a vector), and details (as a list).
+#' @export
+sample_diff <- function(n = 1, func = NULL, params = NULL) {
+  if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
+  list(type = "diff",
+       samples = purrr::as_vector(purrr::rerun(n, invoke(func, params))),
+       details = list())
+}
+
+#' Given a number of loss events and a loss distribution, calculate losses
+#'
+#' @importFrom purrr invoke
+#' @importFrom purrr rerun
+#' @importFrom purrr as_vector
+#' @importFrom stats median
+#' @importFrom mc2d rpert
+#' @param n Number of periods to simulate. Defaults to 0.
 #' @param func Function to use to simulate TEF, defaults to mc2d::rpert
 #' @param params Optional parameters to pass to `func`
 #' @return List containing type ("lm"), samples (as a vector), and details (as a list).
@@ -92,7 +111,7 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL, DIFFestimate = NULL
     # sample difficulty, either by sampling from a precomputed vector or from a list of probability distributions
     if (is.null(DIFFsamples)) {
         DIFFsamples <- mapply(function(l, ml, h, conf) {
-            mc2d::rpert(n, l, ml, h, conf)
+            sample_diff(n, params=list(1, l, ml, h, conf))$samples
         }, DIFFestimate$l, DIFFestimate$ml, DIFFestimate$h, DIFFestimate$conf)
         # if we were supplied an array of controls, take the mean for the effective control strength across the scenario
         DIFFsamples <- if (is.array(DIFFsamples)) { rowMeans(DIFFsamples)

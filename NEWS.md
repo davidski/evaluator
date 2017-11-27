@@ -3,6 +3,7 @@
 * new sample_tef function
 * new sample_lm function
 * new sample_tc function
+* new sample_diff function
 * Tests and code coverage reporting added
 
 # evaluator 0.1.1

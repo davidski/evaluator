@@ -7,7 +7,7 @@
 sample_lm(n = 0, func = NULL, params = NULL)
 }
 \arguments{
-\item{n}{Number of periods to simulate. Defaults to 1.}
+\item{n}{Number of periods to simulate. Defaults to 0.}
 
 \item{func}{Function to use to simulate TEF, defaults to mc2d::rpert}
 

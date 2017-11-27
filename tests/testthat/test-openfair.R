@@ -16,6 +16,24 @@ test_that("Sample TEF", {
               )
 })
 
+context("Sample DIFF")
+test_that("Sample DIFF", {
+  set.seed(1234)
+  dat <- sample_diff(n = 10, params = list(1, 50, 70, 75, 3))
+  expect_that(dat, is_a("list"))
+  # ensure that the list has the required elements
+  expect_that(names(dat), equals(c("type", "samples", "details")))
+  # ensure that the samples matches the number requested
+  expect_that(length(dat$samples), equals(10))
+  # ensure that values of samples is correct
+  expect_that(unlist(dat$samples), equals(c(72.5519454551502, 65.1852603020272,
+                                            59.1564180836877, 74.5816023178688,
+                                            64.1192226440207, 63.561355776164,
+                                            70.1284833577168, 69.9960887031119,
+                                            70.0802721600923, 71.4683219144408))
+  )
+})
+
 test_that("Sample TC", {
   set.seed(1234)
   tc <- sample_tef(n = 10, params = list(1, 50, 75, 100, 4))
