@@ -1,6 +1,7 @@
 # evaluator 0.1.1.900 (unreleased)
 
-* new sample_tef exported function
+* new sample_tef function
+* new sample_tc function
 * Tests and code coverage reporting added
 
 # evaluator 0.1.1

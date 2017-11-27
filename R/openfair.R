@@ -44,6 +44,22 @@ sample_tef <- function(n = 1, func = NULL, params = NULL) {
        details = list())
 }
 
+#' Sample threat capabilities (TC) from a distribution function.
+#'
+#' @importFrom purrr invoke
+#' @importFrom purrr rerun
+#' @importFrom mc2d rpert
+#' @param n Number of periods to simulate. Defaults to 1.
+#' @param func Function to use to simulate TC, defaults to mc2d::rpert
+#' @param params Optional parameters to pass to `func`
+#' @return List containing type ("t"), samples (as a list), and details (as a list).
+#' @export
+sample_tc <- function(n = 1, func = NULL, params = NULL) {
+  if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
+  list(type = "tc",
+       samples = purrr::rerun(n, invoke(func, params)),
+       details = list())
+}
 #' Calculate the threat capability and whether the control(s) resist the attack
 #'
 #' @import dplyr
@@ -65,7 +81,9 @@ select_events <- function(n, TCestimate, DIFFsamples = NULL, DIFFestimate = NULL
     }
 
     # sample threat capability
-    TCsamples <- mc2d::rpert(n, TCestimate$l, TCestimate$ml, TCestimate$h, shape = TCestimate$conf)
+    # convert from new-style reponse to old-style results
+    TCsamples <- sample_tc(n, params = list(1, TCestimate$l, TCestimate$ml, TCestimate$h, shape = TCestimate$conf))
+    TCsamples <- unlist(TCsamples$samples)
 
     # sample difficulty, either by sampling from a precomputed vector or from a list of probability distributions
     if (is.null(DIFFsamples)) {

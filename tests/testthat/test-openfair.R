@@ -16,6 +16,23 @@ test_that("Sample TEF", {
               )
 })
 
+test_that("Sample TC", {
+  set.seed(1234)
+  tc <- sample_tef(n = 10, params = list(1, 50, 75, 100, 4))
+  expect_that(tc, is_a("list"))
+  # ensure that the list has the required elements
+  expect_that(names(tc), equals(c("type", "samples", "details")))
+  # ensure that the samples matches the number requested
+  expect_that(length(tc$samples), equals(10))
+  # ensure that values of samples is correct
+  expect_that(unlist(tc$samples), equals(c(61.7026564773373, 78.188740471894,
+                                           87.0623477417219, 53.1987199785052,
+                                           79.9184628308895, 80.7889924652588,
+                                           68.4387021948896, 68.7541469869603,
+                                           68.554057026653, 64.9764652390671))
+              )
+})
+
 context("Main simulation")
 test_that("Simulation", {
   sim <- calculate_ale(list(tef_l = 1, tef_ml=10, tef_h=100, tef_conf=4,
