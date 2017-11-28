@@ -12,7 +12,7 @@ sample_tef(func = NULL, params = NULL)
 \item{params}{Optional parameters to pass to `func`}
 }
 \value{
-List containing type ("tef"), samples (as a list), and details (as a list).
+List containing type ("tef"), samples (as a vector), and details (as a list).
 }
 \description{
 Calculate the number of simulated threat event frequencies (TEF)

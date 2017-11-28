@@ -1,5 +1,6 @@
 #' Determine fonts we can/should use.
 #'
+#' @importFrom extrafont choose_font
 #' @return String of the preferred base font
 #' @export
 get_base_fontfamily <- function() {
@@ -8,7 +9,7 @@ get_base_fontfamily <- function() {
 
 #' Default ggplot theme used by all Evaluator-supplied graphics.
 #'
-#' @importFrom ggplot2 theme_minimal
+#' @importFrom ggplot2 theme_minimal theme %+replace%
 #' @param base_family Font family
 #' @return ggplot theme object
 #' @export
@@ -22,6 +23,7 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #'
 #' @import dplyr
 #' @import ggplot2
+#' @importFrom viridis scale_fill_viridis
 #' @param domain_impact Domain impact information from \code{calculate_domain_impact}
 #' @return ggplot object
 #' @export

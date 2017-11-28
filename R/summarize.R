@@ -53,6 +53,7 @@ summarize_domains <- function(simulation_results, domains) {
 #' to a location on disk.
 #'
 #' @importFrom dplyr "%>%"
+#' @importFrom tibble rownames_to_column as_tibble
 #' @param simulation_results Simulation results dataframe
 #' @param domains Domain mappings dataframe
 #' @param results_dir Directory to place simulation files
@@ -70,5 +71,5 @@ summarize_to_disk <- function(simulation_results, domains,
 
   file.info(c(file.path(results_dir, "scenario_summary.rda"),
               file.path(results_dir, "domain_summary.rda"))) %>%
-    tibble::rownames_to_column("filename") %>% tibble::as_data_frame()
+    tibble::rownames_to_column("filename") %>% tibble::as_tibble()
 }

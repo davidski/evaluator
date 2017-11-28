@@ -41,14 +41,9 @@ run_simulations <- function(scenario, simulation_count = 10000L) {
 
   ## ----tidy_results--------------------------------------------------------
   # convert title back to scenario_id
-  simulation_results <- mutate_(simulation_results, "title" = ~ as.integer(title)) %>%
+  simulation_results <- mutate_(simulation_results,
+                                "title" = ~ as.integer(title)) %>%
     rename_("scenario_id" = "title")
-
-  # calculate the vuln percentage
-  # note that for no threat events, we report a NA vuln value
-  simulation_results <- simulation_results %>% mutate_(vuln = ~ 1 - (threat_events - loss_events) /
-                                    threat_events,
-                                  vuln = ~ ifelse(vuln < 0, 0, vuln))
 
   # add the domain_id column
   simulation_results <- simulation_results %>% left_join(select_(scenario, 'c(scenario_id, domain_id)'),

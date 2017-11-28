@@ -4,12 +4,10 @@
 \alias{sample_lm}
 \title{Given a number of loss events and a loss distribution, calculate losses}
 \usage{
-sample_lm(n = 0, func = NULL, params = NULL)
+sample_lm(func = NULL, params = NULL)
 }
 \arguments{
-\item{n}{Number of periods to simulate. Defaults to 0.}
-
-\item{func}{Function to use to simulate TEF, defaults to mc2d::rpert}
+\item{func}{Function to use to simulate TEF, defaults to mc2d::rpert.}
 
 \item{params}{Optional parameters to pass to `func`}
 }

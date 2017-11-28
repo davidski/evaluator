@@ -11,7 +11,9 @@
 #'   subdirectory in the current working direction.
 #' @export
 #' @return Dataframe of generated files (capabilities.csv and scenarios.csv)
-import_spreadsheet <- function(survey_file = system.file("survey", "survey.xlsx", package = "evaluator"),
+import_spreadsheet <- function(survey_file = system.file("survey",
+                                                         "survey.xlsx",
+                                                         package = "evaluator"),
                                domains = NULL,
                                output_dir = "~/data"){
 
@@ -32,7 +34,8 @@ import_spreadsheet <- function(survey_file = system.file("survey", "survey.xlsx"
   ## ----write_files---------------------------------------------------------
   if (!dir.exists(output_dir)) dir.create(output_dir)
   readr::write_csv(capabilities, path = file.path(output_dir, "capabilities.csv"))
-  readr::write_csv(qualitative_scenarios, path = file.path(output_dir, "qualitative_scenarios.csv"))
+  readr::write_csv(qualitative_scenarios, path =
+                     file.path(output_dir, "qualitative_scenarios.csv"))
 
   file.info(c(file.path(output_dir, "capabilities.csv"),
               file.path(output_dir, "qualitative_scenarios.csv"))) %>%
@@ -46,7 +49,9 @@ import_spreadsheet <- function(survey_file = system.file("survey", "survey.xlsx"
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @export
 #' @return Extracted qualitative scenarios as a dataframe.
-import_scenarios <- function(survey_file = system.file("survey", "survey.xlsx", package = "evaluator"),
+import_scenarios <- function(survey_file = system.file("survey",
+                                                       "survey.xlsx",
+                                                       package = "evaluator"),
                                domains = NULL) {
 
   ## ----survey_sheet--------------------------------------------------------

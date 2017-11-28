@@ -2,7 +2,8 @@
 % Please edit documentation in R/openfair.R
 \name{sample_diff}
 \alias{sample_diff}
-\title{Calculate the difficulty for a loss event, given a function and parameters for that function.}
+\title{Calculate the difficulty presented by controls, given a function and
+parameters for that function.}
 \usage{
 sample_diff(func = NULL, params = NULL)
 }
@@ -15,5 +16,6 @@ sample_diff(func = NULL, params = NULL)
 List containing type ("diff"), samples (as a vector), and details (as a list).
 }
 \description{
-Calculate the difficulty for a loss event, given a function and parameters for that function.
+Calculate the difficulty presented by controls, given a function and
+parameters for that function.
 }

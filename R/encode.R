@@ -2,6 +2,7 @@
 #' Encode qualitative data to quantitative parameters.
 #'
 #' @import dplyr
+#' @importFrom purrr map2
 #' @param scenarios Qualitative risk scenarios dataframe
 #' @param capabilities Qualitative program capabilities dataframe
 #' @param mappings Number of simulations for each scenario
@@ -61,6 +62,8 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' @param mappings Qualitative mappings dataframe
 #' @param id Character string of the type (tef, tc, diff, etc)
 #' @import dplyr
+#' @importFrom stringi stri_split_fixed
+#' @importFrom purrr map_df
 #' @return List-wrapped dataframe of estimate parameters
 derive_controls <- function(labels, capabilities, mappings, id = "None") {
   control_list <- stringi::stri_split_fixed(labels, ", ") %>% unlist()
@@ -87,7 +90,7 @@ derive_controls <- function(labels, capabilities, mappings, id = "None") {
 #' @param qual_label Dataframe of qualitative labels (label=H/M/L, etc)
 #' @param qual_type Character string of the type (tef, tc, diff, etc)
 #' @param mappings Qualitative mappings dataframe
-#' @import dplyr
+#' @importFrom dplyr filter left_join
 #' @return Dataframe of estimate parameters
 #' @export
 convert_qual_to_quant <- function(qual_label, qual_type, mappings) {

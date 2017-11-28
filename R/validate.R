@@ -2,6 +2,8 @@
 #' Validate scenario data.
 #'
 #' @import dplyr
+#' @importFrom stringi stri_split_fixed
+#' @importFrom tidyr separate_rows
 #' @param scenarios Dataframe of scenarios
 #' @param capabilities Dataframe of capabilities
 #' @param domains Dataframe of domain mappings

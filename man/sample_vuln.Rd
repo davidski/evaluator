@@ -12,7 +12,7 @@ sample_vuln(func = NULL, params = NULL)
 \item{params}{Optional parameters to pass to `func`}
 }
 \value{
-List containing type ("diff"), samples (as a vector), and details (as a list).
+List containing type ("vuln"), samples (as a vector), and details (as a list).
 }
 \description{
 Calculate the vulnerability

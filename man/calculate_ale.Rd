@@ -4,15 +4,13 @@
 \alias{calculate_ale}
 \title{Run an OpenFAIR simulation}
 \usage{
-calculate_ale(scenario, diff_samples = NULL, diff_estimates = NULL,
-  n = 10^4, title = "Untitled", verbose = FALSE)
+calculate_ale(scenario, diff_estimates = NULL, n = 10^4,
+  title = "Untitled", verbose = FALSE)
 }
 \arguments{
 \item{scenario}{list of tef_, tc_, and LM_ l/ml/h/conf parameters}
 
-\item{diff_samples}{Sampled difficulties for the scenario (DEPRECATED)}
-
-\item{diff_estimates}{Sampled difficulties for the scenario}
+\item{diff_estimates}{parameters for estimating the scenario difficulty}
 
 \item{n}{Number of simulations to run}
 
@@ -21,7 +19,7 @@ calculate_ale(scenario, diff_samples = NULL, diff_estimates = NULL,
 \item{verbose}{Whether to print progress indicators}
 }
 \value{
-Dataframe of scenario name, threat_events count, loss_events count,
+Dataframe of scenario name, threat_event count, loss_event count,
   mean TC and DIFF exceedance, and ALE samples
 }
 \description{
