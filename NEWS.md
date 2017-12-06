@@ -1,5 +1,6 @@
 # evaluator 0.1.1.900 (unreleased)
 
+* drop use of tcltk progress bar in favor of console-compatible dplyr::progress_estimated
 * new sample_tef function
 * new sample_lm function
 * new sample_tc function

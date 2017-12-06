@@ -25,7 +25,6 @@ Imports:
   stringi,
   tibble,
   tidyr,
-  tcltk,
   viridis
 RoxygenNote: 6.0.1
 Suggests:

@@ -1,33 +1,27 @@
 #' Run simulations for all scenarios.
 #'
 #' @import dplyr
+#' @importFrom dplyr progress_estimated bind_rows %>%
 #' @param scenario Quantitative scenarios
 #' @param simulation_count Number of simulations for each scenario
 #' @export
 #' @return Dataframe of raw results
 run_simulations <- function(scenario, simulation_count = 10000L) {
 
-
   ## ----run_simulations-----------------------------------------------------
-  pb <- tcltk::tkProgressBar(title = "Evaluator simulations",
-                      label = "Working on scenario ",
-                      min = 1, max = nrow(scenario), initial = 1)
+  wrapped_calc <- function(x, .pb=NULL) {
+    if ((!is.null(.pb)) & inherits(.pb, "Progress") && (.pb$i < .pb$n)) .pb$tick()$print()
 
-  simulation_results <- purrrlyr::by_row(scenario, function(x) {
-    #info <- sprintf("%d%% done", round(i))
-    tcltk::setTkProgressBar(pb, x$scenario_id,
-                     label = sprintf("Running scenario %s of %s",
-                                     x$scenario_id, nrow(scenario)))
     safe_calculate <- purrr::safely(calculate_ale)
     safe_calculate(scenario = x,
                   diff_estimates = x[[1, "diff_params"]],
                   n = simulation_count,
                   title = x$scenario_id,
-                  verbose = FALSE)},
-    .labels = FALSE
-  )
+                  verbose = FALSE)
+    }
 
-  close(pb)
+  pb <- dplyr::progress_estimated(nrow(scenario))
+  simulation_results <- purrrlyr::by_row(scenario, wrapped_calc, .pb = pb, .labels = FALSE)
 
   y <- simulation_results$`.out` %>% purrr::transpose()
   is_ok <- y$error %>% purrr::map_lgl(purrr::is_null)
@@ -37,7 +31,7 @@ run_simulations <- function(scenario, simulation_count = 10000L) {
          paste0(scenario[!is_ok,]$scenario_id, collapse = ", "))
   }
 
-  simulation_results <- bind_rows(y$result)
+  simulation_results <- dplyr::bind_rows(y$result)
 
   ## ----tidy_results--------------------------------------------------------
   # convert title back to scenario_id
