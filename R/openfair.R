@@ -108,6 +108,31 @@ sample_lef <- function(func = NULL, params = NULL) {
   )
 }
 
+# Control Strength Functions ----------------------------------------------
+
+#' Calculate difficulty strength across mutliple controls by taking the mean
+#'
+#' Given a set of estimation parameters, calculate control strength as the
+#' arithmetic mean of sampled control effectiveness.
+#'
+#' @importFrom dplyr %>%
+#' @importFrom purrr pmap map transpose simplify_all map_dbl
+#' @param n Number of threat events to sample controls across.
+#' @param diff_estimates Parameters to pass to `sample_diff`.
+#' @return Vector of control effectiveness.
+#' @export
+get_mean_control_strength <- function(n, diff_estimates)  {
+  # ensure control estimates are in the order we expect
+  control_params <- with(diff_estimates, list(l = l, ml = ml, h = h,
+                                              conf = conf))
+  cs <- purrr::pmap(control_params, ~ sample_diff(
+    params = list(n, ..1, ..2, ..3, ..4))) %>%
+    purrr::map("samples")
+  cs <- cs %>% purrr::transpose(.) %>%  purrr::simplify_all(.)
+  # take the mean of all controls
+  cs %>% purrr::map_dbl(mean)
+}
+
 # Composition Functions ---------------------------------------------------
 
 #' Calculate number of loss events which occur in a simulated period.
@@ -200,19 +225,7 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates = NULL, n = 10^4,
     # DIFF - calculate the mean strength of controls for each threat event
     #        in a given period
 
-    # get the mean control strength for n number of threat events, given
-    # parameters of control effectiveness
-    get_mean_control_strength <- function(n, diff_estimates)  {
-      # ensure control estimates are in the order we expect
-      control_params <- with(diff_estimates, list(l = l, ml = ml, h = h,
-                                                  conf = conf))
-      cs <- purrr::pmap(control_params, ~ sample_diff(
-        params = list(n, ..1, ..2, ..3, ..4))) %>%
-        purrr::map("samples")
-      cs <- cs %>% purrr::transpose(.) %>%  purrr::simplify_all(.)
-      # take the mean of all controls
-      cs %>% purrr::map_dbl(mean)
-      }
+
 
     # get the difficulty for each threat event across all the simulated periods
     DIFFsamples <- purrr::map(1:n, function(x) {

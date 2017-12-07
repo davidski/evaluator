@@ -1,5 +1,6 @@
 # evaluator 0.1.1.900 (unreleased)
 
+* Improved help documentation on many functions
 * Expose OpenFAIR model selection in run_simulation call
     * Provide default TEF/TC/DIFF/LM OpenFAIR model
 * Drop use of tcltk progress bar in favor of console-compatible 
@@ -13,6 +14,8 @@
 * New composition functions:
     * compare_tef_vuln
     * select_loss_opportunities
+* New difficulty composition functions:
+    * get_mean_control_strength
 * Tests and code coverage reporting added
 
 # evaluator 0.1.1
