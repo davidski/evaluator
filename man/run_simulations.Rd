@@ -4,15 +4,15 @@
 \alias{run_simulations}
 \title{Run simulations for all scenarios.}
 \usage{
-run_simulations(scenario, model = "openfair_tef_tc_diff_lm",
-  simulation_count = 10000L)
+run_simulations(scenario, simulation_count = 10000L,
+  model = "openfair_tef_tc_diff_lm")
 }
 \arguments{
 \item{scenario}{Quantitative scenarios}
 
-\item{model}{OpenFAIR model to use}
-
 \item{simulation_count}{Number of simulations for each scenario}
+
+\item{model}{OpenFAIR model to use}
 }
 \value{
 Dataframe of raw results
