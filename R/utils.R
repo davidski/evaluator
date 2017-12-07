@@ -1,7 +1,8 @@
-#' Format dollar amounts in terms of millions of USD.
+#' Format dollar amounts in terms of millions of USD
 #'
+#' @importFrom dplyr %>%
 #' @param x A number.
-#' @return String in the format of $xM
+#' @return String in the format of $xM.
 #' @export
 dollar_millions <- function(x) {
   # paste0('$', x / 10 ^ 6, 'M')
@@ -9,7 +10,7 @@ dollar_millions <- function(x) {
   paste0("$", x, "M")
 }
 
-#' Calculate control weaknesses on a domain level.
+#' Calculate control weaknesses on a domain level
 #'
 #' @import dplyr
 #' @param simulation_results Results of running the risk simulations.
@@ -30,37 +31,41 @@ calculate_weak_domains <- function(simulation_results, domains) {
               loss_events = ~ sum(loss_events)) %>%
     mutate_(tc_exceedance = ~ tc_exceedance / loss_events,
             diff_exceedance = ~diff_exceedance / avoided_events) %>%
-    mutate_(tc_exceedance = ~ ifelse(is.na(tc_exceedance), NA, scales::percent(tc_exceedance/100)),
-            diff_exceedance = ~ ifelse(is.na(diff_exceedance), NA, scales::percent(diff_exceedance/100))) %>%
+    mutate_(tc_exceedance = ~ ifelse(is.na(tc_exceedance), NA,
+                                     scales::percent(tc_exceedance/100)),
+            diff_exceedance = ~ ifelse(is.na(diff_exceedance), NA,
+                                       scales::percent(diff_exceedance/100))) %>%
     select_("tc_exceedance", "diff_exceedance", "domain_id")
-  control_weakness <- left_join(control_weakness, tc_exceedance, by = c(domain_id = "domain_id")) %>%
+  control_weakness <- left_join(control_weakness, tc_exceedance,
+                                by = c(domain_id = "domain_id")) %>%
     left_join(domains, by = c(domain_id = "domain_id")) %>%
       mutate_(domain = ~ paste0(domain, " (", domain_id, ")"))
   control_weakness
 }
 
-#' Calculate quantified impact at a domain level.
+#' Calculate quantified impact at a domain level
 #'
 #' @import dplyr
 #' @importFrom stats sd quantile
-#' @param domain_summary Data.
-#' @param domains Data.
-#' @return Dataframe
+#' @param domain_summary Domain-level summary of `run_simulation` results.
+#' @param domains Dataframe of all domains in scope.
+#' @return A dataframe
 #' @export
 calculate_domain_impact <- function(domain_summary, domains) {
   domain_summary %>% group_by_(~domain_id) %>% select_("domain_id", "ale") %>%
-    summarize_at(vars("ale"), funs(min, mean, max, sd, var = quantile(., probs = 0.95))) %>%
+    summarize_at(vars("ale"), funs(min, mean, max, sd,
+                                   var = quantile(., probs = 0.95))) %>%
     arrange_("desc(var)") %>% ungroup %>%
     left_join(domains, by = c(domain_id = "domain_id")) %>%
     mutate_(domain = quote(paste0(domain, " (", domain_id, ")")))
 }
 
-#' Calculate maximum losses with and without outliers.
+#' Calculate maximum losses with and without outliers
 #'
 #' @import dplyr
 #' @param simulation_results Data.
 #' @param scenario_outliers Vector of scenario_ids which are outliers
-#' @return Dataframe
+#' @return A dataframe.
 #' @export
 calculate_max_losses <- function(simulation_results, scenario_outliers) {
   max_loss <- simulation_results %>% filter_(~ !scenario_id %in% scenario_outliers) %>%

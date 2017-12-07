@@ -8,19 +8,19 @@ openfair_tef_tc_diff_lm(scenario, diff_estimates = NULL, n = 10^4,
   title = "Untitled", verbose = FALSE)
 }
 \arguments{
-\item{scenario}{list of tef_, tc_, and LM_ l/ml/h/conf parameters}
+\item{scenario}{List of tef_, tc_, and LM_ l/ml/h/conf parameters.}
 
-\item{diff_estimates}{parameters for estimating the scenario difficulty}
+\item{diff_estimates}{Parameters for estimating the scenario difficulty.}
 
-\item{n}{Number of simulations to run}
+\item{n}{Number of simulations to run.}
 
-\item{title}{Optional name of scenario}
+\item{title}{Optional name of scenario.}
 
-\item{verbose}{Whether to print progress indicators}
+\item{verbose}{Whether to print progress indicators.}
 }
 \value{
 Dataframe of scenario name, threat_event count, loss_event count,
-  mean TC and DIFF exceedance, and ALE samples
+  mean TC and DIFF exceedance, and ALE samples.
 }
 \description{
 Run an OpenFAIR simulation

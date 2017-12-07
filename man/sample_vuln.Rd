@@ -7,9 +7,9 @@
 sample_vuln(func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate DIFF, defaults to `rbinom``}
+\item{func}{Function to use to simulate DIFF, defaults to `rbinom`.}
 
-\item{params}{Optional parameters to pass to `func`}
+\item{params}{Optional parameters to pass to `func`.}
 }
 \value{
 List containing type ("vuln"), samples (as a vector), and details (as a list).

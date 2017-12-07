@@ -1,11 +1,11 @@
 ## ----encode_capabilities-------------------------------------------------
-#' Encode qualitative data to quantitative parameters.
+#' Encode qualitative data to quantitative parameters
 #'
 #' @import dplyr
 #' @importFrom purrr map2
-#' @param scenarios Qualitative risk scenarios dataframe
-#' @param capabilities Qualitative program capabilities dataframe
-#' @param mappings Number of simulations for each scenario
+#' @param scenarios Qualitative risk scenarios dataframe.
+#' @param capabilities Qualitative program capabilities dataframe.
+#' @param mappings Qualitative to quantitative mapping dataframe.
 #' @export
 #' @return Dataframe of encoded quantitative scenarios
 #'
@@ -50,20 +50,20 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   scenarios
 }
 
-#' Derive control difficulty parameters for a given qualitative scenario.
+#' Derive control difficulty parameters for a given qualitative scenario
 #'
 #' Given a comma separated list of control IDs in a scenario, identify
 #' the qualitative rankings associated with each scenario, convert to
 #' their quantitative parameters, and return a dataframe of the set of
 #' parameters.
 #'
-#' @param labels Comma delimited list of qualitative labels
-#' @param capabilities Character string of the type (tef, tc, diff, etc)
-#' @param mappings Qualitative mappings dataframe
-#' @param id Character string of the type (tef, tc, diff, etc)
 #' @import dplyr
 #' @importFrom stringi stri_split_fixed
 #' @importFrom purrr map_df
+#' @param labels Comma delimited list of qualitative labels.
+#' @param capabilities Character string of the type (tef, tc, diff, etc.).
+#' @param mappings Qualitative mappings dataframe.
+#' @param id Character string of the type (tef, tc, diff, etc.).
 #' @return List-wrapped dataframe of estimate parameters
 derive_controls <- function(labels, capabilities, mappings, id = "None") {
   control_list <- stringi::stri_split_fixed(labels, ", ") %>% unlist()
@@ -85,13 +85,13 @@ derive_controls <- function(labels, capabilities, mappings, id = "None") {
   return(results)
 }
 
-#' Convert qualitative ratings to quantitative estimate ranges.
+#' Convert qualitative ratings to quantitative estimate ranges
 #'
-#' @param qual_label Dataframe of qualitative labels (label=H/M/L, etc)
-#' @param qual_type Character string of the type (tef, tc, diff, etc)
-#' @param mappings Qualitative mappings dataframe
 #' @importFrom dplyr filter left_join
-#' @return Dataframe of estimate parameters
+#' @param qual_label Dataframe of qualitative labels (label=H/M/L, etc.).
+#' @param qual_type Character string of the type (tef, tc, diff, etc.).
+#' @param mappings Qualitative mappings dataframe.
+#' @return Dataframe of estimate parameters.
 #' @export
 convert_qual_to_quant <- function(qual_label, qual_type, mappings) {
 

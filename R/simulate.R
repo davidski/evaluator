@@ -1,4 +1,4 @@
-#' Run simulations for all scenarios.
+#' Run simulations for all scenarios
 #'
 #' @import dplyr
 #' @importFrom dplyr progress_estimated bind_rows %>%

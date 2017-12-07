@@ -1,11 +1,14 @@
-#' Import the scenario spreadsheet.
+#' Import the scenario spreadsheet
 #'
 #' This is a wrapper function around \code{import_scenarios} and
 #' \code{import_capabilities}, calling both functions and writing the dataframes
 #' to a location on disk.
 #'
 #' @import dplyr
-#' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
+#' @importFrom readr write_csv
+#' @importFrom utils data
+#' @importFrom tibble as_tibble rownames_to_column
+#' @param survey_file Path to survey XLSX file. Defaults to an Evaluator-provided sample spreadsheet.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @param output_dir Output file directory. Defaults to a \code{data}
 #'   subdirectory in the current working direction.
@@ -39,12 +42,15 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 
   file.info(c(file.path(output_dir, "capabilities.csv"),
               file.path(output_dir, "qualitative_scenarios.csv"))) %>%
-    tibble::rownames_to_column("filename") %>% tibble::as_data_frame()
+    tibble::rownames_to_column("filename") %>% tibble::as_tibble()
 }
 
-#' Import scenarios from survey spreadsheet.
+#' Import scenarios from survey spreadsheet
 #'
 #' @import dplyr
+#' @importFrom utils data
+#' @importFrom purrr map
+#' @importFrom readxl read_excel
 #' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @export
@@ -87,9 +93,11 @@ import_scenarios <- function(survey_file = system.file("survey",
 
 }
 
-#' Import capabilities from survey spreadsheet.
+#' Import capabilities from survey spreadsheet
 #'
 #' @import dplyr
+#' @importFrom readxl read_excel
+#' @importFrom purrr map
 #' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @export
@@ -124,7 +132,7 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
   capabilities
 }
 
-#' Split a sheet of the survey spreadsheet into capabilities or threats.
+#' Split a sheet of the survey spreadsheet into capabilities or threats
 #'
 #' @import dplyr
 #' @param dat Raw sheet input from \code{readxl}.

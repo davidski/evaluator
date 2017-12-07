@@ -2,7 +2,7 @@
 % Please edit documentation in R/report.R
 \name{risk_dashboard}
 \alias{risk_dashboard}
-\title{Launch a single page summary risk dashboard.}
+\title{Launch a single page summary risk dashboard}
 \usage{
 risk_dashboard(input_directory = "~/data", results_directory = "~/results",
   ...)
@@ -18,5 +18,5 @@ risk_dashboard(input_directory = "~/data", results_directory = "~/results",
 Default return values of the \code{rmarkdown::render} function.
 }
 \description{
-Launch a single page summary risk dashboard.
+Launch a single page summary risk dashboard
 }

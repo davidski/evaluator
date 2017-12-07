@@ -2,7 +2,7 @@
 % Please edit documentation in R/report.R
 \name{openfair_example}
 \alias{openfair_example}
-\title{Launch OpenFAIR demonstration web application.}
+\title{Launch OpenFAIR demonstration web application}
 \usage{
 openfair_example()
 }
@@ -10,5 +10,5 @@ openfair_example()
 Invisible NULL
 }
 \description{
-Launch OpenFAIR demonstration web application.
+Launch OpenFAIR demonstration web application
 }

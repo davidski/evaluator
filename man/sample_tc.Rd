@@ -2,18 +2,18 @@
 % Please edit documentation in R/openfair.R
 \name{sample_tc}
 \alias{sample_tc}
-\title{Sample threat capabilities (TC) from a distribution function.}
+\title{Sample threat capabilities (TC) from a distribution function}
 \usage{
 sample_tc(func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate TC, defaults to mc2d::rpert}
+\item{func}{Function to use to simulate TC, defaults to mc2d::rpert.}
 
-\item{params}{Optional parameters to pass to `func`}
+\item{params}{Optional parameters to pass to `func`.}
 }
 \value{
 List containing type ("tc"), samples (as a vector), and details (as a list).
 }
 \description{
-Sample threat capabilities (TC) from a distribution function.
+Sample threat capabilities (TC) from a distribution function
 }

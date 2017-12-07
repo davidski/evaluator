@@ -2,20 +2,20 @@
 % Please edit documentation in R/encode.R
 \name{convert_qual_to_quant}
 \alias{convert_qual_to_quant}
-\title{Convert qualitative ratings to quantitative estimate ranges.}
+\title{Convert qualitative ratings to quantitative estimate ranges}
 \usage{
 convert_qual_to_quant(qual_label, qual_type, mappings)
 }
 \arguments{
-\item{qual_label}{Dataframe of qualitative labels (label=H/M/L, etc)}
+\item{qual_label}{Dataframe of qualitative labels (label=H/M/L, etc.).}
 
-\item{qual_type}{Character string of the type (tef, tc, diff, etc)}
+\item{qual_type}{Character string of the type (tef, tc, diff, etc.).}
 
-\item{mappings}{Qualitative mappings dataframe}
+\item{mappings}{Qualitative mappings dataframe.}
 }
 \value{
-Dataframe of estimate parameters
+Dataframe of estimate parameters.
 }
 \description{
-Convert qualitative ratings to quantitative estimate ranges.
+Convert qualitative ratings to quantitative estimate ranges
 }

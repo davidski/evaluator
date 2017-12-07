@@ -2,13 +2,13 @@
 % Please edit documentation in R/import.R
 \name{import_spreadsheet}
 \alias{import_spreadsheet}
-\title{Import the scenario spreadsheet.}
+\title{Import the scenario spreadsheet}
 \usage{
 import_spreadsheet(survey_file = system.file("survey", "survey.xlsx", package
   = "evaluator"), domains = NULL, output_dir = "~/data")
 }
 \arguments{
-\item{survey_file}{Path to survey XLSX file. Defaults to a sample file if not supplied.}
+\item{survey_file}{Path to survey XLSX file. Defaults to an Evaluator-provided sample spreadsheet.}
 
 \item{domains}{Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.}
 

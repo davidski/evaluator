@@ -7,12 +7,12 @@
 select_loss_opportunities(tc, diff)
 }
 \arguments{
-\item{tc}{Threat capability (as a percentage)}
+\item{tc}{Threat capability (as a percentage).}
 
-\item{diff}{Difficulty (as a percentage)}
+\item{diff}{Difficulty (as a percentage).}
 }
 \value{
-List containing boolean values of length TC (as a vector) and details (as a list)
+List containing boolean values of length TC (as a vector) and details (as a list).
 }
 \description{
 Composition function for use in sample_vuln, does a simple compare of

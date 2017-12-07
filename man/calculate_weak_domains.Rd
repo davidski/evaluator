@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{calculate_weak_domains}
 \alias{calculate_weak_domains}
-\title{Calculate control weaknesses on a domain level.}
+\title{Calculate control weaknesses on a domain level}
 \usage{
 calculate_weak_domains(simulation_results, domains)
 }
@@ -15,5 +15,5 @@ calculate_weak_domains(simulation_results, domains)
 Control weaknesses summarized by domain.
 }
 \description{
-Calculate control weaknesses on a domain level.
+Calculate control weaknesses on a domain level
 }

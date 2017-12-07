@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{calculate_max_losses}
 \alias{calculate_max_losses}
-\title{Calculate maximum losses with and without outliers.}
+\title{Calculate maximum losses with and without outliers}
 \usage{
 calculate_max_losses(simulation_results, scenario_outliers)
 }
@@ -12,8 +12,8 @@ calculate_max_losses(simulation_results, scenario_outliers)
 \item{scenario_outliers}{Vector of scenario_ids which are outliers}
 }
 \value{
-Dataframe
+A dataframe.
 }
 \description{
-Calculate maximum losses with and without outliers.
+Calculate maximum losses with and without outliers
 }

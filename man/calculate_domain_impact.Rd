@@ -2,18 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{calculate_domain_impact}
 \alias{calculate_domain_impact}
-\title{Calculate quantified impact at a domain level.}
+\title{Calculate quantified impact at a domain level}
 \usage{
 calculate_domain_impact(domain_summary, domains)
 }
 \arguments{
-\item{domain_summary}{Data.}
+\item{domain_summary}{Domain-level summary of `run_simulation` results.}
 
-\item{domains}{Data.}
+\item{domains}{Dataframe of all domains in scope.}
 }
 \value{
-Dataframe
+A dataframe
 }
 \description{
-Calculate quantified impact at a domain level.
+Calculate quantified impact at a domain level
 }

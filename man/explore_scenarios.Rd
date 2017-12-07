@@ -2,7 +2,7 @@
 % Please edit documentation in R/report.R
 \name{explore_scenarios}
 \alias{explore_scenarios}
-\title{Launch the Scenario Explorer web application.}
+\title{Launch the Scenario Explorer web application}
 \usage{
 explore_scenarios(input_directory = "data", results_directory = "results")
 }
@@ -15,5 +15,5 @@ explore_scenarios(input_directory = "data", results_directory = "results")
 Invisible NULL
 }
 \description{
-Launch the Scenario Explorer web application.
+Launch the Scenario Explorer web application
 }

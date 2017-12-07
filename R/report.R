@@ -1,4 +1,4 @@
-#' Generate sample analysis report.
+#' Generate sample analysis report
 #'
 #' @param input_directory Location of input files
 #' @param results_directory Location of simulation results
@@ -30,7 +30,7 @@ generate_report <- function(input_directory = "~/data",
                                   focus_scenario_ids = focus_scenario_ids), ...)
 }
 
-#' Launch the Scenario Explorer web application.
+#' Launch the Scenario Explorer web application
 #'
 #' @param input_directory Location of input files
 #' @param results_directory Location of simulation results
@@ -63,7 +63,7 @@ explore_scenarios <- function(input_directory = "data",
   invisible(NULL)
 }
 
-#' Launch OpenFAIR demonstration web application.
+#' Launch OpenFAIR demonstration web application
 #'
 #' @return Invisible NULL
 #' @export
@@ -79,7 +79,7 @@ openfair_example <- function() {
   invisible(NULL)
 }
 
-#' Launch a single page summary risk dashboard.
+#' Launch a single page summary risk dashboard
 #'
 #' @param input_directory Location of input files
 #' @param results_directory Location of simulation results

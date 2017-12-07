@@ -2,20 +2,20 @@
 % Please edit documentation in R/encode.R
 \name{encode_scenarios}
 \alias{encode_scenarios}
-\title{Encode qualitative data to quantitative parameters.}
+\title{Encode qualitative data to quantitative parameters}
 \usage{
 encode_scenarios(scenarios, capabilities, mappings)
 }
 \arguments{
-\item{scenarios}{Qualitative risk scenarios dataframe}
+\item{scenarios}{Qualitative risk scenarios dataframe.}
 
-\item{capabilities}{Qualitative program capabilities dataframe}
+\item{capabilities}{Qualitative program capabilities dataframe.}
 
-\item{mappings}{Number of simulations for each scenario}
+\item{mappings}{Qualitative to quantitative mapping dataframe.}
 }
 \value{
 Dataframe of encoded quantitative scenarios
 }
 \description{
-Encode qualitative data to quantitative parameters.
+Encode qualitative data to quantitative parameters
 }

@@ -2,17 +2,17 @@
 % Please edit documentation in R/openfair.R
 \name{compare_tef_vuln}
 \alias{compare_tef_vuln}
-\title{Calculate number of loss events which occur in a simulated period.}
+\title{Calculate number of loss events which occur in a simulated period}
 \usage{
 compare_tef_vuln(tef, vuln)
 }
 \arguments{
-\item{tef}{Threat event frequency (n)}
+\item{tef}{Threat event frequency (n).}
 
-\item{vuln}{Vulnerability (percentage)}
+\item{vuln}{Vulnerability (percentage).}
 }
 \value{
-List containing samples (as a vector) and details (as a list)
+List containing samples (as a vector) and details (as a list).
 }
 \description{
 Composition function for use in sample_lef. Given a count of the

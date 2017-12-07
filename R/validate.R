@@ -1,13 +1,23 @@
 ## ----valdiate_spreadsheet------------------------------------------------
-#' Validate scenario data.
+#' Validate scenario data
+#'
+#' Run a set of basic consistency checks on the key data inputs (scenarios,
+#' capabilities, domains, and mappings).
+#'
+#' Checks for:
+#' - All scenarios IDs are consecutive
+#' - All scenarios are distinct
+#' - There are no gaps in control IDs
+#' - All controls referenced in scenarios are defined in the controls table
+#' - All controls are distinct
 #'
 #' @import dplyr
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tidyr separate_rows
-#' @param scenarios Dataframe of scenarios
-#' @param capabilities Dataframe of capabilities
-#' @param domains Dataframe of domain mappings
-#' @param mappings Dataframe of qualitative mappings
+#' @param scenarios Dataframe of scenarios.
+#' @param capabilities Dataframe of capabilities.
+#' @param domains Dataframe of domain mappings.
+#' @param mappings Dataframe of qualitative mappings.
 #' @export
 #' @return Invisible NULL.
 validate_scenarios <- function(scenarios, capabilities, domains, mappings) {

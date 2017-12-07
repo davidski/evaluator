@@ -2,7 +2,7 @@
 % Please edit documentation in R/import.R
 \name{import_capabilities}
 \alias{import_capabilities}
-\title{Import capabilities from survey spreadsheet.}
+\title{Import capabilities from survey spreadsheet}
 \usage{
 import_capabilities(survey_file = system.file("survey", "survey.xlsx", package
   = "evaluator"), domains = NULL)
@@ -16,5 +16,5 @@ import_capabilities(survey_file = system.file("survey", "survey.xlsx", package
 Extracted capabilities as a dataframe.
 }
 \description{
-Import capabilities from survey spreadsheet.
+Import capabilities from survey spreadsheet
 }

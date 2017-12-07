@@ -4,8 +4,8 @@
 #'
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
-#' @param func Function to use to simulate TEF, defaults to mc2d::rpert
-#' @param params Optional parameters to pass to `func`
+#' @param func Function to use to simulate TEF, defaults to mc2d::rpert.
+#' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("tef"), samples (as a vector), and details (as a list).
 #' @export
 sample_tef <- function(func = NULL, params = NULL) {
@@ -15,12 +15,12 @@ sample_tef <- function(func = NULL, params = NULL) {
        details = list())
 }
 
-#' Sample threat capabilities (TC) from a distribution function.
+#' Sample threat capabilities (TC) from a distribution function
 #'
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
-#' @param func Function to use to simulate TC, defaults to mc2d::rpert
-#' @param params Optional parameters to pass to `func`
+#' @param func Function to use to simulate TC, defaults to mc2d::rpert.
+#' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("tc"), samples (as a vector), and details (as a list).
 #' @export
 sample_tc <- function(func = NULL, params = NULL) {
@@ -31,12 +31,12 @@ sample_tc <- function(func = NULL, params = NULL) {
 }
 
 #' Calculate the difficulty presented by controls, given a function and
-#' parameters for that function.
+#' parameters for that function
 #'
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
-#' @param func Function to use to simulate DIFF, defaults to mc2d::rpert
-#' @param params Optional parameters to pass to `func`
+#' @param func Function to use to simulate DIFF, defaults to mc2d::rpert.
+#' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("diff"), samples (as a vector), and details (as a list).
 #' @export
 sample_diff <- function(func = NULL, params = NULL) {
@@ -49,8 +49,8 @@ sample_diff <- function(func = NULL, params = NULL) {
 #' Calculate the vulnerability
 #'
 #' @importFrom purrr invoke is_list
-#' @param func Function to use to simulate DIFF, defaults to `rbinom``
-#' @param params Optional parameters to pass to `func`
+#' @param func Function to use to simulate DIFF, defaults to `rbinom`.
+#' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("vuln"), samples (as a vector), and details (as a list).
 #' @export
 sample_vuln <- function(func = NULL, params = NULL) {
@@ -67,7 +67,7 @@ sample_vuln <- function(func = NULL, params = NULL) {
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
 #' @param func Function to use to simulate TEF, defaults to mc2d::rpert.
-#' @param params Optional parameters to pass to `func`
+#' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("lm"), samples (as a vector), and details (as a list).
 #' @export
 sample_lm <- function(func = NULL, params = NULL) {
@@ -135,15 +135,15 @@ get_mean_control_strength <- function(n, diff_estimates)  {
 
 # Composition Functions ---------------------------------------------------
 
-#' Calculate number of loss events which occur in a simulated period.
+#' Calculate number of loss events which occur in a simulated period
 #'
 #' Composition function for use in sample_lef. Given a count of the
 #' number of threat events (tef) and the level of vulnerability (as a
 #' percentage), calculate how many of those become loss events (lef).
 #'
-#' @param tef Threat event frequency (n)
-#' @param vuln Vulnerability (percentage)
-#' @return List containing samples (as a vector) and details (as a list)
+#' @param tef Threat event frequency (n).
+#' @param vuln Vulnerability (percentage).
+#' @return List containing samples (as a vector) and details (as a list).
 #' @export
 compare_tef_vuln <- function(tef, vuln) {
   samples = tef * vuln
@@ -157,9 +157,9 @@ compare_tef_vuln <- function(tef, vuln) {
 #' all threat events where the threat capability (TC) is greater than the
 #' difficulty (DIFF).
 #'
-#' @param tc Threat capability (as a percentage)
-#' @param diff Difficulty (as a percentage)
-#' @return List containing boolean values of length TC (as a vector) and details (as a list)
+#' @param tc Threat capability (as a percentage).
+#' @param diff Difficulty (as a percentage).
+#' @return List containing boolean values of length TC (as a vector) and details (as a list).
 #' @export
 select_loss_opportunities <- function(tc, diff) {
   samples <-  tc > diff
@@ -183,13 +183,13 @@ select_loss_opportunities <- function(tc, diff) {
 #' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int
 #' @importFrom tibble tibble
 #' @importFrom dplyr %>%
-#' @param scenario list of tef_, tc_, and LM_ l/ml/h/conf parameters
-#' @param diff_estimates parameters for estimating the scenario difficulty
-#' @param n Number of simulations to run
-#' @param title Optional name of scenario
-#' @param verbose Whether to print progress indicators
+#' @param scenario List of tef_, tc_, and LM_ l/ml/h/conf parameters.
+#' @param diff_estimates Parameters for estimating the scenario difficulty.
+#' @param n Number of simulations to run.
+#' @param title Optional name of scenario.
+#' @param verbose Whether to print progress indicators.
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
-#'   mean TC and DIFF exceedance, and ALE samples
+#'   mean TC and DIFF exceedance, and ALE samples.
 #' @export
 openfair_tef_tc_diff_lm <- function(scenario, diff_estimates = NULL, n = 10^4,
                           title = "Untitled", verbose = FALSE) {

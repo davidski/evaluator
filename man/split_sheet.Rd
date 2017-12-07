@@ -2,7 +2,7 @@
 % Please edit documentation in R/import.R
 \name{split_sheet}
 \alias{split_sheet}
-\title{Split a sheet of the survey spreadsheet into capabilities or threats.}
+\title{Split a sheet of the survey spreadsheet into capabilities or threats}
 \usage{
 split_sheet(dat, table_type = "capabilities")
 }
@@ -15,5 +15,5 @@ split_sheet(dat, table_type = "capabilities")
 Extracted table as a data_Frame
 }
 \description{
-Split a sheet of the survey spreadsheet into capabilities or threats.
+Split a sheet of the survey spreadsheet into capabilities or threats
 }

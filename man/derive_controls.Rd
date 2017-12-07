@@ -2,18 +2,18 @@
 % Please edit documentation in R/encode.R
 \name{derive_controls}
 \alias{derive_controls}
-\title{Derive control difficulty parameters for a given qualitative scenario.}
+\title{Derive control difficulty parameters for a given qualitative scenario}
 \usage{
 derive_controls(labels, capabilities, mappings, id = "None")
 }
 \arguments{
-\item{labels}{Comma delimited list of qualitative labels}
+\item{labels}{Comma delimited list of qualitative labels.}
 
-\item{capabilities}{Character string of the type (tef, tc, diff, etc)}
+\item{capabilities}{Character string of the type (tef, tc, diff, etc.).}
 
-\item{mappings}{Qualitative mappings dataframe}
+\item{mappings}{Qualitative mappings dataframe.}
 
-\item{id}{Character string of the type (tef, tc, diff, etc)}
+\item{id}{Character string of the type (tef, tc, diff, etc.).}
 }
 \value{
 List-wrapped dataframe of estimate parameters

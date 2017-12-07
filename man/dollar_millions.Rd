@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{dollar_millions}
 \alias{dollar_millions}
-\title{Format dollar amounts in terms of millions of USD.}
+\title{Format dollar amounts in terms of millions of USD}
 \usage{
 dollar_millions(x)
 }
@@ -10,8 +10,8 @@ dollar_millions(x)
 \item{x}{A number.}
 }
 \value{
-String in the format of $xM
+String in the format of $xM.
 }
 \description{
-Format dollar amounts in terms of millions of USD.
+Format dollar amounts in terms of millions of USD
 }

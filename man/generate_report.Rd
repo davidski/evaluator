@@ -2,7 +2,7 @@
 % Please edit documentation in R/report.R
 \name{generate_report}
 \alias{generate_report}
-\title{Generate sample analysis report.}
+\title{Generate sample analysis report}
 \usage{
 generate_report(input_directory = "~/data", results_directory = "~/results",
   output_file = "risk_report.html", focus_scenario_ids = c(51, 12), ...)
@@ -22,5 +22,5 @@ generate_report(input_directory = "~/data", results_directory = "~/results",
 Default return values of the \code{rmarkdown::render} function.
 }
 \description{
-Generate sample analysis report.
+Generate sample analysis report
 }
