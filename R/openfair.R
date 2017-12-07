@@ -166,7 +166,7 @@ select_loss_opportunities <- function(tc, diff) {
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
 #'   mean TC and DIFF exceedance, and ALE samples
 #' @export
-calculate_ale <- function(scenario, diff_estimates = NULL, n = 10^4,
+openfair_tef_tc_diff_lm <- function(scenario, diff_estimates = NULL, n = 10^4,
                           title = "Untitled", verbose = FALSE) {
 
     # make samples repeatable (and l33t)

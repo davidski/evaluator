@@ -3,16 +3,19 @@
 #' @import dplyr
 #' @importFrom dplyr progress_estimated bind_rows %>%
 #' @param scenario Quantitative scenarios
+#' @param model OpenFAIR model to use
 #' @param simulation_count Number of simulations for each scenario
 #' @export
 #' @return Dataframe of raw results
-run_simulations <- function(scenario, simulation_count = 10000L) {
+run_simulations <- function(scenario, simulation_count = 10000L,
+                            model = "openfair_tef_tc_diff_lm") {
 
+  #model <- rlang::sym(model) # convert characters to symbol
   ## ----run_simulations-----------------------------------------------------
-  wrapped_calc <- function(x, .pb=NULL) {
+  wrapped_calc <- function(x, .pb = NULL) {
     if ((!is.null(.pb)) & inherits(.pb, "Progress") && (.pb$i < .pb$n)) .pb$tick()$print()
 
-    safe_calculate <- purrr::safely(calculate_ale)
+    safe_calculate <- purrr::safely(eval(as.name(model)))
     safe_calculate(scenario = x,
                   diff_estimates = x[[1, "diff_params"]],
                   n = simulation_count,

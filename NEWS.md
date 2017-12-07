@@ -1,11 +1,18 @@
 # evaluator 0.1.1.900 (unreleased)
 
-* drop use of tcltk progress bar in favor of console-compatible dplyr::progress_estimated
-* new sample_tef function
-* new sample_lm function
-* new sample_tc function
-* new sample_diff function
-* new sample_vuln function (and detail_vuln composition function)
+* Expose OpenFAIR model selection in run_simulation call
+    * Provide default TEF/TC/DIFF/LM OpenFAIR model
+* Drop use of tcltk progress bar in favor of console-compatible 
+    dplyr::progress_estimated. Also enables reduced package dependencies.
+* New OpenFAIR primatives:
+    * sample_tef
+    * sample_lm
+    * sample_tc
+    * sample_diff
+    * sample_vuln
+* New composition functions:
+    * compare_tef_vuln
+    * select_loss_opportunities
 * Tests and code coverage reporting added
 
 # evaluator 0.1.1

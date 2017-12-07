@@ -118,9 +118,9 @@ test_that("Sample LEF works with composition function", {
                               6.41214819406418))
 })
 
-context("Standard simulation")
-test_that("Stanard simulation returns expected results", {
-  sim <- calculate_ale(list(tef_l = 1, tef_ml=10, tef_h=100, tef_conf=4,
+context("Standard simulation model")
+test_that("Default simulation model returns expected results", {
+  sim <- openfair_tef_tc_diff_lm(list(tef_l = 1, tef_ml=10, tef_h=100, tef_conf=4,
                             tc_l = 1, tc_ml = 10, tc_h =75, tc_conf=100,
                             lm_l=1, lm_ml=100, lm_h = 10000, lm_conf=54),
                        diff_estimates = data_frame(l=1, ml=10, h = 50, conf =4),
