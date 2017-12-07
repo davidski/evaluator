@@ -5,7 +5,7 @@
     * Provide default TEF/TC/DIFF/LM OpenFAIR model
 * Drop use of tcltk progress bar in favor of console-compatible 
     dplyr::progress_estimated. Also enables reduced package dependencies.
-* New OpenFAIR primatives:
+* New OpenFAIR primitives:
     * sample_tef
     * sample_lm
     * sample_tc
@@ -27,7 +27,7 @@
 * Improve user experience for optional packages. User is now prompted to install optional dependencies (shiny, DT, flexdashboard, statip, rmarkdown, etc.) when running reporting functionality which requires them.
 * Substantial improvements in the sample analysis flow detailed in the usage vignette. You can now actually run all the commands as-is and have them work, which was previously "challenging".
 * `summarize_all` renamed to the more descriptive `summarize_to_disk` to avoid dplyr conflict
-* Add requirement for at least pander v0.6.1 for `tibble` compatability
+* Add requirement for at least pander v0.6.1 for `tibble` compatibility
 * Substantial refactoring on vignette
   * Added missing save steps
   * Corrected package name for `Viewer` to `rstudioapi` 
