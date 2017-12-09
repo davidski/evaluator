@@ -14,10 +14,10 @@ domain level.
 }
 \details{
 \describe{
-  \item{ale}{annual loss expected, in US dollars}
-  \item{domain}{full title of the domain}
-  \item{domain_id}{abbreviated name of the domain}
-  \item{simulation}{simulation id number}
+\item{ale}{annual loss expected, in US dollars}
+\item{domain}{full title of the domain}
+\item{domain_id}{abbreviated name of the domain}
+\item{simulation}{simulation id number}
 }
 }
 \keyword{datasets}

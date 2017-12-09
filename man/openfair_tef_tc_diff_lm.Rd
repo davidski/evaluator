@@ -20,7 +20,7 @@ openfair_tef_tc_diff_lm(scenario, diff_estimates = NULL, n = 10^4,
 }
 \value{
 Dataframe of scenario name, threat_event count, loss_event count,
-  mean TC and DIFF exceedance, and ALE samples.
+mean TC and DIFF exceedance, and ALE samples.
 }
 \description{
 Run an OpenFAIR simulation

@@ -10,7 +10,7 @@ sample_diff(func = NULL, params = NULL)
 \arguments{
 \item{func}{Function to use to simulate DIFF, defaults to mc2d::rpert.}
 
-\item{params}{Optional parameters to pass to `func`.}
+\item{params}{Optional parameters to pass to \code{func}.}
 }
 \value{
 List containing type ("diff"), samples (as a vector), and details (as a list).

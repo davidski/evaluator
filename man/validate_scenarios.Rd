@@ -24,9 +24,11 @@ capabilities, domains, and mappings).
 }
 \details{
 Checks for:
-- All scenarios IDs are consecutive
-- All scenarios are distinct
-- There are no gaps in control IDs
-- All controls referenced in scenarios are defined in the controls table
-- All controls are distinct
+\itemize{
+\item All scenarios IDs are consecutive
+\item All scenarios are distinct
+\item There are no gaps in control IDs
+\item All controls referenced in scenarios are defined in the controls table
+\item All controls are distinct
+}
 }

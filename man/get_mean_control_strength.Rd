@@ -9,7 +9,7 @@ get_mean_control_strength(n, diff_estimates)
 \arguments{
 \item{n}{Number of threat events to sample controls across.}
 
-\item{diff_estimates}{Parameters to pass to `sample_diff`.}
+\item{diff_estimates}{Parameters to pass to \code{sample_diff}.}
 }
 \value{
 Vector of control effectiveness.

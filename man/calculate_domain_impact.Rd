@@ -7,7 +7,7 @@
 calculate_domain_impact(domain_summary, domains)
 }
 \arguments{
-\item{domain_summary}{Domain-level summary of `run_simulation` results.}
+\item{domain_summary}{Domain-level summary of \code{run_simulation} results.}
 
 \item{domains}{Dataframe of all domains in scope.}
 }

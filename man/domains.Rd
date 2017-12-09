@@ -13,8 +13,8 @@ A dataset of domains and domain IDs.
 }
 \details{
 \describe{
-  \item{domain_id}{abbreviated name of the domain}
-  \item{domain}{full title of the domain}
+\item{domain_id}{abbreviated name of the domain}
+\item{domain}{full title of the domain}
 }
 }
 \keyword{datasets}
