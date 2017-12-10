@@ -2,11 +2,13 @@
 #'
 #' @import dplyr
 #' @importFrom dplyr progress_estimated bind_rows %>%
-#' @param scenario Quantitative scenarios
-#' @param model OpenFAIR model to use
-#' @param simulation_count Number of simulations for each scenario
+#' @importFrom purrrlyr by_row
+#' @importFrom purrr safely is_null map_lgl
+#' @param scenario Quantitative scenarios.
+#' @param model OpenFAIR model to use.
+#' @param simulation_count Number of simulations for each scenario.
 #' @export
-#' @return Dataframe of raw results
+#' @return Dataframe of raw results.
 run_simulations <- function(scenario, simulation_count = 10000L,
                             model = "openfair_tef_tc_diff_lm") {
 

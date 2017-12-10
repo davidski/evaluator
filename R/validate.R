@@ -1,10 +1,9 @@
-## ----valdiate_spreadsheet------------------------------------------------
 #' Validate scenario data
 #'
 #' Run a set of basic consistency checks on the key data inputs (scenarios,
 #' capabilities, domains, and mappings).
 #'
-#' Checks for:
+#' Checks that:
 #' - All scenarios IDs are consecutive
 #' - All scenarios are distinct
 #' - There are no gaps in control IDs
@@ -92,7 +91,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
 
   # add the number of controls applicable to each scenario as a validation step
   scenarios <- scenarios %>%
-    rowwise %>%
+    dplyr::rowwise %>%
     mutate_("control_count" =
               ~ length(stringi::stri_split_fixed(controls, ", ", simplify = TRUE))) %>%
     ungroup

@@ -93,9 +93,16 @@ derive_controls <- function(labels, capabilities, mappings, id = "None") {
 #' @param mappings Qualitative mappings dataframe.
 #' @return Dataframe of estimate parameters.
 #' @export
+#' @examples
+#' qualitative_rankings <- data.frame(type = c("tef", "lm"),
+#'                                    label = c("rare", "frequent"),
+#'                                    stringsAsFactors = FALSE)
+#' mappings <- data.frame(type = "tef", label = "rare", l = 0, ml = 2, h = 10,
+#'                        conf = 3, stringsAsFactors = FALSE)
+#' convert_qual_to_quant(qualitative_rankings, qual_type = "tef", mappings)
 convert_qual_to_quant <- function(qual_label, qual_type, mappings) {
 
-  filtered_mappings <- filter_(mappings, ~ type == qual_type)
-  left_join(qual_label, filtered_mappings, by = c(label = "label"))
+  filtered_mappings <- dplyr::filter_(mappings, ~ type == qual_type)
+  dplyr::left_join(qual_label, filtered_mappings, by = c(label = "label"))
   # %>% select_("l", "ml", "h", "conf")
 }

@@ -1,12 +1,18 @@
-# ---- load_data ----
 #' Load input and results files
+#'
+#' Given a input directory and a directory of simulation results, load all
+#' of the key Evaluator data objects into memory.
 #'
 #' @import dplyr
 #' @importFrom readr read_csv
-#' @param input_directory Location of input files
-#' @param results_directory Location of simulation results
-#' @return List of data objects
+#' @param input_directory Location of input files.
+#' @param results_directory Location of simulation results.
+#' @return List of all key data objects.
 #' @export
+#' @examples
+#' \dontrun{
+#' load_data("~/input_files", "~/simulation_results")
+#' }
 load_data <- function(input_directory = "~/data", results_directory = "~/data") {
   # load simulation results and default summary objects
   simulation_results <- NULL # detailed sumulation results

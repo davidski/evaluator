@@ -19,3 +19,11 @@ Dataframe of estimate parameters.
 \description{
 Convert qualitative ratings to quantitative estimate ranges
 }
+\examples{
+qualitative_rankings <- data.frame(type = c("tef", "lm"),
+                                   label = c("rare", "frequent"),
+                                   stringsAsFactors = FALSE)
+mappings <- data.frame(type = "tef", label = "rare", l = 0, ml = 2, h = 10,
+                       conf = 3, stringsAsFactors = FALSE)
+convert_qual_to_quant(qualitative_rankings, qual_type = "tef", mappings)
+}

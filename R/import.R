@@ -50,46 +50,42 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 #' @import dplyr
 #' @importFrom utils data
 #' @importFrom purrr map
+#' @importFrom tidyr unnest
 #' @importFrom readxl read_excel
 #' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
-#' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
+#' @param domains Dataframe of domains and domain IDs.
 #' @export
 #' @return Extracted qualitative scenarios as a dataframe.
+#' @examples
+#' data(domains)
+#' import_scenarios(domains = domains)
 import_scenarios <- function(survey_file = system.file("survey",
                                                        "survey.xlsx",
                                                        package = "evaluator"),
-                               domains = NULL) {
+                               domains) {
 
-  ## ----survey_sheet--------------------------------------------------------
-  #message("Target file is ", survey_file)
+  # scenarios begin with the list of domains
+  scenarios <- domains
 
-  # use default domains if one is not passed in
-  if (is.null(domains)) {
-    utils::data(domains, package = "evaluator")
-    domains <- domains
-  }
+  # attach each sheet as a nested dataframe to the domains object
+  scenarios$raw_data <- scenarios$domain_id %>%
+    purrr::map(~ readxl::read_excel(survey_file, skip = 1, sheet = .x))
 
-  raw_domains <- domains %>%
-    mutate_(raw_data = ~ purrr::map(domain_id, ~ readxl::read_excel(
-      survey_file, skip=1, sheet=.)))
+  # separate out the threats from the nested frame
+  scenarios$threats <- scenarios$raw_data %>%
+    purrr::map(~split_sheet(dat = .x, table_type = "threats"))
+  scenarios <- scenarios[, (!names(scenarios) %in% "raw_data")]
 
-  ## ----walk_the_frame------------------------------------------------------
-  raw_domains %>%
-    mutate_(threats = ~ purrr::map(raw_data,
-                                   ~ split_sheet(dat = .x,
-                                                 table_type = "threats"))) %>%
-    select_(~ -raw_data) -> dat
+  # fetch threats
+  scenarios <- tidyr::unnest(scenarios, threats)
 
-  # fetch and clean threats
-  scenarios <- tidyr::unnest_(dat, "threats") %>%
-    select_(scenario_id = "ScenarioID", scenario = "Scenario", tcomm = "TComm",
-            tef = "TEF", tc = "TC", lm = "LM", "domain_id",
-            controls = "Capabilities") %>%
-    mutate_("scenario_id" = ~ as.integer(scenario_id)) %>% arrange_("scenario_id")
-
-  scenarios <- mutate_at(scenarios, vars("tef", "lm", "tc"), funs(tolower)) # risk scenarios
-
-  scenarios
+  # clean the frame for returning
+  select(scenarios, scenario_id = "ScenarioID", scenario = "Scenario",
+         tcomm = "TComm", tef = "TEF", tc = "TC", lm = "LM",
+         domain_id = "domain_id", controls = "Capabilities") %>%
+    mutate(scenario_id = as.integer(scenario_id)) %>%
+    mutate_at(vars("tef", "lm", "tc"), funs(tolower)) %>%
+    arrange(scenario_id)
 
 }
 
@@ -134,7 +130,7 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
 
 #' Split a sheet of the survey spreadsheet into capabilities or threats
 #'
-#' @import dplyr
+#' @importFrom dplyr %>% select
 #' @param dat Raw sheet input from \code{readxl}.
 #' @param table_type Either \code{capabilities} or \code{threats}
 #' @return Extracted table as a data_Frame
@@ -154,7 +150,7 @@ split_sheet <- function(dat, table_type = "capabilities") {
         unique = TRUE,
         allow_ = TRUE
       )
-    capabilities_data <- select(capabilities_data, matches("^[^X]"))
+    capabilities_data <- dplyr::select(capabilities_data, matches("^[^X]"))
     capabilities_data
   } else {
     # generate threats_data
