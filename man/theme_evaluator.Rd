@@ -2,16 +2,16 @@
 % Please edit documentation in R/common_graphs.R
 \name{theme_evaluator}
 \alias{theme_evaluator}
-\title{Default ggplot theme used by all Evaluator-supplied graphics.}
+\title{Default ggplot theme used by all Evaluator-supplied graphics}
 \usage{
 theme_evaluator(base_family = "BentonSansRE")
 }
 \arguments{
-\item{base_family}{Font family}
+\item{base_family}{Font family.}
 }
 \value{
-ggplot theme object
+A ggplot theme object.
 }
 \description{
-Default ggplot theme used by all Evaluator-supplied graphics.
+This is the base theme used by all supplied graphics.
 }

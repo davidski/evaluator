@@ -7,17 +7,24 @@
 summarize_to_disk(simulation_results, domains, results_dir = "~/results")
 }
 \arguments{
-\item{simulation_results}{Simulation results dataframe}
+\item{simulation_results}{Simulation results dataframe.}
 
-\item{domains}{Domain mappings dataframe}
+\item{domains}{Domain mappings dataframe.}
 
-\item{results_dir}{Directory to place simulation files}
+\item{results_dir}{Directory to place simulation files.}
 }
 \value{
-Simulation results summarized by domain
+Tibble with paths to the created data files.
 }
 \description{
 This is a wrapper function around \code{summarize_scenarios} and
 \code{summarize_domains}, calling both functions and writing the dataframes
 to a location on disk.
+}
+\examples{
+\dontrun{
+data(simulation_results)
+data(domains)
+summarize_to_disk(simulation_results, domains)
+}
 }

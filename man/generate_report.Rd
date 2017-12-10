@@ -8,13 +8,13 @@ generate_report(input_directory = "~/data", results_directory = "~/results",
   output_file = "risk_report.html", focus_scenario_ids = c(51, 12), ...)
 }
 \arguments{
-\item{input_directory}{Location of input files}
+\item{input_directory}{Location of input files.}
 
-\item{results_directory}{Location of simulation results}
+\item{results_directory}{Location of simulation results.}
 
-\item{output_file}{Name of the output file to generate}
+\item{output_file}{Name of the output file to generate.}
 
-\item{focus_scenario_ids}{IDs of scenarios of special interest}
+\item{focus_scenario_ids}{IDs of scenarios of special interest.}
 
 \item{...}{Any other parameters to pass straight to \code{rmarkdown::render}}
 }
@@ -23,4 +23,9 @@ Default return values of the \code{rmarkdown::render} function.
 }
 \description{
 Generate sample analysis report
+}
+\examples{
+\dontrun{
+generate_report("~/inputs", "~/results")
+}
 }

@@ -2,16 +2,25 @@
 % Please edit documentation in R/common_graphs.R
 \name{generate_event_outcomes_plot}
 \alias{generate_event_outcomes_plot}
-\title{Display a scatterplot for a particular scenario ID.}
+\title{Display the distribution of threat events contained vs. realized across
+all domains}
 \usage{
 generate_event_outcomes_plot(control_weakness)
 }
 \arguments{
-\item{control_weakness}{Domain-level control weakness from \code{calculate_control_weakness}}
+\item{control_weakness}{Domain-level control weakness from \code{calculate_weak_domains}}
 }
 \value{
 ggplot object
 }
 \description{
-Display a scatterplot for a particular scenario ID.
+Creates a barbell plot showing the number and percentage of events
+contained (not resulting in loss) vs the number and percentage of
+loss events (threat events resulting in losses).
+}
+\examples{
+data(simulation_results)
+data(domains)
+dat <- calculate_weak_domains(simulation_results, domains)
+generate_event_outcomes_plot(dat)
 }

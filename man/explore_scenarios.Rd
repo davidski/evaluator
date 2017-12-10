@@ -7,13 +7,20 @@
 explore_scenarios(input_directory = "data", results_directory = "results")
 }
 \arguments{
-\item{input_directory}{Location of input files}
+\item{input_directory}{Location of input files.}
 
-\item{results_directory}{Location of simulation results}
+\item{results_directory}{Location of simulation results.}
 }
 \value{
-Invisible NULL
+Invisible NULL.
 }
 \description{
-Launch the Scenario Explorer web application
+Evaluator provides a simple Shiny web application for interactive
+exploration of simulation results. This allows a user to get an overview
+of simluation output without generating an extensive report.
+}
+\examples{
+\dontrun{
+explore_scenarios("~/inputs", "~/results")
+}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/common_graphs.R
 \name{get_base_fontfamily}
 \alias{get_base_fontfamily}
-\title{Determine fonts we can/should use.}
+\title{Select a base graphics font family}
 \usage{
 get_base_fontfamily()
 }
@@ -10,5 +10,6 @@ get_base_fontfamily()
 String of the preferred base font
 }
 \description{
-Determine fonts we can/should use.
+The Benton Sans Regular font is preferred. When Benton is not available
+via \code{extrafont}, Evaluator uses a fallback of Arial Narrow.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize.R
 \name{summarize_domains}
 \alias{summarize_domains}
-\title{Create domain level summary of simulation results.}
+\title{Create domain-level summary of simulation results}
 \usage{
 summarize_domains(simulation_results, domains)
 }
@@ -15,5 +15,11 @@ summarize_domains(simulation_results, domains)
 Simulation results summarized by domain
 }
 \description{
-Create domain level summary of simulation results.
+Rolls up simulation results to the domain level by summing ALE across all
+scenarios at a domain level (per simulation).
+}
+\examples{
+data(simulation_results)
+data(domains)
+summarize_domains(simulation_results, domains)
 }

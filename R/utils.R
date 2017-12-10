@@ -4,7 +4,8 @@
 #' @param x A number.
 #' @return String in the format of $xM.
 #' @export
-#' @example dollar_millions(1.523 * 10^6)
+#' @examples
+#' dollar_millions(1.523 * 10^6)
 dollar_millions <- function(x) {
   # paste0('$', x / 10 ^ 6, 'M')
   x <- (x/10^6) %>% round(digits = 2)

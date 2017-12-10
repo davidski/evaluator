@@ -10,5 +10,10 @@ openfair_example()
 Invisible NULL
 }
 \description{
-Launch OpenFAIR demonstration web application
+A simple web application to try out OpenFAIR modelling.
+}
+\examples{
+\dontrun{
+openfair_example()
+}
 }

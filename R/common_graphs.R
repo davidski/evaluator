@@ -1,4 +1,7 @@
-#' Determine fonts we can/should use.
+#' Select a base graphics font family
+#'
+#' The Benton Sans Regular font is preferred. When Benton is not available
+#' via `extrafont`, Evaluator uses a fallback of Arial Narrow.
 #'
 #' @importFrom extrafont choose_font
 #' @return String of the preferred base font
@@ -7,11 +10,13 @@ get_base_fontfamily <- function() {
   extrafont::choose_font(c("BentonSansRE", "Arial Narrow"))
 }
 
-#' Default ggplot theme used by all Evaluator-supplied graphics.
+#' Default ggplot theme used by all Evaluator-supplied graphics
+#'
+#' This is the base theme used by all supplied graphics.
 #'
 #' @importFrom ggplot2 theme_minimal theme %+replace%
-#' @param base_family Font family
-#' @return ggplot theme object
+#' @param base_family Font family.
+#' @return A ggplot theme object.
 #' @export
 theme_evaluator <- function(base_family = "BentonSansRE") {
   theme_minimal(base_family = base_family) %+replace%
@@ -19,15 +24,18 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
           plot.caption = element_text(size = 9, hjust = 1))
 }
 
-#' Display a heatmap of impact by domain.
+#' Display a heatmap of impact by domain
 #'
 #' @import dplyr
 #' @import ggplot2
 #' @importFrom viridis scale_fill_viridis
-#' @param domain_impact Domain impact information from \code{calculate_domain_impact}
-#' @return ggplot object
+#' @param domain_impact Domain impact information from \code{calculate_domain_impact}.
+#' @return A ggplot object.
 #' @export
-generate_heatmap <- function(domain_impact){
+#' @examples
+#' dat <- calculate_domain_impact(domain_summary, domains)
+#' generate_heatmap(dat)
+generate_heatmap <- function(domain_impact) {
   dat <- domain_impact %>% arrange_("domain_id") %>%
     mutate_("full_label" = ~ paste0(domain_id, "\n", "$", round(var/10^6), "M"),
             aux = ~ seq(1, 2 * nrow(.), by = 2))
@@ -46,13 +54,17 @@ generate_heatmap <- function(domain_impact){
   gg
 }
 
-#' Display a scatterplot for a particular scenario ID.
+#' Display a scatterplot for a particular scenario ID
 #'
 #' @import ggplot2
-#' @param simulation_results Simulation results
-#' @param scenario_id ID of the scenario to display
-#' @return ggplot object
+#' @importFrom scales comma
+#' @param simulation_results Simulation results from \code{run_simulations}.
+#' @param scenario_id ID of the scenario to display.
+#' @return A ggplot object.
 #' @export
+#' @examples
+#' data(simulation_results)
+#' generate_scatterplot(simulation_results, scenario_id = 50)
 generate_scatterplot <- function(simulation_results, scenario_id){
   dat <- simulation_results[simulation_results$scenario_id == scenario_id, ]
 
@@ -69,13 +81,26 @@ generate_scatterplot <- function(simulation_results, scenario_id){
   gg
 }
 
-#' Display a scatterplot for a particular scenario ID.
+#' Display the distribution of threat events contained vs. realized across
+#' all domains
+#'
+#' Creates a barbell plot showing the number and percentage of events
+#' contained (not resulting in loss) vs the number and percentage of
+#' loss events (threat events resulting in losses).
 #'
 #' @import dplyr
 #' @import ggplot2
-#' @param control_weakness Domain-level control weakness from \code{calculate_control_weakness}
+#' @importFrom scales comma
+#' @importFrom viridis viridis
+#' @importFrom tidyr gather
+#' @param control_weakness Domain-level control weakness from \code{calculate_weak_domains}
 #' @return ggplot object
 #' @export
+#' @examples
+#' data(simulation_results)
+#' data(domains)
+#' dat <- calculate_weak_domains(simulation_results, domains)
+#' generate_event_outcomes_plot(dat)
 generate_event_outcomes_plot <- function(control_weakness) {
   dat <- control_weakness %>%
     arrange_("desc(loss_events)", "desc(threat_events)") %>%
@@ -97,8 +122,8 @@ generate_event_outcomes_plot <- function(control_weakness) {
     mutate_("nudge" = ~ ifelse(type == "loss_events", label_nudge[1], label_nudge[2])) %>%
     mutate_("hjust" = ~ ifelse(type == "loss_events", "right", "left")) %>%
     mutate_("full_lab" = ~ ifelse(type == "loss_events",
-                             sprintf("%s (%s)", comma(actual_events), tc_exceedance),
-                             sprintf("%s (%s)", comma(actual_events), diff_exceedance)))
+                             sprintf("%s (%s)", scales::comma(actual_events), tc_exceedance),
+                             sprintf("%s (%s)", scales::comma(actual_events), diff_exceedance)))
 
   # auto-calculate the limits of the plot
   event_range <- range(dat$events) * c(1.4, 1.5)

@@ -23,7 +23,7 @@ Run a set of basic consistency checks on the key data inputs (scenarios,
 capabilities, domains, and mappings).
 }
 \details{
-Checks for:
+Checks that:
 \itemize{
 \item All scenarios IDs are consecutive
 \item All scenarios are distinct

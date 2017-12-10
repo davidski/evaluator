@@ -2,16 +2,35 @@
 % Please edit documentation in R/summarize.R
 \name{summarize_scenarios}
 \alias{summarize_scenarios}
-\title{Create scenario level summary of simulation results.}
+\title{Create scenario-level summary of simulation results}
 \usage{
 summarize_scenarios(simulation_results)
 }
 \arguments{
-\item{simulation_results}{Simulation results dataframe}
+\item{simulation_results}{Simulation results dataframe.}
 }
 \value{
-Simulation results summarized by scenario
+A dataframe.
 }
 \description{
-Create scenario level summary of simulation results.
+Given a dataframe of raw results from \code{run_simulations}, summarize
+the individual results at a per-scenario level. This is generally the most
+granular level of data for reporting and analysis (full simulation results
+are rarely directly helpful).
+}
+\details{
+Summary stats created include:
+\itemize{
+\item Mean/Min/Max/Median are calculated for loss events
+\item Median/Max/VaR are calculated for annual loss expected (ALE)
+\item Mean/Median/Max/Min are calculated for single loss expected (SLE)
+\item Mean percentage of theat capability exceeding difficulty on succesfull threat events
+\item Mean percentage of difficulty exceeding threat capability on defended events
+\item Vulnerability percentage
+\item Z-score of ALE (outliers flagged as 2 >= z-score)
+}
+}
+\examples{
+data(simulation_results)
+summarize_scenarios(simulation_results)
 }

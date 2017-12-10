@@ -1,6 +1,7 @@
 # evaluator 0.1.1.900 (unreleased)
 
 * Improved help documentation on many functions
+* Auto loads `extrafont` database for better font detection
 * Expose OpenFAIR model selection in run_simulation call
     * Provide default TEF/TC/DIFF/LM OpenFAIR model
 * Drop use of tcltk progress bar in favor of console-compatible 

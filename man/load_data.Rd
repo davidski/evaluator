@@ -7,13 +7,19 @@
 load_data(input_directory = "~/data", results_directory = "~/data")
 }
 \arguments{
-\item{input_directory}{Location of input files}
+\item{input_directory}{Location of input files.}
 
-\item{results_directory}{Location of simulation results}
+\item{results_directory}{Location of simulation results.}
 }
 \value{
-List of data objects
+List of all key data objects.
 }
 \description{
-Load input and results files
+Given a input directory and a directory of simulation results, load all
+of the key Evaluator data objects into memory.
+}
+\examples{
+\dontrun{
+load_data("~/input_files", "~/simulation_results")
+}
 }

@@ -20,3 +20,8 @@ Default return values of the \code{rmarkdown::render} function.
 \description{
 Launch a single page summary risk dashboard
 }
+\examples{
+\dontrun{
+risk_dashboard("~/inputs", "~/simulations")
+}
+}

@@ -15,3 +15,6 @@ String in the format of $xM.
 \description{
 Format dollar amounts in terms of millions of USD
 }
+\examples{
+dollar_millions(1.523 * 10^6)
+}
