@@ -1,20 +1,25 @@
 #' Select a base graphics font family
 #'
-#' The Benton Sans Regular font is preferred. When Benton is not available
-#' via `extrafont`, Evaluator uses a fallback of Arial Narrow.
+#' The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
+#' If neither font is available, use a default `sans` family font.
 #'
 #' @importFrom extrafont choose_font
 #' @return String of the preferred base font
 #' @export
 get_base_fontfamily <- function() {
-  extrafont::choose_font(c("BentonSansRE", "Arial Narrow"))
+  dat <- extrafont::choose_font(c("BentonSansRE", "Arial Narrow"))
+  if (dat == "") {
+    "sans"
+  } else {
+    dat
+  }
 }
 
 #' Default ggplot theme used by all Evaluator-supplied graphics
 #'
 #' This is the base theme used by all supplied graphics.
 #'
-#' @importFrom ggplot2 theme_minimal theme %+replace%
+#' @importFrom ggplot2 theme_minimal theme %+replace% element_text element_blank
 #' @param base_family Font family.
 #' @return A ggplot theme object.
 #' @export
@@ -134,8 +139,7 @@ generate_event_outcomes_plot <- function(control_weakness) {
   gg <- gg + geom_point(color = viridis::viridis(1), size = 2)
   gg <- gg + geom_label(aes_(label = ~full_lab, x = ~events + nudge,
                              y = ~domain_id, hjust = ~hjust),
-                        family = "Arial Narrow", size = 3,
-                        label.size = NA)
+                        size = 3, label.size = NA)
   gg <- gg + geom_label(aes_(x = 0, y = ~domain_id, label = ~domain_id),
                         size = 3, label.size = NA)
   gg <- gg + scale_x_continuous(breaks = c(break_locations[1], 0, break_locations[2]),

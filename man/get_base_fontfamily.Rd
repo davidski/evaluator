@@ -10,6 +10,6 @@ get_base_fontfamily()
 String of the preferred base font
 }
 \description{
-The Benton Sans Regular font is preferred. When Benton is not available
-via \code{extrafont}, Evaluator uses a fallback of Arial Narrow.
+The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
+If neither font is available, use a default \code{sans} family font.
 }

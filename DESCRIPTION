@@ -40,7 +40,8 @@ Suggests:
     rmarkdown,
     shiny,
     testthat,
-    covr
+    covr,
+    mockery
 VignetteBuilder: knitr
 URL: http://github.com/davidski/evaluator
 BugReports: https://github.com/davidski/evaluator/issues

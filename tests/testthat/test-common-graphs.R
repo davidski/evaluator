@@ -1,7 +1,18 @@
 context("Graphics")
 test_that("Basefont selection works", {
-  expect_type(get_base_fontfamily(), "character")
+  dat <- get_base_fontfamily()
+  expect_type(dat, "character")
+  expect_gt(nchar(dat), 1)
 })
+test_that("Basefont returns sans when no fonts available", {
+  mockery::stub(get_base_fontfamily, 'extrafont::choose_font', "")
+  expect_equal(get_base_fontfamily(), "sans")
+})
+test_that("Basefont returns Benton when available", {
+  mockery::stub(get_base_fontfamily, 'extrafont::choose_font', "BentonSansRE")
+  expect_equal(get_base_fontfamily(), "BentonSansRE")
+})
+
 
 test_that("Theme functions", {
   gg <- theme_evaluator()
@@ -10,6 +21,8 @@ test_that("Theme functions", {
 })
 
 test_that("Domain VaR heatmap", {
+  data(domain_summary)
+  data(domains)
   dat <- calculate_domain_impact(domain_summary, domains)
   gg <- generate_heatmap(dat)
   expect_s3_class(gg, "gg")
