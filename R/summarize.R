@@ -18,10 +18,11 @@ summarize_scenarios <- function(simulation_results) {
     sle_median = ~ median(sle_median, na.rm = TRUE),
     sle_max = ~ max(sle_max, na.rm = TRUE),
     sle_min = ~ min(sle_min, na.rm = TRUE),
-    mean_tc_exceedance = ~ sum(mean_tc_exceedance * loss_events) / sum(loss_events),
-    mean_diff_exceedance = ~sum(mean_diff_exceedance *
+    mean_tc_exceedance = ~ (sum(mean_tc_exceedance * loss_events) /
+      sum(loss_events)) %>% ifelse(is.finite(.), ., 0),
+    mean_diff_exceedance = ~(sum(mean_diff_exceedance *
                                   (threat_events - loss_events)) /
-      sum(threat_events - loss_events),
+      sum(threat_events - loss_events)) %>% ifelse(is.finite(.), ., 0),
     mean_vuln = ~ mean(vuln, na.rm = TRUE)) %>%
   mutate_(sle_median = ~ ifelse(is.nan(sle_median), NA, sle_median)) %>%
   ungroup()
