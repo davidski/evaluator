@@ -1,7 +1,7 @@
 #' Import the scenario spreadsheet
 #'
-#' This is a wrapper function around \code{import_scenarios} and
-#' \code{import_capabilities}, calling both functions and writing the dataframes
+#' This is a wrapper function around [import_scenarios()] and
+#' [import_capabilities()], calling both functions and writing the dataframes
 #' to a location on disk.
 #'
 #' @import dplyr
@@ -95,20 +95,11 @@ import_scenarios <- function(survey_file = system.file("survey",
 #' @importFrom readxl read_excel
 #' @importFrom purrr map
 #' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
-#' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
+#' @param domains Dataframe of domains and domain IDs.
 #' @export
 #' @return Extracted capabilities as a dataframe.
 import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx", package = "evaluator"),
-                               domains = NULL){
-
-  ## ----survey_sheet--------------------------------------------------------
-  #message("Target file is ", survey_file)
-
-  # use default domains if one is not passed in
-  if (is.null(domains)) {
-    utils::data(domains, package = "evaluator")
-    domains <- domains
-  }
+                               domains){
 
   raw_domains <- domains %>%
     mutate_(raw_data = ~ purrr::map(domain_id, ~ readxl::read_excel(

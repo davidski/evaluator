@@ -5,12 +5,12 @@
 \title{Import capabilities from survey spreadsheet}
 \usage{
 import_capabilities(survey_file = system.file("survey", "survey.xlsx", package
-  = "evaluator"), domains = NULL)
+  = "evaluator"), domains)
 }
 \arguments{
 \item{survey_file}{Path to survey XLSX file. Defaults to a sample file if not supplied.}
 
-\item{domains}{Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.}
+\item{domains}{Dataframe of domains and domain IDs.}
 }
 \value{
 Extracted capabilities as a dataframe.
