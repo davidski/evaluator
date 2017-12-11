@@ -91,7 +91,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
 
   # add the number of controls applicable to each scenario as a validation step
   scenarios <- scenarios %>%
-    dplyr::rowwise %>%
+    dplyr::rowwise() %>%
     mutate_("control_count" =
               ~ length(stringi::stri_split_fixed(controls, ", ", simplify = TRUE))) %>%
     ungroup
