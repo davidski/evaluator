@@ -3,7 +3,7 @@
 \docType{data}
 \name{quantitative_scenarios}
 \alias{quantitative_scenarios}
-\title{Information security risk scenarios}
+\title{Quantified information security risk scenarios}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 18 columns.}
 \usage{
 quantitative_scenarios
@@ -19,18 +19,19 @@ describing the distribution of each input.
 \item{tcomm}{full text name of threat community}
 \item{domain_id}{domain abbreviation}
 \item{controls}{comma separated list of control ids that apply to this scenario}
-\item{lm_l}{loss magnitude - low}
-\item{lm_ml}{loss magnitude - most likely}
-\item{lm_h}{loss magnitude - high}
-\item{lm_conf}{loss magnitude - confidence}
-\item{tc_l}{threat capability - low}
-\item{tc_ml}{threat capability - most likely}
-\item{tc_h}{threat capability - high}
-\item{tc_conf}{threat capability - confidence}
+\item{diff_params}{nested dataframe of the controls and difficult parameters associated with the scenario}
 \item{tef_l}{threat event frequency - low}
 \item{tef_ml}{threat event frequency - most likely}
 \item{tef_h}{threat event frequency - high}
 \item{tef_conf}{threat event frequency - confidence}
+\item{tc_l}{threat capability - low}
+\item{tc_ml}{threat capability - most likely}
+\item{tc_h}{threat capability - high}
+\item{tc_conf}{threat capability - confidence}
+\item{lm_l}{loss magnitude - low}
+\item{lm_ml}{loss magnitude - most likely}
+\item{lm_h}{loss magnitude - high}
+\item{lm_conf}{loss magnitude - confidence}
 }
 }
 \keyword{datasets}

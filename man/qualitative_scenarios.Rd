@@ -3,34 +3,24 @@
 \docType{data}
 \name{qualitative_scenarios}
 \alias{qualitative_scenarios}
-\title{Information security risk scenarios}
+\title{Qualitatitve information security risk scenarios}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 8 columns.}
 \usage{
 qualitative_scenarios
 }
 \description{
-A dataset of quantified information security risk scenarios, with parameters
-describing the distribution of each input.
+A dataset of qualified information security risk scenarios.
 }
 \details{
 \describe{
-\item{scenario}{full text description of the risk scenario}
 \item{scenario_id}{id of the scenario, primary key}
+\item{scenario}{full text description of the risk scenario}
 \item{tcomm}{full text name of threat community}
-\item{domain_id}{domain abbreviation}
-\item{controls}{comma separated list of control ids that apply to this scenario}
-\item{lm_l}{loss magnitude - low}
-\item{lm_ml}{loss magnitude - most likely}
-\item{lm_h}{loss magnitude - high}
-\item{lm_conf}{loss magnitude - confidence}
-\item{tc_l}{threat capability - low}
-\item{tc_ml}{threat capability - most likely}
-\item{tc_h}{threat capability - high}
-\item{tc_conf}{threat capability - confidence}
-\item{tef_l}{threat event frequency - low}
-\item{tef_ml}{threat event frequency - most likely}
-\item{tef_h}{threat event frequency - high}
-\item{tef_conf}{threat event frequency - confidence}
+\item{tef}{qualitative label of the frequency of threat events}
+\item{tc}{qualitative label of the threat capability}
+\item{lm}{qualitative label of the single loss magnitude}
+\item{domain_id}{domain id to which the scenario applies}
+\item{controls}{comma seperate string of the controls for the scenario}
 }
 }
 \keyword{datasets}

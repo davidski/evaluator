@@ -3,18 +3,20 @@
 \docType{data}
 \name{capabilities}
 \alias{capabilities}
-\title{Domain mappings}
+\title{Capabilities}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 60 rows and 4 columns.}
 \usage{
 capabilities
 }
 \description{
-A dataset of domains and domain IDs.
+A qualitative dataset of sample capabilities and qualitative level of effectiveness.
 }
 \details{
 \describe{
-\item{domain_id}{abbreviated name of the domain}
-\item{domain}{full title of the domain}
+\item{id}{unique id of the capability}
+\item{domain_id}{domain id to which the capability applies}
+\item{capability}{full text summary of the capability}
+\item{diff}{qualitative label of control effectiveness}
 }
 }
 \keyword{datasets}

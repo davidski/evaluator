@@ -23,7 +23,7 @@ quantitative_scenarios <- encode_scenarios(qualitative_scenarios,
 devtools::use_data(quantitative_scenarios, overwrite = TRUE)
 
 # run simulations and save results
-simulation_results <- run_simulations(quantitative_scenarios, 10000L)
+simulation_results <- run_simulations(quantitative_scenarios, 1000L)
 devtools::use_data(simulation_results, overwrite = TRUE)
 
 # calculate and save domain summary
