@@ -17,7 +17,7 @@ qualitative_scenarios <- import_scenarios(domains = domains)
 devtools::use_data(qualitative_scenarios, overwrite = TRUE)
 
 # generate and save quantitative scenarios
-quantitative_scenarios <- encode_scenarios(qualitatative_scenarios,
+quantitative_scenarios <- encode_scenarios(qualitative_scenarios,
                                            capabilities,
                                            mappings)
 devtools::use_data(quantitative_scenarios, overwrite = TRUE)
