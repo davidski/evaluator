@@ -1,4 +1,4 @@
-#' Validate scenario data
+#' Validate qualitative scenario data
 #'
 #' Run a set of basic consistency checks on the key data inputs (scenarios,
 #' capabilities, domains, and mappings).
@@ -13,12 +13,16 @@
 #' @import dplyr
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tidyr separate_rows
-#' @param scenarios Dataframe of scenarios.
+#' @param scenarios Dataframe of qualitative scenarios.
 #' @param capabilities Dataframe of capabilities.
 #' @param domains Dataframe of domain mappings.
-#' @param mappings Dataframe of qualitative mappings.
+#' @param mappings Dataframe of qualitative to quantitative mappings.
 #' @export
 #' @return Invisible NULL.
+#' @examples
+#' \dontrun{
+#' validate_scenarios(scenarios, capabilities, domains, mappings)
+#' }
 validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   # Check that scenario IDs have no gaps
   scenario_gaps <- setdiff(seq(range(scenarios$scenario_id)[1],
