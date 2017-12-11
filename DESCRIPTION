@@ -18,7 +18,6 @@ Imports:
   ggplot2,
   mc2d,
   purrr,
-  purrrlyr,
   readr,
   readxl,
   scales, 

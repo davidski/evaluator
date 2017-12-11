@@ -1,9 +1,9 @@
 #' Run simulations for all scenarios
 #'
 #' @import dplyr
-#' @importFrom dplyr progress_estimated bind_rows %>%
-#' @importFrom purrrlyr by_row
-#' @importFrom purrr safely is_null map_lgl
+#' @importFrom dplyr progress_estimated bind_rows %>% mutate row_number
+#' @importFrom purrr safely is_null map_lgl transpose simplify
+#' @importFrom tidyr nest
 #' @param scenario Quantitative scenarios.
 #' @param model OpenFAIR model to use.
 #' @param simulation_count Number of simulations for each scenario.
@@ -26,9 +26,13 @@ run_simulations <- function(scenario, simulation_count = 10000L,
     }
 
   pb <- dplyr::progress_estimated(nrow(scenario))
-  simulation_results <- purrrlyr::by_row(scenario, wrapped_calc, .pb = pb, .labels = FALSE)
+  dat <- scenario %>% dplyr::mutate(id = row_number()) %>% tidyr::nest(-id)
+  simulation_results <- dat$data %>% map(~ wrapped_calc(.x, .pb = pb))
 
-  y <- simulation_results$`.out` %>% purrr::transpose()
+  #simulation_results <- purrrlyr::by_row(scenario, wrapped_calc, .pb = pb, .labels = FALSE)
+  #y <- simulation_results$`.out` %>% purrr::transpose()
+
+  y <- simulation_results %>% purrr::transpose() %>% purrr::simplify()
   is_ok <- y$error %>% purrr::map_lgl(purrr::is_null)
 
   if (sum(is_ok) != nrow(scenario)) {

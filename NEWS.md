@@ -20,6 +20,7 @@
 * New difficulty composition functions:
     * get_mean_control_strength
 * Tests and code coverage reporting added
+* Removed dependency on `purrrlyr`
 
 # evaluator 0.1.1
 
