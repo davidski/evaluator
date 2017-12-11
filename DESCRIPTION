@@ -29,19 +29,19 @@ Imports:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
 Suggests:
-    DT,
-    pander (>= 0.6.1),
-    psych,
-    ggalt (>= 0.4.0),
-    flexdashboard (>= 0.4),
-    forcats,
-    statip,
-    knitr,
-    rmarkdown,
-    shiny,
-    testthat,
-    covr,
-    mockery
+  DT,
+  pander (>= 0.6.1),
+  psych,
+  ggalt (>= 0.4.0),
+  flexdashboard (>= 0.4),
+  forcats,
+  statip,
+  knitr,
+  rmarkdown,
+  shiny,
+  testthat,
+  covr,
+  mockery
 VignetteBuilder: knitr
 URL: http://github.com/davidski/evaluator
 BugReports: https://github.com/davidski/evaluator/issues

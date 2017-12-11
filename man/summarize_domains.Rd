@@ -7,9 +7,9 @@
 summarize_domains(simulation_results, domains)
 }
 \arguments{
-\item{simulation_results}{Simulation results dataframe}
+\item{simulation_results}{Simulation results dataframe.}
 
-\item{domains}{Domain mappings}
+\item{domains}{Domain mappings dataframe.}
 }
 \value{
 Simulation results summarized by domain

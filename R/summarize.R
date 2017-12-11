@@ -55,8 +55,8 @@ summarize_scenarios <- function(simulation_results) {
 #' scenarios at a domain level (per simulation).
 #'
 #' @import dplyr
-#' @param simulation_results Simulation results dataframe
-#' @param domains Domain mappings
+#' @param simulation_results Simulation results dataframe.
+#' @param domains Domain mappings dataframe.
 #' @export
 #' @return Simulation results summarized by domain
 #' @examples
@@ -70,7 +70,7 @@ summarize_domains <- function(simulation_results, domains) {
     select_("domain_id", "domain", "simulation", "ale", ~ everything())
 }
 
-#' Create all summary files and write to disk.
+#' Create all summary files and write to disk
 #'
 #' This is a wrapper function around \code{summarize_scenarios} and
 #' \code{summarize_domains}, calling both functions and writing the dataframes

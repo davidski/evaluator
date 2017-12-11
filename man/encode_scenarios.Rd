@@ -14,7 +14,7 @@ encode_scenarios(scenarios, capabilities, mappings)
 \item{mappings}{Qualitative to quantitative mapping dataframe.}
 }
 \value{
-Dataframe of encoded quantitative scenarios
+A dataframe of capabilities for the scenario and parameters for quantified simulation.
 }
 \description{
 Given an input of:

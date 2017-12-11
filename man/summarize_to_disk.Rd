@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize.R
 \name{summarize_to_disk}
 \alias{summarize_to_disk}
-\title{Create all summary files and write to disk.}
+\title{Create all summary files and write to disk}
 \usage{
 summarize_to_disk(simulation_results, domains, results_dir = "~/results")
 }
