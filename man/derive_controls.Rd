@@ -4,23 +4,32 @@
 \alias{derive_controls}
 \title{Derive control difficulty parameters for a given qualitative scenario}
 \usage{
-derive_controls(labels, capabilities, mappings, id = "None")
+derive_controls(capability_ids, capabilities, mappings)
 }
 \arguments{
-\item{labels}{Comma delimited list of qualitative labels.}
+\item{capability_ids}{Comma delimited list of capabilities in scope for a scenario.}
 
-\item{capabilities}{Character string of the type (tef, tc, diff, etc.).}
+\item{capabilities}{Dataframe of master list of all qualitative capabilities.}
 
 \item{mappings}{Qualitative mappings dataframe.}
-
-\item{id}{Character string of the type (tef, tc, diff, etc.).}
 }
 \value{
-List-wrapped dataframe of estimate parameters
+A dataframe of quantitative estimate parameters for the capabilities applicable to a given scenario.
 }
 \description{
 Given a comma separated list of control IDs in a scenario, identify
 the qualitative rankings associated with each scenario, convert to
 their quantitative parameters, and return a dataframe of the set of
 parameters.
+}
+\examples{
+\dontrun{
+capability_ids <- c("1, 3")
+capabilities <- data.frame(type = c("tef", "lm"),
+                                   label = c("rare", "frequent"),
+                                   stringsAsFactors = FALSE)
+mappings <- data.frame(type = "diff", label = "1 - Immature", l = 0, ml = 2, h = 10,
+                       conf = 3, stringsAsFactors = FALSE)
+derive_controls(labels, capabilities, mappings)
+}
 }

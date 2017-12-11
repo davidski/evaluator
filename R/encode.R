@@ -1,34 +1,26 @@
-## ----encode_capabilities-------------------------------------------------
 #' Encode qualitative data to quantitative parameters
 #'
+#' Given an input of:
+#' * qualitative risk scenarios
+#' * qualitative capabilities
+#' * translation table from qualitative labels to quantitative parameters
+#'
+#' Create a unified dataframe of quantitative scenarios ready for simulation.
+#'
 #' @import dplyr
-#' @importFrom purrr map2
+#' @importFrom purrr map
 #' @param scenarios Qualitative risk scenarios dataframe.
 #' @param capabilities Qualitative program capabilities dataframe.
 #' @param mappings Qualitative to quantitative mapping dataframe.
 #' @export
-#' @return Dataframe of encoded quantitative scenarios
+#' @return A dataframe of capabilities for the scenario and parameters for quantified simulation.
 #'
 encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch DIFF params
-  scenarios$diff_params <- purrr::map2(scenarios$controls, scenarios$scenario_id,
-                             ~derive_controls(labels = .x, id = .y,
+  scenarios$diff_params <- purrr::map(scenarios$controls,
+                             ~derive_controls(capability_ids = .x,
                                               capabilities = capabilities,
                                               mappings = mappings))
-  #%>%  purrr::flatten()
-  #names(diff_params) <- scenarios$scenario_id
-
-  # # verify everything encoded
-  # unencoded_params <- purrr::map(diff_params, ~ sum(!complete.cases(.))) %>%
-  #   unlist(use.names = FALSE) %>% sum
-  # if (unencoded_params > 0) {
-  #   stop("Not able to translate all capabilities to parameters. ",
-  #        "Do the scenarios have matches in the mapping table?")
-  # }
-
-  # add the DIFF params to the scenarios object
-  # scenarios$diff_params <- diff_params
-
   # fetch TEF params
   scenarios <- left_join(scenarios, mappings[mappings$type == "tef",],
                          by = c("tef" = "label")) %>%
@@ -59,18 +51,26 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #'
 #' @import dplyr
 #' @importFrom stringi stri_split_fixed
-#' @importFrom purrr map_df
-#' @param labels Comma delimited list of qualitative labels.
-#' @param capabilities Character string of the type (tef, tc, diff, etc.).
+#' @param capability_ids Comma delimited list of capabilities in scope for a scenario.
+#' @param capabilities Dataframe of master list of all qualitative capabilities.
 #' @param mappings Qualitative mappings dataframe.
-#' @param id Character string of the type (tef, tc, diff, etc.).
-#' @return List-wrapped dataframe of estimate parameters
-derive_controls <- function(labels, capabilities, mappings, id = "None") {
-  control_list <- stringi::stri_split_fixed(labels, ", ") %>% unlist()
+#' @return A dataframe of quantitative estimate parameters for the capabilities applicable to a given scenario.
+#' @export
+#' @examples
+#' \dontrun{
+#' capability_ids <- c("1, 3")
+#' capabilities <- data.frame(type = c("tef", "lm"),
+#'                                    label = c("rare", "frequent"),
+#'                                    stringsAsFactors = FALSE)
+#' mappings <- data.frame(type = "diff", label = "1 - Immature", l = 0, ml = 2, h = 10,
+#'                        conf = 3, stringsAsFactors = FALSE)
+#' derive_controls(labels, capabilities, mappings)
+#' }
+derive_controls <- function(capability_ids, capabilities, mappings) {
+  control_list <- stringi::stri_split_fixed(capability_ids, ", ") %>% unlist()
 
-  control_list <- purrr::map_df(control_list,
-                                ~ capabilities[as.numeric(.x),"diff"]) %>%
-    mutate(control_id = control_list)
+  control_list <- capabilities[capabilities$id %in% as.numeric(control_list), ] %>%
+    rename(control_id = id)
 
   # Find the qualitative rating for each control ID, then lookup it's
   # distribution parameters from the mappings table
@@ -78,31 +78,8 @@ derive_controls <- function(labels, capabilities, mappings, id = "None") {
   #                          as.numeric(control_list), "diff"] %>%
   results <- control_list %>%
     mutate_(label = ~ as.character(diff)) %>% select(-diff) %>%
-    convert_qual_to_quant(qual_type = "diff", mappings = mappings)
+    dplyr::left_join(mappings[mappings$type == "diff", ],
+                     by = c(label = "label"))
 
-  #results <- list(id = results)
-  #names(results) <- id
   return(results)
-}
-
-#' Convert qualitative ratings to quantitative estimate ranges
-#'
-#' @importFrom dplyr filter left_join
-#' @param qual_label Dataframe of qualitative labels (label=H/M/L, etc.).
-#' @param qual_type Character string of the type (tef, tc, diff, etc.).
-#' @param mappings Qualitative mappings dataframe.
-#' @return Dataframe of estimate parameters.
-#' @export
-#' @examples
-#' qualitative_rankings <- data.frame(type = c("tef", "lm"),
-#'                                    label = c("rare", "frequent"),
-#'                                    stringsAsFactors = FALSE)
-#' mappings <- data.frame(type = "tef", label = "rare", l = 0, ml = 2, h = 10,
-#'                        conf = 3, stringsAsFactors = FALSE)
-#' convert_qual_to_quant(qualitative_rankings, qual_type = "tef", mappings)
-convert_qual_to_quant <- function(qual_label, qual_type, mappings) {
-
-  filtered_mappings <- dplyr::filter_(mappings, ~ type == qual_type)
-  dplyr::left_join(qual_label, filtered_mappings, by = c(label = "label"))
-  # %>% select_("l", "ml", "h", "conf")
 }

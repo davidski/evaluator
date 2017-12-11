@@ -17,5 +17,13 @@ encode_scenarios(scenarios, capabilities, mappings)
 Dataframe of encoded quantitative scenarios
 }
 \description{
-Encode qualitative data to quantitative parameters
+Given an input of:
+\itemize{
+\item qualitative risk scenarios
+\item qualitative capabilities
+\item translation table from qualitative labels to quantitative parameters
+}
+}
+\details{
+Create a unified dataframe of quantitative scenarios ready for simulation.
 }
