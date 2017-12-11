@@ -5,3 +5,10 @@ test_that("Default scenarios import", {
   expect_equal(nrow(scenarios), 56)
   expect_equal(length(scenarios), 8)
 })
+
+test_that("Default capabilities import", {
+  data(domains)
+  dat <- import_capabilities(domains = domains)
+  expect_equal(nrow(dat), 60)
+  expect_equal(length(dat), 4)
+})
