@@ -12,8 +12,10 @@ calculate_weak_domains(simulation_results, domains)
 \item{domains}{Domain titles and IDs as a dataframe.}
 }
 \value{
-Control weaknesses summarized by domain.
+A dataframe.
 }
 \description{
-Calculate control weaknesses on a domain level
+For each domain, calculate the total number of threat events, loss
+events, percentage of vulnerability, mean threat capability exceedance,
+and mean difficult exceedance.
 }

@@ -1,5 +1,7 @@
 #' Format dollar amounts in terms of millions of USD
 #'
+#' Given a number, return a string formatted in terms of millions of dollars.
+#'
 #' @importFrom dplyr %>%
 #' @param x A number.
 #' @return String in the format of $xM.
@@ -14,10 +16,14 @@ dollar_millions <- function(x) {
 
 #' Calculate control weaknesses on a domain level
 #'
+#' For each domain, calculate the total number of threat events, loss
+#' events, percentage of vulnerability, mean threat capability exceedance,
+#' and mean difficult exceedance.
+#'
 #' @import dplyr
 #' @param simulation_results Results of running the risk simulations.
 #' @param domains Domain titles and IDs as a dataframe.
-#' @return Control weaknesses summarized by domain.
+#' @return A dataframe.
 #' @export
 calculate_weak_domains <- function(simulation_results, domains) {
   control_weakness <- simulation_results %>% group_by_("domain_id") %>%
@@ -64,12 +70,16 @@ calculate_domain_impact <- function(domain_summary, domains) {
 
 #' Calculate maximum losses with and without outliers
 #'
+#' Calculate the biggest single annual loss for each scenario, as well as
+#' the minimum and maxium ALE across all simulations. Calculation both
+#' with and without outliers (if passed) are returned.
+#'
 #' @import dplyr
-#' @param simulation_results Data.
-#' @param scenario_outliers Vector of scenario_ids which are outliers
+#' @param simulation_results Simulation results dataframe.
+#' @param scenario_outliers Optionnal vector of IDs of outlier scenarios.
 #' @return A dataframe.
 #' @export
-calculate_max_losses <- function(simulation_results, scenario_outliers) {
+calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
   max_loss <- simulation_results %>% filter_(~ !scenario_id %in% scenario_outliers) %>%
     group_by_("simulation") %>%
     summarise_(biggest_single_scenario_loss = ~ max(ale),

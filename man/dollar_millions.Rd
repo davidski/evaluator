@@ -13,7 +13,7 @@ dollar_millions(x)
 String in the format of $xM.
 }
 \description{
-Format dollar amounts in terms of millions of USD
+Given a number, return a string formatted in terms of millions of dollars.
 }
 \examples{
 dollar_millions(1.523 * 10^6)

@@ -4,16 +4,18 @@
 \alias{calculate_max_losses}
 \title{Calculate maximum losses with and without outliers}
 \usage{
-calculate_max_losses(simulation_results, scenario_outliers)
+calculate_max_losses(simulation_results, scenario_outliers = NULL)
 }
 \arguments{
-\item{simulation_results}{Data.}
+\item{simulation_results}{Simulation results dataframe.}
 
-\item{scenario_outliers}{Vector of scenario_ids which are outliers}
+\item{scenario_outliers}{Optionnal vector of IDs of outlier scenarios.}
 }
 \value{
 A dataframe.
 }
 \description{
-Calculate maximum losses with and without outliers
+Calculate the biggest single annual loss for each scenario, as well as
+the minimum and maxium ALE across all simulations. Calculation both
+with and without outliers (if passed) are returned.
 }
