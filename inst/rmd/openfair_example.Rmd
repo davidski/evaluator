@@ -6,13 +6,8 @@ output:
     orientation: columns
     vertical_layout: fill
     source_code: embed
-    favicon: !expr system.file('rmd', 'img', 'evaluator_logo_48px.png', package = 'evaluator')
-    logo: !expr system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
     navbar:
-    - align: right
-      href: https://github.com/davidski/evaluator
-      title: About
-      css: !expr system.file("rmd", "styles", "html-styles.css", package = "evaluator")
+      - { title: "About", href: "https://github.com/davidski/evaluator", align: right }
 ---
 
 ```{r setup, include=FALSE}

@@ -1,10 +1,18 @@
 # evaluator 0.1.1.900 (unreleased)
 
 * Improved help documentation on many functions
+* Refactored `generate_report` function
+    * Now accepts `format` parameter to specify HTML, PDF, or Word
+    * Optional `styles` parameter allows user to supply custom CSS or Word
+    reference document to customize styles and fonts
+    * RMarkdown 1.8.2 or greater (currently GitHub only) required to work 
+    around the temporary file deletion issue specified in 
+    https://github.com/rstudio/rmarkdown/issues/1184. Use
+    `devtools::install_github("rstudio/rmarkdown", "b84f706")` or greater.
 * Auto loads `extrafont` database for better font detection
     * Falls back to standard `sans` family when none of the preferred options 
       are available
-* Expose OpenFAIR model selection in run_simulation call
+* Expose OpenFAIR model selection in `run_simulation` call
     * Provide default TEF/TC/DIFF/LM OpenFAIR model
 * Drop use of tcltk progress bar in favor of console-compatible 
     dplyr::progress_estimated. Also enables reduced package dependencies.

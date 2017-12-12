@@ -178,20 +178,26 @@ select_loss_opportunities <- function(tc, diff) {
 
 # Top Level Analysis ------------------------------------------------------
 
-#' Run an OpenFAIR simulation
+#' Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels with control
+#' strength taken as a mean across multiple controls.
+#'
+#' Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, and
+#' LM sampling. If there are multiple controls provided for a scenarios, the
+#' arithmetic mean (average) is taken across samples for all controls to get
+#' the effective conntrol strength for a given simulation.
 #'
 #' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int
 #' @importFrom tibble tibble
 #' @importFrom dplyr %>%
 #' @param scenario List of tef_, tc_, and LM_ l/ml/h/conf parameters.
 #' @param diff_estimates Parameters for estimating the scenario difficulty.
-#' @param n Number of simulations to run.
-#' @param title Optional name of scenario.
+#' @param n Number of simulations to run. Defaults to 10,000.
+#' @param title Optional name of scenario. Defaults to 10,000.
 #' @param verbose Whether to print progress indicators.
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
 #'   mean TC and DIFF exceedance, and ALE samples.
 #' @export
-openfair_tef_tc_diff_lm <- function(scenario, diff_estimates = NULL, n = 10^4,
+openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
                           title = "Untitled", verbose = FALSE) {
 
     # make samples repeatable (and l33t)

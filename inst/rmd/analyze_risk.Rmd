@@ -3,14 +3,14 @@ title: "Strategic Information Security Risk Analysis"
 author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
 output:
   html_document:
-    css: styles/html-styles.css
+    css: "html-styles.css"
     fig_caption: yes
     toc: yes
     toc_depth: 3
     toc_float: yes
   html_notebook:
     code_folding: hide
-    css: styles/html-styles.css
+    css: "html-styles.css"
     toc: yes
     toc_depth: 3
     toc_float: yes
@@ -20,7 +20,7 @@ output:
     toc: yes
     toc_depth: 3
   word_document:
-    reference_docx: styles/word-styles-references.docx
+    reference_docx: "word-styles-reference.docx"
     toc: yes
     toc_depth: 3
 monofont: Inconsolata
@@ -118,8 +118,8 @@ control_weakness <- calculate_weak_domains(simulation_results, domains)
 
 # Summary
 
-> This report is based on `r comma(attr(simulation_results, "simulation_count"))` 
-simulations performed over `r comma(length(unique(simulation_results$scenario_id)))` 
+> This report is based on `r scales::comma(attr(simulation_results, "simulation_count"))` 
+simulations performed over `r scales::comma(length(unique(simulation_results$scenario_id)))` 
 risk scenarios and `r nrow(capabilities)` capabilities on 
 `r format(attr(simulation_results, "generated_on"), "%F %H:%M:%S%z")`.
 

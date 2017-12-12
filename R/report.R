@@ -1,20 +1,26 @@
 #' Generate sample analysis report
 #'
+#' @importFrom dplyr case_when
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
-#' @param output_file Name of the output file to generate.
+#' @param output_file Full path to output file.
+#' @param styles Optional full path to CSS file to overide default styles.
 #' @param focus_scenario_ids IDs of scenarios of special interest.
-#' @param ... Any other parameters to pass straight to \code{rmarkdown::render}
+#' @param format Format to generate (html, pdf, word).
+#' @param ... Any other parameters to pass straight to \code{rmarkdown::html_document}.
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
 #' @examples
 #' \dontrun{
-#' generate_report("~/inputs", "~/results")
+#' generate_report("~/inputs", "~/results", "~/risk_report.html")
 #' }
 generate_report <- function(input_directory = "~/data",
                             results_directory = "~/results",
-                            output_file = "risk_report.html",
-                            focus_scenario_ids = c(51, 12), ...) {
+                            output_file,
+                            styles = NULL,
+                            focus_scenario_ids = c(51, 12),
+                            format = "html",
+                            ...) {
   if (!requireNamespace("psych", quietly = TRUE)) {
     stop("Install the psych package to generate reports.")
   }
@@ -27,11 +33,26 @@ generate_report <- function(input_directory = "~/data",
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
   }
+
+  # figure out the correct style format to apply
+  styles <- if (is.null(styles)) {
+    if (format == "html") system.file("rmd", "styles", "html-styles.css", package = "evaluator")
+  } else { styles }
+
+  # select the appropriate renderer
+  out_format <- rmarkdown::html_document(css = styles)
+  out_format <- if (format == "pdf") {
+    rmarkdown::pdf_document()} else {
+      if (format == "word") {
+        rmarkdown::word_document(reference_docx = styles) } else {
+          out_format } }
+
   rmarkdown::render(system.file("rmd", "analyze_risk.Rmd", package = "evaluator"),
                     output_file = output_file,
                     params = list(input_directory = input_directory,
                                   results_directory = results_directory,
-                                  focus_scenario_ids = focus_scenario_ids), ...)
+                                  focus_scenario_ids = focus_scenario_ids),
+                    output_format = out_format)
 }
 
 #' Launch the Scenario Explorer web application
@@ -42,6 +63,7 @@ generate_report <- function(input_directory = "~/data",
 #'
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
+#' @param styles Optional full path to CSS file to overide default styles.
 #' @import dplyr
 #' @import ggplot2
 #' @return Invisible NULL.
@@ -50,8 +72,9 @@ generate_report <- function(input_directory = "~/data",
 #' \dontrun{
 #' explore_scenarios("~/inputs", "~/results")
 #' }
-explore_scenarios <- function(input_directory = "data",
-                              results_directory = "results") {
+explore_scenarios <- function(input_directory = "~/data",
+                              results_directory = "~/results",
+                              styles = NULL) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
   }
@@ -67,9 +90,18 @@ explore_scenarios <- function(input_directory = "data",
   if (!requireNamespace("flexdashboard", quietly = TRUE)) {
     stop("Install the flexdashboard package to run the Scenario Explorer.")
   }
+
+  # figure out the correct style format to apply
+  if (is.null(styles)) {
+    styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
+  }
+  icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
+
   rmarkdown::run(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator"),
                  #dir = file.path(basename(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator")), ".."),
                  render_args = list(
+                   output_options =  list(css = styles, favicon = icon,
+                                          logo = icon),
                    params = list(input_directory = input_directory,
                                results_directory = results_directory)))
   invisible(NULL)
@@ -87,13 +119,25 @@ explore_scenarios <- function(input_directory = "data",
 #' }
 openfair_example <- function() {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
-    stop("Install the rmarkdown package to generate reports.")
+    stop("Install the rmarkdown package to run the OpenFAIR demonstration application.")
   }
   if (!requireNamespace("shiny", quietly = TRUE)) {
-    stop("shiny is required to run the OpenFAIR demonstration application.")
+    stop("Install the shiny package to run the OpenFAIR demonstration application.")
   }
+  if (!requireNamespace("flexdashboard", quietly = TRUE)) {
+    stop("Install the flexdashboard package to run the OpenFAIR demonstration application.")
+  }
+
+  styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
+  icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
+
   rmarkdown::run(system.file("rmd", "openfair_example.Rmd",
-                             package = "evaluator"))
+                             package = "evaluator"),
+                 render_args = list(output_options =  list(css = styles,
+                                                           favicon = icon,
+                                                           logo = icon)
+                                    )
+                 )
   invisible(NULL)
 }
 

@@ -36,7 +36,7 @@ Suggests:
   forcats,
   statip,
   knitr,
-  rmarkdown,
+  rmarkdown (>= 1.8.2),
   shiny,
   testthat,
   covr,
