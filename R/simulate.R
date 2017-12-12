@@ -27,6 +27,7 @@ run_simulations <- function(scenario, simulation_count = 10000L,
 
   pb <- dplyr::progress_estimated(nrow(scenario))
   dat <- scenario %>% dplyr::mutate(id = row_number()) %>% tidyr::nest(-id)
+  pb$print()
   simulation_results <- dat$data %>% map(~ wrapped_calc(.x, .pb = pb))
 
   #simulation_results <- purrrlyr::by_row(scenario, wrapped_calc, .pb = pb, .labels = FALSE)
@@ -49,8 +50,9 @@ run_simulations <- function(scenario, simulation_count = 10000L,
     rename_("scenario_id" = "title")
 
   # add the domain_id column
-  simulation_results <- simulation_results %>% left_join(select_(scenario, 'c(scenario_id, domain_id)'),
-                                    by = c("scenario_id" = "scenario_id")) %>%
+  simulation_results <- simulation_results %>%
+    left_join(select_(scenario, 'c(scenario_id, domain_id)'),
+              by = c("scenario_id" = "scenario_id")) %>%
     select_("domain_id", "scenario_id", "simulation", "threat_events",
             "loss_events", "vuln", ~everything())
 
