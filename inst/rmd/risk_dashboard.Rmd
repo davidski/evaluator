@@ -3,9 +3,9 @@ title: "Risk Dashboard"
 author: "Evaluator toolkit"
 output:
   flexdashboard::flex_dashboard:
-    css: styles/html-styles.css
-    favicon: img/evaluator_logo_48px.png
-    logo: img/evaluator_logo_48px.png
+    css: "html-styles.css"
+    favicon: "img/evaluator_logo_48px.png"
+    logo: "img/evaluator_logo_48px.png"
     navbar:
     - align: right
       href: https://github.com/davidski/evaluator
@@ -15,8 +15,8 @@ output:
     vertical_layout: scroll
   pdf_document: default
 params:
-  input_directory: "~/data"
-  results_directory: "~/results"
+  input_directory: "~/evaluator/data"
+  results_directory: "~/evaluator/results"
 ---
 
 Sample narrative section.

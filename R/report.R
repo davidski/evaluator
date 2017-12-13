@@ -155,16 +155,19 @@ openfair_example <- function() {
 risk_dashboard <- function(input_directory = "~/data",
                            results_directory = "~/results", ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
-    stop("Install the rmarkdown package to generate reports.")
+    stop("Install the rmarkdown package to generate the risk dashboard.")
   }
   if (!requireNamespace("flexdashboard", quietly = TRUE)) {
-    stop("flexdashboard is required to generate the risk dashboard")
+    stop("Install the flexdashboard to generate the risk dashboard.")
   }
   if (!requireNamespace("forcats", quietly = TRUE)) {
-    stop("forcats is required to generate the risk dashboard")
+    stop("Install the forcats package to generate the risk dashboard.")
   }
+  styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
+  icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
+
   rmarkdown::render(system.file("rmd", "risk_dashboard.Rmd", package = "evaluator"),
-                    output_dir = getwd(),
-                    params = list(input_directory = input_directory,
-                                  results_directory = results_directory), ...)
+                    output_options =  list(css = styles, favicon = icon, logo = icon),
+                      params = list(input_directory = input_directory, results_directory = results_directory),
+                      ...)
 }
