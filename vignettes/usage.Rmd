@@ -176,12 +176,11 @@ modelling how often the threat actor will come into contact with your assets,
 the strength of the threat actor, the strength of your controls, and the 
 losses involved in any situation where the threat strength exceeds your 
 control strength. This simulation process can be computationally intense. The 
-sample data set takes approximately five minutes on my primary development 
-machines (last generation Windows-based platforms).
+sample data set takes approximately 24 minutes to run on a 2016 MacBook Pro.
 
 ```{r simulate, eval = FALSE}
 simulation_results <- run_simulations(quantitative_scenarios, 
-                                      simulation_count = 10000L)
+                                      simulation_count = 100L)
 save(simulation_results, file = file.path(results_directory, "simulation_results.rda"))
 ```
 
@@ -194,7 +193,7 @@ the risk report can be generated via
 `generate_report(input_directory, results_directory)`.
 This will create a pre-populated risk report that identifies key scenarios 
 and generates initial plots for to be used in creating a final analysis report. 
-Other included report tools include `risk_dashboard()`.
+Other included report tools include `risk_dashboard(input_directory, results_directory)`.
 
 For interactive exploration, run 
 `explore_scenarios(input_directory, results_directory)` 
@@ -230,15 +229,19 @@ risk_tolerances <- system.file("extdata", "risk_tolerances.csv",
 explore_scenarios(input_directory, results_directory)
 
 # Sample Report
-generate_report(input_directory, results_directory) %>% rstudioapi::viewer()
+generate_report(input_directory, results_directory, "report.pdf", format = "pdf") %>% 
+  rstudioapi::viewer()
+
+# Risk Dashboard
+risk_dashboard(input_directory, results_directory) %>% rstudioapi::viewer()
 ```
 
 Or, to view that same report as a Word document for editing, use 
-`generate_report(input_directory, results_directory, output_format = "word_document")`.
+`generate_report(input_directory, results_directory, format = "word")`.
 
 If you would rather work on the source RMarkdown file or direct editing and 
 graphics tweaking, use `system.file("rmd, "analyze_risk.Rmd", package = "evaluator")` 
-to find he location of the native template on your system.
+to find the location of the native template on your system.
 
 ## Advanced Customization
 

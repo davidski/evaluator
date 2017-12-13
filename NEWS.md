@@ -1,6 +1,7 @@
 # evaluator 0.1.1.900 (unreleased)
 
 * Improved help documentation on many functions
+* Update of usage vignette
 * Refactored `generate_report` function
     * Now accepts `format` parameter to specify HTML, PDF, or Word
     * Optional `styles` parameter allows user to supply custom CSS or Word
