@@ -1,9 +1,10 @@
 # Installation Extras
 
-This is a work-in-progress set of notes for installing a minimum functioning 
-R environment for the Evaluator toolkit. While the official instructions from 
-the R Project and RStudio sites are canonical, these notes may be of use to 
-speed the process.
+While using the full power of Evaluator is easier with some basic proficency with the R langauge, making quantitative risk analysis available to a broader audience has always been a core goal of this project. Users with less R experience may appreciate these notes on setting up a R environment.
+
+# Docker
+
+The simplest method applicable to most users is the corresponding [evaluator-docker](https://github.com/davidski/evaluator-docker) project. This Dockerfile (and the corresponding pre-built image on [Docker Hub](https://hub.docker.com/r/davidski/evaluator)) is the fastest and surest means of getting started with Evaluator.
 
 # MacOS
 
@@ -18,12 +19,6 @@ set up a functional environment.
 brew install homebrew/science/R
 brew install Caskroom/cask/rstudio
 
-# Java, it's a thing
-brew cask install java 
-
-# tell R about Java
-R CMD javareconf JAVA_CPPFLAGS=-I/System/Library/Frameworks/JavaVM.framework/Headers
- 
 # Latex required for PDF knitting
 brew cask install mactex
  
@@ -37,20 +32,20 @@ R -e 'install.package("extrafont", repos="http://cran.cnr.berkeley.edu")'
 R -e 'extrafont::font_import(prompt = FALSE)'
 ```
 
+Then install the Evaluator library either directly from CRAN via `install.packages('evaluator')` or from GitHub via `devtools::install_github('davidski/evaluator')`.
+
 # Windows
 
-Windows users may use chocolately for a homebrew-like experience.
+Windows users should use [chocolately](https://chocolatey.org/install) for a simple `homebrew`-like package manager experience.
 
 - Install R
 
-```
-choco install --yes r
-```
+    -  `choco install --yes r`
 
 - Install miktex for PDF knitting
 
-```
-choco install --yes miktex
-```
+    - `choco install --yes miktex`
 
-- Install R Studio (not available on Chocolately)
+- Install RStudio (not available on Chocolately)
+
+    - https://www.rstudio.com/products/rstudio/download/#download
