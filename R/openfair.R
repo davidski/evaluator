@@ -76,7 +76,7 @@ sample_lm <- function(func = NULL, params = NULL) {
   samples <- invoke(func, params)
 
   # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
-  details <- if (length(samples) == 0) {
+  details <- if (length(samples) == 0 | sum(samples) == 0) {
       list(ale = 0, sle_max = 0, sle_min = 0, sle_mean = 0, sle_median = 0)
   } else {
       list(ale = sum(samples),
@@ -130,7 +130,13 @@ get_mean_control_strength <- function(n, diff_estimates)  {
     purrr::map("samples")
   cs <- cs %>% purrr::transpose(.) %>%  purrr::simplify_all(.)
   # take the mean of all controls
-  cs %>% purrr::map_dbl(mean)
+  outcomes <- cs %>% purrr::map_dbl(mean)
+  # placeholder for control importance work
+  # cs_df <- purrr::map_dfc(cs, tibble::as_tibble) %>% t %>% tibble::as_tibble
+  # control_importance <- caret::filterVarImp(cs_df, outcomes, nonpara = TRUE) %>%
+  #   tibble::rownames_to_column(var = "control") %>%
+  #   arrange(desc(Overall)) %>% dplyr::pull("control")
+  outcomes
 }
 
 # Composition Functions ---------------------------------------------------
