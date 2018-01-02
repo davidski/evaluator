@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 .travis.yml
 CODE_OF_CONDUCT.md
+CONTRIBUTING.md
 INSTALL_EXTRAS.md
 README.Rmd
 cran-comments.md
