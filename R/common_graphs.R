@@ -31,7 +31,7 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 
 #' Display a heatmap of impact by domain
 #'
-#' @import dplyr
+#' @importFrom dplyr arrange_ mutate_
 #' @import ggplot2
 #' @importFrom viridis scale_fill_viridis
 #' @param domain_impact Domain impact information from \code{calculate_domain_impact}.
@@ -41,9 +41,9 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #' dat <- calculate_domain_impact(domain_summary, domains)
 #' generate_heatmap(dat)
 generate_heatmap <- function(domain_impact) {
-  dat <- domain_impact %>% arrange_("domain_id") %>%
-    mutate_("full_label" = ~ paste0(domain_id, "\n", "$", round(var/10^6), "M"),
-            aux = ~ seq(1, 2 * nrow(.), by = 2))
+  dat <- domain_impact %>% dplyr::arrange_("domain_id") %>%
+    dplyr::mutate_("full_label" = ~ paste0(domain_id, "\n", "$", round(var/10^6), "M"),
+                   aux = ~ seq(1, 2 * nrow(.), by = 2))
   gg <- ggplot(dat, aes_(x = quote(aux), y = 1))
   gg <- gg + geom_tile(stat = "identity", color = "white",
                        aes_(fill = quote(var)), width = 1)
@@ -93,7 +93,7 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' contained (not resulting in loss) vs the number and percentage of
 #' loss events (threat events resulting in losses).
 #'
-#' @import dplyr
+#' @importFrom dplyr arrange_ mutate_
 #' @import ggplot2
 #' @importFrom scales comma
 #' @importFrom viridis viridis
@@ -108,10 +108,10 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' generate_event_outcomes_plot(dat)
 generate_event_outcomes_plot <- function(control_weakness) {
   dat <- control_weakness %>%
-    arrange_("desc(loss_events)", "desc(threat_events)") %>%
-    mutate_(domain_id = ~ factor(domain_id, levels = rev(unique(domain_id)),
-                              ordered = TRUE)) %>%
-    mutate_(contained_events = ~ threat_events - loss_events)
+    dplyr::arrange_("desc(loss_events)", "desc(threat_events)") %>%
+    dplyr::mutate_(domain_id = ~ factor(domain_id, levels = rev(unique(domain_id)),
+                                        ordered = TRUE)) %>%
+    dplyr::mutate_(contained_events = ~ threat_events - loss_events)
 
   # nudge labels 5% off from the end of the segment
   label_nudge <- c(max(dat$loss_events) / 20 * -1, max(dat$contained_events) / 20)
@@ -121,14 +121,14 @@ generate_event_outcomes_plot <- function(control_weakness) {
 
   # convert data into tidy-er format
   dat <- tidyr::gather_(dat, "type", "events", c("loss_events", "contained_events")) %>%
-    mutate_(actual_events = "events",
-           events = ~ events + 25000,
-           events = ~ ifelse(type == "loss_events", -1 * events, events)) %>%
-    mutate_("nudge" = ~ ifelse(type == "loss_events", label_nudge[1], label_nudge[2])) %>%
-    mutate_("hjust" = ~ ifelse(type == "loss_events", "right", "left")) %>%
-    mutate_("full_lab" = ~ ifelse(type == "loss_events",
-                             sprintf("%s (%s)", scales::comma(actual_events), tc_exceedance),
-                             sprintf("%s (%s)", scales::comma(actual_events), diff_exceedance)))
+    dplyr::mutate_(actual_events = "events",
+                   events = ~ events + 25000,
+                   events = ~ ifelse(type == "loss_events", -1 * events, events)) %>%
+    dplyr::mutate_("nudge" = ~ ifelse(type == "loss_events", label_nudge[1], label_nudge[2])) %>%
+    dplyr::mutate_("hjust" = ~ ifelse(type == "loss_events", "right", "left")) %>%
+    dplyr::mutate_("full_lab" = ~ ifelse(type == "loss_events",
+                                         sprintf("%s (%s)", scales::comma(actual_events), tc_exceedance),
+                                         sprintf("%s (%s)", scales::comma(actual_events), diff_exceedance)))
 
   # auto-calculate the limits of the plot
   event_range <- range(dat$events) * c(1.4, 1.5)

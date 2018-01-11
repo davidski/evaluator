@@ -22,8 +22,9 @@
 #' data(simulation_results)
 #' summarize_scenarios(simulation_results)
 summarize_scenarios <- function(simulation_results) {
-  scenario_summary <- simulation_results %>% group_by_("domain_id", "scenario_id") %>%
-  summarise_(
+  scenario_summary <- simulation_results %>%
+    dplyr::group_by_("domain_id", "scenario_id") %>%
+    dplyr::summarize_(
     loss_events_mean = ~ mean(loss_events, na.rm = TRUE),
     loss_events_min = ~ min(loss_events, na.rm = TRUE),
     loss_events_max = ~ max(loss_events, na.rm = TRUE),
@@ -41,12 +42,12 @@ summarize_scenarios <- function(simulation_results) {
                                   (threat_events - loss_events)) /
       sum(threat_events - loss_events)) %>% ifelse(is.finite(.), ., 0),
     mean_vuln = ~ mean(vuln, na.rm = TRUE)) %>%
-  mutate_(sle_median = ~ ifelse(is.nan(sle_median), NA, sle_median)) %>%
-  ungroup()
+  dplyr::mutate_(sle_median = ~ ifelse(is.nan(sle_median), NA, sle_median)) %>%
+  dplyr::ungroup()
 
   # calculate z-score for ALE VaR and assign outliers as >= 2 SD
-  mutate_(scenario_summary, ale_var_zscore = ~ scale(ale_var),
-          outlier = ~ ale_var_zscore >= 2)
+  dplyr::mutate_(scenario_summary, ale_var_zscore = ~ scale(ale_var),
+                 outlier = ~ ale_var_zscore >= 2)
 }
 
 #' Create domain-level summary of simulation results
@@ -65,9 +66,9 @@ summarize_scenarios <- function(simulation_results) {
 #' summarize_domains(simulation_results, domains)
 summarize_domains <- function(simulation_results, domains) {
   simulation_results %>% group_by_("domain_id", "simulation") %>%
-    summarise_(ale = ~ sum(ale)) %>%
-    left_join(domains, by = c("domain_id" = "domain_id")) %>%
-    select_("domain_id", "domain", "simulation", "ale", ~ everything())
+    dplyr::summarise_(ale = ~ sum(ale)) %>%
+    dplyr::left_join(domains, by = c("domain_id" = "domain_id")) %>%
+    dplyr::select_("domain_id", "domain", "simulation", "ale", ~ everything())
 }
 
 #' Create all summary files and write to disk

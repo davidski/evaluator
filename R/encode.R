@@ -7,7 +7,7 @@
 #'
 #' Create a unified dataframe of quantitative scenarios ready for simulation.
 #'
-#' @import dplyr
+#' @importFrom dplyr rename_ select_ left_join
 #' @importFrom purrr map
 #' @param scenarios Qualitative risk scenarios dataframe.
 #' @param capabilities Qualitative program capabilities dataframe.
@@ -22,39 +22,42 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
                                               capabilities = capabilities,
                                               mappings = mappings))
   # fetch TEF params
-  scenarios <- left_join(scenarios, mappings[mappings$type == "tef",],
-                         by = c("tef" = "label")) %>%
-    rename_("tef_l" = "l", "tef_ml" = "ml", "tef_h" = "h", "tef_conf" = "conf") %>%
-    select_('-c(tef, type)')
+  scenarios <- dplyr::left_join(scenarios, mappings[mappings$type == "tef",],
+                                by = c("tef" = "label")) %>%
+    dplyr::rename_("tef_l" = "l", "tef_ml" = "ml", "tef_h" = "h", "tef_conf" = "conf") %>%
+    dplyr::select_('-c(tef, type)')
 
   # fetch TC params
-  scenarios <- left_join(scenarios, mappings[mappings$type == "tc",],
-                         by = c("tc" = "label")) %>%
-    rename_("tc_l" = "l", "tc_ml" = "ml", "tc_h" = "h", "tc_conf" = "conf") %>%
-    select_('-c(tc, type)')
+  scenarios <- dplyr::left_join(scenarios, mappings[mappings$type == "tc",],
+                                by = c("tc" = "label")) %>%
+    dplyr::rename_("tc_l" = "l", "tc_ml" = "ml", "tc_h" = "h",
+                   "tc_conf" = "conf") %>%
+    dplyr::select_('-c(tc, type)')
 
   # fetch LM params
-  scenarios <- left_join(scenarios, mappings[mappings$type == "lm",],
-                         by = c("lm" = "label")) %>%
-    rename_("lm_l" = "l", "lm_ml" = "ml", "lm_h" = "h", "lm_conf" = "conf") %>%
-    select_('-c(lm, type)')
+  scenarios <- dplyr::left_join(scenarios, mappings[mappings$type == "lm",],
+                                by = c("lm" = "label")) %>%
+    dplyr::rename_("lm_l" = "l", "lm_ml" = "ml", "lm_h" = "h",
+                   "lm_conf" = "conf") %>%
+    dplyr::select_('-c(lm, type)')
 
   scenarios
 }
 
 #' Derive control difficulty parameters for a given qualitative scenario
 #'
-#' Given a comma separated list of control IDs in a scenario, identify
+#' Given a comma-separated list of control IDs in a scenario, identify
 #' the qualitative rankings associated with each scenario, convert to
 #' their quantitative parameters, and return a dataframe of the set of
 #' parameters.
 #'
-#' @import dplyr
+#' @importFrom dplyr left_join mutate_ select
 #' @importFrom stringi stri_split_fixed
-#' @param capability_ids Comma delimited list of capabilities in scope for a scenario.
+#' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
 #' @param capabilities Dataframe of master list of all qualitative capabilities.
 #' @param mappings Qualitative mappings dataframe.
-#' @return A dataframe of quantitative estimate parameters for the capabilities applicable to a given scenario.
+#' @return A dataframe of quantitative estimate parameters for the capabilities
+#'   applicable to a given scenario.
 #' @export
 #' @examples
 #' \dontrun{
@@ -77,7 +80,7 @@ derive_controls <- function(capability_ids, capabilities, mappings) {
   #results <- capabilities[capabilities$id %in%
   #                          as.numeric(control_list), "diff"] %>%
   results <- control_list %>%
-    mutate_(label = ~ as.character(diff)) %>% select(-diff) %>%
+    dplyr::mutate_(label = ~ as.character(diff)) %>% dplyr::select(-diff) %>%
     dplyr::left_join(mappings[mappings$type == "diff", ],
                      by = c(label = "label"))
 

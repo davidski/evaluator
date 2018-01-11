@@ -4,7 +4,7 @@
 #' [import_capabilities()], calling both functions and writing the dataframes
 #' to a location on disk.
 #'
-#' @import dplyr
+#' @importFrom dplyr %>%
 #' @importFrom readr write_csv
 #' @importFrom utils data
 #' @importFrom tibble as_tibble rownames_to_column
@@ -47,7 +47,7 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 
 #' Import scenarios from survey spreadsheet
 #'
-#' @import dplyr
+#' @importFrom dplyr funs select mutate mutate_at
 #' @importFrom utils data
 #' @importFrom purrr map
 #' @importFrom tidyr unnest
@@ -80,18 +80,18 @@ import_scenarios <- function(survey_file = system.file("survey",
   scenarios <- tidyr::unnest(scenarios, threats)
 
   # clean the frame for returning
-  select(scenarios, scenario_id = "ScenarioID", scenario = "Scenario",
+  dplyr::select(scenarios, scenario_id = "ScenarioID", scenario = "Scenario",
          tcomm = "TComm", tef = "TEF", tc = "TC", lm = "LM",
          domain_id = "domain_id", controls = "Capabilities") %>%
-    mutate(scenario_id = as.integer(scenario_id)) %>%
-    mutate_at(vars("tef", "lm", "tc"), funs(tolower)) %>%
-    arrange(scenario_id)
+    dplyr::mutate(scenario_id = as.integer(scenario_id)) %>%
+    dplyr::mutate_at(vars("tef", "lm", "tc"), dplyr::funs(tolower)) %>%
+    dplyr::arrange(scenario_id)
 
 }
 
 #' Import capabilities from survey spreadsheet
 #'
-#' @import dplyr
+#' @importFrom dplyr mutate_ select_ arrange_
 #' @importFrom readxl read_excel
 #' @importFrom purrr map
 #' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
@@ -102,19 +102,19 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
                                domains){
 
   raw_domains <- domains %>%
-    mutate_(raw_data = ~ purrr::map(domain_id, ~ readxl::read_excel(
+    dplyr::mutate_(raw_data = ~ purrr::map(domain_id, ~ readxl::read_excel(
       survey_file, skip=1, sheet=.)))
 
   ## ----walk_the_frame------------------------------------------------------
-  raw_domains %>%
-    mutate_(capabilities = ~ purrr::map(raw_data, split_sheet)) %>%
-    select_(~ -raw_data) -> dat
+  dat <- raw_domains %>%
+    dplyr::mutate_(capabilities = ~ purrr::map(raw_data, split_sheet)) %>%
+    dplyr::select_(~ -raw_data)
 
   # fetch and clean capabilities
   capabilities <- tidyr::unnest_(dat, "capabilities") %>%
-    select_(id = "CapabilityID", "domain_id", capability = "Name",
-            diff = "DIFF") %>%
-    mutate_("id" = ~ as.integer(id)) %>% arrange_("id")
+    dplyr::select_(id = "CapabilityID", "domain_id", capability = "Name",
+                   diff = "DIFF") %>%
+    dplyr::mutate_("id" = ~ as.integer(id)) %>% dplyr::arrange_("id")
 
   capabilities
 }

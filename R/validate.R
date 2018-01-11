@@ -10,7 +10,7 @@
 #' - All controls referenced in scenarios are defined in the controls table
 #' - All controls are distinct
 #'
-#' @import dplyr
+#' @importFrom dplyr tally filter left_join rename_ anti_join
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tidyr separate_rows
 #' @param scenarios Dataframe of qualitative scenarios.
@@ -38,10 +38,10 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   }
 
   # Verify there are no duplicate scenarios
-  scenarios %>% group_by_("scenario_id") %>% tally %>%
-    filter_(~ n > 1) %>%
-    left_join(scenarios, by = c("scenario_id" = "scenario_id")) %>%
-    rename_(times_duplicated = "n") ->
+  scenarios %>% dplyr::group_by_("scenario_id") %>% dplyr::tally %>%
+    dplyr::filter_(~ n > 1) %>%
+    dplyr::left_join(scenarios, by = c("scenario_id" = "scenario_id")) %>%
+    dplyr::rename_(times_duplicated = "n") ->
     duplicate_scenarios
   if (nrow(duplicate_scenarios) != 0) {
     warning(paste("Duplicate scenarios found:",
@@ -65,7 +65,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   # Are all the capabilities referenced in the scenarios defined?
   missing_capabilities <- scenarios %>%
     tidyr::separate_rows_("controls", sep = ",", convert = TRUE) %>%
-    anti_join(capabilities, by = c("controls" = "id"))
+    dplyr::anti_join(capabilities, by = c("controls" = "id"))
   if (nrow(missing_capabilities) != 0) {
     warning(paste("Scenarios with undefined capabilities:",
                   missing_capabilities$scenario_id, collapse = "\n"),
@@ -74,9 +74,10 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   }
 
   # Verify there are no duplicate controls
-  capabilities %>% group_by_("id") %>% tally %>%
-    filter_(~ n > 1) %>% left_join(capabilities, by = c("id" = "id")) %>%
-    rename_(times_duplicated = "n") -> duplicate_capabilities
+  capabilities %>% dplyr::group_by_("id") %>% dplyr::tally %>%
+    dplyr::filter_(~ n > 1) %>%
+    dplyr::left_join(capabilities, by = c("id" = "id")) %>%
+    dplyr::rename_(times_duplicated = "n") -> duplicate_capabilities
   if (nrow(duplicate_capabilities) != 0) {
     warning(paste("Duplicate capabilities found:",
                   duplicate_capabilities$id, collapse = "\n"),
@@ -116,9 +117,9 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   # add the number of controls applicable to each scenario as a validation step
   scenarios <- scenarios %>%
     dplyr::rowwise() %>%
-    mutate_("control_count" =
+    dplyr::mutate_("control_count" =
               ~ length(stringi::stri_split_fixed(controls, ", ", simplify = TRUE))) %>%
-    ungroup
+    dplyr::ungroup
 
   invisible(validated)
 }

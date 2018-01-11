@@ -3,7 +3,7 @@
 #' Given a input directory and a directory of simulation results, load all
 #' of the key Evaluator data objects into memory.
 #'
-#' @import dplyr
+#' @importFrom dplyr summarize mutate_ group_by_
 #' @importFrom readr read_csv
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
@@ -28,11 +28,12 @@ load_data <- function(input_directory = "~/data", results_directory = "~/data") 
   capabilities <- readr::read_csv(file.path(input_directory, "capabilities.csv"))  # i.e. objectives & controls
   risk_tolerances <- readr::read_csv(file.path(input_directory, "risk_tolerances.csv"))  # i.e. risk tolerances
   qualitative_scenarios <- readr::read_csv(file.path(input_directory, "qualitative_scenarios.csv")) %>%
-    mutate_("tef" = ~ tolower(tef), "lm" = ~ tolower(lm), "tc" = ~ tolower(tc))
+    dplyr::mutate_("tef" = ~ tolower(tef), "lm" = ~ tolower(lm), "tc" = ~ tolower(tc))
 
   # precalculate the standard order of scenarios (domain, then ID of the scenario)
-  scenario_order <- group_by_(simulation_results, "domain_id", "scenario_id") %>%
-    summarise()
+  scenario_order <- dplyr::group_by_(simulation_results, "domain_id",
+                                     "scenario_id") %>%
+    dplyr::summarize()
 
   # build a vector of scenario outliers
   scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE),
@@ -47,7 +48,9 @@ load_data <- function(input_directory = "~/data", results_directory = "~/data") 
                               annual_tolerance = ~ ifelse(ale_var >= risk_tolerance["high"],
                                                           "High",
                                                           ifelse(ale_var >= risk_tolerance["medium"], "Medium", "Low"))) %>%
-    mutate_(annual_tolerance = ~factor(annual_tolerance, levels = c("High", "Medium", "Low"), ordered = TRUE))
+    mutate_(annual_tolerance = ~factor(annual_tolerance,
+                                       levels = c("High", "Medium", "Low"),
+                                       ordered = TRUE))
 
   list(simulation_results = simulation_results,
        scenario_summary = scenario_summary,
