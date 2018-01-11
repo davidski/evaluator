@@ -1,14 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-Evaluator <img alt="Evaluator Logo" title="Evaluator" src="inst/rmd/img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
-==========================================================================================================================================
+Evaluator <img alt="Evaluator Logo" title="Evaluator" align="right" src="inst/rmd/img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
+========================================================================================================================================================
 
 [![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator) [![Coverage Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)](https://codecov.io/github/davidski/evaluator?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator) ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/evaluator)
 
 Overview
 --------
 
-Evaluator is an open source risk analysis toolkit. Based on the OpenFAIR [taxonomy](https://www2.opengroup.org/ogsys/catalog/C13K) and risk assessment [standard](https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator empowers an organization to perform a quantifiable, repeatable, and data-driven risk review.
+Evaluator is an open source quantitative risk analysis toolkit. Based on the OpenFAIR [taxonomy](https://www2.opengroup.org/ogsys/catalog/C13K) and risk assessment [standard](https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator empowers an organization to perform a quantifiable, repeatable, and data-driven risk review.
 
 Three sample outputs of this toolkit are available:
 
