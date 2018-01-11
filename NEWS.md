@@ -1,5 +1,7 @@
 # evaluator 0.1.1.900 (unreleased)
 
+* risk_dashboard now expects a mandatory output parameter to the desired rendered 
+  output
 * Improved help documentation on many functions
 * Update of usage vignette
 * Refactored `generate_report` function

@@ -143,8 +143,14 @@ openfair_example <- function() {
 
 #' Launch a single page summary risk dashboard
 #'
+#' Given the input files and the analysis summary file, create a basic one-
+#' page summary with an overview of the results per domain and scenario.
+#' Intended as a skeleton showing how the results could be displayed at an
+#' executive level.
+#'
 #' @param input_directory Location of input files
 #' @param results_directory Location of simulation results
+#' @param output_file Full path to the desired output file.
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
@@ -153,7 +159,9 @@ openfair_example <- function() {
 #' risk_dashboard("~/inputs", "~/simulations")
 #' }
 risk_dashboard <- function(input_directory = "~/data",
-                           results_directory = "~/results", ...) {
+                           results_directory = "~/results",
+                           output_file,
+                           ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate the risk dashboard.")
   }
@@ -168,6 +176,8 @@ risk_dashboard <- function(input_directory = "~/data",
 
   rmarkdown::render(system.file("rmd", "risk_dashboard.Rmd", package = "evaluator"),
                     output_options =  list(css = styles, favicon = icon, logo = icon),
-                      params = list(input_directory = input_directory, results_directory = results_directory),
+                    output_file = output_file,
+                    params = list(input_directory = input_directory,
+                                  results_directory = results_directory),
                       ...)
 }
