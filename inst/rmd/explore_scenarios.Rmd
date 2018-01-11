@@ -129,11 +129,9 @@ get_control_table <- reactive({
     select(controls) %>% stringi::stri_split_fixed(", ") %>% unlist()
   control_data <- capabilities[capabilities$id %in% as.numeric(control_list), "diff"] %>% 
     rename(label = diff) %>% 
-    mutate(label = as.character(label)) %>% 
-    convert_qual_to_quant(qual_type = "diff", mappings)
-  #convert_qual_to_quant(capabilities[capabilities$id %in% 
-  #                                          as.numeric(control_list), 
-  #                                        "diff"]$diff)
+    mutate(label = as.character(label), type = "diff") %>% 
+    left_join(mappings, by = c("label" = "label", "type" = "type"))
+  
   # format percentages
   control_data <- mutate_at(control_data, vars(-conf), funs(custom_percent)) %>%
     mutate(conf = as.integer(conf))
@@ -150,8 +148,8 @@ get_loss_distribution_table <- reactive({
   #filter_input <- get_threat_id(input$input_threat)
   loss_list <- scenarios %>% 
     filter(scenario_id == get_scenario_id(input$input_scenario)) %>% 
-    mutate(label = as.character(lm)) %>% 
-    convert_qual_to_quant(qual_type = "lm", mappings) %>% 
+    mutate(label = as.character(lm), type = "lm") %>% 
+    left_join(mappings, by = c("label" = "label", "type" = "type")) %>% 
     mutate_at(vars(l, ml, h), funs(dollar)) %>% 
     select(Low = l, "Most Likely" = ml, "High" = h, "Confidence" = conf)
   return(loss_list)
