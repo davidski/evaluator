@@ -17,7 +17,7 @@ summarize_to_disk(simulation_results, domains, results_dir = "~/results")
 Tibble with paths to the created data files.
 }
 \description{
-This is a wrapper function around \code{summarize_scenarios} and
+This is a wrapper around \code{summarize_scenarios} and
 \code{summarize_domains}, calling both functions and writing the dataframes
 to a location on disk.
 }

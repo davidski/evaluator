@@ -15,8 +15,21 @@ summarize_domains(simulation_results, domains)
 Simulation results summarized by domain
 }
 \description{
-Rolls up simulation results to the domain level by summing ALE across all
-scenarios at a domain level (per simulation).
+Given a dataframe of raw results from \code{run_simulations}, summarize
+the individual results at a per-domain level. This domain-level summary
+is a useful data structure for aggregate reporting.
+}
+\details{
+Summary stats created include:
+\itemize{
+\item Mean/Min/Max/Median are calculated for loss events
+\item Median/Max/VaR are calculated for annual loss expected (ALE)
+\item Mean/Median/Max/Min are calculated for single loss expected (SLE)
+\item Mean percentage of theat capability exceeding difficulty on succesfull threat events
+\item Mean percentage of difficulty exceeding threat capability on defended events
+\item Vulnerability percentage
+\item Z-score of ALE (outliers flagged as 2 >= z-score)
+}
 }
 \examples{
 data(simulation_results)

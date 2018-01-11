@@ -13,5 +13,5 @@ theme_evaluator(base_family = "BentonSansRE")
 A ggplot theme object.
 }
 \description{
-This is the base theme used by all supplied graphics.
+Returns a standardized ggplot theme used by all built-in Evaluator plots.
 }

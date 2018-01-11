@@ -27,5 +27,5 @@ mean TC and DIFF exceedance, and ALE samples.
 Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, and
 LM sampling. If there are multiple controls provided for a scenarios, the
 arithmetic mean (average) is taken across samples for all controls to get
-the effective conntrol strength for a given simulation.
+the effective control strength for a given simulation.
 }

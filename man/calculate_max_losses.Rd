@@ -12,7 +12,7 @@ calculate_max_losses(simulation_results, scenario_outliers = NULL)
 \item{scenario_outliers}{Optionnal vector of IDs of outlier scenarios.}
 }
 \value{
-A dataframe.
+Dataframe.
 }
 \description{
 Calculate the biggest single annual loss for each scenario, as well as

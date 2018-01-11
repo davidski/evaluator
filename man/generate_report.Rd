@@ -27,7 +27,16 @@ generate_report(input_directory = "~/data", results_directory = "~/results",
 Default return values of the \code{rmarkdown::render} function.
 }
 \description{
-Generate sample analysis report
+Given a set of input files and summarized simulation results, create a
+skeleton risk analysis report. This report attempts to summarize the results
+of the analysis at a top level, using 95% Value at Risk (VaR) as the primary
+metric, while also providing more detailed analysis at both a per-domain and
+per-scenario level.
+}
+\details{
+This report includes several sections where an analyst will need to modify and
+fill in details for their specific organization. Of particular note is the
+Recommendations section, which will always need to be updated.
 }
 \examples{
 \dontrun{

@@ -1,5 +1,9 @@
 #' Run simulations for all scenarios
 #'
+#' Given a dataframe of quantitative scenarios, run an OpenFAIR Monte
+#' Carlo simulation for each scenario, returning a combined dataframe of all
+#' results.
+#'
 #' @import dplyr
 #' @importFrom dplyr progress_estimated bind_rows %>% mutate row_number
 #' @importFrom purrr safely is_null map_lgl transpose simplify

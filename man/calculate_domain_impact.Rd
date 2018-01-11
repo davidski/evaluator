@@ -12,8 +12,11 @@ calculate_domain_impact(domain_summary, domains)
 \item{domains}{Dataframe of all domains in scope.}
 }
 \value{
-A dataframe
+Dataframe.
 }
 \description{
-Calculate quantified impact at a domain level
+Given a dataframe of simulation results summarized at the domain level,
+create a summarization of the annual loss expected (ALE) with descriptors
+at the minimum, mean, maximum, standard deviation, and 95% value at risk
+levels.
 }

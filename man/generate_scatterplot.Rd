@@ -15,7 +15,10 @@ generate_scatterplot(simulation_results, scenario_id)
 A ggplot object.
 }
 \description{
-Display a scatterplot for a particular scenario ID
+Given a detailed results dataframe and a specific scenario identifier,
+create a scatterplot of the number of loss events versus the annual loss
+expected. This provides a detailed view on the results for a particular
+scenario.
 }
 \examples{
 data(simulation_results)

@@ -10,7 +10,7 @@ summarize_scenarios(simulation_results)
 \item{simulation_results}{Simulation results dataframe.}
 }
 \value{
-A dataframe.
+Dataframe.
 }
 \description{
 Given a dataframe of raw results from \code{run_simulations}, summarize

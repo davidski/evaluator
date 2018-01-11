@@ -17,7 +17,7 @@
 #' @import dplyr
 #' @param simulation_results Simulation results dataframe.
 #' @export
-#' @return A dataframe.
+#' @return Dataframe.
 #' @examples
 #' data(simulation_results)
 #' summarize_scenarios(simulation_results)
@@ -52,8 +52,18 @@ summarize_scenarios <- function(simulation_results) {
 
 #' Create domain-level summary of simulation results
 #'
-#' Rolls up simulation results to the domain level by summing ALE across all
-#' scenarios at a domain level (per simulation).
+#' Given a dataframe of raw results from \code{run_simulations}, summarize
+#' the individual results at a per-domain level. This domain-level summary
+#' is a useful data structure for aggregate reporting.
+#'
+#' Summary stats created include:
+#' * Mean/Min/Max/Median are calculated for loss events
+#' * Median/Max/VaR are calculated for annual loss expected (ALE)
+#' * Mean/Median/Max/Min are calculated for single loss expected (SLE)
+#' * Mean percentage of theat capability exceeding difficulty on succesfull threat events
+#' * Mean percentage of difficulty exceeding threat capability on defended events
+#' * Vulnerability percentage
+#' * Z-score of ALE (outliers flagged as 2 >= z-score)
 #'
 #' @import dplyr
 #' @param simulation_results Simulation results dataframe.
@@ -66,14 +76,14 @@ summarize_scenarios <- function(simulation_results) {
 #' summarize_domains(simulation_results, domains)
 summarize_domains <- function(simulation_results, domains) {
   simulation_results %>% group_by_("domain_id", "simulation") %>%
-    dplyr::summarise_(ale = ~ sum(ale)) %>%
+    dplyr::summarize_(ale = ~ sum(ale)) %>%
     dplyr::left_join(domains, by = c("domain_id" = "domain_id")) %>%
     dplyr::select_("domain_id", "domain", "simulation", "ale", ~ everything())
 }
 
 #' Create all summary files and write to disk
 #'
-#' This is a wrapper function around \code{summarize_scenarios} and
+#' This is a wrapper around \code{summarize_scenarios} and
 #' \code{summarize_domains}, calling both functions and writing the dataframes
 #' to a location on disk.
 #'

@@ -7,17 +7,18 @@
 derive_controls(capability_ids, capabilities, mappings)
 }
 \arguments{
-\item{capability_ids}{Comma delimited list of capabilities in scope for a scenario.}
+\item{capability_ids}{Comma-delimited list of capabilities in scope for a scenario.}
 
 \item{capabilities}{Dataframe of master list of all qualitative capabilities.}
 
 \item{mappings}{Qualitative mappings dataframe.}
 }
 \value{
-A dataframe of quantitative estimate parameters for the capabilities applicable to a given scenario.
+A dataframe of quantitative estimate parameters for the capabilities
+applicable to a given scenario.
 }
 \description{
-Given a comma separated list of control IDs in a scenario, identify
+Given a comma-separated list of control IDs in a scenario, identify
 the qualitative rankings associated with each scenario, convert to
 their quantitative parameters, and return a dataframe of the set of
 parameters.

@@ -17,7 +17,7 @@ get_base_fontfamily <- function() {
 
 #' Default ggplot theme used by all Evaluator-supplied graphics
 #'
-#' This is the base theme used by all supplied graphics.
+#' Returns a standardized ggplot theme used by all built-in Evaluator plots.
 #'
 #' @importFrom ggplot2 theme_minimal theme %+replace% element_text element_blank
 #' @param base_family Font family.
@@ -30,6 +30,10 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 }
 
 #' Display a heatmap of impact by domain
+#'
+#' Given a domain_summary and a list of all domains, generate a heatmap colored
+#' by the 95% VaR. This plot displays the domains in which aggregreate risk is
+#' greater than others.
 #'
 #' @importFrom dplyr arrange_ mutate_
 #' @import ggplot2
@@ -60,6 +64,11 @@ generate_heatmap <- function(domain_impact) {
 }
 
 #' Display a scatterplot for a particular scenario ID
+#'
+#' Given a detailed results dataframe and a specific scenario identifier,
+#' create a scatterplot of the number of loss events versus the annual loss
+#' expected. This provides a detailed view on the results for a particular
+#' scenario.
 #'
 #' @import ggplot2
 #' @importFrom scales comma

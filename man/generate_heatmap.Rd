@@ -13,7 +13,9 @@ generate_heatmap(domain_impact)
 A ggplot object.
 }
 \description{
-Display a heatmap of impact by domain
+Given a domain_summary and a list of all domains, generate a heatmap colored
+by the 95% VaR. This plot displays the domains in which aggregreate risk is
+greater than others.
 }
 \examples{
 dat <- calculate_domain_impact(domain_summary, domains)

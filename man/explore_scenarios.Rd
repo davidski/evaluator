@@ -18,9 +18,12 @@ explore_scenarios(input_directory = "~/data",
 Invisible NULL.
 }
 \description{
-Evaluator provides a simple Shiny web application for interactive
-exploration of simulation results. This allows a user to get an overview
-of simluation output without generating an extensive report.
+Evaluator provides a simple Shiny-based web application for interactive
+exploration of simulation results. This allows a user to interactively
+review simluation output without generating an extensive report. For users
+comfortable with R, working directly with the result dataframes will usually
+be preferable, with the Explorer application provided as a bare-bones data
+exploration tool.
 }
 \examples{
 \dontrun{

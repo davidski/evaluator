@@ -38,7 +38,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   }
 
   # Verify there are no duplicate scenarios
-  scenarios %>% dplyr::group_by_("scenario_id") %>% dplyr::tally %>%
+  scenarios %>% dplyr::group_by_("scenario_id") %>% dplyr::tally() %>%
     dplyr::filter_(~ n > 1) %>%
     dplyr::left_join(scenarios, by = c("scenario_id" = "scenario_id")) %>%
     dplyr::rename_(times_duplicated = "n") ->
@@ -74,7 +74,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   }
 
   # Verify there are no duplicate controls
-  capabilities %>% dplyr::group_by_("id") %>% dplyr::tally %>%
+  capabilities %>% dplyr::group_by_("id") %>% dplyr::tally() %>%
     dplyr::filter_(~ n > 1) %>%
     dplyr::left_join(capabilities, by = c("id" = "id")) %>%
     dplyr::rename_(times_duplicated = "n") -> duplicate_capabilities
@@ -119,7 +119,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
     dplyr::rowwise() %>%
     dplyr::mutate_("control_count" =
               ~ length(stringi::stri_split_fixed(controls, ", ", simplify = TRUE))) %>%
-    dplyr::ungroup
+    dplyr::ungroup()
 
   invisible(validated)
 }

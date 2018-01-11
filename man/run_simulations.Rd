@@ -18,5 +18,7 @@ run_simulations(scenario, simulation_count = 10000L,
 Dataframe of raw results.
 }
 \description{
-Run simulations for all scenarios
+Given a dataframe of quantitative scenarios, run an OpenFAIR Monte
+Carlo simulation for each scenario, returning a combined dataframe of all
+results.
 }

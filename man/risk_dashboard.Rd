@@ -5,12 +5,14 @@
 \title{Launch a single page summary risk dashboard}
 \usage{
 risk_dashboard(input_directory = "~/data", results_directory = "~/results",
-  ...)
+  output_file, ...)
 }
 \arguments{
 \item{input_directory}{Location of input files}
 
 \item{results_directory}{Location of simulation results}
+
+\item{output_file}{Full path to the desired output file.}
 
 \item{...}{Any other parameters to pass straight to \code{rmarkdown::render}}
 }
@@ -18,7 +20,10 @@ risk_dashboard(input_directory = "~/data", results_directory = "~/results",
 Default return values of the \code{rmarkdown::render} function.
 }
 \description{
-Launch a single page summary risk dashboard
+Given the input files and the analysis summary file, create a basic one-
+page summary with an overview of the results per domain and scenario.
+Intended as a skeleton showing how the results could be displayed at an
+executive level.
 }
 \examples{
 \dontrun{

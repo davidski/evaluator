@@ -12,7 +12,7 @@ calculate_weak_domains(simulation_results, domains)
 \item{domains}{Domain titles and IDs as a dataframe.}
 }
 \value{
-A dataframe.
+Dataframe.
 }
 \description{
 For each domain, calculate the total number of threat events, loss
