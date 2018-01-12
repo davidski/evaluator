@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Qualitatitve information security risk scenarios — qualitative_scenarios • evaluator</title>
+<title>Qualitative to Quantitative Mappings — mappings • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,30 +98,28 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Qualitatitve information security risk scenarios</h1>
+    <h1>Qualitative to Quantitative Mappings</h1>
     </div>
 
     
-    <p>A dataset of qualified information security risk scenarios.</p>
+    <p>A dataset of sample qualitative to quantitative mappings.</p>
     
 
-    <pre class="usage"><span class='no'>qualitative_scenarios</span></pre>
+    <pre class="usage"><span class='no'>mappings</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 56 rows and 8 columns.</p>
+    <p>An object of class <code>data.frame</code> with 14 rows and 6 columns.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <dl class='dl-horizontal'>
-<dt>scenario_id</dt><dd><p>id of the scenario, primary key</p></dd>
-<dt>scenario</dt><dd><p>full text description of the risk scenario</p></dd>
-<dt>tcomm</dt><dd><p>full text name of threat community</p></dd>
-<dt>tef</dt><dd><p>qualitative label of the frequency of threat events</p></dd>
-<dt>tc</dt><dd><p>qualitative label of the threat capability</p></dd>
-<dt>lm</dt><dd><p>qualitative label of the single loss magnitude</p></dd>
-<dt>domain_id</dt><dd><p>domain id to which the scenario applies</p></dd>
-<dt>controls</dt><dd><p>comma seperate string of the controls for the scenario</p></dd>
+<dt>type</dt><dd><p>OpenFAIR taxonomy to which this mapping applies</p></dd>
+<dt>label</dt><dd><p>Qualitative label</p></dd>
+<dt>l</dt><dd><p>BetaPERT low value</p></dd>
+<dt>ml</dt><dd><p>BetaPERT most likely value</p></dd>
+<dt>h</dt><dd><p>BetaPERT high value</p></dd>
+<dt>conf</dt><dd><p>BetaPERT confidence value</p></dd>
 </dl>
     
 

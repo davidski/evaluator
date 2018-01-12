@@ -12,7 +12,7 @@ split_sheet(dat, table_type = "capabilities")
 \item{table_type}{Either \code{capabilities} or \code{threats}}
 }
 \value{
-Extracted table as a data_Frame
+Extracted table as a dataframe
 }
 \description{
 Split a sheet of the survey spreadsheet into capabilities or threats

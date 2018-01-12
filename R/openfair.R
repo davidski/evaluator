@@ -151,6 +151,8 @@ get_mean_control_strength <- function(n, diff_estimates)  {
 #' @param vuln Vulnerability (percentage).
 #' @return List containing samples (as a vector) and details (as a list).
 #' @export
+#' @examples
+#' compare_tef_vuln(tef = 500, vuln = .25)
 compare_tef_vuln <- function(tef, vuln) {
   samples = tef * vuln
   list(samples = samples,
@@ -167,6 +169,10 @@ compare_tef_vuln <- function(tef, vuln) {
 #' @param diff Difficulty (as a percentage).
 #' @return List containing boolean values of length TC (as a vector) and details (as a list).
 #' @export
+#' @examples
+#' threat_capabilities <- c(.1, .5, .9)
+#' difficulties <- c(.09, .6, .8)
+#' select_loss_opportunities(threat_capabilities, difficulties)
 select_loss_opportunities <- function(tc, diff) {
   samples <-  tc > diff
 

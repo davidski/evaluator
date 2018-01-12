@@ -27,3 +27,7 @@ Given an input of:
 \details{
 Create a unified dataframe of quantitative scenarios ready for simulation.
 }
+\examples{
+data(qualitative_scenarios, capabilities, mappings)
+encode_scenarios(qualitative_scenarios, capabilities, mappings)
+}

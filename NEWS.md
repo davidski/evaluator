@@ -1,8 +1,12 @@
 # evaluator 0.1.1.900 (unreleased)
 
+## New Functionality
+* New sample dataset: `mappings` contains sample qualitative to quantitative 
+  parameters.
 * risk_dashboard now expects a mandatory output parameter to the desired rendered 
   output
 * Improved help documentation on many functions
+* New `pkgdown` generated web documentation at http://evaluator.severski.net
 * Update of usage vignette
 * Refactored `generate_report` function
     * Now accepts `format` parameter to specify HTML, PDF, or Word
@@ -12,13 +16,8 @@
     around the temporary file deletion issue specified in 
     https://github.com/rstudio/rmarkdown/issues/1184. Use
     `devtools::install_github("rstudio/rmarkdown", "b84f706")` or greater.
-* Auto loads `extrafont` database for better font detection
-    * Falls back to standard `sans` family when none of the preferred options 
-      are available
 * Expose OpenFAIR model selection in `run_simulation` call
     * Provide default TEF/TC/DIFF/LM OpenFAIR model
-* Drop use of tcltk progress bar in favor of console-compatible 
-    dplyr::progress_estimated. Also enables reduced package dependencies.
 * New OpenFAIR primitives:
     * sample_tef
     * sample_lm
@@ -30,6 +29,13 @@
     * select_loss_opportunities
 * New difficulty composition functions:
     * get_mean_control_strength
+    
+## Bug Fixes
+* Auto loads `extrafont` database for better font detection
+    * Falls back to standard `sans` family when none of the preferred options 
+      are available
+* Drop use of `tcltk` progress bar in favor of console-compatible 
+    `dplyr::progress_estimated`. Also enables reduced package dependencies.
 * Tests and code coverage reporting added
 * Removed dependency on `purrrlyr`
 

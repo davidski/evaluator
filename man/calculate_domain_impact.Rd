@@ -20,3 +20,8 @@ create a summarization of the annual loss expected (ALE) with descriptors
 at the minimum, mean, maximum, standard deviation, and 95% value at risk
 levels.
 }
+\examples{
+data(domain_summary)
+data(domains)
+calculate_domain_impact(domain_summary, domains)
+}

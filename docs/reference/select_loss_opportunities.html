@@ -70,19 +70,10 @@
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/usage.html">Geting Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/usage.html">Evaluator Workflow</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -136,6 +127,20 @@ difficulty (DIFF).</p>
     <p>List containing boolean values of length TC (as a vector) and details (as a list).</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>threat_capabilities</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>.1</span>, <span class='fl'>.5</span>, <span class='fl'>.9</span>)
+<span class='no'>difficulties</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>.09</span>, <span class='fl'>.6</span>, <span class='fl'>.8</span>)
+<span class='fu'>select_loss_opportunities</span>(<span class='no'>threat_capabilities</span>, <span class='no'>difficulties</span>)</div><div class='output co'>#&gt; $samples
+#&gt; [1]  TRUE FALSE  TRUE
+#&gt; 
+#&gt; $details
+#&gt; $details$mean_tc_exceedance
+#&gt; [1] 0.055
+#&gt; 
+#&gt; $details$mean_diff_exceedance
+#&gt; [1] 0.1
+#&gt; 
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -143,7 +148,9 @@ difficulty (DIFF).</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

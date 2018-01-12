@@ -24,13 +24,9 @@ their quantitative parameters, and return a dataframe of the set of
 parameters.
 }
 \examples{
-\dontrun{
+data(capabilities)
 capability_ids <- c("1, 3")
-capabilities <- data.frame(type = c("tef", "lm"),
-                                   label = c("rare", "frequent"),
-                                   stringsAsFactors = FALSE)
 mappings <- data.frame(type = "diff", label = "1 - Immature", l = 0, ml = 2, h = 10,
                        conf = 3, stringsAsFactors = FALSE)
-derive_controls(labels, capabilities, mappings)
-}
+derive_controls(capability_ids, capabilities, mappings)
 }

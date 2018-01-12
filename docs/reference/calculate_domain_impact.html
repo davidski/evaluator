@@ -70,19 +70,10 @@
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/usage.html">Geting Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/usage.html">Evaluator Workflow</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -137,6 +128,26 @@ levels.</p>
     <p>Dataframe.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>domain_summary</span>)
+<span class='fu'>data</span>(<span class='no'>domains</span>)
+<span class='fu'>calculate_domain_impact</span>(<span class='no'>domain_summary</span>, <span class='no'>domains</span>)</div><div class='output co'>#&gt; # A tibble: 14 x 7
+#&gt;    domain_id     min    mean     max      sd     var domain                    
+#&gt;    &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                     
+#&gt;  1 IM        1513809 4465097 9367780 1302761 6691612 Information Security Inci…
+#&gt;  2 COMP       743762 2598394 6145570  869087 4077983 Compliance (COMP)         
+#&gt;  3 ISMP       663743 2474047 5468451  807195 3963943 Information Security Mana…
+#&gt;  4 ORG        280905 1907368 5326646  758155 3237394 Organization of Informati…
+#&gt;  5 PHY             0  165788 3898004  654598 2014140 Physical and Environmenta…
+#&gt;  6 HR          44730  622980 1855731  275654 1120515 Human Resources Security …
+#&gt;  7 AC          15054  599813 1450198  266695 1083095 Access Control (AC)       
+#&gt;  8 OPS         43936  251152 1151143  148927  533819 Communications and Operat…
+#&gt;  9 PRI             0  159156  786643  147745  436371 Privacy Practices (PRI)   
+#&gt; 10 ASSET        1138   27463  321407   32002   58655 Asset Management (ASSET)  
+#&gt; 11 RISK            0    5762  321986   30204   15102 Risk Management (RISK)    
+#&gt; 12 ADM             0    4741  304163   27386       0 Information Systems Acqui…
+#&gt; 13 BC              0  102050 4091811  508817       0 Business Continuity Manag…
+#&gt; 14 POL             0     169    8246     937       0 Security Policy (POL)     </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -144,7 +155,9 @@ levels.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

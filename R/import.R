@@ -98,6 +98,9 @@ import_scenarios <- function(survey_file = system.file("survey",
 #' @param domains Dataframe of domains and domain IDs.
 #' @export
 #' @return Extracted capabilities as a dataframe.
+#' @examples
+#' data(domains)
+#' import_capabilities(domains = domains)
 import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx", package = "evaluator"),
                                domains){
 
@@ -124,7 +127,7 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
 #' @importFrom dplyr %>% select
 #' @param dat Raw sheet input from \code{readxl}.
 #' @param table_type Either \code{capabilities} or \code{threats}
-#' @return Extracted table as a data_Frame
+#' @return Extracted table as a dataframe
 split_sheet <- function(dat, table_type = "capabilities") {
   # remote all NA rows
   dat <- dat[!!rowSums(!is.na(dat) != 0 ), ]

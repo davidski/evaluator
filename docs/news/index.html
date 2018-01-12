@@ -70,19 +70,10 @@
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/usage.html">Geting Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/usage.html">Evaluator Workflow</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -115,9 +106,15 @@
     <div id="evaluator-0-1-1-900-unreleased" class="section level1">
 <h1 class="hasAnchor">
 <a href="#evaluator-0-1-1-900-unreleased" class="anchor"></a>evaluator 0.1.1.900 (unreleased)</h1>
+<div id="new-functionality" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functionality" class="anchor"></a>New Functionality</h2>
 <ul>
+<li>New sample dataset: <code>mappings</code> contains sample qualitative to quantitative parameters.</li>
 <li>risk_dashboard now expects a mandatory output parameter to the desired rendered output</li>
 <li>Improved help documentation on many functions</li>
+<li>New <code>pkgdown</code> generated web documentation at <a href="http://evaluator.severski.net" class="uri">http://evaluator.severski.net</a>
+</li>
 <li>Update of usage vignette</li>
 <li>Refactored <code>generate_report</code> function
 <ul>
@@ -126,17 +123,11 @@
 <li>RMarkdown 1.8.2 or greater (currently GitHub only) required to work around the temporary file deletion issue specified in <a href="https://github.com/rstudio/rmarkdown/issues/1184" class="uri">https://github.com/rstudio/rmarkdown/issues/1184</a>. Use <code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">devtools::install_github("rstudio/rmarkdown", "b84f706")</a></code> or greater.</li>
 </ul>
 </li>
-<li>Auto loads <code>extrafont</code> database for better font detection
-<ul>
-<li>Falls back to standard <code>sans</code> family when none of the preferred options are available</li>
-</ul>
-</li>
 <li>Expose OpenFAIR model selection in <code>run_simulation</code> call
 <ul>
 <li>Provide default TEF/TC/DIFF/LM OpenFAIR model</li>
 </ul>
 </li>
-<li>Drop use of tcltk progress bar in favor of console-compatible dplyr::progress_estimated. Also enables reduced package dependencies.</li>
 <li>New OpenFAIR primitives:
 <ul>
 <li>sample_tef</li>
@@ -157,10 +148,23 @@
 <li>get_mean_control_strength</li>
 </ul>
 </li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
+<ul>
+<li>Auto loads <code>extrafont</code> database for better font detection
+<ul>
+<li>Falls back to standard <code>sans</code> family when none of the preferred options are available</li>
+</ul>
+</li>
+<li>Drop use of <code>tcltk</code> progress bar in favor of console-compatible <code><a href="http://dplyr.tidyverse.org/reference/progress_estimated.html">dplyr::progress_estimated</a></code>. Also enables reduced package dependencies.</li>
 <li>Tests and code coverage reporting added</li>
 <li>Removed dependency on <code>purrrlyr</code>
 </li>
 </ul>
+</div>
 </div>
     <div id="evaluator-0-1-1" class="section level1">
 <h1 class="hasAnchor">

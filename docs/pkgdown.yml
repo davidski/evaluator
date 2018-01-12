@@ -1,0 +1,6 @@
+urls:
+  reference: http://evaluator.severski.net/reference
+  article: http://evaluator.severski.net/articles
+articles:
+  usage: usage.html
+

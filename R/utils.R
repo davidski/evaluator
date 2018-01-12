@@ -25,6 +25,10 @@ dollar_millions <- function(x) {
 #' @param domains Domain titles and IDs as a dataframe.
 #' @return Dataframe.
 #' @export
+#' @examples
+#' data(simulation_results)
+#' data(domains)
+#' calculate_weak_domains(simulation_results, domains)
 calculate_weak_domains <- function(simulation_results, domains) {
   control_weakness <- simulation_results %>% dplyr::group_by_("domain_id") %>%
     dplyr::summarize_(loss_events = ~ sum(loss_events), threat_events = ~ sum(threat_events)) %>%
@@ -64,6 +68,10 @@ calculate_weak_domains <- function(simulation_results, domains) {
 #' @param domains Dataframe of all domains in scope.
 #' @return Dataframe.
 #' @export
+#' @examples
+#' data(domain_summary)
+#' data(domains)
+#' calculate_domain_impact(domain_summary, domains)
 calculate_domain_impact <- function(domain_summary, domains) {
   domain_summary %>% dplyr::group_by_(~domain_id) %>%
     dplyr::select_("domain_id", "ale") %>%
@@ -74,17 +82,20 @@ calculate_domain_impact <- function(domain_summary, domains) {
     dplyr::mutate_(domain = quote(paste0(domain, " (", domain_id, ")")))
 }
 
-#' Calculate maximum losses with and without outliers
+#' Calculate maximum losses
 #'
 #' Calculate the biggest single annual loss for each scenario, as well as
-#' the minimum and maxium ALE across all simulations. Calculation both
+#' the minimum and maxium ALE across all simulations. Calculations both
 #' with and without outliers (if passed) are returned.
 #'
 #' @importFrom dplyr filter_ group_by_ summarize_ ungroup union
 #' @param simulation_results Simulation results dataframe.
-#' @param scenario_outliers Optionnal vector of IDs of outlier scenarios.
+#' @param scenario_outliers Optional vector of IDs of outlier scenarios.
 #' @return Dataframe.
 #' @export
+#' @examples
+#' data(simulation_results)
+#' calculate_max_losses(simulation_results)
 calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
   max_loss <- simulation_results %>%
     dplyr::filter_(~ !scenario_id %in% scenario_outliers) %>%
@@ -95,7 +106,8 @@ calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
     dplyr::ungroup()
   max_loss_w_outliers <- simulation_results %>%
     dplyr::group_by_("simulation") %>%
-    dplyr::summarise_(biggest_single_scenario_loss = ~ max(ale), min_loss = ~ min(ale),
+    dplyr::summarize_(biggest_single_scenario_loss = ~ max(ale),
+                      min_loss = ~ min(ale),
                       max_loss = ~ sum(ale), outliers = TRUE) %>%
     dplyr::ungroup()
   dplyr::union(max_loss, max_loss_w_outliers)

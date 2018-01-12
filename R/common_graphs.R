@@ -6,6 +6,8 @@
 #' @importFrom extrafont choose_font
 #' @return String of the preferred base font
 #' @export
+#' @examples
+#' get_base_fontfamily()
 get_base_fontfamily <- function() {
   dat <- extrafont::choose_font(c("BentonSansRE", "Arial Narrow"))
   if (dat == "") {
@@ -23,6 +25,11 @@ get_base_fontfamily <- function() {
 #' @param base_family Font family.
 #' @return A ggplot theme object.
 #' @export
+#' @examples
+#' library(ggplot2)
+#' p <- ggplot(mtcars) + geom_point(aes(wt, mpg, color = factor(gear))) + facet_wrap(~am)
+#' font_family <- get_base_fontfamily()
+#' p + theme_evaluator(font_family)
 theme_evaluator <- function(base_family = "BentonSansRE") {
   theme_minimal(base_family = base_family) %+replace%
     theme(panel.border = element_blank(), legend.position = "bottom",

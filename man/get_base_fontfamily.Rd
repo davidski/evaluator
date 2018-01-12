@@ -13,3 +13,6 @@ String of the preferred base font
 The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
 If neither font is available, use a default \code{sans} family font.
 }
+\examples{
+get_base_fontfamily()
+}

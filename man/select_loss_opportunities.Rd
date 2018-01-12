@@ -19,3 +19,8 @@ Composition function for use in sample_vuln, does a simple compare of
 all threat events where the threat capability (TC) is greater than the
 difficulty (DIFF).
 }
+\examples{
+threat_capabilities <- c(.1, .5, .9)
+difficulties <- c(.09, .6, .8)
+select_loss_opportunities(threat_capabilities, difficulties)
+}

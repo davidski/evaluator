@@ -70,19 +70,10 @@
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/usage.html">Geting Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/usage.html">Evaluator Workflow</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -146,6 +137,23 @@
     <p>Create a unified dataframe of quantitative scenarios ready for simulation.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>qualitative_scenarios</span>, <span class='no'>capabilities</span>, <span class='no'>mappings</span>)
+<span class='fu'>encode_scenarios</span>(<span class='no'>qualitative_scenarios</span>, <span class='no'>capabilities</span>, <span class='no'>mappings</span>)</div><div class='output co'>#&gt; # A tibble: 56 x 18
+#&gt;    scena… scenario tcomm doma… cont… diff… tef_l tef_ml tef_h tef_…  tc_l tc_ml
+#&gt;     &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lis&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+#&gt;  1      1 Inadequ… Orga… ORG   1, 5… &lt;tib…    10 24.0      52     4    33  50.0
+#&gt;  2      2 Budget … Orga… ORG   1, 5… &lt;tib…    10 24.0      52     4    33  50.0
+#&gt;  3      3 Competi… Orga… ORG   1, 5… &lt;tib…     1  6.00     12     4    33  50.0
+#&gt;  4      4 Increas… Orga… ORG   1, 3… &lt;tib…     1  6.00     12     4    33  50.0
+#&gt;  5      5 The inf… Orga… ORG   1, 7… &lt;tib…     1  6.00     12     4    33  50.0
+#&gt;  6      6 Inconsi… Orga… POL   9, 1… &lt;tib…    10 24.0      52     4     0  16.0
+#&gt;  7      7 Misuse … Orga… POL   9, 1… &lt;tib…     1  6.00     12     4     0  16.0
+#&gt;  8      8 Noncomp… Orga… POL   9, 1… &lt;tib…     0  0.100     1     4    33  50.0
+#&gt;  9      9 New or … Exte… COMP  8, 13 &lt;tib…     1  6.00     12     4     0  16.0
+#&gt; 10     10 Interna… Orga… COMP  8, 13 &lt;tib…    10 24.0      52     4    33  50.0
+#&gt; # ... with 46 more rows, and 6 more variables: tc_h &lt;int&gt;, tc_conf &lt;int&gt;, lm_l
+#&gt; #   &lt;int&gt;, lm_ml &lt;dbl&gt;, lm_h &lt;int&gt;, lm_conf &lt;int&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -155,7 +163,9 @@
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

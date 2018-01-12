@@ -1,43 +1,56 @@
+url: http://evaluator.severski.net
+
 template:
   params:
     bootswatch: flatly
     ganalytics: UA-87348339-3
 
+navbar:
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Geting Started"
+      href: articles/usage.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+
 reference:
   - title: Modelling Functions
     desc: OpenFAIR modelling components
     contents:
-      - starts_with("sample")
-      - get_mean_control_strength
-      - select_loss_opportunities
       - compare_tef_vuln
+      - get_mean_control_strength
+      - openfair_tef_tc_diff_lm
+      - starts_with("sample")
+      - select_loss_opportunities
   - title: Sample Data Sets
-    desc: Default data sets for demonstrations
+    desc: Default demonstration data sets
     contents: 
       - capabilities
       - domains
+      - domain_summary
+      - mappings
       - qualitative_scenarios
       - quantitative_scenarios
-      - domain_summary
-      - scenario_summary
       - scenario_summary
       - simulation_results
   - title: All Other Functions
-    desc: ~
     contents:
-      - -get_mean_control_strength
-      - -starts_with("sample")
       - starts_with("calculate")
       - derive_controls
       - dollar_millions
       - encode_scenarios
       - explore_scenarios
       - starts_with("generate")
+      - get_base_fontfamily
       - starts_with("import")
       - load_data
       - openfair_example
       - risk_dashboard
       - run_simulations
+      - split_sheet
       - starts_with("summarize")
       - theme_evaluator
       - validate_scenarios

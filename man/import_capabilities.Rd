@@ -18,3 +18,7 @@ Extracted capabilities as a dataframe.
 \description{
 Import capabilities from survey spreadsheet
 }
+\examples{
+data(domains)
+import_capabilities(domains = domains)
+}

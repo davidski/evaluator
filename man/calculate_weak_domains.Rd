@@ -19,3 +19,8 @@ For each domain, calculate the total number of threat events, loss
 events, percentage of vulnerability, mean threat capability exceedance,
 and mean difficult exceedance.
 }
+\examples{
+data(simulation_results)
+data(domains)
+calculate_weak_domains(simulation_results, domains)
+}

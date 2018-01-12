@@ -19,3 +19,6 @@ Composition function for use in sample_lef. Given a count of the
 number of threat events (tef) and the level of vulnerability (as a
 percentage), calculate how many of those become loss events (lef).
 }
+\examples{
+compare_tef_vuln(tef = 500, vuln = .25)
+}

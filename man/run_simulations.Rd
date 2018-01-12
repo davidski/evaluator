@@ -22,3 +22,8 @@ Given a dataframe of quantitative scenarios, run an OpenFAIR Monte
 Carlo simulation for each scenario, returning a combined dataframe of all
 results.
 }
+\examples{
+data(quantitative_scenarios)
+# run a single scenario in a trivial number (10) of trials
+run_simulations(quantitative_scenarios[1, ], 10)
+}

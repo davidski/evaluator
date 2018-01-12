@@ -13,6 +13,10 @@
 #' @param simulation_count Number of simulations for each scenario.
 #' @export
 #' @return Dataframe of raw results.
+#' @examples
+#' data(quantitative_scenarios)
+#' # run a single scenario in a trivial number (10) of trials
+#' run_simulations(quantitative_scenarios[1, ], 10)
 run_simulations <- function(scenario, simulation_count = 10000L,
                             model = "openfair_tef_tc_diff_lm") {
 

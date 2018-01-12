@@ -10,6 +10,20 @@
 #' }
 "capabilities"
 
+#' Qualitative to Quantitative Mappings
+#'
+#' A dataset of sample qualitative to quantitative mappings.
+#'
+#' \describe{
+#'   \item{type}{OpenFAIR taxonomy to which this mapping applies}
+#'   \item{label}{Qualitative label}
+#'   \item{l}{BetaPERT low value}
+#'   \item{ml}{BetaPERT most likely value}
+#'   \item{h}{BetaPERT high value}
+#'   \item{conf}{BetaPERT confidence value}
+#' }
+"mappings"
+
 #' Domain mappings
 #'
 #' A dataset of domains and domain IDs.

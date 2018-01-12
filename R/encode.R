@@ -14,7 +14,9 @@
 #' @param mappings Qualitative to quantitative mapping dataframe.
 #' @export
 #' @return A dataframe of capabilities for the scenario and parameters for quantified simulation.
-#'
+#' @examples
+#' data(qualitative_scenarios, capabilities, mappings)
+#' encode_scenarios(qualitative_scenarios, capabilities, mappings)
 encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch DIFF params
   scenarios$diff_params <- purrr::map(scenarios$controls,
@@ -51,7 +53,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' their quantitative parameters, and return a dataframe of the set of
 #' parameters.
 #'
-#' @importFrom dplyr left_join mutate_ select
+#' @importFrom dplyr left_join mutate_ select rename
 #' @importFrom stringi stri_split_fixed
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
 #' @param capabilities Dataframe of master list of all qualitative capabilities.
@@ -60,20 +62,16 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #'   applicable to a given scenario.
 #' @export
 #' @examples
-#' \dontrun{
+#' data(capabilities)
 #' capability_ids <- c("1, 3")
-#' capabilities <- data.frame(type = c("tef", "lm"),
-#'                                    label = c("rare", "frequent"),
-#'                                    stringsAsFactors = FALSE)
 #' mappings <- data.frame(type = "diff", label = "1 - Immature", l = 0, ml = 2, h = 10,
 #'                        conf = 3, stringsAsFactors = FALSE)
-#' derive_controls(labels, capabilities, mappings)
-#' }
+#' derive_controls(capability_ids, capabilities, mappings)
 derive_controls <- function(capability_ids, capabilities, mappings) {
   control_list <- stringi::stri_split_fixed(capability_ids, ", ") %>% unlist()
 
   control_list <- capabilities[capabilities$id %in% as.numeric(control_list), ] %>%
-    rename(control_id = id)
+    dplyr::rename(control_id = id)
 
   # Find the qualitative rating for each control ID, then lookup it's
   # distribution parameters from the mappings table
