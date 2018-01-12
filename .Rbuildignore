@@ -9,3 +9,5 @@ cran-comments.md
 ^appveyor\.yml$
 ^codecov\.yml$
 ^data-raw$
+^docs$
+^_pkgdown\.yml$
