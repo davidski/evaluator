@@ -91,7 +91,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   # TEF
   if (!all((tolower(distinct_(scenarios, "tef")$tef) %in% filter_(mappings, ~ type=="tef")$label))) {
     stop_message <- paste(stop_message,
-                          "There are qualitatitve TEF values in the scenarios which are not found in the mappings", sep = "\n")
+                          "There are qualitative TEF values in the scenarios which are not found in the mappings", sep = "\n")
   }
   # TC
   if (!all((tolower(distinct_(scenarios, "tc")$tc) %in% filter_(mappings, ~ type=="tc")$label))) {
@@ -101,7 +101,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   # DIFF
   if (!all((tolower(distinct_(capabilities, "diff")$diff) %in% tolower(filter_(mappings, ~ type=="diff")$label)))) {
     stop_message <- paste(stop_message,
-                          "There are qualitative DIFF values in the scenarios which are not found in the mappings", sep = "\n")
+                          "There are qualitative DIFF values in the capabilities which are not found in the mappings", sep = "\n")
   }
   # LM
   if (!all((tolower(distinct_(scenarios, "lm")$lm) %in% filter_(mappings, ~ type=="lm")$label))) {

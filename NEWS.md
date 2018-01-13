@@ -37,6 +37,7 @@
 * Drop use of `tcltk` progress bar in favor of console-compatible 
     `dplyr::progress_estimated`. Also enables reduced package dependencies.
 * Tests and code coverage reporting added
+    * Improve faulty `capabilities` validation
 * Removed dependency on `purrrlyr`
 
 # evaluator 0.1.1
