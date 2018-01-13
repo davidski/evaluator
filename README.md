@@ -9,7 +9,7 @@
 Evaluator <img alt="Evaluator Logo" title="Evaluator" align="right" src="inst/rmd/img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
 ========================================================================================================================================================
 
-[![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator) [![Coverage Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)](https://codecov.io/github/davidski/evaluator?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator) ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/evaluator)
+[![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator) [![Coverage Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)](https://codecov.io/github/davidski/evaluator?branch=master) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator) ![downloads](https://cranlogs.r-pkg.org/badges/grand-total/evaluator)
 
 Overview
 --------
@@ -18,8 +18,8 @@ Evaluator is an open source quantitative risk analysis toolkit. Based on the Ope
 
 Three sample outputs of this toolkit are available:
 
-1.  A detailed risk analysis template, located at [RPubs](http://rpubs.com/davidski/evaluator_risk_analysis)
-2.  A one page risk dashboard, also located at [RPubs](http://rpubs.com/davidski/evaluator_risk_dashboard)
+1.  A detailed risk analysis template, located at [RPubs](https://rpubs.com/davidski/evaluator_risk_analysis)
+2.  A one page risk dashboard, also located at [RPubs](https://rpubs.com/davidski/evaluator_risk_dashboard)
 3.  A demonstration copy of [Scenario Explorer](https://davidski.shinyapps.io/scenario_explorer)
 
 Installation
