@@ -39,6 +39,7 @@ Suggests:
   testthat,
   covr,
   mockery
+Remotes: rstudio/rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/davidski/evaluator
 BugReports: https://github.com/davidski/evaluator/issues
