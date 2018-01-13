@@ -7,7 +7,7 @@
 sample_vuln(func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate DIFF, defaults to \code{rbinom}.}
+\item{func}{Function to use to simulate DIFF, defaults to \code{\link[stats]{rbinom}}.}
 
 \item{params}{Optional parameters to pass to \code{func}.}
 }
@@ -16,4 +16,13 @@ List containing type ("vuln"), samples (as a vector), and details (as a list).
 }
 \description{
 Calculate the vulnerability
+}
+\seealso{
+Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
+  \code{\link{get_mean_control_strength}},
+  \code{\link{openfair_tef_tc_diff_lm}},
+  \code{\link{sample_diff}}, \code{\link{sample_lef}},
+  \code{\link{sample_lm}}, \code{\link{sample_tc}},
+  \code{\link{sample_tef}},
+  \code{\link{select_loss_opportunities}}
 }

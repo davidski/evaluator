@@ -1,8 +1,8 @@
 #' Import the scenario spreadsheet
 #'
-#' This is a wrapper function around [import_scenarios()] and
-#' [import_capabilities()], calling both functions and writing the dataframes
-#' to a location on disk.
+#' This is a wrapper function around \code{\link{import_scenarios}} and
+#' \code{\link{import_capabilities}}. When invoked, the output of both functions
+#' are written to disk.
 #'
 #' @importFrom dplyr %>%
 #' @importFrom readr write_csv
@@ -94,7 +94,7 @@ import_scenarios <- function(survey_file = system.file("survey",
 #' @importFrom dplyr mutate_ select_ arrange_
 #' @importFrom readxl read_excel
 #' @importFrom purrr map
-#' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
+#' @param survey_file Path to survey XLSX file. If not supplied, a default sample file is used.
 #' @param domains Dataframe of domains and domain IDs.
 #' @export
 #' @return Extracted capabilities as a dataframe.
@@ -125,7 +125,7 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
 #' Split a sheet of the survey spreadsheet into capabilities or threats
 #'
 #' @importFrom dplyr %>% select
-#' @param dat Raw sheet input from \code{readxl}.
+#' @param dat Raw sheet input from \code{link[readxl]{readxl}}.
 #' @param table_type Either \code{capabilities} or \code{threats}
 #' @return Extracted table as a dataframe
 split_sheet <- function(dat, table_type = "capabilities") {

@@ -8,7 +8,7 @@ parameters for that function}
 sample_diff(func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate DIFF, defaults to mc2d::rpert.}
+\item{func}{Function to use to simulate DIFF, defaults to \code{\link[mc2d]{rpert}}.}
 
 \item{params}{Optional parameters to pass to \code{func}.}
 }
@@ -18,4 +18,13 @@ List containing type ("diff"), samples (as a vector), and details (as a list).
 \description{
 Calculate the difficulty presented by controls, given a function and
 parameters for that function
+}
+\seealso{
+Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
+  \code{\link{get_mean_control_strength}},
+  \code{\link{openfair_tef_tc_diff_lm}},
+  \code{\link{sample_lef}}, \code{\link{sample_lm}},
+  \code{\link{sample_tc}}, \code{\link{sample_tef}},
+  \code{\link{sample_vuln}},
+  \code{\link{select_loss_opportunities}}
 }

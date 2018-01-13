@@ -7,7 +7,7 @@
 sample_tc(func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate TC, defaults to mc2d::rpert.}
+\item{func}{Function to use to simulate TC, defaults to \code{\link[mc2d]{rpert}}.}
 
 \item{params}{Optional parameters to pass to \code{func}.}
 }
@@ -16,4 +16,13 @@ List containing type ("tc"), samples (as a vector), and details (as a list).
 }
 \description{
 Sample threat capabilities (TC) from a distribution function
+}
+\seealso{
+Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
+  \code{\link{get_mean_control_strength}},
+  \code{\link{openfair_tef_tc_diff_lm}},
+  \code{\link{sample_diff}}, \code{\link{sample_lef}},
+  \code{\link{sample_lm}}, \code{\link{sample_tef}},
+  \code{\link{sample_vuln}},
+  \code{\link{select_loss_opportunities}}
 }

@@ -15,12 +15,20 @@ select_loss_opportunities(tc, diff)
 List containing boolean values of length TC (as a vector) and details (as a list).
 }
 \description{
-Composition function for use in sample_vuln, does a simple compare of
-all threat events where the threat capability (TC) is greater than the
-difficulty (DIFF).
+Composition function for use in \code{\link{sample_vuln}}, does a simple
+compare of all threat events where the threat capability (TC) is greater
+than the difficulty (DIFF).
 }
 \examples{
 threat_capabilities <- c(.1, .5, .9)
 difficulties <- c(.09, .6, .8)
 select_loss_opportunities(threat_capabilities, difficulties)
+}
+\seealso{
+Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
+  \code{\link{get_mean_control_strength}},
+  \code{\link{openfair_tef_tc_diff_lm}},
+  \code{\link{sample_diff}}, \code{\link{sample_lef}},
+  \code{\link{sample_lm}}, \code{\link{sample_tc}},
+  \code{\link{sample_tef}}, \code{\link{sample_vuln}}
 }

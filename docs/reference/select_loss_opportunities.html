@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Determine which threat events result in loss opportunities — select_loss_opportunities • evaluator</title>
+<title>Determine which threat events result in loss opportunities � select_loss_opportunities • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -102,9 +102,9 @@
     </div>
 
     
-    <p>Composition function for use in sample_vuln, does a simple compare of
-all threat events where the threat capability (TC) is greater than the
-difficulty (DIFF).</p>
+    <p>Composition function for use in <code><a href='sample_vuln.html'>sample_vuln</a></code>, does a simple
+compare of all threat events where the threat capability (TC) is greater
+than the difficulty (DIFF).</p>
     
 
     <pre class="usage"><span class='fu'>select_loss_opportunities</span>(<span class='no'>tc</span>, <span class='no'>diff</span>)</pre>
@@ -125,6 +125,15 @@ difficulty (DIFF).</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>List containing boolean values of length TC (as a vector) and details (as a list).</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other OpenFAIR helpers: <code><a href='compare_tef_vuln.html'>compare_tef_vuln</a></code>,
+  <code><a href='get_mean_control_strength.html'>get_mean_control_strength</a></code>,
+  <code><a href='openfair_tef_tc_diff_lm.html'>openfair_tef_tc_diff_lm</a></code>,
+  <code><a href='sample_diff.html'>sample_diff</a></code>, <code><a href='sample_lef.html'>sample_lef</a></code>,
+  <code><a href='sample_lm.html'>sample_lm</a></code>, <code><a href='sample_tc.html'>sample_tc</a></code>,
+  <code><a href='sample_tef.html'>sample_tef</a></code>, <code><a href='sample_vuln.html'>sample_vuln</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -148,6 +157,8 @@ difficulty (DIFF).</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -15,7 +15,7 @@ summarize_domains(simulation_results, domains)
 Simulation results summarized by domain
 }
 \description{
-Given a dataframe of raw results from \code{run_simulations}, summarize
+Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
 the individual results at a per-domain level. This domain-level summary
 is a useful data structure for aggregate reporting.
 }

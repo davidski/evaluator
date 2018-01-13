@@ -195,7 +195,7 @@ domain_summary &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 
 <span class="co"># define risk tolerances</span>
 risk_tolerances &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"risk_tolerances.csv"</span>, 
-                               <span class="dt">package=</span><span class="st">"evaluator"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>()
+                               <span class="dt">package=</span><span class="st">"evaluator"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">read_csv</span>()
 
 <span class="co"># Explorer</span>
 <span class="kw"><a href="../reference/explore_scenarios.html">explore_scenarios</a></span>(input_directory, results_directory)

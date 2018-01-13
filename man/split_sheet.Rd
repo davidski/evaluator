@@ -7,7 +7,7 @@
 split_sheet(dat, table_type = "capabilities")
 }
 \arguments{
-\item{dat}{Raw sheet input from \code{readxl}.}
+\item{dat}{Raw sheet input from \code{link[readxl]{readxl}}.}
 
 \item{table_type}{Either \code{capabilities} or \code{threats}}
 }

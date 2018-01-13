@@ -15,10 +15,18 @@ compare_tef_vuln(tef, vuln)
 List containing samples (as a vector) and details (as a list).
 }
 \description{
-Composition function for use in sample_lef. Given a count of the
-number of threat events (tef) and the level of vulnerability (as a
-percentage), calculate how many of those become loss events (lef).
+Composition function for use in \code{\link{sample_lef}}. Given a count of
+the number of threat events (TEF) and the level of vulnerability (as a
+percentage), calculate how many of those become loss events (LEF).
 }
 \examples{
 compare_tef_vuln(tef = 500, vuln = .25)
+}
+\seealso{
+Other OpenFAIR helpers: \code{\link{get_mean_control_strength}},
+  \code{\link{openfair_tef_tc_diff_lm}},
+  \code{\link{sample_diff}}, \code{\link{sample_lef}},
+  \code{\link{sample_lm}}, \code{\link{sample_tc}},
+  \code{\link{sample_tef}}, \code{\link{sample_vuln}},
+  \code{\link{select_loss_opportunities}}
 }

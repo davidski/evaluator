@@ -4,9 +4,10 @@
 #'
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
-#' @param func Function to use to simulate TEF, defaults to mc2d::rpert.
+#' @param func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
 #' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("tef"), samples (as a vector), and details (as a list).
+#' @family OpenFAIR helpers
 #' @export
 sample_tef <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
@@ -19,9 +20,10 @@ sample_tef <- function(func = NULL, params = NULL) {
 #'
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
-#' @param func Function to use to simulate TC, defaults to mc2d::rpert.
+#' @param func Function to use to simulate TC, defaults to \code{\link[mc2d]{rpert}}.
 #' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("tc"), samples (as a vector), and details (as a list).
+#' @family OpenFAIR helpers
 #' @export
 sample_tc <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
@@ -35,9 +37,10 @@ sample_tc <- function(func = NULL, params = NULL) {
 #'
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
-#' @param func Function to use to simulate DIFF, defaults to mc2d::rpert.
+#' @param func Function to use to simulate DIFF, defaults to \code{\link[mc2d]{rpert}}.
 #' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("diff"), samples (as a vector), and details (as a list).
+#' @family OpenFAIR helpers
 #' @export
 sample_diff <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
@@ -49,9 +52,10 @@ sample_diff <- function(func = NULL, params = NULL) {
 #' Calculate the vulnerability
 #'
 #' @importFrom purrr invoke is_list
-#' @param func Function to use to simulate DIFF, defaults to `rbinom`.
+#' @param func Function to use to simulate DIFF, defaults to \code{\link[stats]{rbinom}}.
 #' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("vuln"), samples (as a vector), and details (as a list).
+#' @family OpenFAIR helpers
 #' @export
 sample_vuln <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rbinom", asNamespace("stats"))
@@ -66,9 +70,10 @@ sample_vuln <- function(func = NULL, params = NULL) {
 #'
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
-#' @param func Function to use to simulate TEF, defaults to mc2d::rpert.
+#' @param func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
 #' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("lm"), samples (as a vector), and details (as a list).
+#' @family OpenFAIR helpers
 #' @export
 sample_lm <- function(func = NULL, params = NULL) {
 
@@ -95,9 +100,10 @@ sample_lm <- function(func = NULL, params = NULL) {
 #' Sample loss event frequency
 #'
 #' @importFrom purrr invoke is_list
-#' @param func Function to use to simulate LEF, defaults to `rnorm``
+#' @param func Function to use to simulate LEF, defaults to \code{\link[stats]{rnorm}}.
 #' @param params Optional parameters to pass to `func`
 #' @return List containing type ("diff"), samples (as a vector), and details (as a list).
+#' @family OpenFAIR helpers
 #' @export
 sample_lef <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rnorm", asNamespace("stats"))
@@ -118,8 +124,9 @@ sample_lef <- function(func = NULL, params = NULL) {
 #' @importFrom dplyr %>%
 #' @importFrom purrr pmap map transpose simplify_all map_dbl
 #' @param n Number of threat events to sample controls across.
-#' @param diff_estimates Parameters to pass to `sample_diff`.
+#' @param diff_estimates Parameters to pass to \code{\link{sample_diff}}.
 #' @return Vector of control effectiveness.
+#' @family OpenFAIR helpers
 #' @export
 get_mean_control_strength <- function(n, diff_estimates)  {
   # ensure control estimates are in the order we expect
@@ -143,14 +150,15 @@ get_mean_control_strength <- function(n, diff_estimates)  {
 
 #' Calculate number of loss events which occur in a simulated period
 #'
-#' Composition function for use in sample_lef. Given a count of the
-#' number of threat events (tef) and the level of vulnerability (as a
-#' percentage), calculate how many of those become loss events (lef).
+#' Composition function for use in \code{\link{sample_lef}}. Given a count of
+#' the number of threat events (TEF) and the level of vulnerability (as a
+#' percentage), calculate how many of those become loss events (LEF).
 #'
 #' @param tef Threat event frequency (n).
 #' @param vuln Vulnerability (percentage).
 #' @return List containing samples (as a vector) and details (as a list).
 #' @export
+#' @family OpenFAIR helpers
 #' @examples
 #' compare_tef_vuln(tef = 500, vuln = .25)
 compare_tef_vuln <- function(tef, vuln) {
@@ -161,14 +169,15 @@ compare_tef_vuln <- function(tef, vuln) {
 
 #' Determine which threat events result in loss opportunities
 #'
-#' Composition function for use in sample_vuln, does a simple compare of
-#' all threat events where the threat capability (TC) is greater than the
-#' difficulty (DIFF).
+#' Composition function for use in \code{\link{sample_vuln}}, does a simple
+#' compare of all threat events where the threat capability (TC) is greater
+#' than the difficulty (DIFF).
 #'
 #' @param tc Threat capability (as a percentage).
 #' @param diff Difficulty (as a percentage).
 #' @return List containing boolean values of length TC (as a vector) and details (as a list).
 #' @export
+#' @family OpenFAIR helpers
 #' @examples
 #' threat_capabilities <- c(.1, .5, .9)
 #' difficulties <- c(.09, .6, .8)
@@ -208,6 +217,7 @@ select_loss_opportunities <- function(tc, diff) {
 #' @param verbose Whether to print progress indicators.
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
 #'   mean TC and DIFF exceedance, and ALE samples.
+#' @family OpenFAIR helpers
 #' @export
 openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
                           title = "Untitled", verbose = FALSE) {
@@ -242,8 +252,6 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
 
     # DIFF - calculate the mean strength of controls for each threat event
     #        in a given period
-
-
 
     # get the difficulty for each threat event across all the simulated periods
     DIFFsamples <- purrr::map(1:n, function(x) {

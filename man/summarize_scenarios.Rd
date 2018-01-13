@@ -13,7 +13,7 @@ summarize_scenarios(simulation_results)
 Dataframe.
 }
 \description{
-Given a dataframe of raw results from \code{run_simulations}, summarize
+Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
 the individual results at a per-scenario level. This is generally the most
 granular level of data for reporting and analysis (full simulation results
 are rarely directly helpful).

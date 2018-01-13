@@ -29,3 +29,11 @@ LM sampling. If there are multiple controls provided for a scenarios, the
 arithmetic mean (average) is taken across samples for all controls to get
 the effective control strength for a given simulation.
 }
+\seealso{
+Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
+  \code{\link{get_mean_control_strength}},
+  \code{\link{sample_diff}}, \code{\link{sample_lef}},
+  \code{\link{sample_lm}}, \code{\link{sample_tc}},
+  \code{\link{sample_tef}}, \code{\link{sample_vuln}},
+  \code{\link{select_loss_opportunities}}
+}

@@ -1,6 +1,6 @@
 #' Create scenario-level summary of simulation results
 #'
-#' Given a dataframe of raw results from \code{run_simulations}, summarize
+#' Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
 #' the individual results at a per-scenario level. This is generally the most
 #' granular level of data for reporting and analysis (full simulation results
 #' are rarely directly helpful).
@@ -52,7 +52,7 @@ summarize_scenarios <- function(simulation_results) {
 
 #' Create domain-level summary of simulation results
 #'
-#' Given a dataframe of raw results from \code{run_simulations}, summarize
+#' Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
 #' the individual results at a per-domain level. This domain-level summary
 #' is a useful data structure for aggregate reporting.
 #'
@@ -83,9 +83,9 @@ summarize_domains <- function(simulation_results, domains) {
 
 #' Create all summary files and write to disk
 #'
-#' This is a wrapper around \code{summarize_scenarios} and
-#' \code{summarize_domains}, calling both functions and writing the dataframes
-#' to a location on disk.
+#' This is a wrapper around \code{\link{summarize_scenarios}} and
+#' \code{\link{summarize_domains}}, calling both functions and writing the
+#' dataframes to a location on disk.
 #'
 #' @importFrom dplyr "%>%"
 #' @importFrom tibble rownames_to_column as_tibble
