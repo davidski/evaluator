@@ -1,5 +1,5 @@
 Package: evaluator
-Title: Information Security Quantified Risk Assessment Toolkit
+Title: Quantified Risk Assessment Toolkit
 Version: 0.1.1.900
 Authors@R: person("David", "Severski", email = "davidski@deadheaven.com", role = c("aut", "cre"))
 Description: An open source risk analysis toolkit based on the OpenFAIR taxonomy 
@@ -41,5 +41,5 @@ Suggests:
   mockery
 Remotes: rstudio/rmarkdown
 VignetteBuilder: knitr
-URL: https://github.com/davidski/evaluator
+URL: https://evaluator.severski.net
 BugReports: https://github.com/davidski/evaluator/issues

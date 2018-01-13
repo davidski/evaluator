@@ -1,10 +1,4 @@
 
-<meta property="og:url" content="http://evaluator.severski.net"/>
-<meta property="og:title" content="Evaluator - Open Source Quantitative Risk Management"/>
-<meta property="og:description" content="Documentation for Evaluator - an R implementation of OpenFAIR implementation."/>
-<meta property="og:site_name" content="Evaluator"/>
-<meta property="og:image" content="/images/og/default.jpg"/>
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Evaluator <img alt="Evaluator Logo" title="Evaluator" align="right" src="inst/rmd/img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
 ========================================================================================================================================================

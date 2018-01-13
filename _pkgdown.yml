@@ -1,4 +1,4 @@
-url: http://evaluator.severski.net
+url: https://evaluator.severski.net
 
 template:
   params:
@@ -27,7 +27,7 @@ reference:
       - select_loss_opportunities
   - title: Sample Data Sets
     desc: Default demonstration data sets
-    contents: 
+    contents:
       - capabilities
       - domains
       - domain_summary

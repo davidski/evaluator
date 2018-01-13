@@ -11,6 +11,7 @@
 #' @param scenario Quantitative scenarios.
 #' @param model OpenFAIR model to use.
 #' @param simulation_count Number of simulations for each scenario.
+#' @param verbose Whether verbose console output is requested.
 #' @export
 #' @return Dataframe of raw results.
 #' @examples
@@ -18,7 +19,7 @@
 #' # run a single scenario in a trivial number (10) of trials
 #' run_simulations(quantitative_scenarios[1, ], 10)
 run_simulations <- function(scenario, simulation_count = 10000L,
-                            model = "openfair_tef_tc_diff_lm") {
+                            model = "openfair_tef_tc_diff_lm", verbose = FALSE) {
 
   #model <- rlang::sym(model) # convert characters to symbol
   ## ----run_simulations-----------------------------------------------------
@@ -30,7 +31,7 @@ run_simulations <- function(scenario, simulation_count = 10000L,
                   diff_estimates = x[[1, "diff_params"]],
                   n = simulation_count,
                   title = x$scenario_id,
-                  verbose = FALSE)
+                  verbose = verbose)
     }
 
   pb <- dplyr::progress_estimated(nrow(scenario))

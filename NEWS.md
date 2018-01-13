@@ -6,7 +6,7 @@
 * risk_dashboard now expects a mandatory output parameter to the desired rendered 
   output
 * Improved help documentation on many functions
-* New `pkgdown` generated web documentation at http://evaluator.severski.net
+* New `pkgdown` generated web documentation at https://evaluator.severski.net
 * Update of usage vignette
 * Refactored `generate_report` function
     * Now accepts `format` parameter to specify HTML, PDF, or Word

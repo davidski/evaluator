@@ -1,8 +1,6 @@
 ---
 output:
-  github_document: 
-    includes:
-      in_header: meta_tags.html
+  github_document: default
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
