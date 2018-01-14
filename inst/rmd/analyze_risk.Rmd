@@ -50,6 +50,7 @@ library(viridis)
 library(dplyr)
 library(purrr)
 library(readr)
+library(rlang)
 library(psych)
 library(tidyr)
 library(pander)
@@ -996,7 +997,7 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
 ## Appendix C {#capabilities_list}
 
 ```{r capabilities_table}
-arrange(capabilities, domain_id, id) %>%
+arrange(capabilities, .data$domain_id, .data$id) %>%
   select("Domain ID" = domain_id, "Capability" = capability, 
          "Maturity" = diff) %>%
   pander(caption = "Capability Listing", split.cells = c(10, 40, 15), 
