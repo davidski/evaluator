@@ -20,17 +20,22 @@ readr::write_csv(capabilities, file.path(tmpinputs, "capabilities.csv"))
 data("qualitative_scenarios", envir = environment())
 readr::write_csv(qualitative_scenarios, file.path(tmpinputs, "qualitative_scenarios.csv"))
 
-file <- tempfile(fileext = ".html")
 
 test_that("Analyze report renders", {
 
+  file <- tempfile(fileext = ".html")
+
   result <- evaluate_promise(generate_report(input_directory = tmpinputs,
                                              results_directory = tmpdata,
-                                             output_file = file, quiet = TRUE))
+                                             output_file = file,
+                                             quiet = FALSE))
   expect_equivalent(normalizePath(result$result), normalizePath(file))
+  unlink(file)
 })
 
 test_that("Risk Dashboard renders", {
+  file <- tempfile(fileext = ".html")
+
   result <- evaluate_promise(risk_dashboard(input_directory = tmpinputs,
                                             results_directory = tmpdata,
                                             output_file = file,
@@ -38,6 +43,7 @@ test_that("Risk Dashboard renders", {
   expect_equivalent(normalizePath(result$result), normalizePath(file))
   # there should be no warnings
   expect_condition(result$warnings, regexp = NA)
+  unlink(file)
 })
 
 unlink(c(tmpdata, tmpinputs), recursive = TRUE)
