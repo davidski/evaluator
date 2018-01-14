@@ -8,6 +8,7 @@
 #' Create a unified dataframe of quantitative scenarios ready for simulation.
 #'
 #' @importFrom dplyr rename_ select_ left_join
+#' @importFrom rlang .data
 #' @importFrom purrr map
 #' @param scenarios Qualitative risk scenarios dataframe.
 #' @param capabilities Qualitative program capabilities dataframe.
@@ -26,7 +27,8 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch TEF params
   scenarios <- dplyr::left_join(scenarios, mappings[mappings$type == "tef",],
                                 by = c("tef" = "label")) %>%
-    dplyr::rename_("tef_l" = "l", "tef_ml" = "ml", "tef_h" = "h", "tef_conf" = "conf") %>%
+    dplyr::rename("tef_l" = .data$l, "tef_ml" = .data$ml, "tef_h" = .data$h,
+                  "tef_conf" = .data$conf) %>%
     dplyr::select_('-c(tef, type)')
 
   # fetch TC params

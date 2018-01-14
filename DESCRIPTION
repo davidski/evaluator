@@ -18,6 +18,7 @@ Imports:
   purrr,
   readr,
   readxl,
+  rlang,
   scales, 
   stringi,
   tibble,

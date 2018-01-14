@@ -48,6 +48,7 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 #' Import scenarios from survey spreadsheet
 #'
 #' @importFrom dplyr funs select mutate mutate_at
+#' @importFrom rlang .data
 #' @importFrom utils data
 #' @importFrom purrr map
 #' @importFrom tidyr unnest
@@ -77,15 +78,15 @@ import_scenarios <- function(survey_file = system.file("survey",
   scenarios <- scenarios[, (!names(scenarios) %in% "raw_data")]
 
   # fetch threats
-  scenarios <- tidyr::unnest(scenarios, threats)
+  scenarios <- tidyr::unnest(scenarios, .data$threats)
 
   # clean the frame for returning
   dplyr::select(scenarios, scenario_id = "ScenarioID", scenario = "Scenario",
          tcomm = "TComm", tef = "TEF", tc = "TC", lm = "LM",
          domain_id = "domain_id", controls = "Capabilities") %>%
-    dplyr::mutate(scenario_id = as.integer(scenario_id)) %>%
+    dplyr::mutate(scenario_id = as.integer(.data$scenario_id)) %>%
     dplyr::mutate_at(vars("tef", "lm", "tc"), dplyr::funs(tolower)) %>%
-    dplyr::arrange(scenario_id)
+    dplyr::arrange(.data$scenario_id)
 
 }
 
@@ -114,7 +115,7 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
     dplyr::select_(~ -raw_data)
 
   # fetch and clean capabilities
-  capabilities <- tidyr::unnest_(dat, "capabilities") %>%
+  capabilities <- tidyr::unnest(dat, capabilities) %>%
     dplyr::select_(id = "CapabilityID", "domain_id", capability = "Name",
                    diff = "DIFF") %>%
     dplyr::mutate_("id" = ~ as.integer(id)) %>% dplyr::arrange_("id")
