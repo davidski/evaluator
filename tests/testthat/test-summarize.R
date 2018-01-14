@@ -1,4 +1,4 @@
-context("Summariziation")
+context("Summarization")
 test_that("Simulation summary", {
   data("simulation_results")
   data("scenario_summary")
@@ -18,4 +18,15 @@ test_that("Domain impact", {
   data("domains")
   dat <- calculate_domain_impact(domain_summary, domains)
   expect_equal(nrow(dat), nrow(domains))
+})
+
+test_that("Summarize to disk", {
+  tmpdir <- tempdir()
+  tmpdata <- file.path(tmpdir, "data")
+  dir.create(tmpdata)
+
+  result <- summarize_to_disk(evaluator::simulation_results, evaluator::domains,
+                              results_dir = tmpdata)
+  expect_equal(nrow(result), 2)
+  unlink(tmpdata, recursive = TRUE)
 })
