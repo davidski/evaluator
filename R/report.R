@@ -37,6 +37,9 @@ generate_report <- function(input_directory = "~/data",
   if (!requireNamespace("pander", quietly = TRUE)) {
     stop("Install the pander package to generate reports.")
   }
+  if (!requireNamespace("purrrlyr", quietly = TRUE)) {
+    stop("Install the purrrlyr package to generate reports.")
+  }
   if (!requireNamespace("ggalt", quietly = TRUE)) {
     stop("Install the ggalt package to generate reports.")
   }
@@ -47,7 +50,7 @@ generate_report <- function(input_directory = "~/data",
   # figure out the correct style format to apply
   styles <- if (is.null(styles)) {
     if (format == "html") system.file("rmd", "styles", "html-styles.css", package = "evaluator")
-  } else { styles }
+  } else {styles}
 
   # select the appropriate renderer
   out_format <- rmarkdown::html_document(css = styles)
