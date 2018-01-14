@@ -154,10 +154,10 @@ test_that("Full wrapped scenario works as expected", {
                                                        "lm_h", "lm_conf"), row.names = c(NA, -1L), class = c("tbl_df",
                                                                                                              "tbl", "data.frame"))
 
-  sim <- run_simulations(scenario, 100L, verbose = TRUE)
-  expect_s3_class(sim, "tbl_df")
-  expect_equal(nrow(sim), 100)
-  expect_equal(length(sim), 13)
-  expect_equal(sum(sim$threat_events), 2686)
-  expect_equal(sum(sim$loss_events), 764)
+  results <- evaluate_promise(run_simulations(scenario, 100L, verbose = TRUE))
+  expect_s3_class(results$result, "tbl_df")
+  expect_equal(nrow(results$result), 100)
+  expect_equal(length(results$result), 13)
+  expect_equal(sum(results$result$threat_events), 2686)
+  expect_equal(sum(results$result$loss_events), 764)
 })
