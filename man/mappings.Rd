@@ -3,13 +3,14 @@
 \docType{data}
 \name{mappings}
 \alias{mappings}
-\title{Qualitative to Quantitative Mappings}
+\title{Qualitative to quantitative mappings}
 \format{An object of class \code{data.frame} with 14 rows and 6 columns.}
 \usage{
 mappings
 }
 \description{
-A dataset of sample qualitative to quantitative mappings.
+A dataset of sample mappings from qualitative labels to quantitative
+distribution parameters.
 }
 \details{
 \describe{

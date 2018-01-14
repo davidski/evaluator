@@ -12,7 +12,7 @@ sample_lef(func = NULL, params = NULL)
 \item{params}{Optional parameters to pass to \code{func}}
 }
 \value{
-List containing type ("diff"), samples (as a vector), and details (as a list).
+List containing type ("lef"), samples (as a vector), and details (as a list).
 }
 \description{
 Sample loss event frequency

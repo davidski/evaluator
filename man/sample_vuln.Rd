@@ -7,7 +7,7 @@
 sample_vuln(func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate DIFF, defaults to \code{\link[stats]{rbinom}}.}
+\item{func}{Function to use to simulate VULN, defaults to \code{\link[stats]{rbinom}}.}
 
 \item{params}{Optional parameters to pass to \code{func}.}
 }

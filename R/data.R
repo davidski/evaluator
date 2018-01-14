@@ -10,9 +10,10 @@
 #' }
 "capabilities"
 
-#' Qualitative to Quantitative Mappings
+#' Qualitative to quantitative mappings
 #'
-#' A dataset of sample qualitative to quantitative mappings.
+#' A dataset of sample mappings from qualitative labels to quantitative
+#' distribution parameters.
 #'
 #' \describe{
 #'   \item{type}{OpenFAIR taxonomy to which this mapping applies}

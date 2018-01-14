@@ -2,8 +2,7 @@
 % Please edit documentation in R/openfair.R
 \name{openfair_tef_tc_diff_lm}
 \alias{openfair_tef_tc_diff_lm}
-\title{Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels with control
-strength taken as a mean across multiple controls.}
+\title{Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels}
 \usage{
 openfair_tef_tc_diff_lm(scenario, diff_estimates, n = 10^4,
   title = "Untitled", verbose = FALSE)
@@ -13,9 +12,9 @@ openfair_tef_tc_diff_lm(scenario, diff_estimates, n = 10^4,
 
 \item{diff_estimates}{Parameters for estimating the scenario difficulty.}
 
-\item{n}{Number of simulations to run. Defaults to 10,000.}
+\item{n}{Number of simulations to run.}
 
-\item{title}{Optional name of scenario. Defaults to 10,000.}
+\item{title}{Optional name of scenario.}
 
 \item{verbose}{Whether to print progress indicators.}
 }
@@ -28,6 +27,12 @@ Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, and
 LM sampling. If there are multiple controls provided for a scenarios, the
 arithmetic mean (average) is taken across samples for all controls to get
 the effective control strength for a given simulation.
+}
+\examples{
+data(quantitative_scenarios)
+scenario <- quantitative_scenarios[1, ]
+controls <- scenario[[1, "diff_params"]]
+openfair_tef_tc_diff_lm(scenario, controls, 10)
 }
 \seealso{
 Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},

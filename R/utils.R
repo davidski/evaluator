@@ -64,7 +64,7 @@ calculate_weak_domains <- function(simulation_results, domains) {
 #'
 #' @importFrom dplyr select_ summarize_at funs arrange_ ungroup left_join mutate_
 #' @importFrom stats sd quantile
-#' @param domain_summary Domain-level summary of `run_simulation` results.
+#' @param domain_summary Domain-level summary of simulation results as returned by \code{\link{summarize_domains}}.
 #' @param domains Dataframe of all domains in scope.
 #' @return Dataframe.
 #' @export

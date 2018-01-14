@@ -52,7 +52,7 @@ sample_diff <- function(func = NULL, params = NULL) {
 #' Calculate the vulnerability
 #'
 #' @importFrom purrr invoke is_list
-#' @param func Function to use to simulate DIFF, defaults to \code{\link[stats]{rbinom}}.
+#' @param func Function to use to simulate VULN, defaults to \code{\link[stats]{rbinom}}.
 #' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("vuln"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
@@ -102,7 +102,7 @@ sample_lm <- function(func = NULL, params = NULL) {
 #' @importFrom purrr invoke is_list
 #' @param func Function to use to simulate LEF, defaults to \code{\link[stats]{rnorm}}.
 #' @param params Optional parameters to pass to `func`
-#' @return List containing type ("diff"), samples (as a vector), and details (as a list).
+#' @return List containing type ("lef"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
 sample_lef <- function(func = NULL, params = NULL) {
@@ -199,8 +199,7 @@ select_loss_opportunities <- function(tc, diff) {
 
 # Top Level Analysis ------------------------------------------------------
 
-#' Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels with control
-#' strength taken as a mean across multiple controls.
+#' Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels
 #'
 #' Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, and
 #' LM sampling. If there are multiple controls provided for a scenarios, the
@@ -212,15 +211,20 @@ select_loss_opportunities <- function(tc, diff) {
 #' @importFrom dplyr %>%
 #' @param scenario List of tef_, tc_, and LM_ l/ml/h/conf parameters.
 #' @param diff_estimates Parameters for estimating the scenario difficulty.
-#' @param n Number of simulations to run. Defaults to 10,000.
-#' @param title Optional name of scenario. Defaults to 10,000.
+#' @param n Number of simulations to run.
+#' @param title Optional name of scenario.
 #' @param verbose Whether to print progress indicators.
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
 #'   mean TC and DIFF exceedance, and ALE samples.
 #' @family OpenFAIR helpers
 #' @export
+#' @examples
+#' data(quantitative_scenarios)
+#' scenario <- quantitative_scenarios[1, ]
+#' controls <- scenario[[1, "diff_params"]]
+#' openfair_tef_tc_diff_lm(scenario, controls, 10)
 openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
-                          title = "Untitled", verbose = FALSE) {
+                                    title = "Untitled", verbose = FALSE) {
 
     # make samples repeatable (and l33t)
     set.seed(31337)

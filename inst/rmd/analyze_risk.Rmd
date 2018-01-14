@@ -997,7 +997,8 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
 
 ```{r capabilities_table}
 arrange(capabilities, domain_id, id) %>%
-  select("Domain ID" = domain_id, "Capability" = capability, "Maturity" = diff) %>%
+  select("Domain ID" = domain_id, "Capability" = capability, 
+         "Maturity" = diff) %>%
   pander(caption = "Capability Listing", split.cells = c(10, 40, 15), 
          justify = c('left', 'left', 'left'))
 
