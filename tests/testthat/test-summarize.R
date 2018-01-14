@@ -21,8 +21,7 @@ test_that("Domain impact", {
 })
 
 test_that("Summarize to disk", {
-  tmpdir <- tempdir()
-  tmpdata <- file.path(tmpdir, "data")
+  tmpdata <- file.path(tempdir(), "data")
   dir.create(tmpdata)
 
   result <- summarize_to_disk(evaluator::simulation_results, evaluator::domains,
