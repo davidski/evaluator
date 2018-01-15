@@ -33,6 +33,18 @@ test_that("Analyze report renders", {
   unlink(file)
 })
 
+# test_that("Scenario Explorer launches", {
+#   expect_is(explore_scenarios(input_directory = tmpinputs,
+#                               results_directory = tmpdata,
+#                               shiny_args = list(launch.browser = FALSE)),
+#                               "shiny.appobj")
+# })
+
+# test_that("OpenFAIR Example launches", {
+#   expect_is(openfair_example(shiny_args = list(launch.browser = FALSE)),
+#             "shiny.appobj")
+# })
+
 test_that("Risk Dashboard renders", {
   file <- tempfile(fileext = ".html")
 
