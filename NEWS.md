@@ -5,9 +5,7 @@
   parameters.
 * risk_dashboard now expects a mandatory output parameter to the desired rendered 
   output
-* Improved help documentation on many functions
 * New `pkgdown` generated web documentation at https://evaluator.severski.net
-* Update of usage vignette
 * Refactored `generate_report` function
     * Now accepts `format` parameter to specify HTML, PDF, or Word
     * Optional `styles` parameter allows user to supply custom CSS or Word
@@ -18,6 +16,8 @@
     `devtools::install_github("rstudio/rmarkdown", "b84f706")` or greater.
 * Expose OpenFAIR model selection in `run_simulation` call
     * Provide default TEF/TC/DIFF/LM OpenFAIR model
+* New `create_templates` function for populating starter/sample files, making 
+  starting a fresh analysis easier than ever!
 * New OpenFAIR primitives:
     * sample_tef
     * sample_lm
@@ -31,6 +31,8 @@
     * get_mean_control_strength
     
 ## Bug Fixes
+* Improved help documentation on many functions
+* Update of usage vignette
 * Auto loads `extrafont` database for better font detection
     * Falls back to standard `sans` family when none of the preferred options 
       are available

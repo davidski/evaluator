@@ -4,7 +4,8 @@
 \alias{load_data}
 \title{Load input and results files}
 \usage{
-load_data(input_directory = "~/data", results_directory = "~/data")
+load_data(input_directory = "~/evaluator/data",
+  results_directory = "~/evaluator/results")
 }
 \arguments{
 \item{input_directory}{Location of input files.}
@@ -20,6 +21,6 @@ of the key Evaluator data objects into memory.
 }
 \examples{
 \dontrun{
-load_data("~/input_files", "~/simulation_results")
+load_data("~/evaluator/inputs", "~/evaluator/results")
 }
 }
