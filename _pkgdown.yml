@@ -13,6 +13,10 @@ navbar:
       href: articles/usage.html
     - text: "Reference"
       href: reference/index.html
+    - text: "Articles"
+      menu:
+        - text: "Advanced Customization"
+          href: articles/customization.html
     - text: "News"
       href: news/index.html
 
@@ -39,6 +43,7 @@ reference:
   - title: All Other Functions
     contents:
       - starts_with("calculate")
+      - create_templates
       - derive_controls
       - dollar_millions
       - encode_scenarios

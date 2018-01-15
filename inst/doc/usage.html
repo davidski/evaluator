@@ -12,7 +12,7 @@
 
 <meta name="author" content="David F. Severski" />
 
-<meta name="date" content="2017-08-04" />
+<meta name="date" content="2018-01-15" />
 
 <title>Evaluator Workflow</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Evaluator Workflow</h1>
 <h4 class="author"><em>David F. Severski</em></h4>
-<h4 class="date"><em>2017-08-04</em></h4>
+<h4 class="date"><em>2018-01-15</em></h4>
 
 
 
@@ -109,8 +109,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co"># create default directories</span>
 input_directory &lt;-<span class="st"> &quot;~/evaluator/data&quot;</span>
 results_directory &lt;-<span class="st"> &quot;~/evaluator/results&quot;</span>
-if (!<span class="kw">dir.exists</span>(input_directory)) <span class="kw">dir.create</span>(input_directory, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
-if (!<span class="kw">dir.exists</span>(results_directory)) <span class="kw">dir.create</span>(results_directory, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
+<span class="cf">if</span> (<span class="op">!</span><span class="kw">dir.exists</span>(input_directory)) <span class="kw">dir.create</span>(input_directory, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
+<span class="cf">if</span> (<span class="op">!</span><span class="kw">dir.exists</span>(results_directory)) <span class="kw">dir.create</span>(results_directory, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
 
 <span class="co"># copy sample files</span>
 <span class="kw">file.copy</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;domains.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;evaluator&quot;</span>), 
@@ -138,16 +138,16 @@ if (!<span class="kw">dir.exists</span>(results_directory)) <span class="kw">dir
 <div id="import-the-scenarios" class="section level3">
 <h3>Import the Scenarios</h3>
 <p>To extract the spreadsheet into data files for further analysis, run <code>import_spreadsheet(&quot;PATH&quot;, domains)</code>. Evaluator will extract the data and save two comma seperated files in a <code>data</code> directory with the results.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">domains &lt;-<span class="st">  </span>readr::<span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;domains.csv&quot;</span>))
-<span class="kw">system.file</span>(<span class="st">&quot;survey&quot;</span>, <span class="st">&quot;survey.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;evaluator&quot;</span>) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">domains &lt;-<span class="st">  </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;domains.csv&quot;</span>))
+<span class="kw">system.file</span>(<span class="st">&quot;survey&quot;</span>, <span class="st">&quot;survey.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;evaluator&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">import_spreadsheet</span>(., domains, <span class="dt">output_dir =</span> input_directory)</code></pre></div>
 </div>
 <div id="validate-the-data" class="section level3">
 <h3>Validate the Data</h3>
 <p>Run the command <code>validate_scenarios()</code>. If there are data validation errors, the process will abort and an error message will be displayed. Correct the errors displayed, reimport, and repeat the validation process until there are no errors reported.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mappings &lt;-<span class="st">  </span>readr::<span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;qualitative_mappings.csv&quot;</span>))
-qualitative_scenarios &lt;-<span class="st"> </span>readr::<span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;qualitative_scenarios.csv&quot;</span>))
-capabilities &lt;-<span class="st"> </span>readr::<span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;capabilities.csv&quot;</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mappings &lt;-<span class="st">  </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;qualitative_mappings.csv&quot;</span>))
+qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;qualitative_scenarios.csv&quot;</span>))
+capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;capabilities.csv&quot;</span>))
 <span class="kw">validate_scenarios</span>(qualitative_scenarios, capabilities, domains, mappings)</code></pre></div>
 </div>
 <div id="encode-the-data" class="section level3">
@@ -164,58 +164,28 @@ capabilities &lt;-<span class="st"> </span>readr::<span class="kw">read_csv</spa
 </div>
 <div id="analyze-the-results" class="section level3">
 <h3>Analyze the Results</h3>
-<p>Several analysis functions are provided, including a template for a technical risk report. Assuming that the input files have been placed in a <code>data</code> directory and the simulation results and summary files in a <code>results</code> directory, the risk report can be generated via <code>generate_report(input_directory, results_directory)</code>. This will create a pre-populated risk report that identifies key scenarios and generates initial plots for to be used in creating a final analysis report. Other included report tools include <code>risk_dashboard()</code>.</p>
-<p>For interactive exploration, run <code>explore_scenarios(input_directory, results_directory)</code> to launch a local copy of the Scenario Explorer application. The Scenario Explorer app may be used to view information about the individual scenarios and provides a sample overview of the entire program.</p>
+<p>Several analysis functions are provided, including a template for a technical risk report. Assuming that the input files have been placed in an <code>inputs</code> directory and the simulation results and summary files in a <code>results</code> directory, the risk report can be generated via <code>generate_report(&quot;~/evaluator/inputs&quot;, &quot;~/evaluator/results&quot;)</code>. This will create a pre-populated risk report that identifies key scenarios and generates initial plots for to be used in creating a final analysis report. Other included report tools include <code>risk_dashboard()</code>.</p>
+<p>For interactive exploration, run <code>explore_scenarios(&quot;~/evaluator/inputs&quot;, &quot;~/evaluator/results&quot;)</code> to launch a local copy of the Scenario Explorer application. The Scenario Explorer app may be used to view information about the individual scenarios and provides a sample overview of the entire program.</p>
 <p>For more in depth analysis, the following data files may be used directly from R or from external business intelligence programs such as Tableau:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># summarize</span>
 scenario_summary &lt;-<span class="st"> </span><span class="kw">summarize_scenarios</span>(simulation_results)
 domain_summary &lt;-<span class="st"> </span><span class="kw">summarize_domains</span>(simulation_results, domains)
 
 <span class="co"># or to save the summary files directly to disk</span>
-<span class="kw">summarize_to_disk</span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, results_directory)
+<span class="kw">summarize_to_disk</span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, <span class="st">&quot;~/evaluator/results&quot;</span>)
 
 <span class="co"># define risk tolerances</span>
-risk_tolerances &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;risk_tolerances.csv&quot;</span>, 
-                               <span class="dt">package=</span><span class="st">&quot;evaluator&quot;</span>) %&gt;%<span class="st"> </span><span class="kw">read_csv</span>()
+risk_tolerances &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/risk_tolerances.csv&quot;</span>)
 
 <span class="co"># Explorer</span>
-<span class="kw">explore_scenarios</span>(input_directory, results_directory)
+<span class="kw">explore_scenarios</span>(<span class="st">&quot;~/evaluator/inputs&quot;</span>, <span class="st">&quot;~/evaluator/results&quot;</span>)
 
 <span class="co"># Sample Report</span>
-<span class="kw">generate_report</span>(input_directory, results_directory) %&gt;%<span class="st"> </span>rstudioapi::<span class="kw">viewer</span>()</code></pre></div>
+<span class="kw">generate_report</span>(<span class="st">&quot;~/evaluator/inputs&quot;</span>, <span class="st">&quot;~/evaluator/results&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">viewer</span>()</code></pre></div>
 <p>Or, to view that same report as a Word document for editing, use <code>generate_report(input_directory, results_directory, output_format = &quot;word_document&quot;)</code>.</p>
 <p>If you would rather work on the source RMarkdown file or direct editing and graphics tweaking, use <code>system.file(&quot;rmd, &quot;analyze_risk.Rmd&quot;, package = &quot;evaluator&quot;)</code> to find he location of the native template on your system.</p>
 </div>
 </div>
-<div id="advanced-customization" class="section level2">
-<h2>Advanced Customization</h2>
-<p>Evaluator makes several assumptions to get you up and running as quickly as possible. Advanced users may implement several different customizations including:</p>
-<ul>
-<li>Risk tolerances - Organizational risk tolerances at a “medium” and “high” level are defined in <code>risk_tolerances.csv</code>. Risk tolerances are the aggregate economic loss thresholds defined by your organization. These are not necessarily the same as the size of potential losses from individual scenarios. A good proxy for risk tolerance is the budget authority implemented in your organization. The size of purchase signoff required at the executive level is generally a good indicator of the minimum floor for high risk tolerance.</li>
-<li>Qualitative mappings - The translation of qualitative labels such as “Frequent” threat events and “Optimized” controls are defined in <code>qualitative_mappings.csv</code>. The values in this mapping may be changed but they must use lowercase and agree with the values used in the survey spreadsheet. Changing the number of levels used for any qualitative label (e.g. changing High/Medium/Low to High/Medium/Low/VeryLow) is unsupported.</li>
-<li>Styling - Look and feel (fonts, colors, etc.) is defined in the <code>styles/html-styles.css</code> and <code>styles/word-styles-reference.docx</code> files.</li>
-</ul>
-</div>
-</div>
-<div id="where-to-go-from-here" class="section level1">
-<h1>Where to Go From Here</h1>
-<p>While Evaluator is a powerful tool, it does not explicitly attempt to address complex analysis of security risks, interaction between risk scenarios, rolling up multiple levels of risk into aggregations, modelling secondary losses or other advanced topics. As you become more comfortable with quantitative risk analysis, you may wish to dive deeper into these areas (and I hope you do!).</p>
-<p>Commercial Software</p>
-<ul>
-<li><a href="http://www.risklens.com/">RiskLens</a>, founded by the original creator of the FAIR methodology</li>
-</ul>
-<p>Blogs/Books/Training</p>
-<ul>
-<li>Russell C. Thomas’s excellent and provocative blog post on systemic <a href="http://exploringpossibilityspace.blogspot.com/2013/08/risk-management-out-with-old-in-with-new.html">Risk Management</a></li>
-<li><a href="https://smile.amazon.com/gp/product/0124202314">Measuring and Managing Information Risk</a></li>
-<li><a href="http://www.opengroup.org/certifications/openfair">OpenFAIR certification</a></li>
-<li><a href="https://www.hubbardresearch.com/training/">Hubbard Decision Research calibration training</a></li>
-</ul>
-<p>Associations</p>
-<ul>
-<li><a href="http://www.fairinstitute.org/">FAIR Institute</a></li>
-<li><a href="https://www.societyinforisk.org/">Society of Information Risk Analysts (SIRA)</a></li>
-</ul>
 </div>
 
 

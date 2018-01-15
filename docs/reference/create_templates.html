@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate the difficulty presented by controls, given a function and
-parameters for that function — sample_diff â€¢ evaluator</title>
+<title>Create initial template files — create_templates â€¢ evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -106,45 +105,36 @@ parameters for that function — sample_diff â€¢ evaluator</title>
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate the difficulty presented by controls, given a function and
-parameters for that function</h1>
+    <h1>Create initial template files</h1>
     </div>
 
     
-    <p>Calculate the difficulty presented by controls, given a function and
-parameters for that function</p>
+    <p>Given a base directory, copy the provided sample files into an <code>inputs</code>
+subdirectory. This makes the starter files available for customaizing and
+data collection. The <code>inputs</code> directory will be created if not already present.
+Pre-existing files, if present, will not be overwritten.</p>
     
 
-    <pre class="usage"><span class='fu'>sample_diff</span>(<span class='kw'>func</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>create_templates</span>(<span class='kw'>base_directory</span> <span class='kw'>=</span> <span class='st'>"~/evaluator"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>func</th>
-      <td><p>Function to use to simulate DIFF, defaults to <code><a href='http://www.rdocumentation.org/packages/mc2d/topics/pert'>rpert</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>params</th>
-      <td><p>Optional parameters to pass to <code>func</code>.</p></td>
+      <th>base_directory</th>
+      <td><p>Parent directory under which to create starter files.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List containing type ("diff"), samples (as a vector), and details (as a list).</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p>Other OpenFAIR helpers: <code><a href='compare_tef_vuln.html'>compare_tef_vuln</a></code>,
-  <code><a href='get_mean_control_strength.html'>get_mean_control_strength</a></code>,
-  <code><a href='openfair_tef_tc_diff_lm.html'>openfair_tef_tc_diff_lm</a></code>,
-  <code><a href='sample_lef.html'>sample_lef</a></code>, <code><a href='sample_lm.html'>sample_lm</a></code>,
-  <code><a href='sample_tc.html'>sample_tc</a></code>, <code><a href='sample_tef.html'>sample_tef</a></code>,
-  <code><a href='sample_vuln.html'>sample_vuln</a></code>,
-  <code><a href='select_loss_opportunities.html'>select_loss_opportunities</a></code></p>
+    <p>A dataframe of the starter filenames, along with a flag on whether a file was copied.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>create_templates</span>(<span class='st'>"~/evaluator"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -152,9 +142,9 @@ parameters for that function</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

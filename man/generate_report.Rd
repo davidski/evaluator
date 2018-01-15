@@ -21,7 +21,7 @@ generate_report(input_directory = "~/data", results_directory = "~/results",
 
 \item{format}{Format to generate (html, pdf, word).}
 
-\item{...}{Any other parameters to pass straight to \code{rmarkdown::html_document}.}
+\item{...}{Any other parameters to pass straight to \code{rmarkdown::render}.}
 }
 \value{
 Default return values of the \code{rmarkdown::render} function.

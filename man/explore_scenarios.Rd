@@ -5,7 +5,7 @@
 \title{Launch the Scenario Explorer web application}
 \usage{
 explore_scenarios(input_directory = "~/data",
-  results_directory = "~/results", styles = NULL)
+  results_directory = "~/results", styles = NULL, ...)
 }
 \arguments{
 \item{input_directory}{Location of input files.}
@@ -13,6 +13,8 @@ explore_scenarios(input_directory = "~/data",
 \item{results_directory}{Location of simulation results.}
 
 \item{styles}{Optional full path to CSS file to overide default styles.}
+
+\item{...}{Any other parameters to pass straight to \code{rmarkdown::run}.}
 }
 \value{
 Invisible NULL.

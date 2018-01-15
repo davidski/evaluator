@@ -17,7 +17,7 @@
 #' @param styles Optional full path to CSS file to overide default styles.
 #' @param focus_scenario_ids IDs of scenarios of special interest.
 #' @param format Format to generate (html, pdf, word).
-#' @param ... Any other parameters to pass straight to \code{rmarkdown::html_document}.
+#' @param ... Any other parameters to pass straight to \code{rmarkdown::render}.
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
 #' @examples
@@ -65,7 +65,8 @@ generate_report <- function(input_directory = "~/data",
                     params = list(input_directory = input_directory,
                                   results_directory = results_directory,
                                   focus_scenario_ids = focus_scenario_ids),
-                    output_format = out_format)
+                    output_format = out_format,
+                    ...)
 }
 
 #' Launch the Scenario Explorer web application
@@ -80,6 +81,7 @@ generate_report <- function(input_directory = "~/data",
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
 #' @param styles Optional full path to CSS file to overide default styles.
+#' @param ... Any other parameters to pass straight to \code{rmarkdown::run}.
 #' @import dplyr
 #' @import ggplot2
 #' @return Invisible NULL.
@@ -90,7 +92,7 @@ generate_report <- function(input_directory = "~/data",
 #' }
 explore_scenarios <- function(input_directory = "~/data",
                               results_directory = "~/results",
-                              styles = NULL) {
+                              styles = NULL, ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
   }
@@ -119,7 +121,8 @@ explore_scenarios <- function(input_directory = "~/data",
                    output_options =  list(css = styles, favicon = icon,
                                           logo = icon),
                    params = list(input_directory = input_directory,
-                               results_directory = results_directory)))
+                               results_directory = results_directory)),
+                 ...)
   invisible(NULL)
 }
 

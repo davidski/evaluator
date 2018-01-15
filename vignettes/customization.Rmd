@@ -1,0 +1,41 @@
+---
+title: "Advanced Customization"
+author: "David F. Severski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Advanced Customization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Evaluator makes several assumptions to get you up and running as quickly as 
+possible. Advanced users may implement several different customizations 
+including:
+
+## Parameters
+
+
+- Risk tolerances - Organizational risk tolerances at a "medium" and "high" 
+level are defined in `inputs/risk_tolerances.csv`. Risk tolerances are the
+aggregate economic loss thresholds defined by your organization. These are not 
+necessarily the same as the size of potential losses from individual 
+scenarios. A good proxy for risk tolerance is the budget authority implemented 
+in your organization. The size of purchase signoff required at the executive 
+level is generally a good indicator of the minimum floor for high risk 
+tolerance.
+- Qualitative mappings - The translation of qualitative labels such as 
+"Frequent" threat events and "Optimized" controls are defined in 
+`inputs/qualitative_mappings.csv`. The values in this mapping may be changed 
+but they must use lowercase and agree with the values used in the survey 
+spreadsheet. Changing the number of levels used for any qualitative label 
+(e.g. changing High/Medium/Low to High/Medium/Low/VeryLow) is unsupported.
+
+## Report Customization
+
+If you would rather work on the source RMarkdown file or direct editing and 
+graphics tweaking, use `system.file("rmd, "analyze_risk.Rmd", package = "evaluator")` 
+to find the location of the native template on your system.
+
+- Styling - Look and feel (fonts, colors, etc.) is defined in the 
+`styles/html-styles.css` and `styles/word-styles-reference.docx` files.

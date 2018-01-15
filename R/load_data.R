@@ -1,3 +1,39 @@
+#' Create initial template files
+#'
+#' Given a base directory, copy the provided sample files into an `inputs`
+#' subdirectory. This makes the starter files available for customaizing and
+#' data collection. The `inputs` directory will be created if not already present.
+#' Pre-existing files, if present, will not be overwritten.
+#'
+#' @importFrom dplyr data_frame
+#' @importFrom purrr map_dfr
+#' @param base_directory Parent directory under which to create starter files.
+#' @export
+#' @return A dataframe of the starter filenames, along with a flag on whether a file was copied.
+#' @examples
+#' \dontrun{
+#' create_templates("~/evaluator")
+#' }
+create_templates <- function(base_directory = "~/evaluator"){
+
+  inputs_dir = file.path(base_directory, "inputs")
+  if (!dir.exists(inputs_dir)) dir.create(inputs_dir, recursive = TRUE)
+
+  res <- c("domains.csv", "risk_tolerances.csv") %>%
+    purrr::map_dfr(
+      ~ dplyr::data_frame(filename = .x,
+                          copied = file.copy(system.file("extdata", .x,
+                                                         package = "evaluator"),
+                                             inputs_dir)))
+  res <- tibble::add_row(res, filename = "survey.xlsx",
+                         copied = file.copy(system.file("survey", "survey.xlsx",
+                                                        package = "evaluator"),
+                                            inputs_dir))
+
+  return(res)
+}
+
+
 #' Load input and results files
 #'
 #' Given a input directory and a directory of simulation results, load all
@@ -11,9 +47,9 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' load_data("~/input_files", "~/simulation_results")
+#' load_data("~/evaluator/inputs", "~/evaluator/results")
 #' }
-load_data <- function(input_directory = "~/data", results_directory = "~/data") {
+load_data <- function(input_directory = "~/evaluator/data", results_directory = "~/evaluator/results") {
   # load simulation results and default summary objects
   simulation_results <- NULL # detailed sumulation results
   load(file.path(results_directory, "simulation_results.rda"))

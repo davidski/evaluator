@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels with control
-strength taken as a mean across multiple controls. — openfair_tef_tc_diff_lm â€¢ evaluator</title>
+<title>Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels — openfair_tef_tc_diff_lm â€¢ evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -76,6 +75,18 @@ strength taken as a mean across multiple controls. — openfair_tef_tc_diff_lm â€¢
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/customization.html">Advanced Customization</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -94,8 +105,7 @@ strength taken as a mean across multiple controls. — openfair_tef_tc_diff_lm â€¢
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels with control
-strength taken as a mean across multiple controls.</h1>
+    <h1>Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels</h1>
     </div>
 
     
@@ -121,11 +131,11 @@ the effective control strength for a given simulation.</p>
     </tr>
     <tr>
       <th>n</th>
-      <td><p>Number of simulations to run. Defaults to 10,000.</p></td>
+      <td><p>Number of simulations to run.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>Optional name of scenario. Defaults to 10,000.</p></td>
+      <td><p>Optional name of scenario.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -148,6 +158,23 @@ mean TC and DIFF exceedance, and ALE samples.</p>
   <code><a href='select_loss_opportunities.html'>select_loss_opportunities</a></code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>quantitative_scenarios</span>)
+<span class='no'>scenario</span> <span class='kw'>&lt;-</span> <span class='no'>quantitative_scenarios</span>[<span class='fl'>1</span>, ]
+<span class='no'>controls</span> <span class='kw'>&lt;-</span> <span class='no'>scenario</span><span class='kw'>[[</span><span class='fl'>1</span>, <span class='st'>"diff_params"</span>]]
+<span class='fu'>openfair_tef_tc_diff_lm</span>(<span class='no'>scenario</span>, <span class='no'>controls</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 12
+#&gt;    title  simu~ thre~ loss~  vuln mean~ mean~    ale sle_m~ sle_~ sle_m~ sle_m~
+#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1 Untit~     1  30.0     5 0.167  4.63  6.90 3.54e5 155138 30123  70701  51595
+#&gt;  2 Untit~     2  30.0    11 0.367  3.23  7.23 1.66e6 327020 27705 150734 152237
+#&gt;  3 Untit~     3  23.0     7 0.304  2.49  8.42 6.67e5 163373 33813  95300  91706
+#&gt;  4 Untit~     4  19.0    11 0.579  3.30  6.04 1.03e6 287868 10307  93932  74860
+#&gt;  5 Untit~     5  24.0     4 0.167  2.81  7.59 2.78e5 119325 42075  69579  58458
+#&gt;  6 Untit~     6  36.0    14 0.389  2.55  6.33 1.61e6 199345 18198 115312 114824
+#&gt;  7 Untit~     7  32.0     7 0.219  4.05  5.80 5.55e5 173387 39962  79336  57869
+#&gt;  8 Untit~     8  31.0     8 0.258  2.10  7.11 5.72e5 196275 20422  71560  63848
+#&gt;  9 Untit~     9  41.0    11 0.268  2.99  6.60 1.10e6 258991 32951  99884  86332
+#&gt; 10 Untit~    10  20.0     4 0.200  4.59  8.55 4.03e5 151144 23716 100775 114120</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -157,7 +184,9 @@ mean TC and DIFF exceedance, and ALE samples.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

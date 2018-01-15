@@ -75,6 +75,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/customization.html">Advanced Customization</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -106,7 +118,7 @@ exploration tool.</p>
     
 
     <pre class="usage"><span class='fu'>explore_scenarios</span>(<span class='kw'>input_directory</span> <span class='kw'>=</span> <span class='st'>"~/data"</span>,
-  <span class='kw'>results_directory</span> <span class='kw'>=</span> <span class='st'>"~/results"</span>, <span class='kw'>styles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>results_directory</span> <span class='kw'>=</span> <span class='st'>"~/results"</span>, <span class='kw'>styles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -122,6 +134,10 @@ exploration tool.</p>
     <tr>
       <th>styles</th>
       <td><p>Optional full path to CSS file to overide default styles.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Any other parameters to pass straight to <code><a href='http://www.rdocumentation.org/packages/rmarkdown/topics/run'>rmarkdown::run</a></code>.</p></td>
     </tr>
     </table>
     
