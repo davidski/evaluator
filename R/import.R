@@ -11,7 +11,7 @@
 #' @param survey_file Path to survey XLSX file. Defaults to an Evaluator-provided sample spreadsheet.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @param output_dir Output file directory. Defaults to a \code{data}
-#'   subdirectory in the current working direction.
+#'   subdirectory in the current working directory.
 #' @export
 #' @return Dataframe of generated files (capabilities.csv and scenarios.csv)
 import_spreadsheet <- function(survey_file = system.file("survey",
