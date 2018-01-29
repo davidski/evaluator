@@ -106,8 +106,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="import-and-validate-the-scenarios" class="section level2">
 <h2>Import and Validate the Scenarios</h2>
 <p>To extract the spreadsheet into data files for further analysis, run <code>import_spreadsheet()</code>. Evaluator will extract the data and save two comma seperated files in the <code>inputs</code> directory with the results.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">domains &lt;-<span class="st">  </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/domains.csv&quot;</span>)
-<span class="kw">import_spreadsheet</span>(<span class="st">&quot;~/evaluator/inputs/survey.xlsx&quot;</span>, domains, <span class="st">&quot;~/evaluator/inputs&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">domains &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/domains.csv&quot;</span>)
+<span class="kw">import_spreadsheet</span>(<span class="st">&quot;~/evaluator/inputs/survey.xlsx&quot;</span>, domains, <span class="dt">output_dir =</span> <span class="st">&quot;~/evaluator/inputs&quot;</span>)</code></pre></div>
 <p>Afer importing, you are strongly encouraged to run <code>validate_scenarios()</code> to verify there are no data integrity issues. If there are errors detected, the validation process will abort and a message summarizing the problem is displayed. Correct the errors displayed, reimport, and repeat the validation process until there are no errors reported.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/qualitative_scenarios.csv&quot;</span>)
 mappings &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/qualitative_mappings.csv&quot;</span>)

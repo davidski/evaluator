@@ -13,7 +13,7 @@ import_spreadsheet(survey_file = system.file("survey", "survey.xlsx", package
 \item{domains}{Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.}
 
 \item{output_dir}{Output file directory. Defaults to a \code{data}
-subdirectory in the current working direction.}
+subdirectory in the current working directory.}
 }
 \value{
 Dataframe of generated files (capabilities.csv and scenarios.csv)

@@ -97,8 +97,8 @@ To extract the spreadsheet into data files for further analysis, run
 save two comma seperated files in the `inputs` directory with the results. 
 
 ```{r import, eval=FALSE}
-domains <-  readr::read_csv("~/evaluator/inputs/domains.csv")
-import_spreadsheet("~/evaluator/inputs/survey.xlsx", domains, "~/evaluator/inputs")
+domains <- readr::read_csv("~/evaluator/inputs/domains.csv")
+import_spreadsheet("~/evaluator/inputs/survey.xlsx", domains, output_dir = "~/evaluator/inputs")
 ```
 
 Afer importing, you are strongly encouraged to run `validate_scenarios()` 

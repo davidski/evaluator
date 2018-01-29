@@ -4,8 +4,8 @@ library(dplyr)
 library(pander)
 
 ## ----import, eval=FALSE--------------------------------------------------
-#  domains <-  readr::read_csv("~/evaluator/inputs/domains.csv")
-#  import_spreadsheet("~/evaluator/inputs/survey.xlsx", domains, "~/evaluator/inputs")
+#  domains <- readr::read_csv("~/evaluator/inputs/domains.csv")
+#  import_spreadsheet("~/evaluator/inputs/survey.xlsx", domains, output_dir = "~/evaluator/inputs")
 
 ## ----validate, eval=FALSE------------------------------------------------
 #  qualitative_scenarios <- readr::read_csv("~/evaluator/inputs/qualitative_scenarios.csv")

@@ -17,9 +17,10 @@ knitr::opts_chunk$set(
 ```
 
 Working notes for building a risk assessment process using the Evaluator 
-toolkit. This vignette details the basic flow used at some organizations. Other 
-technologies and solutions can be developed, but this workflow is one that is 
-lightweight and easy to implement for many.
+toolkit. This vignette details the basic flow used at some organizations. While 
+other technologies and solutions may be employed, this workflow is both 
+lightweight and relatively easy to implement for users familiar with source 
+control principles.
 
 ## Starting from Scratch
 
@@ -42,3 +43,10 @@ scenario and threat source.
 - Commit the inputs and results to your source code repository.
 - Add a tag to reflect the state as of a certain point in time (i.e. FY18 Q1)
 
+## What to Store
+
+If using the sample workflow, you will have two subdirectories located under 
+a parent `evaluator` directory in your home folder. `inputs` contains the 
+qualitative scenarios and input data files, while `results` stores the 
+simulation results, including the summarized data files. Both directories 
+together represent an analysis snapshot.

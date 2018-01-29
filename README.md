@@ -46,7 +46,9 @@ From Evaluator:
 4.  Summarize the results
 5.  Generate draft reports for customization
 
-A detailed guide is available in the vignette accessed via `vignette("usage", package="evaluator")`
+A detailed guide is available in the vignette accessed via `vignette("usage", package="evaluator")`. A short screencast showing the basic workflow (not including generation of reports) is available below:
+
+[![demo](https://asciinema.org/a/qIBU3lhPkWHGMYD9O2GU1YgcU.png)](https://asciinema.org/a/qIBU3lhPkWHGMYD9O2GU1YgcU?s=2&autoplay=1)
 
 Where to Go from Here
 ---------------------

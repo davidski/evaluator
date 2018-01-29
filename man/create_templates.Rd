@@ -14,7 +14,7 @@ A dataframe of the starter filenames, along with a flag on whether a file was co
 }
 \description{
 Given a base directory, copy the provided sample files into an \code{inputs}
-subdirectory. This makes the starter files available for customaizing and
+subdirectory. This makes the starter files available for customizing and
 data collection. The \code{inputs} directory will be created if not already present.
 Pre-existing files, if present, will not be overwritten. Also creates an
 empty \code{results} subdirectory as a default location for evaluator output.
