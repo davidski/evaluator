@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create domain-level summary of simulation results � summarize_domains • evaluator</title>
+<title>Create domain-level summary of simulation results — summarize_domains • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -85,6 +85,9 @@
     <li>
       <a href="../articles/customization.html">Advanced Customization</a>
     </li>
+    <li>
+      <a href="../articles/process.html">Process</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -150,7 +153,7 @@ is a useful data structure for aggregate reporting.</p>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>simulation_results</span>)
 <span class='fu'>data</span>(<span class='no'>domains</span>)
 <span class='fu'>summarize_domains</span>(<span class='no'>simulation_results</span>, <span class='no'>domains</span>)</div><div class='output co'>#&gt; # A tibble: 14,000 x 4
-#&gt; # Groups: domain_id [14]
+#&gt; # Groups:   domain_id [14]
 #&gt;    domain_id domain         simulation     ale
 #&gt;    &lt;chr&gt;     &lt;chr&gt;               &lt;int&gt;   &lt;dbl&gt;
 #&gt;  1 AC        Access Control          1  657398

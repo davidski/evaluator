@@ -108,9 +108,9 @@ displayed. Correct the errors displayed, reimport, and repeat the validation
 process until there are no errors reported. 
  
 ```{r validate, eval=FALSE}
-qualitative_scenarios <- readr::read_csv("~/evaluator/inputs/qualitative_scenarios.csv"))
-mappings <- readr::read_csv("~/evaluator/inputs/qualitative_mappings.csv"))
-capabilities <- readr::read_csv("~/evaluator/inputs/capabilities.csv"))
+qualitative_scenarios <- readr::read_csv("~/evaluator/inputs/qualitative_scenarios.csv")
+mappings <- readr::read_csv("~/evaluator/inputs/qualitative_mappings.csv")
+capabilities <- readr::read_csv("~/evaluator/inputs/capabilities.csv")
 validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
 ```
 

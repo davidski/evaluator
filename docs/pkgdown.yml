@@ -3,5 +3,6 @@ urls:
   article: https://evaluator.severski.net/articles
 articles:
   customization: customization.html
+  process: process.html
   usage: usage.html
 

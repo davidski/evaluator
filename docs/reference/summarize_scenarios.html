@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create scenario-level summary of simulation results � summarize_scenarios • evaluator</title>
+<title>Create scenario-level summary of simulation results — summarize_scenarios • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -85,6 +85,9 @@
     <li>
       <a href="../articles/customization.html">Advanced Customization</a>
     </li>
+    <li>
+      <a href="../articles/process.html">Process</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -146,21 +149,23 @@ are rarely directly helpful).</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>simulation_results</span>)
 <span class='fu'>summarize_scenarios</span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; # A tibble: 56 x 18
-#&gt;    domai~ scena~ loss_e~ loss_~ loss_~ loss_~ ale_m~ ale_m~ ale_v~ sle_m~ sle_~
-#&gt;    &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
-#&gt;  1 AC         48  0        0      0      0         0 0      0           0     0
-#&gt;  2 AC         51  6.12     1.00  12.0    6.00 579625 1.45e6 1.08e6  86179 80786
-#&gt;  3 ADM        56  0.0430   0      1.00   0         0 3.04e5 0        4741     0
-#&gt;  4 ASSET      45  6.12     1.00  12.0    6.00  20405 5.21e4 3.78e4   3204  3083
-#&gt;  5 ASSET      46  0.0430   0      1.00   0         0 8.00e3 0         160     0
-#&gt;  6 ASSET      47  0.0640   0      1.00   0         0 3.04e5 3.89e4   6295     0
-#&gt;  7 BC         31  0        0      0      0         0 0      0           0     0
-#&gt;  8 BC         55  0.0420   0      1.00   0         0 4.09e6 0      102050     0
-#&gt;  9 COMP        9  0        0      0      0         0 0      0           0     0
-#&gt; 10 COMP       10  1.90     0      9.00   2.00 144906 1.17e6 4.94e5  76947 70012
-#&gt; # ... with 46 more rows, and 7 more variables: sle_max &lt;dbl&gt;, sle_min &lt;dbl&gt;,
-#&gt; #   mean_tc_exceedance &lt;dbl&gt;, mean_diff_exceedance &lt;dbl&gt;, mean_vuln &lt;dbl&gt;,
-#&gt; #   ale_var_zscore &lt;dbl&gt;, outlier &lt;lgl&gt;</div></pre>
+#&gt;    domain_id scenario_id loss_events_mean loss_events_min loss_events_max
+#&gt;    &lt;chr&gt;           &lt;int&gt;            &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+#&gt;  1 AC                 48           0                 0               0   
+#&gt;  2 AC                 51           6.12              1.00           12.0 
+#&gt;  3 ADM                56           0.0430            0               1.00
+#&gt;  4 ASSET              45           6.12              1.00           12.0 
+#&gt;  5 ASSET              46           0.0430            0               1.00
+#&gt;  6 ASSET              47           0.0640            0               1.00
+#&gt;  7 BC                 31           0                 0               0   
+#&gt;  8 BC                 55           0.0420            0               1.00
+#&gt;  9 COMP                9           0                 0               0   
+#&gt; 10 COMP               10           1.90              0               9.00
+#&gt; # ... with 46 more rows, and 13 more variables: loss_events_median &lt;dbl&gt;,
+#&gt; #   ale_median &lt;dbl&gt;, ale_max &lt;dbl&gt;, ale_var &lt;dbl&gt;, sle_mean &lt;dbl&gt;,
+#&gt; #   sle_median &lt;dbl&gt;, sle_max &lt;dbl&gt;, sle_min &lt;dbl&gt;, mean_tc_exceedance &lt;dbl&gt;,
+#&gt; #   mean_diff_exceedance &lt;dbl&gt;, mean_vuln &lt;dbl&gt;, ale_var_zscore &lt;dbl&gt;,
+#&gt; #   outlier &lt;lgl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

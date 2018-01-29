@@ -3,3 +3,4 @@
 .RData
 input_files
 *.bak
+inst/doc

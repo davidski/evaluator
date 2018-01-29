@@ -1,0 +1,44 @@
+---
+title: "An Evaluator-driven Risk Management Process"
+author: "David F. Severski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An Evaluator-driven Risk Management Process}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Working notes for building a risk assessment process using the Evaluator 
+toolkit. This vignette details the basic flow used at some organizations. Other 
+technologies and solutions can be developed, but this workflow is one that is 
+lightweight and easy to implement for many.
+
+## Starting from Scratch
+
+- Create a starting Evaluator working directory via `create_templates()`
+- Customize the domains used in your organization by editting the `domains.csv` 
+file to include the domains (and their abreviations) which are appropriate for your 
+risk domain and organization.
+- Edit the `survey.xlsx` spreadsheet to include the risk scenarios and the threats 
+for each scenario which you wish to monitor on an ongoing basis.
+- Create a source code repository (such as a GitHub for Enterprise repo) for 
+your ongoing risk analysis work.
+- Add a tag to designate the just committed files (without analysis) as your reference 
+documentation.
+
+## Performing an Analysis
+- Meet with subject matter experts for each domain and walk through each 
+scenario and threat source.
+- Record answers in the survey.xlsx spreadsheet.
+- Run the analysis as detailed in the [usage](usage.html) vignette.
+- Commit the inputs and results to your source code repository.
+- Add a tag to reflect the state as of a certain point in time (i.e. FY18 Q1)
+

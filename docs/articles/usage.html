@@ -59,6 +59,9 @@
 <li>
       <a href="../articles/customization.html">Advanced Customization</a>
     </li>
+    <li>
+      <a href="../articles/process.html">Process</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -80,7 +83,7 @@
       <h1>Evaluator Workflow</h1>
                         <h4 class="author">David F. Severski</h4>
             
-            <h4 class="date">2018-01-15</h4>
+            <h4 class="date">2018-01-29</h4>
           </div>
 
     
@@ -126,9 +129,9 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">domains &lt;-<span class="st">  </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/domains.csv"</span>)
 <span class="kw"><a href="../reference/import_spreadsheet.html">import_spreadsheet</a></span>(<span class="st">"~/evaluator/inputs/survey.xlsx"</span>, domains, <span class="st">"~/evaluator/inputs"</span>)</code></pre></div>
 <p>Afer importing, you are strongly encouraged to run <code><a href="../reference/validate_scenarios.html">validate_scenarios()</a></code> to verify there are no data integrity issues. If there are errors detected, the validation process will abort and a message summarizing the problem is displayed. Correct the errors displayed, reimport, and repeat the validation process until there are no errors reported.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_scenarios.csv"</span>)<span class="er">)</span>
-mappings &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_mappings.csv"</span>)<span class="er">)</span>
-capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/capabilities.csv"</span>)<span class="er">)</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_scenarios.csv"</span>)
+mappings &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_mappings.csv"</span>)
+capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/capabilities.csv"</span>)
 <span class="kw"><a href="../reference/validate_scenarios.html">validate_scenarios</a></span>(qualitative_scenarios, capabilities, domains, mappings)</code></pre></div>
 </div>
 <div id="encode-the-data" class="section level2">

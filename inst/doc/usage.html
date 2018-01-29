@@ -12,7 +12,7 @@
 
 <meta name="author" content="David F. Severski" />
 
-<meta name="date" content="2018-01-15" />
+<meta name="date" content="2018-01-29" />
 
 <title>Evaluator Workflow</title>
 
@@ -70,121 +70,114 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Evaluator Workflow</h1>
 <h4 class="author"><em>David F. Severski</em></h4>
-<h4 class="date"><em>2018-01-15</em></h4>
+<h4 class="date"><em>2018-01-29</em></h4>
 
 
 
-<div id="background" class="section level1">
-<h1>Background</h1>
-<p>The first iterations of Evaluator were created as a part of a major healthcare organization’s decision to shift its already mature risk assessment program from reliance on qualitative labels to a quantitative model that would support more precise comparison of competing projects. This organization was able to use statistical sampling to gain greater insight into its information risks, to meet HIPAA compliance obligations and to provide manager to board level business leaders with the data needed to drive decision making.</p>
-<p>Since its creation, versions of Evaluator have been deployed both inside and outside the healthcare field.</p>
-</div>
-<div id="how-to-use" class="section level1">
-<h1>How to Use</h1>
-<p>The Evaluator toolkit consists of a series of processes implemented in the <a href="https://www.r-project.org/">R language</a>. Starting from an Excel workbook, risk data is imported and run through a simulation model to estimate the expected losses for each scenario. The results of these simulations are used to create a detailed analysis and a formal risk report. A starter analysis report, overview dashboard and sample <a href="https://shiny.rstudio.com/">Shiny</a> application are all included in the toolkit.</p>
+<p>Starting from an Excel workbook, risk data is imported and run through a simulation model to estimate the expected losses for each scenario. The results of these simulations are used to create a detailed analysis and a formal risk report. A starter analysis report, overview dashboard, and a sample <a href="https://shiny.rstudio.com/">Shiny</a> application are all included in the toolkit.</p>
 <p>Evaluator takes a domain-driven and framework-independent approach to strategic security risk analysis. It is compatible with ISO, COBIT, HITRUST CSF, PCI-DSS or any other model used for organizing an information security program. If you are able to describe the domains of your program and the controls and threat scenarios applicable to each domain, you will be able to use Evaluator!</p>
-<div id="instructions" class="section level2">
-<h2>Instructions</h2>
-<p>This README does not define terms commonly used in an OpenFAIR analysis. While not a prerequisite, a review of OpenFAIR methodology and terminology is highly recommended. Familiarity with the R language is also very helpful.</p>
-<p>Follow these seven steps to run the toolkit:</p>
+<div id="instructions" class="section level1">
+<h1>Instructions</h1>
+<p>While not required, a basic understanding of the OpenFAIR methodology and terminology is highly recommended.</p>
+<p>Follow these steps to complete an analysis:</p>
 <ol style="list-style-type: decimal">
 <li>Define your controls and risk scenarios</li>
-<li>Import the scenarios</li>
-<li>Validate the data is ready for simulation</li>
+<li>Import and validate the scenarios</li>
 <li>Encode the qualitative labels into quantiative parameters</li>
 <li>Run the simulations</li>
 <li>Summarize the simulation outputs</li>
 <li>Analyze the results</li>
 </ol>
-<p>Don’t be intimidated by the process. Evaluator is with you at every step!</p>
-<div id="prepare-the-environment" class="section level3">
-<h3>Prepare the Environment</h3>
-<p>A working <a href="https://www.r-project.org/">R interpreter</a> is required. Evaluator should work on any current version of R (v3.4.1 as of this writing) and on any supported platform (Windows, MacOS, or Linux). This vignette assumes the use of <a href="https://www.rstudio.com/">RStudio IDE</a> for some presentation details, but the core Evaluator functions may be used with any IDE.</p>
-<p>Obtain the Evaluator toolkit either from CRAN via <code>install.packages(&quot;evaluator&quot;)</code> or the current development version via <code>devtools::install_github('davidski/evaluator')</code>.</p>
-<p>If you would like to work with the supplied sample data files, execute the following code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)     <span class="co"># piping</span>
-<span class="kw">library</span>(readr)     <span class="co"># better CSV handling</span>
-<span class="kw">library</span>(evaluator) <span class="co"># core evaluator toolkit</span>
-
-<span class="co"># create default directories</span>
-input_directory &lt;-<span class="st"> &quot;~/evaluator/data&quot;</span>
-results_directory &lt;-<span class="st"> &quot;~/evaluator/results&quot;</span>
-<span class="cf">if</span> (<span class="op">!</span><span class="kw">dir.exists</span>(input_directory)) <span class="kw">dir.create</span>(input_directory, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
-<span class="cf">if</span> (<span class="op">!</span><span class="kw">dir.exists</span>(results_directory)) <span class="kw">dir.create</span>(results_directory, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
-
-<span class="co"># copy sample files</span>
-<span class="kw">file.copy</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;domains.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;evaluator&quot;</span>), 
-          input_directory)
-<span class="kw">file.copy</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;qualitative_mappings.csv&quot;</span>, <span class="dt">package=</span><span class="st">&quot;evaluator&quot;</span>), 
-          input_directory)
-<span class="kw">file.copy</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;risk_tolerances.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;evaluator&quot;</span>), 
-          input_directory)
-<span class="kw">file.copy</span>(<span class="kw">system.file</span>(<span class="st">&quot;survey&quot;</span>, <span class="st">&quot;survey.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;evaluator&quot;</span>),
-          input_directory)</code></pre></div>
+<div id="define-your-controls-and-security-domains" class="section level2">
+<h2>Define Your Controls and Security Domains</h2>
+<p>Evaluator needs to know the domains of your risk universe. These are the major buckets into which you divide your program. Examples of domains include Physical Security, Strategy, Policy, Business Continuity/Disaster Recovery, and Technical Security. Out of the box, Evaluator comes with a demonstration model based upon the <a href="https://hitrustalliance.net/hitrust-csf/">HITRUST CSF</a>.</p>
+<p>To start a fresh analysis using the default starter files, run <code>create_templates()</code>. This creates an <code>evaluator</code> directory in your home location with an <code>inputs</code> subdirectory containing a survey tool (Excel), a comma-seperated file defining the domains used in the survey tool, and a file defining the risk tolerance levels for your organization.</p>
+<p>If you have a different domain structure (e.g. ISO2700x, NIST CSF, or COBIT), you will need to edit the <code>inputs/domains.csv</code> file to include the domain names and the domain IDs, and a shorthand abbreviation for the domain (such as POL for the Policy domain).</p>
+<p>Indentifying the controls (or capabilities) and risk scenarios associated with each of your domains is critical to the final analysis. The elements are documented in the Excel workbook. The workbook includes one tab per domain, with each tab named after the domain IDs defined in the previous step. Each tab consists of a controls table and a threats table.</p>
+<div id="controls-table" class="section level3">
+<h3>Controls Table</h3>
+<p>The key objectives of each domain are defined in the domain controls table. While the specific controls will be unique to each organization, the sample spreadsheet included in Evaluator may be used as a model. It is best to avoid copying every technical control from, for example, ISO 27001 or COBIT, since most control frameworks are too fine-grained to provide the high level overview that Evaluator delivers. In practice, 50 controls or less will usually be sufficient to describe most organizations. Each control must have a unique numeric ID and should be assigned a difficulty (DIFF) score that ranks the maturity (effectiveness) of the control on a CMM scale from Initial (lowest score) to Optimized (best of class).</p>
 </div>
-<div id="define-your-controls-and-security-domains" class="section level3">
-<h3>Define Your Controls and Security Domains</h3>
-<p>Evaluator needs to know the domains of your security program. These are the major buckets into which you subdivide your program, typically including areas such as Physical Security, Strategy, Policy, Business Continuity/Disaster Recovery, Technical Security, etc. Out of the box, Evaluator comes with a demonstration model based upon the <a href="https://hitrustalliance.net/hitrust-csf/">HITRUST CSF</a>. If you have a different domain structure (e.g. ISO2700x, NIST CSF, or COBIT), you will need to edit the <code>data/domains.csv</code> file to include the domain names and the domain IDs, and a shorthand abbreviation for the domain (such as POL for the Policy domain).</p>
-<p>Indentifying the controls (or capabilities) and risk scenarios associated with each of your domains is critical to the final analysis. The elements are documented in an Excel workbook. The workbook includes one tab per domain, with each tab named after the domain IDs defined in the previous step. Each tab consists of a controls table and a threats table.</p>
-<div id="controls-table" class="section level4">
-<h4>Controls Table</h4>
-<p>The key objectives of each domain are defined in the domain controls table. While the specific controls will be unique to each organization, the sample spreadsheet included in Evaluator may be used as a model. It is best to avoid copying every technical control from, for example, ISO 27001 or COBIT, since most control frameworks are too fine-grained to provide the high level overview that Evaluator delivers. In practice, 50 controls or less will usually be sufficient to describe organizations of up to one to two billion USD in size. Each control must have a unique ID and should be assigned a difficulty (DIFF) score that ranks the maturity of the control on a CMM scale from Initial (lowest score) to Optimized (best of class).</p>
-</div>
-<div id="threats-table" class="section level4">
-<h4>Threats Table</h4>
-<p>The threats table consists of the potential loss scenarios addressed by each domain of your security program. Each scenario is made up of a descriptive field that describes who did what to whom, the threat community that executed the attack (e.g. external hacktivist, internal workforce member, third party vendor), how often the threat actor acts upon your assets (TEF), the strength with which they act against your assets (TCap), the losses incurred (LM) and a comma-separated list of the control IDs that prevent the scenario.</p>
+<div id="threats-table" class="section level3">
+<h3>Threats Table</h3>
+<p>The threats table consists of the potential loss scenarios described by each domain. Each scenario is made up of a descriptive field that describes who did what to whom, the threat community that executed the attack (e.g. external hacktivist, internal workforce member, third party vendor), how often the threat actor acts upon your assets (TEF), the strength with which they act against your assets (TCap), the losses incurred (LM) and a comma-separated list of the control IDs that prevent the scenario.</p>
 </div>
 </div>
-<div id="import-the-scenarios" class="section level3">
-<h3>Import the Scenarios</h3>
-<p>To extract the spreadsheet into data files for further analysis, run <code>import_spreadsheet(&quot;PATH&quot;, domains)</code>. Evaluator will extract the data and save two comma seperated files in a <code>data</code> directory with the results.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">domains &lt;-<span class="st">  </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;domains.csv&quot;</span>))
-<span class="kw">system.file</span>(<span class="st">&quot;survey&quot;</span>, <span class="st">&quot;survey.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;evaluator&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">import_spreadsheet</span>(., domains, <span class="dt">output_dir =</span> input_directory)</code></pre></div>
-</div>
-<div id="validate-the-data" class="section level3">
-<h3>Validate the Data</h3>
-<p>Run the command <code>validate_scenarios()</code>. If there are data validation errors, the process will abort and an error message will be displayed. Correct the errors displayed, reimport, and repeat the validation process until there are no errors reported.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mappings &lt;-<span class="st">  </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;qualitative_mappings.csv&quot;</span>))
-qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;qualitative_scenarios.csv&quot;</span>))
-capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(input_directory, <span class="st">&quot;capabilities.csv&quot;</span>))
+<div id="import-and-validate-the-scenarios" class="section level2">
+<h2>Import and Validate the Scenarios</h2>
+<p>To extract the spreadsheet into data files for further analysis, run <code>import_spreadsheet()</code>. Evaluator will extract the data and save two comma seperated files in the <code>inputs</code> directory with the results.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">domains &lt;-<span class="st">  </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/domains.csv&quot;</span>)
+<span class="kw">import_spreadsheet</span>(<span class="st">&quot;~/evaluator/inputs/survey.xlsx&quot;</span>, domains, <span class="st">&quot;~/evaluator/inputs&quot;</span>)</code></pre></div>
+<p>Afer importing, you are strongly encouraged to run <code>validate_scenarios()</code> to verify there are no data integrity issues. If there are errors detected, the validation process will abort and a message summarizing the problem is displayed. Correct the errors displayed, reimport, and repeat the validation process until there are no errors reported.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/qualitative_scenarios.csv&quot;</span>)
+mappings &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/qualitative_mappings.csv&quot;</span>)
+capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/capabilities.csv&quot;</span>)
 <span class="kw">validate_scenarios</span>(qualitative_scenarios, capabilities, domains, mappings)</code></pre></div>
 </div>
-<div id="encode-the-data" class="section level3">
-<h3>Encode the Data</h3>
+<div id="encode-the-data" class="section level2">
+<h2>Encode the Data</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantitative_scenarios &lt;-<span class="st"> </span><span class="kw">encode_scenarios</span>(qualitative_scenarios, 
                                            capabilities, mappings)</code></pre></div>
 </div>
-<div id="run-the-simulations" class="section level3">
-<h3>Run the Simulations</h3>
-<p>Once the data is translated into quantitative scenarios and ready for simulation, run <code>run_simulations(quantitative_scenarios)</code>. By default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actor will come into contact with your assets, the strength of the threat actor, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process can be computationally intense. The sample data set takes approximately five minutes on my primary development machines (last generation Windows-based platforms).</p>
+<div id="run-the-simulations" class="section level2">
+<h2>Run the Simulations</h2>
+<p>Once the quantitative scenarios are ready for simulation, run <code>run_simulations(quantitative_scenarios)</code>. By default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actors come into contact with your assets, the strength of the threat actors, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process is computationally intense. The sample data takes approximately 24 minutes to run on a 2016 MacBook Pro. A progress bar is displayed on the console while running.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">simulation_results &lt;-<span class="st"> </span><span class="kw">run_simulations</span>(quantitative_scenarios, 
-                                      <span class="dt">simulation_count =</span> 10000L)
-<span class="kw">save</span>(simulation_results, <span class="dt">file =</span> <span class="kw">file.path</span>(results_directory, <span class="st">&quot;simulation_results.rda&quot;</span>))</code></pre></div>
+                                      <span class="dt">simulation_count =</span> 100L)
+<span class="kw">save</span>(simulation_results, <span class="dt">file =</span> <span class="st">&quot;~/evaluator/results/simulation_results.rda&quot;</span>)</code></pre></div>
 </div>
-<div id="analyze-the-results" class="section level3">
-<h3>Analyze the Results</h3>
-<p>Several analysis functions are provided, including a template for a technical risk report. Assuming that the input files have been placed in an <code>inputs</code> directory and the simulation results and summary files in a <code>results</code> directory, the risk report can be generated via <code>generate_report(&quot;~/evaluator/inputs&quot;, &quot;~/evaluator/results&quot;)</code>. This will create a pre-populated risk report that identifies key scenarios and generates initial plots for to be used in creating a final analysis report. Other included report tools include <code>risk_dashboard()</code>.</p>
-<p>For interactive exploration, run <code>explore_scenarios(&quot;~/evaluator/inputs&quot;, &quot;~/evaluator/results&quot;)</code> to launch a local copy of the Scenario Explorer application. The Scenario Explorer app may be used to view information about the individual scenarios and provides a sample overview of the entire program.</p>
-<p>For more in depth analysis, the following data files may be used directly from R or from external business intelligence programs such as Tableau:</p>
+<div id="summarize-results" class="section level2">
+<h2>Summarize Results</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># summarize</span>
 scenario_summary &lt;-<span class="st"> </span><span class="kw">summarize_scenarios</span>(simulation_results)
 domain_summary &lt;-<span class="st"> </span><span class="kw">summarize_domains</span>(simulation_results, domains)
 
 <span class="co"># or to save the summary files directly to disk</span>
-<span class="kw">summarize_to_disk</span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, <span class="st">&quot;~/evaluator/results&quot;</span>)
-
-<span class="co"># define risk tolerances</span>
-risk_tolerances &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;~/evaluator/inputs/risk_tolerances.csv&quot;</span>)
-
-<span class="co"># Explorer</span>
+<span class="kw">summarize_to_disk</span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, <span class="st">&quot;~/evaluator/results&quot;</span>)</code></pre></div>
+</div>
+<div id="analyze-the-results" class="section level2">
+<h2>Analyze the Results</h2>
+<p>Several analysis functions are provided, including a template for a technical risk report. The risk report can be generated via <code>generate_report()</code>. This creates a pre-populated risk report that identifies key scenarios and generates initial plots for the analyst to prepare a final report.</p>
+<p>Other included report tools include <code>risk_dashboard()</code>, which produces a single-page static web dashboard view of all the scenarios and their results.</p>
+<p>For interactive exploration, use <code>explore_scenarios()</code> to launch a local copy of the Scenario Explorer application. The Scenario Explorer app may be used to view information about the individual scenarios and provides a sample overview of the entire program.</p>
+<p>For more in depth analysis, the following data files may be useful to exploration and analysis from either within R or with a R-compatible external business intelligence program such as Tableau:</p>
+<table style="width:79%;">
+<colgroup>
+<col width="34%"></col>
+<col width="44%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Data File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">simulation_results.rda</td>
+<td align="left">Full details of each simulated scenario</td>
+</tr>
+<tr class="even">
+<td align="left">scenario_summary.rda</td>
+<td align="left">Simulation results, summarized at the scenario level</td>
+</tr>
+<tr class="odd">
+<td align="left">domain_summary.rda</td>
+<td align="left">Simulation results, summarized at the domain level</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Explorer</span>
 <span class="kw">explore_scenarios</span>(<span class="st">&quot;~/evaluator/inputs&quot;</span>, <span class="st">&quot;~/evaluator/results&quot;</span>)
 
+<span class="co"># Risk Dashboard</span>
+<span class="kw">risk_dashboard</span>(<span class="st">&quot;~/evaluator/inputs&quot;</span>, <span class="st">&quot;~/evaluator/results&quot;</span>, 
+               <span class="st">&quot;~/evaluator/risk_dashboard.html&quot;</span>)
+
 <span class="co"># Sample Report</span>
-<span class="kw">generate_report</span>(<span class="st">&quot;~/evaluator/inputs&quot;</span>, <span class="st">&quot;~/evaluator/results&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">viewer</span>()</code></pre></div>
-<p>Or, to view that same report as a Word document for editing, use <code>generate_report(input_directory, results_directory, output_format = &quot;word_document&quot;)</code>.</p>
-<p>If you would rather work on the source RMarkdown file or direct editing and graphics tweaking, use <code>system.file(&quot;rmd, &quot;analyze_risk.Rmd&quot;, package = &quot;evaluator&quot;)</code> to find he location of the native template on your system.</p>
-</div>
+<span class="kw">generate_report</span>(<span class="st">&quot;~/evaluator/inputs&quot;</span>, <span class="st">&quot;~/evaluator/results&quot;</span>, 
+                <span class="st">&quot;~/evaluator/risk_report.html&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">viewer</span>()</code></pre></div>
+<p>To view that same report as a Word document for editing, use <code>generate_report(&quot;~/evaluator/inputs&quot;, &quot;~/evaluator/results&quot;, &quot;~/evaluator/risk_report.docx&quot;, output_format = &quot;word_document&quot;)</code>.</p>
 </div>
 </div>
 
