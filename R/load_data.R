@@ -1,9 +1,10 @@
 #' Create initial template files
 #'
 #' Given a base directory, copy the provided sample files into an `inputs`
-#' subdirectory. This makes the starter files available for customaizing and
+#' subdirectory. This makes the starter files available for customizing and
 #' data collection. The `inputs` directory will be created if not already present.
-#' Pre-existing files, if present, will not be overwritten.
+#' Pre-existing files, if present, will not be overwritten. Also creates an
+#' empty `results` subdirectory as a default location for evaluator output.
 #'
 #' @importFrom dplyr data_frame
 #' @importFrom purrr map_dfr
@@ -19,7 +20,10 @@ create_templates <- function(base_directory = "~/evaluator"){
   inputs_dir = file.path(base_directory, "inputs")
   if (!dir.exists(inputs_dir)) dir.create(inputs_dir, recursive = TRUE)
 
-  res <- c("domains.csv", "risk_tolerances.csv") %>%
+  results_dir = file.path(base_directory, "results")
+  if (!dir.exists(results_dir)) dir.create(results_dir, recursive = TRUE)
+
+  res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
     purrr::map_dfr(
       ~ dplyr::data_frame(filename = .x,
                           copied = file.copy(system.file("extdata", .x,
