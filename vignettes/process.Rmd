@@ -17,10 +17,10 @@ knitr::opts_chunk$set(
 ```
 
 Working notes for building a risk assessment process using the Evaluator 
-toolkit. This vignette details the basic flow used at some organizations. While 
-other technologies and solutions may be employed, this workflow is both 
-lightweight and relatively easy to implement for users familiar with source 
-control principles.
+toolkit. This vignette details the basic flow used at some organizations to 
+maintain reproducability of inputs and results. While other technologies and 
+solutions may be employed, this workflow is intended to be easy to implement 
+for users familiar with source control principles.
 
 ## Starting from Scratch
 
@@ -50,3 +50,18 @@ a parent `evaluator` directory in your home folder. `inputs` contains the
 qualitative scenarios and input data files, while `results` stores the 
 simulation results, including the summarized data files. Both directories 
 together represent an analysis snapshot.
+
+## Experimental Quick Start Script
+
+When using `create_templates()` an `quickstart.R` file will be placed at the base 
+of the `evaluator` directory. A sample ultra-quick workflow looks like:
+
+1. Run `create_templates()`
+2. Edit the inputs for your situation.
+3. Run the quickstart script with code like
+
+```{r eval=FALSE}
+inputs_dir <- "~/evaluator/inputs"
+results_dir <- "~/evaluator/results"
+source("~/evaluator/quickstart.R")
+```

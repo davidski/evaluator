@@ -18,6 +18,7 @@
     * Provide default TEF/TC/DIFF/LM OpenFAIR model
 * New `create_templates` function for populating starter/sample files, making 
   starting a fresh analysis easier than ever!
+* Experimental quick start script.
 * New OpenFAIR primitives:
     * sample_tef
     * sample_lm

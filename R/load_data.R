@@ -23,6 +23,9 @@ create_templates <- function(base_directory = "~/evaluator"){
   results_dir = file.path(base_directory, "results")
   if (!dir.exists(results_dir)) dir.create(results_dir, recursive = TRUE)
 
+  res <- file.copy(system.file("quickstart.R", package = "evaluator"),
+                   file.path(base_directory, "quickstart.R"))
+
   res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
     purrr::map_dfr(
       ~ dplyr::data_frame(filename = .x,
