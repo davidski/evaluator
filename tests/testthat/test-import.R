@@ -14,6 +14,7 @@ test_that("Default capabilities import", {
 })
 
 test_that("Higher-level import_spreadsheet functions", {
-  dat <- import_spreadsheet(output_dir = tempdir())
+  dat <- import_spreadsheet(output_dir = file.path(tempdir(), "data"))
   expect_equal(nrow(dat), 2)
+  unlink(file.path(tempdir(), "data"), recursive = TRUE)
 })
