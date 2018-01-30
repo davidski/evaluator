@@ -34,10 +34,9 @@ validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
 quantitative_scenarios <- encode_scenarios(qualitative_scenarios, capabilities,
                                            mappings)
 
-
 # Simulate ----------------------------------------------------------------
 simulation_results <- run_simulations(quantitative_scenarios,
-                                      simulation_count = 100L)
+                                      simulation_count = 10000L)
 save(simulation_results, file = file.path(results_dir, "simulation_results.rda"))
 
 # summarize
