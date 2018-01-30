@@ -713,7 +713,7 @@ plot_scenarios_by_domain <- function(x) {
   gg <- gg + geom_density(fill = viridis(1), alpha = 1/3)
   gg <- gg + labs(x = "Loss Events per Year", y = NULL,
                   title = "Loss Event Frequency by Scenario",
-                  subtitle = "All Scenarios with Loss Events Included",
+                  subtitle = "All Scenarios with Multiple Loss Events Included",
                   caption = "Source: Evaluator toolkit")
   gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
   gg <- gg + theme(panel.grid.major = element_blank())
@@ -727,7 +727,7 @@ plot_scenarios_by_domain <- function(x) {
 }
 
 simulation_results %>% 
-  filter(loss_events > 0) %>% 
+  filter(loss_events > 1) %>% 
   mutate(scenario_id = factor(as.character(scenario_id), 
                               levels = scenario_order$scenario_id)) %>%
   arrange(domain_id, scenario_id) %>% 
@@ -921,7 +921,7 @@ gg <- gg + geom_histogram(binwidth = max(gg$data$value) / 50,
                           aes(y = ..density..),
                           color = "black", fill = viridis(2)[1], alpha = 1/5)
 gg <- gg + geom_density(fill=viridis(2)[2], alpha = 1/5)
-gg <- gg + facet_wrap(~measure, nrow=2, "free_x", strip.position = "left", 
+gg <- gg + facet_wrap(~measure, nrow=2, scales = "free_x", strip.position = "left", 
                       labeller = as_labeller(measure_names))
 gg <- gg + scale_x_continuous(labels = dollar_millions)
 #gg <- gg + scale_y_continuous(labels = comma)
