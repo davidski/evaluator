@@ -23,15 +23,21 @@ create_templates <- function(base_directory = "~/evaluator"){
   results_dir = file.path(base_directory, "results")
   if (!dir.exists(results_dir)) dir.create(results_dir, recursive = TRUE)
 
-  res <- file.copy(system.file("quickstart.R", package = "evaluator"),
-                   file.path(base_directory, "quickstart.R"))
-
+  # copy all the standard CSV files
   res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
     purrr::map_dfr(
       ~ dplyr::data_frame(filename = .x,
                           copied = file.copy(system.file("extdata", .x,
                                                          package = "evaluator"),
                                              inputs_dir)))
+
+  # copy the quick start script
+  res <- tibble::add_row(res, filename = "run_analysis.R",
+                         copied = file.copy(system.file("run_analysis.R",
+                                                        package = "evaluator"),
+                                            base_directory))
+
+  # copy the survey file
   res <- tibble::add_row(res, filename = "survey.xlsx",
                          copied = file.copy(system.file("survey", "survey.xlsx",
                                                         package = "evaluator"),

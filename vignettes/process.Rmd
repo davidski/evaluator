@@ -53,15 +53,14 @@ together represent an analysis snapshot.
 
 ## Experimental Quick Start Script
 
-When using `create_templates()` an `quickstart.R` file will be placed at the base 
+When using `create_templates()` an `run_analysis.R` file will be placed at the base 
 of the `evaluator` directory. A sample ultra-quick workflow looks like:
 
-1. Run `create_templates()`
+1. Run `evaluator::create_templates()`
 2. Edit the inputs for your situation.
-3. Run the quickstart script with code like
+3. Run the quick start script with code like the following:
 
 ```{r eval=FALSE}
-inputs_dir <- "~/evaluator/inputs"
-results_dir <- "~/evaluator/results"
-source("~/evaluator/quickstart.R")
+base_dir <- "~/evaluator"
+source("~/evaluator/run_analysis.R")
 ```
