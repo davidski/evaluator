@@ -1,7 +1,5 @@
 ---
 title: "An Evaluator-driven Risk Management Process"
-author: "David F. Severski"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{An Evaluator-driven Risk Management Process}

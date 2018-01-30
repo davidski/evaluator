@@ -1,7 +1,5 @@
 ---
 title: "Evaluator Workflow"
-author: "David F. Severski"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Evaluator Workflow}

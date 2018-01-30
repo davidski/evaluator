@@ -1,7 +1,5 @@
 ---
 title: "Advanced Customization"
-author: "David F. Severski"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Advanced Customization}
@@ -14,7 +12,6 @@ possible. Advanced users may implement several different customizations
 including:
 
 ## Parameters
-
 
 - Risk tolerances - Organizational risk tolerances at a "medium" and "high" 
 level are defined in `inputs/risk_tolerances.csv`. Risk tolerances are the
