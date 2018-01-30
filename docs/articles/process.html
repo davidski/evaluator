@@ -83,7 +83,7 @@
       <h1>An Evaluator-driven Risk Management Process</h1>
                         <h4 class="author">David F. Severski</h4>
             
-            <h4 class="date">2018-01-29</h4>
+            <h4 class="date">2018-01-30</h4>
           </div>
 
     
@@ -121,16 +121,15 @@
 <div id="experimental-quick-start-script" class="section level2">
 <h2 class="hasAnchor">
 <a href="#experimental-quick-start-script" class="anchor"></a>Experimental Quick Start Script</h2>
-<p>When using <code><a href="../reference/create_templates.html">create_templates()</a></code> an <code>quickstart.R</code> file will be placed at the base of the <code>evaluator</code> directory. A sample ultra-quick workflow looks like:</p>
+<p>When using <code><a href="../reference/create_templates.html">create_templates()</a></code> an <code>run_analysis.R</code> file will be placed at the base of the <code>evaluator</code> directory. A sample ultra-quick workflow looks like:</p>
 <ol style="list-style-type: decimal">
-<li>Run <code><a href="../reference/create_templates.html">create_templates()</a></code>
+<li>Run <code><a href="https://evaluator.severski.net/reference/create_templates.html">evaluator::create_templates()</a></code>
 </li>
 <li>Edit the inputs for your situation.</li>
-<li>Run the quickstart script with code like</li>
+<li>Run the quick start script with code like the following:</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inputs_dir &lt;-<span class="st"> "~/evaluator/inputs"</span>
-results_dir &lt;-<span class="st"> "~/evaluator/results"</span>
-<span class="kw">source</span>(<span class="st">"~/evaluator/quickstart.R"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_dir &lt;-<span class="st"> "~/evaluator"</span>
+<span class="kw">source</span>(<span class="st">"~/evaluator/run_analysis.R"</span>)</code></pre></div>
 </div>
 </div>
   </div>

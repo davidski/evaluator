@@ -4,8 +4,8 @@
 \alias{explore_scenarios}
 \title{Launch the Scenario Explorer web application}
 \usage{
-explore_scenarios(input_directory = "~/data",
-  results_directory = "~/results", styles = NULL, ...)
+explore_scenarios(input_directory = "~/evaluator/inputs",
+  results_directory = "~/evaluator/results", styles = NULL, ...)
 }
 \arguments{
 \item{input_directory}{Location of input files.}

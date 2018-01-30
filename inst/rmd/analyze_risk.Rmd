@@ -31,8 +31,8 @@ header-includes:
 - \pagestyle{fancy}
 - \fancyfoot[C]{Sample - \thepage}
 params:
-  input_directory: "~/data"
-  results_directory: "~/results"
+  input_directory: "~/evaluator/inputs"
+  results_directory: "~/evaluator/results"
   focus_scenario_ids: !r c(51, 12)
 ---
 

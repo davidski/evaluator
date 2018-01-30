@@ -121,10 +121,9 @@
 <a href="#new-functionality" class="anchor"></a>New Functionality</h2>
 <ul>
 <li>New sample dataset: <code>mappings</code> contains sample qualitative to quantitative parameters.</li>
-<li>risk_dashboard now expects a mandatory output parameter to the desired rendered output</li>
-<li>New <code>pkgdown</code> generated web documentation at <a href="https://evaluator.severski.net" class="uri">https://evaluator.severski.net</a>
-</li>
-<li>Refactored <code>generate_report</code> function
+<li>risk_dashboard expects a mandatory output parameter to the desired rendered output.</li>
+<li>New <code>pkgdown</code> generated web documentation at <a href="https://evaluator.severski.net" class="uri">https://evaluator.severski.net</a>.</li>
+<li>Refactored <code>generate_report</code> function.
 <ul>
 <li>Now accepts <code>format</code> parameter to specify HTML, PDF, or Word</li>
 <li>Optional <code>styles</code> parameter allows user to supply custom CSS or Word reference document to customize styles and fonts</li>
@@ -137,7 +136,8 @@
 </ul>
 </li>
 <li>New <code>create_templates</code> function for populating starter/sample files, making starting a fresh analysis easier than ever!</li>
-<li>Experimental quick start script.</li>
+<li>Experimental quick start script, run_analysis.R, supplied with <code><a href="../reference/create_templates.html">create_templates()</a></code>.</li>
+<li>All default directories normallized to ~/evaluator/[inputs|results]</li>
 <li>New OpenFAIR primitives:
 <ul>
 <li>sample_tef</li>

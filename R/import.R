@@ -18,7 +18,7 @@ import_spreadsheet <- function(survey_file = system.file("survey",
                                                          "survey.xlsx",
                                                          package = "evaluator"),
                                domains = NULL,
-                               output_dir = "~/data"){
+                               output_dir = "~/evaluator/results"){
 
   ## ----survey_sheet--------------------------------------------------------
   #message("Target file is ", survey_file)

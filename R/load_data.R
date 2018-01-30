@@ -62,7 +62,7 @@ create_templates <- function(base_directory = "~/evaluator"){
 #' \dontrun{
 #' load_data("~/evaluator/inputs", "~/evaluator/results")
 #' }
-load_data <- function(input_directory = "~/evaluator/data", results_directory = "~/evaluator/results") {
+load_data <- function(input_directory = "~/evaluator/inputs", results_directory = "~/evaluator/results") {
   # load simulation results and default summary objects
   simulation_results <- NULL # detailed sumulation results
   load(file.path(results_directory, "simulation_results.rda"))

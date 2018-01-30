@@ -3,10 +3,10 @@
 ## New Functionality
 * New sample dataset: `mappings` contains sample qualitative to quantitative 
   parameters.
-* risk_dashboard now expects a mandatory output parameter to the desired rendered 
-  output
-* New `pkgdown` generated web documentation at https://evaluator.severski.net
-* Refactored `generate_report` function
+* risk_dashboard expects a mandatory output parameter to the desired rendered 
+  output.
+* New `pkgdown` generated web documentation at https://evaluator.severski.net.
+* Refactored `generate_report` function.
     * Now accepts `format` parameter to specify HTML, PDF, or Word
     * Optional `styles` parameter allows user to supply custom CSS or Word
     reference document to customize styles and fonts
@@ -18,7 +18,8 @@
     * Provide default TEF/TC/DIFF/LM OpenFAIR model
 * New `create_templates` function for populating starter/sample files, making 
   starting a fresh analysis easier than ever!
-* Experimental quick start script.
+* Experimental quick start script, run_analysis.R, supplied with `create_templates()`.
+* All default directories normallized to ~/evaluator/[inputs|results]
 * New OpenFAIR primitives:
     * sample_tef
     * sample_lm

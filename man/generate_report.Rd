@@ -4,9 +4,9 @@
 \alias{generate_report}
 \title{Generate sample analysis report}
 \usage{
-generate_report(input_directory = "~/data", results_directory = "~/results",
-  output_file, styles = NULL, focus_scenario_ids = c(51, 12),
-  format = "html", ...)
+generate_report(input_directory = "~/evaluator/inputs",
+  results_directory = "~/evaluator/results", output_file, styles = NULL,
+  focus_scenario_ids = c(51, 12), format = "html", ...)
 }
 \arguments{
 \item{input_directory}{Location of input files.}

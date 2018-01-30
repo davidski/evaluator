@@ -24,8 +24,8 @@
 #' \dontrun{
 #' generate_report("~/inputs", "~/results", "~/risk_report.html")
 #' }
-generate_report <- function(input_directory = "~/data",
-                            results_directory = "~/results",
+generate_report <- function(input_directory = "~/evaluator/inputs",
+                            results_directory = "~/evaluator/results",
                             output_file,
                             styles = NULL,
                             focus_scenario_ids = c(51, 12),
@@ -90,8 +90,8 @@ generate_report <- function(input_directory = "~/data",
 #' \dontrun{
 #' explore_scenarios("~/inputs", "~/results")
 #' }
-explore_scenarios <- function(input_directory = "~/data",
-                              results_directory = "~/results",
+explore_scenarios <- function(input_directory = "~/evaluator/inputs",
+                              results_directory = "~/evaluator/results",
                               styles = NULL, ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
@@ -180,8 +180,8 @@ openfair_example <- function() {
 #' \dontrun{
 #' risk_dashboard("~/inputs", "~/simulations")
 #' }
-risk_dashboard <- function(input_directory = "~/data",
-                           results_directory = "~/results",
+risk_dashboard <- function(input_directory = "~/evaluator/inputs",
+                           results_directory = "~/evaluator/results",
                            output_file,
                            ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
