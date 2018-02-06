@@ -21,21 +21,21 @@ inputs_dir <- file.path(base_dir, "inputs")
 results_dir <- file.path(base_dir, "results")
 
 # Load and Validate -------------------------------------------------------
-domains <-  readr::read_csv(file.path(inputs_dir, "domains.csv"), 
+domains <-  readr::read_csv(file.path(inputs_dir, "domains.csv"),
                             col_types = cols(.default = readr::col_character()))
 import_spreadsheet(file.path(inputs_dir, "survey.xlsx"), domains, inputs_dir)
 
 qualitative_scenarios <- readr::read_csv(file.path(inputs_dir,
-                                                   "qualitative_scenarios.csv"), 
-                                         col_types = cols(.default = readr::col_character(), 
+                                                   "qualitative_scenarios.csv"),
+                                         col_types = cols(.default = readr::col_character(),
                                                           scenario_id = readr::col_integer()))
-mappings <- readr::read_csv(file.path(inputs_dir, "qualitative_mappings.csv"), 
+mappings <- readr::read_csv(file.path(inputs_dir, "qualitative_mappings.csv"),
                             col_types = cols(.default = readr::col_integer(),
                                              type = readr::col_character(),
                                              label = readr::col_character(),
                                              ml = readr::col_double()))
-capabilities <- readr::read_csv(file.path(inputs_dir, "capabilities.csv"), 
-                                col_types = cols(.default = readr::col_character(), 
+capabilities <- readr::read_csv(file.path(inputs_dir, "capabilities.csv"),
+                                col_types = cols(.default = readr::col_character(),
                                                  id = readr::col_integer()))
 validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
 
@@ -60,4 +60,5 @@ risk_dashboard(inputs_dir, results_dir,
 
 ## Long Form Report
 generate_report(inputs_dir, results_dir,
-                file.path(results_dir, "risk_report.html"))
+                file.path(results_dir, "risk_report.docx"),
+                format = "word")
