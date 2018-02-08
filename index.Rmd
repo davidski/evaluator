@@ -47,7 +47,7 @@ install.packages("evaluator")
 devtools::install_github("davidski/evaluator")
 ```
 
-Optionally, a prototype Docker image is available on the [Docker Hub](https://hub.docker.com/r/davidski/evaluator/).
+Optionally, a prototype Docker image is available on the [Docker Hub](https://hub.docker.com/r/davidski/evaluator-docker//).
 
 ## Usage
 

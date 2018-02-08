@@ -4,7 +4,7 @@ While using the full power of Evaluator is easier with some basic proficency wit
 
 # Docker
 
-The simplest method applicable to most users is the corresponding [evaluator-docker](https://github.com/davidski/evaluator-docker) project. This Dockerfile (and the corresponding pre-built image on [Docker Hub](https://hub.docker.com/r/davidski/evaluator)) is the fastest and surest means of getting started with Evaluator.
+The simplest method applicable to most users is the corresponding [evaluator-docker](https://github.com/davidski/evaluator-docker) project. This Dockerfile (and the corresponding pre-built image on [Docker Hub](https://hub.docker.com/r/davidski/evaluator-docker/)) is the fastest and surest means of getting started with Evaluator.
 
 # MacOS
 
