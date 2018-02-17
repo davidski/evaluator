@@ -19,6 +19,10 @@ navbar:
           href: articles/customization.html
         - text: "Process"
           href: articles/process.html
+    - text: Presentations
+      menu:
+        - text: "SiRAcon 2018 (Slideshare)"
+          href: https://www.slideshare.net/davidski1/evaluator-siracon-2018-presentation
     - text: "News"
       href: news/index.html
 
