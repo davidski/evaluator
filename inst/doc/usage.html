@@ -99,6 +99,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>The threats table consists of the potential loss scenarios described by each domain. Each scenario is made up of a descriptive field that describes who did what to whom, the threat community that executed the attack (e.g. external hacktivist, internal workforce member, third party vendor), how often the threat actor acts upon your assets (TEF), the strength with which they act against your assets (TCap), the losses incurred (LM) and a comma-separated list of the control IDs that prevent the scenario.</p>
 </div>
 </div>
+<div id="optional-quick-start" class="section level2">
+<h2>Optional Quick Start</h2>
+<p>As an alternative to manually performing the subsequent steps steps in this document, a <code>run_analysis.R</code> script placed in the <code>~/evaluator</code> directory by the <code>create_templates()</code> function can be used to run all of these steps automatically. To use this bootstrap script, simply set a <code>base_dir</code> variable to the <code>~/evaluator</code> directory and <code>source</code> the script. The <code>run_analysis</code> script will generate a lot of console output. Performing at least a read through of the rest of this document to familiarize yourself with the steps being executed is strongly recommended.</p>
+<p>Using the quick start (<code>run_analysis</code>) script:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_dir &lt;-<span class="st"> &quot;~/evaluator&quot;</span>
+<span class="kw">source</span>(<span class="st">&quot;~/evaluator/run_analysis.R&quot;</span>)</code></pre></div>
+</div>
 <div id="import-and-validate-the-scenarios" class="section level2">
 <h2>Import and Validate the Scenarios</h2>
 <p>To extract the spreadsheet into data files for further analysis, run <code>import_spreadsheet()</code>. Evaluator will extract the data and save two comma seperated files in the <code>inputs</code> directory with the results.</p>
@@ -124,12 +131,10 @@ capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span 
 </div>
 <div id="summarize-results" class="section level2">
 <h2>Summarize Results</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># summarize</span>
-scenario_summary &lt;-<span class="st"> </span><span class="kw">summarize_scenarios</span>(simulation_results)
-domain_summary &lt;-<span class="st"> </span><span class="kw">summarize_domains</span>(simulation_results, domains)
-
-<span class="co"># or to save the summary files directly to disk</span>
-<span class="kw">summarize_to_disk</span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, <span class="st">&quot;~/evaluator/results&quot;</span>)</code></pre></div>
+<p>The raw simulation results typically require summarization for the default reporting functions. These summarized data files, performed at both the per scenario and per domain level are in addition to the previously generated full results. An analyst can always access the full simulation results if desired.</p>
+<p>In the following code block, Evaluator produces <code>scenario_summary.rda</code> and <code>domain_summary.rda</code> files for the reporting in the final section.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summarize_to_disk</span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, 
+                  <span class="dt">results_dir =</span> <span class="st">&quot;~/evaluator/results&quot;</span>)</code></pre></div>
 </div>
 <div id="analyze-the-results" class="section level2">
 <h2>Analyze the Results</h2>

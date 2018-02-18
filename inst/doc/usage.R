@@ -3,6 +3,10 @@ library(tibble)
 library(dplyr)
 library(pander)
 
+## ----quick_start, eval=FALSE---------------------------------------------
+#  base_dir <- "~/evaluator"
+#  source("~/evaluator/run_analysis.R")
+
 ## ----import, eval=FALSE--------------------------------------------------
 #  domains <- readr::read_csv("~/evaluator/inputs/domains.csv")
 #  import_spreadsheet("~/evaluator/inputs/survey.xlsx", domains, output_dir = "~/evaluator/inputs")
@@ -23,12 +27,8 @@ library(pander)
 #  save(simulation_results, file = "~/evaluator/results/simulation_results.rda")
 
 ## ----summarize, eval=FALSE-----------------------------------------------
-#  # summarize
-#  scenario_summary <- summarize_scenarios(simulation_results)
-#  domain_summary <- summarize_domains(simulation_results, domains)
-#  
-#  # or to save the summary files directly to disk
-#  summarize_to_disk(simulation_results = simulation_results, domains = domains, "~/evaluator/results")
+#  summarize_to_disk(simulation_results = simulation_results, domains = domains,
+#                    results_dir = "~/evaluator/results")
 
 ## ----data_files, eval = TRUE, echo=FALSE---------------------------------
 tibble::tribble(

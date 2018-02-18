@@ -132,6 +132,14 @@
 <p>The threats table consists of the potential loss scenarios described by each domain. Each scenario is made up of a descriptive field that describes who did what to whom, the threat community that executed the attack (e.g. external hacktivist, internal workforce member, third party vendor), how often the threat actor acts upon your assets (TEF), the strength with which they act against your assets (TCap), the losses incurred (LM) and a comma-separated list of the control IDs that prevent the scenario.</p>
 </div>
 </div>
+<div id="optional-quick-start" class="section level2">
+<h2 class="hasAnchor">
+<a href="#optional-quick-start" class="anchor"></a>Optional Quick Start</h2>
+<p>As an alternative to manually performing the subsequent steps steps in this document, a <code>run_analysis.R</code> script placed in the <code>~/evaluator</code> directory by the <code><a href="../reference/create_templates.html">create_templates()</a></code> function can be used to run all of these steps automatically. To use this bootstrap script, simply set a <code>base_dir</code> variable to the <code>~/evaluator</code> directory and <code>source</code> the script. The <code>run_analysis</code> script will generate a lot of console output. Performing at least a read through of the rest of this document to familiarize yourself with the steps being executed is strongly recommended.</p>
+<p>Using the quick start (<code>run_analysis</code>) script:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_dir &lt;-<span class="st"> "~/evaluator"</span>
+<span class="kw">source</span>(<span class="st">"~/evaluator/run_analysis.R"</span>)</code></pre></div>
+</div>
 <div id="import-and-validate-the-scenarios" class="section level2">
 <h2 class="hasAnchor">
 <a href="#import-and-validate-the-scenarios" class="anchor"></a>Import and Validate the Scenarios</h2>
@@ -161,12 +169,10 @@ capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span 
 <div id="summarize-results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summarize-results" class="anchor"></a>Summarize Results</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># summarize</span>
-scenario_summary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_scenarios.html">summarize_scenarios</a></span>(simulation_results)
-domain_summary &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_domains.html">summarize_domains</a></span>(simulation_results, domains)
-
-<span class="co"># or to save the summary files directly to disk</span>
-<span class="kw"><a href="../reference/summarize_to_disk.html">summarize_to_disk</a></span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, <span class="st">"~/evaluator/results"</span>)</code></pre></div>
+<p>The raw simulation results typically require summarization for the default reporting functions. These summarized data files, performed at both the per scenario and per domain level are in addition to the previously generated full results. An analyst can always access the full simulation results if desired.</p>
+<p>In the following code block, Evaluator produces <code>scenario_summary.rda</code> and <code>domain_summary.rda</code> files for the reporting in the final section.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/summarize_to_disk.html">summarize_to_disk</a></span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, 
+                  <span class="dt">results_dir =</span> <span class="st">"~/evaluator/results"</span>)</code></pre></div>
 </div>
 <div id="analyze-the-results" class="section level2">
 <h2 class="hasAnchor">
@@ -223,6 +229,7 @@ domain_summary &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <li>
 <a href="#instructions">Instructions</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#define-your-controls-and-security-domains">Define Your Controls and Security Domains</a></li>
+      <li><a href="#optional-quick-start">Optional Quick Start</a></li>
       <li><a href="#import-and-validate-the-scenarios">Import and Validate the Scenarios</a></li>
       <li><a href="#encode-the-data">Encode the Data</a></li>
       <li><a href="#run-the-simulations">Run the Simulations</a></li>

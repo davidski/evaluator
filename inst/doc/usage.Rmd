@@ -88,6 +88,24 @@ threat actor acts upon your assets (TEF),  the strength with which they act
 against your assets (TCap), the losses incurred (LM) and a comma-separated 
 list of the control IDs that prevent the scenario.
 
+## Optional Quick Start
+
+As an alternative to manually performing the subsequent steps steps in 
+this document, a `run_analysis.R` script placed in the `~/evaluator` directory 
+by the `create_templates()` function can be used to run all of these steps 
+automatically. To use this bootstrap script, simply set a `base_dir` variable 
+to the `~/evaluator` directory and `source` the script. The `run_analysis` 
+script will generate a lot of console output. Performing at least a read 
+through of the rest of this document to familiarize yourself with the steps 
+being executed is strongly recommended.
+
+Using the quick start (`run_analysis`) script:
+
+```{r quick_start, eval=FALSE}
+base_dir <- "~/evaluator"
+source("~/evaluator/run_analysis.R")
+```
+
 ## Import and Validate the Scenarios
 
 To extract the spreadsheet into data files for further analysis, run 
@@ -139,13 +157,18 @@ save(simulation_results, file = "~/evaluator/results/simulation_results.rda")
 
 ## Summarize Results
 
-```{r summarize, eval=FALSE}
-# summarize
-scenario_summary <- summarize_scenarios(simulation_results)
-domain_summary <- summarize_domains(simulation_results, domains)
+The raw simulation results typically require summarization for the default 
+reporting functions. These summarized data files, performed at both the 
+per scenario and per domain level are in addition to the previously generated 
+full results. An analyst can always access the full simulation results if 
+desired.
 
-# or to save the summary files directly to disk
-summarize_to_disk(simulation_results = simulation_results, domains = domains, "~/evaluator/results")
+In the following code block, Evaluator produces `scenario_summary.rda` and 
+`domain_summary.rda` files for the reporting in the final section.
+
+```{r summarize, eval=FALSE}
+summarize_to_disk(simulation_results = simulation_results, domains = domains, 
+                  results_dir = "~/evaluator/results")
 ```
 
 ## Analyze the Results
