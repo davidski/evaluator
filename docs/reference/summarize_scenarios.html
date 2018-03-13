@@ -151,7 +151,7 @@ are rarely directly helpful).</p>
 <li><p>Mean/Min/Max/Median are calculated for loss events</p></li>
 <li><p>Median/Max/VaR are calculated for annual loss expected (ALE)</p></li>
 <li><p>Mean/Median/Max/Min are calculated for single loss expected (SLE)</p></li>
-<li><p>Mean percentage of theat capability exceeding difficulty on succesfull threat events</p></li>
+<li><p>Mean percentage of threat capability exceeding difficulty on successful threat events</p></li>
 <li><p>Mean percentage of difficulty exceeding threat capability on defended events</p></li>
 <li><p>Vulnerability percentage</p></li>
 <li><p>Z-score of ALE (outliers flagged as 2 &gt;= z-score)</p></li>
@@ -163,16 +163,16 @@ are rarely directly helpful).</p>
 <span class='fu'>summarize_scenarios</span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; # A tibble: 56 x 18
 #&gt;    domain_id scenario_id loss_events_mean loss_events_min loss_events_max
 #&gt;    &lt;chr&gt;           &lt;int&gt;            &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
-#&gt;  1 AC                 48           0                 0               0   
-#&gt;  2 AC                 51           6.12              1.00           12.0 
-#&gt;  3 ADM                56           0.0430            0               1.00
-#&gt;  4 ASSET              45           6.12              1.00           12.0 
-#&gt;  5 ASSET              46           0.0430            0               1.00
-#&gt;  6 ASSET              47           0.0640            0               1.00
-#&gt;  7 BC                 31           0                 0               0   
-#&gt;  8 BC                 55           0.0420            0               1.00
-#&gt;  9 COMP                9           0                 0               0   
-#&gt; 10 COMP               10           1.90              0               9.00
+#&gt;  1 AC                 48           0.                  0.              0.
+#&gt;  2 AC                 51           6.12                1.             12.
+#&gt;  3 ADM                56           0.0430              0.              1.
+#&gt;  4 ASSET              45           6.12                1.             12.
+#&gt;  5 ASSET              46           0.0430              0.              1.
+#&gt;  6 ASSET              47           0.0640              0.              1.
+#&gt;  7 BC                 31           0.                  0.              0.
+#&gt;  8 BC                 55           0.0420              0.              1.
+#&gt;  9 COMP                9           0.                  0.              0.
+#&gt; 10 COMP               10           1.90                0.              9.
 #&gt; # ... with 46 more rows, and 13 more variables: loss_events_median &lt;dbl&gt;,
 #&gt; #   ale_median &lt;dbl&gt;, ale_max &lt;dbl&gt;, ale_var &lt;dbl&gt;, sle_mean &lt;dbl&gt;,
 #&gt; #   sle_median &lt;dbl&gt;, sle_max &lt;dbl&gt;, sle_min &lt;dbl&gt;, mean_tc_exceedance &lt;dbl&gt;,
