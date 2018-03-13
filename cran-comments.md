@@ -1,11 +1,11 @@
 ## Update
 
-This is a bug-fix update for an existing package.
+This is a functionality and bug-fix update for an existing package.
 
 ## Test environments
 
-* local Windows 10 64 install, R 3.4.2
-* local OS X, R 3.4.2
+* local Windows 10 64 install, R 3.4.3
+* local OS X, R 3.4.3
 * Windows 64 (on appveyor), R 3.4.2
 * Ubuntu 14.04 (on travis-ci), R 3.4.2
 * OS X 10.12 (on travis-ci), R 3.4.2

@@ -1,4 +1,4 @@
-# evaluator 0.1.1.900 (unreleased)
+# evaluator 0.2.0
 
 ## New Functionality
 * New sample dataset: `mappings` contains sample qualitative to quantitative 
@@ -43,6 +43,9 @@
 * Tests and code coverage reporting added
     * Improve faulty `capabilities` validation
 * Removed dependency on `purrrlyr`
+
+## Miscellaneous Changes
+* `generate_report` defaults to creating a MS Word document as the output type
 
 # evaluator 0.1.1
 
