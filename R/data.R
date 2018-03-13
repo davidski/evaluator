@@ -63,10 +63,10 @@
 #'   \item{ale_median}{median annual loss expected}
 #'   \item{ale_max}{maximum annual loss expected}
 #'   \item{ale_var}{value at risk, ale}
-#'   \item{sle_mean}{mean single loss expectance}
-#'   \item{sle_median}{median single loss expectance}
-#'   \item{sle_max}{single loss expectance max}
-#'   \item{sle_min}{minimum single loss expectance}
+#'   \item{sle_mean}{mean single loss expectancy}
+#'   \item{sle_median}{median single loss expectancy}
+#'   \item{sle_max}{maximum single loss expectancy}
+#'   \item{sle_min}{minimum single loss expectancy}
 #'   \item{mean_tc_exceedance}{mean threat capability exceedance}
 #'   \item{mean_diff_exceedance}{mean difficulty exceedance}
 #'   \item{mean_vuln}{mean vulnerability of the scenario}
@@ -102,7 +102,7 @@
 #' }
 "quantitative_scenarios"
 
-#' Qualitatitve information security risk scenarios
+#' Qualitative information security risk scenarios
 #'
 #' A dataset of qualified information security risk scenarios.
 #'
@@ -114,7 +114,7 @@
 #'   \item{tc}{qualitative label of the threat capability}
 #'   \item{lm}{qualitative label of the single loss magnitude}
 #'   \item{domain_id}{domain id to which the scenario applies}
-#'   \item{controls}{comma seperate string of the controls for the scenario}
+#'   \item{controls}{comma separate string of the controls for the scenario}
 #' }
 "qualitative_scenarios"
 

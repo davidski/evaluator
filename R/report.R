@@ -14,7 +14,7 @@
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
 #' @param output_file Full path to output file.
-#' @param styles Optional full path to CSS file to overide default styles.
+#' @param styles Optional full path to CSS file to override default styles.
 #' @param focus_scenario_ids IDs of scenarios of special interest.
 #' @param format Format to generate (html, pdf, word).
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}.
@@ -80,7 +80,7 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
 #'
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
-#' @param styles Optional full path to CSS file to overide default styles.
+#' @param styles Optional full path to CSS file to override default styles.
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::run}.
 #' @import dplyr
 #' @import ggplot2
@@ -128,7 +128,7 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
 
 #' Launch OpenFAIR demonstration web application
 #'
-#' A simple web application to demonstrate OpenFAIR modelling. This application
+#' A simple web application to demonstrate OpenFAIR modeling. This application
 #' allows a user to enter beta PERT parameters and run simulations to see the
 #' distribution of results, with high level summary statistics. As a demonstration
 #' application, only TEF+TC+DIFF+LM parameters may be entered.

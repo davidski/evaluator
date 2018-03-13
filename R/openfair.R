@@ -116,7 +116,7 @@ sample_lef <- function(func = NULL, params = NULL) {
 
 # Control Strength Functions ----------------------------------------------
 
-#' Calculate difficulty strength across mutliple controls by taking the mean
+#' Calculate difficulty strength across multiple controls by taking the mean
 #'
 #' Given a set of estimation parameters, calculate control strength as the
 #' arithmetic mean of sampled control effectiveness.

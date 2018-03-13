@@ -10,7 +10,7 @@ openfair_example()
 Invisible NULL
 }
 \description{
-A simple web application to demonstrate OpenFAIR modelling. This application
+A simple web application to demonstrate OpenFAIR modeling. This application
 allows a user to enter beta PERT parameters and run simulations to see the
 distribution of results, with high level summary statistics. As a demonstration
 application, only TEF+TC+DIFF+LM parameters may be entered.

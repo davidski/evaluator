@@ -9,7 +9,7 @@
 #' * Mean/Min/Max/Median are calculated for loss events
 #' * Median/Max/VaR are calculated for annual loss expected (ALE)
 #' * Mean/Median/Max/Min are calculated for single loss expected (SLE)
-#' * Mean percentage of theat capability exceeding difficulty on succesfull threat events
+#' * Mean percentage of threat capability exceeding difficulty on successful threat events
 #' * Mean percentage of difficulty exceeding threat capability on defended events
 #' * Vulnerability percentage
 #' * Z-score of ALE (outliers flagged as 2 >= z-score)
@@ -60,7 +60,7 @@ summarize_scenarios <- function(simulation_results) {
 #' * Mean/Min/Max/Median are calculated for loss events
 #' * Median/Max/VaR are calculated for annual loss expected (ALE)
 #' * Mean/Median/Max/Min are calculated for single loss expected (SLE)
-#' * Mean percentage of theat capability exceeding difficulty on succesfull threat events
+#' * Mean percentage of threat capability exceeding difficulty on successful threat events
 #' * Mean percentage of difficulty exceeding threat capability on defended events
 #' * Vulnerability percentage
 #' * Z-score of ALE (outliers flagged as 2 >= z-score)

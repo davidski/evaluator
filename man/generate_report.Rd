@@ -15,7 +15,7 @@ generate_report(input_directory = "~/evaluator/inputs",
 
 \item{output_file}{Full path to output file.}
 
-\item{styles}{Optional full path to CSS file to overide default styles.}
+\item{styles}{Optional full path to CSS file to override default styles.}
 
 \item{focus_scenario_ids}{IDs of scenarios of special interest.}
 

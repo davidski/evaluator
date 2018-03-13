@@ -3,7 +3,7 @@
 \docType{data}
 \name{qualitative_scenarios}
 \alias{qualitative_scenarios}
-\title{Qualitatitve information security risk scenarios}
+\title{Qualitative information security risk scenarios}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 8 columns.}
 \usage{
 qualitative_scenarios
@@ -20,7 +20,7 @@ A dataset of qualified information security risk scenarios.
 \item{tc}{qualitative label of the threat capability}
 \item{lm}{qualitative label of the single loss magnitude}
 \item{domain_id}{domain id to which the scenario applies}
-\item{controls}{comma seperate string of the controls for the scenario}
+\item{controls}{comma separate string of the controls for the scenario}
 }
 }
 \keyword{datasets}

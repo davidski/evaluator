@@ -24,7 +24,7 @@ Summary stats created include:
 \item Mean/Min/Max/Median are calculated for loss events
 \item Median/Max/VaR are calculated for annual loss expected (ALE)
 \item Mean/Median/Max/Min are calculated for single loss expected (SLE)
-\item Mean percentage of theat capability exceeding difficulty on succesfull threat events
+\item Mean percentage of threat capability exceeding difficulty on successful threat events
 \item Mean percentage of difficulty exceeding threat capability on defended events
 \item Vulnerability percentage
 \item Z-score of ALE (outliers flagged as 2 >= z-score)

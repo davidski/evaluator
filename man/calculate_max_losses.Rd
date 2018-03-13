@@ -16,7 +16,7 @@ Dataframe.
 }
 \description{
 Calculate the biggest single annual loss for each scenario, as well as
-the minimum and maxium ALE across all simulations. Calculations both
+the minimum and maximum ALE across all simulations. Calculations both
 with and without outliers (if passed) are returned.
 }
 \examples{

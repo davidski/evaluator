@@ -85,7 +85,7 @@ calculate_domain_impact <- function(domain_summary, domains) {
 #' Calculate maximum losses
 #'
 #' Calculate the biggest single annual loss for each scenario, as well as
-#' the minimum and maxium ALE across all simulations. Calculations both
+#' the minimum and maximum ALE across all simulations. Calculations both
 #' with and without outliers (if passed) are returned.
 #'
 #' @importFrom dplyr filter_ group_by_ summarize_ ungroup union

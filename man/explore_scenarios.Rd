@@ -12,7 +12,7 @@ explore_scenarios(input_directory = "~/evaluator/inputs",
 
 \item{results_directory}{Location of simulation results.}
 
-\item{styles}{Optional full path to CSS file to overide default styles.}
+\item{styles}{Optional full path to CSS file to override default styles.}
 
 \item{...}{Any other parameters to pass straight to \code{rmarkdown::run}.}
 }

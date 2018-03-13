@@ -23,10 +23,10 @@ scenario level.
 \item{ale_median}{median annual loss expected}
 \item{ale_max}{maximum annual loss expected}
 \item{ale_var}{value at risk, ale}
-\item{sle_mean}{mean single loss expectance}
-\item{sle_median}{median single loss expectance}
-\item{sle_max}{single loss expectance max}
-\item{sle_min}{minimum single loss expectance}
+\item{sle_mean}{mean single loss expectancy}
+\item{sle_median}{median single loss expectancy}
+\item{sle_max}{maximum single loss expectancy}
+\item{sle_min}{minimum single loss expectancy}
 \item{mean_tc_exceedance}{mean threat capability exceedance}
 \item{mean_diff_exceedance}{mean difficulty exceedance}
 \item{mean_vuln}{mean vulnerability of the scenario}

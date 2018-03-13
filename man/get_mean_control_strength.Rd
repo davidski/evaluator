@@ -2,7 +2,7 @@
 % Please edit documentation in R/openfair.R
 \name{get_mean_control_strength}
 \alias{get_mean_control_strength}
-\title{Calculate difficulty strength across mutliple controls by taking the mean}
+\title{Calculate difficulty strength across multiple controls by taking the mean}
 \usage{
 get_mean_control_strength(n, diff_estimates)
 }
