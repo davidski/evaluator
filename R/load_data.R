@@ -3,7 +3,7 @@
 #' Given a base directory, copy the provided sample files into an `inputs`
 #' subdirectory. This makes the starter files available for customizing and
 #' data collection. The `inputs` directory will be created if not already present.
-#' Pre-existing files, if present, will not be overwritten. Also creates an
+#' Preexisting files, if present, will not be overwritten. Also creates an
 #' empty `results` subdirectory as a default location for evaluator output.
 #'
 #' @importFrom dplyr data_frame
