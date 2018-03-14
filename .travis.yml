@@ -2,6 +2,9 @@ language: r
 r:
   - release
   - devel
+pandoc:
+  - true
+  - false
 sudo: false
 
 branches:
@@ -19,9 +22,6 @@ matrix:
         - brew outdated gdal || brew upgrade gdal
     - os: linux
       dist: trusty
-    - os: linux
-      dist: trusty
-      pandoc: false
 
 addons:
   apt:
