@@ -6,7 +6,8 @@
 \usage{
 generate_report(input_directory = "~/evaluator/inputs",
   results_directory = "~/evaluator/results", output_file, styles = NULL,
-  focus_scenario_ids = c(51, 12), format = "html", ...)
+  focus_scenario_ids = c(51, 12), format = "html",
+  intermediates_dir = tempdir(), ...)
 }
 \arguments{
 \item{input_directory}{Location of input files.}
@@ -20,6 +21,8 @@ generate_report(input_directory = "~/evaluator/inputs",
 \item{focus_scenario_ids}{IDs of scenarios of special interest.}
 
 \item{format}{Format to generate (html, pdf, word).}
+
+\item{intermediates_dir}{Location for intermediate knit files.}
 
 \item{...}{Any other parameters to pass straight to \code{rmarkdown::render}.}
 }

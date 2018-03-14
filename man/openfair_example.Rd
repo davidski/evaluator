@@ -4,7 +4,10 @@
 \alias{openfair_example}
 \title{Launch OpenFAIR demonstration web application}
 \usage{
-openfair_example()
+openfair_example(intermediates_dir = tempdir())
+}
+\arguments{
+\item{intermediates_dir}{Location for intermediate knit files.}
 }
 \value{
 Invisible NULL

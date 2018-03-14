@@ -3,7 +3,10 @@
 ## Bug Fixes
 * Document optional dependency on pandoc and add test skip logic to avoid 
     rmarkdown tests on systems where pandoc is not available.
+    + Add testing to travis matrix for Linux builds with and without pandoc.
 * run_analysis script was missing namespace calls for readr::cols.
+* All rmarkdown calls now specify an `intermediates_dir` value of `tempdir()`. 
+    This can be overwritten on the function call if needed.
 
 # evaluator 0.2.0
 

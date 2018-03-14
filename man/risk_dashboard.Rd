@@ -5,7 +5,8 @@
 \title{Launch a single page summary risk dashboard}
 \usage{
 risk_dashboard(input_directory = "~/evaluator/inputs",
-  results_directory = "~/evaluator/results", output_file, ...)
+  results_directory = "~/evaluator/results", output_file,
+  intermediates_dir = tempdir(), ...)
 }
 \arguments{
 \item{input_directory}{Location of input files}
@@ -13,6 +14,8 @@ risk_dashboard(input_directory = "~/evaluator/inputs",
 \item{results_directory}{Location of simulation results}
 
 \item{output_file}{Full path to the desired output file.}
+
+\item{intermediates_dir}{Location for intermediate knit files.}
 
 \item{...}{Any other parameters to pass straight to \code{rmarkdown::render}}
 }
