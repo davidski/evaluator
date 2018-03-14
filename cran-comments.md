@@ -1,6 +1,7 @@
 ## Update
 
-This is a functionality and bug-fix update for an existing package.
+This is a bug-fix update for an existing package. Primary fixes include
+correcting unintentional CRAN policy violations.
 
 ## Test environments
 
