@@ -2,9 +2,6 @@ language: r
 r:
   - release
   - devel
-pandoc:
-  - true
-  - false
 sudo: false
 
 branches:
@@ -14,6 +11,8 @@ branches:
 cache: packages
 
 matrix:
+  - pandoc: true
+  - pandoc: false
   include:
     - os: osx
       osx_image: xcode9.1
