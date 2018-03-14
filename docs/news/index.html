@@ -126,6 +126,22 @@
 
     <div class="contents">
     <div class="section level1">
+<h1>evaluator 0.2.0.900 (unreleased)</h1>
+<div class="section level2">
+<h2>Bug Fixes</h2>
+<ul>
+<li>Document optional dependency on pandoc and add test skip logic to avoid rmarkdown tests on systems where pandoc is not available.
+<ul>
+<li>Add testing to travis matrix for Linux builds with and without pandoc.</li>
+</ul>
+</li>
+<li>run_analysis script was missing namespace calls for <code><a href="http://www.rdocumentation.org/packages/readr/topics/cols">readr::cols</a></code>.</li>
+<li>All rmarkdown calls now specify an <code>intermediates_dir</code> value of <code>tempdir()</code>. This can be overwritten on the function call if needed.</li>
+<li>Report generation is now much quieter by default.</li>
+</ul>
+</div>
+</div>
+    <div class="section level1">
 <h1>evaluator 0.2.0</h1>
 <div class="section level2">
 <h2>New Functionality</h2>
@@ -240,6 +256,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#NA">0.2.0.900</a></li>
         <li><a href="#NA">0.2.0</a></li>
         <li><a href="#NA">0.1.1</a></li>
         <li><a href="#NA">0.1.0</a></li>
