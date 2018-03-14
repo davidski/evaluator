@@ -2,7 +2,9 @@ language: r
 r:
   - release
   - devel
-sudo: false branches:
+sudo: false
+
+branches:
   only:
   - heroku
   - master
