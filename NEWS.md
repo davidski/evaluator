@@ -1,8 +1,9 @@
 # evaluator 0.2.0.900 (unreleased)
 
-## Bug fix
+## Bug Fixes
 * Document optional dependency on pandoc and add test skip logic to avoid 
     rmarkdown tests on systems where pandoc is not available.
+* run_analysis script was missing namespace calls for readr::cols.
 
 # evaluator 0.2.0
 
