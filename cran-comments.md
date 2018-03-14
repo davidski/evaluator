@@ -6,9 +6,11 @@ This is a functionality and bug-fix update for an existing package.
 
 * local Windows 10 64 install, R 3.4.3
 * local OS X, R 3.4.3
-* Windows 64 (on appveyor), R 3.4.2
-* Ubuntu 14.04 (on travis-ci), R 3.4.2
-* OS X 10.12 (on travis-ci), R 3.4.2
+* Windows Server 2012 R2 x64 (on appveyor), R 3.4.3
+* Ubuntu 14.04 LTS (on travis-ci)
+  * R-release (both with and without pandoc)
+  * R-devel   (both with and without pandoc)
+* OS X 10.12 (on travis-ci), R-release
 * win-builder (devel and release)
 
 ## R CMD check results
