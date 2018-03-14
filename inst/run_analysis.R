@@ -20,7 +20,12 @@ if (!exists("base_dir") || !dir.exists(base_dir)) {
 inputs_dir <- file.path(base_dir, "inputs")
 results_dir <- file.path(base_dir, "results")
 
+message("Beginning analysis run with input directory (", inputs_dir, ")",
+        " and results directory (", results_dir, ")...")
+
 # Load and Validate -------------------------------------------------------
+message("Loading and validating inputs...")
+
 domains <-  readr::read_csv(file.path(inputs_dir, "domains.csv"),
                             col_types = readr::cols(.default = readr::col_character()))
 import_spreadsheet(file.path(inputs_dir, "survey.xlsx"), domains, inputs_dir)
@@ -40,19 +45,23 @@ capabilities <- readr::read_csv(file.path(inputs_dir, "capabilities.csv"),
 validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
 
 # Encode ------------------------------------------------------------------
+message("Encoding qualitative scenarios...")
 quantitative_scenarios <- encode_scenarios(qualitative_scenarios, capabilities,
                                            mappings)
 
 # Simulate ----------------------------------------------------------------
+message("Running simulations...")
 simulation_results <- run_simulations(quantitative_scenarios,
                                       simulation_count = 10000L)
 save(simulation_results, file = file.path(results_dir, "simulation_results.rda"))
 
-# summarize
+# Summarize ---------------------------------------------------------------
+message("Summarizing results...")
 summarize_to_disk(simulation_results = simulation_results,
                   domains = domains, results_dir)
 
-# Summarize ---------------------------------------------------------------
+# Report ---------------------------------------------------------------
+message("Generating reports...")
 
 ## Risk Dashboard
 risk_dashboard(inputs_dir, results_dir,
@@ -62,3 +71,5 @@ risk_dashboard(inputs_dir, results_dir,
 generate_report(inputs_dir, results_dir,
                 file.path(results_dir, "risk_report.docx"),
                 format = "word")
+
+message("Analysis complete.")
