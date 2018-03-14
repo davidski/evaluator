@@ -1,6 +1,8 @@
 # evaluator 0.2.0.900 (unreleased)
 
-* Begin iteration for next release
+## Bug fix
+* Document optional dependency on pandoc and add test skip logic to avoid 
+    rmarkdown tests on systems where pandoc is not available.
 
 # evaluator 0.2.0
 

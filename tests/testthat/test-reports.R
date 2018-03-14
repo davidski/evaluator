@@ -23,6 +23,9 @@ readr::write_csv(qualitative_scenarios, file.path(tmpinputs, "qualitative_scenar
 
 test_that("Analyze report renders", {
 
+  skip_if_not(rmarkdown::pandoc_available(),
+              message = "Cannot test report generation without pandoc available.")
+
   file <- tempfile(fileext = ".html")
 
   result <- evaluate_promise(generate_report(input_directory = tmpinputs,
@@ -46,6 +49,10 @@ test_that("Analyze report renders", {
 # })
 
 test_that("Risk Dashboard renders", {
+
+  skip_if_not(rmarkdown::pandoc_available(),
+              message = "Cannot test dashboard generation without pandoc available.")
+
   file <- tempfile(fileext = ".html")
 
   result <- evaluate_promise(risk_dashboard(input_directory = tmpinputs,

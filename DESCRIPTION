@@ -41,6 +41,7 @@ Suggests:
   testthat,
   covr,
   mockery
+SystemRequirements: pandoc
 VignetteBuilder: knitr
 URL: https://evaluator.severski.net
 BugReports: https://github.com/davidski/evaluator/issues
