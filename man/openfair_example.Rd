@@ -4,10 +4,12 @@
 \alias{openfair_example}
 \title{Launch OpenFAIR demonstration web application}
 \usage{
-openfair_example(intermediates_dir = tempdir())
+openfair_example(intermediates_dir = tempdir(), quiet = TRUE)
 }
 \arguments{
 \item{intermediates_dir}{Location for intermediate knit files.}
+
+\item{quiet}{TRUE to suppress printing of pandoc output.}
 }
 \value{
 Invisible NULL

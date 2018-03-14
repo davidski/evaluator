@@ -7,7 +7,7 @@
 generate_report(input_directory = "~/evaluator/inputs",
   results_directory = "~/evaluator/results", output_file, styles = NULL,
   focus_scenario_ids = c(51, 12), format = "html",
-  intermediates_dir = tempdir(), ...)
+  intermediates_dir = tempdir(), quiet = TRUE, ...)
 }
 \arguments{
 \item{input_directory}{Location of input files.}
@@ -23,6 +23,8 @@ generate_report(input_directory = "~/evaluator/inputs",
 \item{format}{Format to generate (html, pdf, word).}
 
 \item{intermediates_dir}{Location for intermediate knit files.}
+
+\item{quiet}{TRUE to suppress printing of pandoc output.}
 
 \item{...}{Any other parameters to pass straight to \code{rmarkdown::render}.}
 }

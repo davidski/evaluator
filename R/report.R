@@ -18,6 +18,7 @@
 #' @param focus_scenario_ids IDs of scenarios of special interest.
 #' @param format Format to generate (html, pdf, word).
 #' @param intermediates_dir Location for intermediate knit files.
+#' @param quiet TRUE to suppress printing of pandoc output.
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}.
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
@@ -32,6 +33,7 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
                             focus_scenario_ids = c(51, 12),
                             format = "html",
                             intermediates_dir = tempdir(),
+                            quiet = TRUE,
                             ...) {
   if (!requireNamespace("psych", quietly = TRUE)) {
     stop("Install the psych package to generate reports.")
@@ -69,6 +71,7 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
                                   results_directory = results_directory,
                                   focus_scenario_ids = focus_scenario_ids),
                     output_format = out_format,
+                    quiet = quiet,
                     ...)
 }
 
@@ -85,6 +88,7 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
 #' @param results_directory Location of simulation results.
 #' @param styles Optional full path to CSS file to override default styles.
 #' @param intermediates_dir Location for intermediate knit files.
+#' @param quiet TRUE to suppress printing of pandoc output.
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::run}.
 #' @import dplyr
 #' @import ggplot2
@@ -98,6 +102,7 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
                               results_directory = "~/evaluator/results",
                               styles = NULL,
                               intermediates_dir = tempdir(),
+                              quiet = TRUE,
                               ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate reports.")
@@ -128,7 +133,8 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
                                           logo = icon),
                    intermediates_dir = intermediates_dir,
                    params = list(input_directory = input_directory,
-                               results_directory = results_directory)),
+                                 results_directory = results_directory),
+                   quiet = quiet),
                  ...)
   invisible(NULL)
 }
@@ -141,13 +147,15 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
 #' application, only TEF+TC+DIFF+LM parameters may be entered.
 #'
 #' @param intermediates_dir Location for intermediate knit files.
+#' @param quiet TRUE to suppress printing of pandoc output.
 #' @return Invisible NULL
 #' @export
 #' @examples
 #' \dontrun{
 #' openfair_example()
 #' }
-openfair_example <- function(intermediates_dir = tempdir()) {
+openfair_example <- function(intermediates_dir = tempdir(),
+                             quiet = TRUE) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to run the OpenFAIR demonstration application.")
   }
@@ -166,7 +174,8 @@ openfair_example <- function(intermediates_dir = tempdir()) {
                  render_args = list(output_options =  list(css = styles,
                                                            favicon = icon,
                                                            logo = icon),
-                                    intermediates_dir = intermediates_dir
+                                    intermediates_dir = intermediates_dir,
+                                    quiet = quiet
                                     )
                  )
   invisible(NULL)
@@ -183,6 +192,7 @@ openfair_example <- function(intermediates_dir = tempdir()) {
 #' @param results_directory Location of simulation results
 #' @param output_file Full path to the desired output file.
 #' @param intermediates_dir Location for intermediate knit files.
+#' @param quiet TRUE to suppress printing of pandoc output.
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
@@ -194,6 +204,7 @@ risk_dashboard <- function(input_directory = "~/evaluator/inputs",
                            results_directory = "~/evaluator/results",
                            output_file,
                            intermediates_dir = tempdir(),
+                           quiet = TRUE,
                            ...) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Install the rmarkdown package to generate the risk dashboard.")
@@ -213,5 +224,6 @@ risk_dashboard <- function(input_directory = "~/evaluator/inputs",
                     intermediates_dir = intermediates_dir,
                     params = list(input_directory = input_directory,
                                   results_directory = results_directory),
+                    quiet = quiet,
                     ...)
 }

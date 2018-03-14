@@ -6,7 +6,7 @@
 \usage{
 explore_scenarios(input_directory = "~/evaluator/inputs",
   results_directory = "~/evaluator/results", styles = NULL,
-  intermediates_dir = tempdir(), ...)
+  intermediates_dir = tempdir(), quiet = TRUE, ...)
 }
 \arguments{
 \item{input_directory}{Location of input files.}
@@ -16,6 +16,8 @@ explore_scenarios(input_directory = "~/evaluator/inputs",
 \item{styles}{Optional full path to CSS file to override default styles.}
 
 \item{intermediates_dir}{Location for intermediate knit files.}
+
+\item{quiet}{TRUE to suppress printing of pandoc output.}
 
 \item{...}{Any other parameters to pass straight to \code{rmarkdown::run}.}
 }
