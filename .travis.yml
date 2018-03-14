@@ -1,7 +1,4 @@
 language: r
-r:
-  - release
-  - devel
 sudo: false
 
 branches:
@@ -20,9 +17,19 @@ matrix:
     - os: linux
       dist: trusty
       pandoc: true
+      r: release
+    - os: linux
+      dist: trusty
+      pandoc: true
+      r: devel
     - os: linux
       dist: trusty
       pandoc: false
+      r: release
+    - os: linux
+      dist: trusty
+      pandoc: false
+      r: devel
 
 addons:
   apt:
