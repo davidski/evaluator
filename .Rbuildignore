@@ -13,3 +13,4 @@ cran-comments.md
 ^_pkgdown\.yml$
 ^index.Rmd$
 meta_tags.html
+^\.github$
