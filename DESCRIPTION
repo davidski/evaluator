@@ -1,6 +1,6 @@
 Package: evaluator
 Title: Quantified Risk Assessment Toolkit
-Version: 0.2.0.900
+Version: 0.2.1
 Authors@R: person("David", "Severski", email = "davidski@deadheaven.com", role = c("aut", "cre"))
 Description: An open source risk analysis toolkit based on the OpenFAIR taxonomy 
   <https://www2.opengroup.org/ogsys/catalog/C13K> and risk assessment standard 

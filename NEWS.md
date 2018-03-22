@@ -1,4 +1,4 @@
-# evaluator 0.2.0.900 (unreleased)
+# evaluator 0.2.1
 
 ## Bug Fixes
 * Document optional dependency on pandoc and add test skip logic to avoid 

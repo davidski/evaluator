@@ -1,12 +1,16 @@
 ## Update
 
 This is a bug-fix update for an existing package. Primary fixes include
-correcting unintentional CRAN policy violations.
+correcting unintentional CRAN policy violations around undocumented pandoc 
+dependencies and some `rmarkdown` calls inappropriately writing intermediate 
+files to a package directory instead of a temporary directory. These have been 
+corrected, test coverage has been updated, and the CI build matrix expanded to 
+try to address all of these issues.
 
 ## Test environments
 
 * local Windows 10 64 install, R 3.4.3
-* local OS X, R 3.4.3
+* local OS X, R 3.4.4
 * Windows Server 2012 R2 x64 (on appveyor), R 3.4.3
 * Ubuntu 14.04 LTS (on travis-ci)
   * R-release (both with and without pandoc)
