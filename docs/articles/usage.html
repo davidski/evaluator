@@ -137,42 +137,42 @@
 <a href="#optional-quick-start" class="anchor"></a>Optional Quick Start</h2>
 <p>As an alternative to manually performing the subsequent steps steps in this document, a <code>run_analysis.R</code> script placed in the <code>~/evaluator</code> directory by the <code><a href="../reference/create_templates.html">create_templates()</a></code> function can be used to run all of these steps automatically. To use this bootstrap script, simply set a <code>base_dir</code> variable to the <code>~/evaluator</code> directory and <code>source</code> the script. The <code>run_analysis</code> script will generate a lot of console output. Performing at least a read through of the rest of this document to familiarize yourself with the steps being executed is strongly recommended.</p>
 <p>Using the quick start (<code>run_analysis</code>) script:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">base_dir &lt;-<span class="st"> "~/evaluator"</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">source</span>(<span class="st">"~/evaluator/run_analysis.R"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_dir &lt;-<span class="st"> "~/evaluator"</span>
+<span class="kw">source</span>(<span class="st">"~/evaluator/run_analysis.R"</span>)</code></pre></div>
 </div>
 <div id="import-and-validate-the-scenarios" class="section level2">
 <h2 class="hasAnchor">
 <a href="#import-and-validate-the-scenarios" class="anchor"></a>Import and Validate the Scenarios</h2>
 <p>To extract the spreadsheet into data files for further analysis, run <code><a href="../reference/import_spreadsheet.html">import_spreadsheet()</a></code>. Evaluator will extract the data and save two comma seperated files in the <code>inputs</code> directory with the results.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">domains &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/domains.csv"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="../reference/import_spreadsheet.html">import_spreadsheet</a></span>(<span class="st">"~/evaluator/inputs/survey.xlsx"</span>, domains, <span class="dt">output_dir =</span> <span class="st">"~/evaluator/inputs"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">domains &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/domains.csv"</span>)
+<span class="kw"><a href="../reference/import_spreadsheet.html">import_spreadsheet</a></span>(<span class="st">"~/evaluator/inputs/survey.xlsx"</span>, domains, <span class="dt">output_dir =</span> <span class="st">"~/evaluator/inputs"</span>)</code></pre></div>
 <p>Afer importing, you are strongly encouraged to run <code><a href="../reference/validate_scenarios.html">validate_scenarios()</a></code> to verify there are no data integrity issues. If there are errors detected, the validation process will abort and a message summarizing the problem is displayed. Correct the errors displayed, reimport, and repeat the validation process until there are no errors reported.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_scenarios.csv"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">mappings &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_mappings.csv"</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/capabilities.csv"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="../reference/validate_scenarios.html">validate_scenarios</a></span>(qualitative_scenarios, capabilities, domains, mappings)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_scenarios.csv"</span>)
+mappings &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_mappings.csv"</span>)
+capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/capabilities.csv"</span>)
+<span class="kw"><a href="../reference/validate_scenarios.html">validate_scenarios</a></span>(qualitative_scenarios, capabilities, domains, mappings)</code></pre></div>
 </div>
 <div id="encode-the-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#encode-the-data" class="anchor"></a>Encode the Data</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">quantitative_scenarios &lt;-<span class="st"> </span><span class="kw"><a href="../reference/encode_scenarios.html">encode_scenarios</a></span>(qualitative_scenarios, </a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">                                           capabilities, mappings)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantitative_scenarios &lt;-<span class="st"> </span><span class="kw"><a href="../reference/encode_scenarios.html">encode_scenarios</a></span>(qualitative_scenarios, 
+                                           capabilities, mappings)</code></pre></div>
 </div>
 <div id="run-the-simulations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#run-the-simulations" class="anchor"></a>Run the Simulations</h2>
 <p>Once the quantitative scenarios are ready for simulation, run <code><a href="../reference/run_simulations.html">run_simulations(quantitative_scenarios)</a></code>. By default, Evaluator puts each scenario through 10,000 individual simulated years, modelling how often the threat actors come into contact with your assets, the strength of the threat actors, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process is computationally intense. The sample data takes approximately 24 minutes to run on a 2016 MacBook Pro. A progress bar is displayed on the console while running.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">simulation_results &lt;-<span class="st"> </span><span class="kw"><a href="../reference/run_simulations.html">run_simulations</a></span>(quantitative_scenarios, </a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">                                      <span class="dt">simulation_count =</span> 100L)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">save</span>(simulation_results, <span class="dt">file =</span> <span class="st">"~/evaluator/results/simulation_results.rda"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">simulation_results &lt;-<span class="st"> </span><span class="kw"><a href="../reference/run_simulations.html">run_simulations</a></span>(quantitative_scenarios, 
+                                      <span class="dt">simulation_count =</span> 100L)
+<span class="kw">save</span>(simulation_results, <span class="dt">file =</span> <span class="st">"~/evaluator/results/simulation_results.rda"</span>)</code></pre></div>
 </div>
 <div id="summarize-results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summarize-results" class="anchor"></a>Summarize Results</h2>
 <p>The raw simulation results typically require summarization for the default reporting functions. These summarized data files, performed at both the per scenario and per domain level are in addition to the previously generated full results. An analyst can always access the full simulation results if desired.</p>
 <p>In the following code block, Evaluator produces <code>scenario_summary.rda</code> and <code>domain_summary.rda</code> files for the reporting in the final section.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/summarize_to_disk.html">summarize_to_disk</a></span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, </a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">                  <span class="dt">results_dir =</span> <span class="st">"~/evaluator/results"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/summarize_to_disk.html">summarize_to_disk</a></span>(<span class="dt">simulation_results =</span> simulation_results, <span class="dt">domains =</span> domains, 
+                  <span class="dt">results_dir =</span> <span class="st">"~/evaluator/results"</span>)</code></pre></div>
 </div>
 <div id="analyze-the-results" class="section level2">
 <h2 class="hasAnchor">
@@ -205,16 +205,16 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Explorer</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="../reference/explore_scenarios.html">explore_scenarios</a></span>(<span class="st">"~/evaluator/inputs"</span>, <span class="st">"~/evaluator/results"</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co"># Risk Dashboard</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw"><a href="../reference/risk_dashboard.html">risk_dashboard</a></span>(<span class="st">"~/evaluator/inputs"</span>, <span class="st">"~/evaluator/results"</span>, </a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">               <span class="st">"~/evaluator/risk_dashboard.html"</span>)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co"># Sample Report</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="kw"><a href="../reference/generate_report.html">generate_report</a></span>(<span class="st">"~/evaluator/inputs"</span>, <span class="st">"~/evaluator/results"</span>, </a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">                <span class="st">"~/evaluator/risk_report.html"</span>) <span class="op">%&gt;%</span><span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstudioapi/topics/viewer">viewer</a></span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Explorer</span>
+<span class="kw"><a href="../reference/explore_scenarios.html">explore_scenarios</a></span>(<span class="st">"~/evaluator/inputs"</span>, <span class="st">"~/evaluator/results"</span>)
+
+<span class="co"># Risk Dashboard</span>
+<span class="kw"><a href="../reference/risk_dashboard.html">risk_dashboard</a></span>(<span class="st">"~/evaluator/inputs"</span>, <span class="st">"~/evaluator/results"</span>, 
+               <span class="st">"~/evaluator/risk_dashboard.html"</span>)
+
+<span class="co"># Sample Report</span>
+<span class="kw"><a href="../reference/generate_report.html">generate_report</a></span>(<span class="st">"~/evaluator/inputs"</span>, <span class="st">"~/evaluator/results"</span>, 
+                <span class="st">"~/evaluator/risk_report.html"</span>) <span class="op">%&gt;%</span><span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rstudioapi/topics/viewer">viewer</a></span>()</code></pre></div>
 <p>To view that same report as a Word document for editing, use <code><a href="../reference/generate_report.html">generate_report("~/evaluator/inputs", "~/evaluator/results", "~/evaluator/risk_report.docx", output_format = "word_document")</a></code>.</p>
 </div>
 </div>

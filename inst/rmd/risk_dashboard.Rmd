@@ -120,7 +120,7 @@ Scenario Results {.data-height=250}
 
 ### Loss Ranges for Top 10 Scenarios {.no-padding}
 
-```{r loss_across_scenarios, fig.width=10, fig.height=3, cache=TRUE}
+```{r loss_across_scenarios, fig.width=10, fig.height=3}
 # helper function to roll up scenarios that aren't in the top_n
 sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
   cluster_hack <- max(dat$cluster_id)
