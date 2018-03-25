@@ -3,6 +3,8 @@
 ## Bug Fixes
 * Update risk_dashboard to not cache any chunks. This keeps `render` from 
     from trying to write to the package install directory.
+* Updated tests to use four significant digits where long refrence values are 
+    passed, avoiding precission issues on machines without long doubles.
 
 
 # evaluator 0.2.1
