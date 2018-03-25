@@ -12,7 +12,7 @@
 sample_tef <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
   list(type = "tef",
-       samples = invoke(func, params),
+       samples = as.integer(floor(invoke(func, params))),
        details = list())
 }
 
@@ -241,7 +241,7 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
     TEFsamples <- sample_tef(params = list(n, TEFestimate$l, TEFestimate$ml,
                                            TEFestimate$h,
                                            shape = TEFestimate$conf))
-    TEFsamples <- round(TEFsamples$samples)
+    TEFsamples <- TEFsamples$samples
 
     # TC - what is the strength of each threat event
     #    - get the threat capability parameters for this scenario
