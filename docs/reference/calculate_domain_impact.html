@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate quantified impact at a domain level � calculate_domain_impact • evaluator</title>
+<title>Calculate quantified impact at a domain level — calculate_domain_impact • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Calculate quantified impact at a domain level — calculate_domain_impact" />
+
+<meta property="og:description" content="Given a dataframe of simulation results summarized at the domain level,
+create a summarization of the annual loss expected (ALE) with descriptors
+at the minimum, mean, maximum, standard deviation, and 95
+levels." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +68,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">evaluator</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">evaluator</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.900</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -121,6 +134,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate quantified impact at a domain level</h1>
+    
     </div>
 
     
@@ -132,7 +146,7 @@ levels.</p>
 
     <pre class="usage"><span class='fu'>calculate_domain_impact</span>(<span class='no'>domain_summary</span>, <span class='no'>domains</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -156,20 +170,20 @@ levels.</p>
 <span class='fu'>calculate_domain_impact</span>(<span class='no'>domain_summary</span>, <span class='no'>domains</span>)</div><div class='output co'>#&gt; # A tibble: 14 x 7
 #&gt;    domain_id      min     mean      max       sd      var domain               
 #&gt;    &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;                
-#&gt;  1 IM        1513809. 4465097. 9367780. 1302761. 6691612. Information Security~
-#&gt;  2 COMP       743762. 2598394. 6145570.  869087. 4077983. Compliance (COMP)    
-#&gt;  3 ISMP       663743. 2474047. 5468451.  807195. 3963943. Information Security~
-#&gt;  4 ORG        280905. 1907368. 5326646.  758155. 3237394. Organization of Info~
-#&gt;  5 PHY             0.  165788. 3898004.  654598. 2014140. Physical and Environ~
-#&gt;  6 HR          44730.  622980. 1855731.  275654. 1120515. Human Resources Secu~
-#&gt;  7 AC          15054.  599813. 1450198.  266695. 1083095. Access Control (AC)  
-#&gt;  8 OPS         43936.  251152. 1151143.  148927.  533819. Communications and O~
-#&gt;  9 PRI             0.  159156.  786643.  147745.  436371. Privacy Practices (P~
-#&gt; 10 ASSET        1138.   27463.  321407.   32002.   58655. Asset Management (AS~
-#&gt; 11 RISK            0.    5762.  321986.   30204.   15102. Risk Management (RIS~
-#&gt; 12 ADM             0.    4741.  304163.   27386.       0. Information Systems ~
-#&gt; 13 BC              0.  102050. 4091811.  508817.       0. Business Continuity ~
-#&gt; 14 POL             0.     169.    8246.     937.       0. Security Policy (POL)</div></pre>
+#&gt;  1 IM        1215142. 4324064. 9436348. 1278577. 6588796. Information Security~
+#&gt;  2 COMP       715491. 2554688. 5490534.  853930. 4091600. Compliance (COMP)    
+#&gt;  3 ISMP       597580. 2420754. 5435747.  800720. 3811909. Information Security~
+#&gt;  4 ORG         60771. 1860772. 4511901.  769359. 3284849. Organization of Info~
+#&gt;  5 AC          25967.  552781. 1606611.  269118. 1053280. Access Control (AC)  
+#&gt;  6 HR          24115.  573179. 1681663.  265608. 1010868. Human Resources Secu~
+#&gt;  7 OPS         46573.  226870.  963740.  140500.  512434. Communications and O~
+#&gt;  8 PRI             0.  133273.  904346.  140987.  393278. Privacy Practices (P~
+#&gt;  9 ASSET         426.   19369.   53798.    9009.   35491. Asset Management (AS~
+#&gt; 10 ADM             0.       0.       0.       0.       0. Information Systems ~
+#&gt; 11 BC              0.       0.       0.       0.       0. Business Continuity ~
+#&gt; 12 PHY             0.       0.       0.       0.       0. Physical and Environ~
+#&gt; 13 POL             0.       0.       0.       0.       0. Security Policy (POL)
+#&gt; 14 RISK            0.       0.       0.       0.       0. Risk Management (RIS~</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -198,3 +212,4 @@ levels.</p>
 
   </body>
 </html>
+

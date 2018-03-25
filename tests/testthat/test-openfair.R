@@ -7,12 +7,11 @@ test_that("Sample TEF", {
   expect_equal(names(tef), c("type", "samples", "details"))
   # ensure that the samples matches the number requested
   expect_equal(length(tef$samples), 10)
+  # ensure that TEF values are returned as integers
+  expect_is(tef$samples, "integer")
   # ensure that values of samples is correct
-  expect_equal(signif(unlist(tef$samples), digits = 4),
-               signif(c(6.58476034295649, 30.043491618616, 1.78473018566469,
-                        34.1131016153908, 36.3088944002633, 13.3732140003123,
-                        13.7715514319784, 13.5179511213919, 9.49877054112384,
-                        14.7953439798899), digits = 4))
+  expect_equal(unlist(tef$samples),
+               c(6., 30, 1, 34, 36, 13, 13, 13, 9, 14))
 })
 
 context("Sample DIFF")
@@ -112,11 +111,10 @@ test_that("Sample LEF works with composition function", {
   expect_equal(names(dat), c("type", "samples", "details"))
   # ensure that the samples matches the number requested
   expect_equal(length(dat$samples), 10)
+  # ensure that LEF samples are always integers
+  expect_is(dat$samples, "integer")
   # ensure that values of samples is correct
-  expect_equal(signif(dat$samples, digits = 4),
-               signif(c(5.20876621226071, 11.3834536928631, 14.8272191228827,
-                        2.13539043294175, 12.0480617647494, 0,
-                        7.69701064151479, 0, 0, 6.41214819406418), digits = 4))
+  expect_equal(dat$samples, c(5, 11, 14, 2, 12, 0, 7, 0, 0, 6))
 })
 
 context("Standard simulation model")
@@ -129,8 +127,8 @@ test_that("Default simulation model returns expected results", {
   expect_s3_class(sim, "tbl_df")
   expect_equal(nrow(sim), 100)
   expect_equal(length(sim), 12)
-  expect_equal(sum(sim$threat_events), 2287)
-  expect_equal(sum(sim$loss_events), 786)
+  expect_equal(sum(sim$threat_events), 2238)
+  expect_equal(sum(sim$loss_events), 769)
 })
 
 context("Main simulation")
@@ -155,10 +153,10 @@ test_that("Full wrapped scenario works as expected", {
                                                        "lm_h", "lm_conf"), row.names = c(NA, -1L), class = c("tbl_df",
                                                                                                              "tbl", "data.frame"))
 
-  results <- evaluate_promise(run_simulations(scenario, 100L, verbose = TRUE))
+  results <- evaluate_promise(run_simulations(scenario, 100L))
   expect_s3_class(results$result, "tbl_df")
   expect_equal(nrow(results$result), 100)
   expect_equal(length(results$result), 13)
-  expect_equal(sum(results$result$threat_events), 2686)
-  expect_equal(sum(results$result$loss_events), 764)
+  expect_equal(sum(results$result$threat_events), 2638)
+  expect_equal(sum(results$result$loss_events), 734)
 })

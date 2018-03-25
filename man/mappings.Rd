@@ -4,7 +4,7 @@
 \name{mappings}
 \alias{mappings}
 \title{Qualitative to quantitative mappings}
-\format{An object of class \code{data.frame} with 14 rows and 6 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 14 rows and 6 columns.}
 \usage{
 mappings
 }

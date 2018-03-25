@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • evaluator</title>
+<title>Changelog • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,16 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Changelog" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">evaluator</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">evaluator</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.900</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -121,24 +128,36 @@
 
   <div class="col-md-9">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      
     </div>
 
     <div class="contents">
     <div id="evaluator-0-2-1-900-unreleased" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-2-1-900-unreleased" class="anchor"></a>evaluator 0.2.1.900 (unreleased)</h1>
+<h1 class="page-header">
+<a href="#evaluator-0-2-1-900-unreleased" class="anchor"></a>evaluator 0.2.1.900 (unreleased)<small> Unreleased </small>
+</h1>
+<div id="analysis-change" class="section level2">
+<h2 class="hasAnchor">
+<a href="#analysis-change" class="anchor"></a>Analysis Change</h2>
+<ul>
+<li>Previous versions sampled threat frequency (TEF) as a continuous distribution. Threat event counts are discrete (they either happen or don’t in a given simulated period), so this previous method was incorrect and inflated threat counts. The differences are small in the standard 10,000 evaluation range, but users should note the change.</li>
+<li>Part of the discretization step for TEF has a positive side effect of making the threat_event column in data objects an integer rather than a double- long. As this is still a numeric type, there should be no impact on users for this change apart from a slightly tidyer data output.</li>
+</ul>
+</div>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Update risk_dashboard to not cache any chunks. This keeps <code>render</code> from from trying to write to the package install directory.</li>
+<li>Updated tests to use four significant digits where long refrence values are passed, avoiding precission issues on machines without long doubles.</li>
 </ul>
 </div>
 </div>
     <div id="evaluator-0-2-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-2-1" class="anchor"></a>evaluator 0.2.1</h1>
+<h1 class="page-header">
+<a href="#evaluator-0-2-1" class="anchor"></a>evaluator 0.2.1<small> 2018-03-22 </small>
+</h1>
 <div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h2>
@@ -155,8 +174,9 @@
 </div>
 </div>
     <div id="evaluator-0-2-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-2-0" class="anchor"></a>evaluator 0.2.0</h1>
+<h1 class="page-header">
+<a href="#evaluator-0-2-0" class="anchor"></a>evaluator 0.2.0<small> 2018-03-13 </small>
+</h1>
 <div id="new-functionality" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-functionality" class="anchor"></a>New Functionality</h2>
@@ -232,8 +252,9 @@
 </div>
 </div>
     <div id="evaluator-0-1-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-1-1" class="anchor"></a>evaluator 0.1.1</h1>
+<h1 class="page-header">
+<a href="#evaluator-0-1-1" class="anchor"></a>evaluator 0.1.1<small> 2017-11-20 </small>
+</h1>
 <ul>
 <li>Replaced dependency on <code>modeest</code> with a slimmer <code>statip</code> dependency</li>
 <li>Removed dependency on <code>magrittr</code>
@@ -259,8 +280,9 @@
 </ul>
 </div>
     <div id="evaluator-0-1-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-1-0" class="anchor"></a>evaluator 0.1.0</h1>
+<h1 class="page-header">
+<a href="#evaluator-0-1-0" class="anchor"></a>evaluator 0.1.0<small> 2017-02-26 </small>
+</h1>
 <ul>
 <li>Initial submission to CRAN</li>
 </ul>
@@ -297,3 +319,4 @@
 
   </body>
 </html>
+

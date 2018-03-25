@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate control weaknesses on a domain level � calculate_weak_domains • evaluator</title>
+<title>Calculate control weaknesses on a domain level — calculate_weak_domains • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,21 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Calculate control weaknesses on a domain level — calculate_weak_domains" />
+
+<meta property="og:description" content="For each domain, calculate the total number of threat events, loss
+events, percentage of vulnerability, mean threat capability exceedance,
+and mean difficult exceedance." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +67,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">evaluator</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">evaluator</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.900</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -121,6 +133,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate control weaknesses on a domain level</h1>
+    
     </div>
 
     
@@ -131,7 +144,7 @@ and mean difficult exceedance.</p>
 
     <pre class="usage"><span class='fu'>calculate_weak_domains</span>(<span class='no'>simulation_results</span>, <span class='no'>domains</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -154,21 +167,21 @@ and mean difficult exceedance.</p>
 <span class='fu'>data</span>(<span class='no'>domains</span>)
 <span class='fu'>calculate_weak_domains</span>(<span class='no'>simulation_results</span>, <span class='no'>domains</span>)</div><div class='output co'>#&gt; # A tibble: 14 x 7
 #&gt;    domain_id loss_events threat_events vuln  tc_exceedance diff_exceedance
-#&gt;    &lt;chr&gt;           &lt;int&gt;         &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;          
-#&gt;  1 ASSET            6232         6253. 99.7% 36.7%         4.1%           
-#&gt;  2 AC               6125         6189. 99.0% 34.5%         25.1%          
-#&gt;  3 ISMP            25127        26218. 95.8% 11.8%         2.2%           
-#&gt;  4 ADM                43           64. 67.2% 11.4%         6.0%           
-#&gt;  5 IM              63306       109535. 57.8% 15.3%         13.2%          
-#&gt;  6 HR              12293        24500. 50.2% 30.7%         15.2%          
-#&gt;  7 OPS             33842        71003. 47.7% 46.8%         22.3%          
-#&gt;  8 COMP            26461        58625. 45.1% 16.7%         16.2%          
-#&gt;  9 ORG             23611        70811. 33.3% 3.8%          6.4%           
-#&gt; 10 PRI              1571        32407. 4.8%  3.8%          32.9%          
-#&gt; 11 PHY               157         6317. 2.5%  20.5%         32.6%          
-#&gt; 12 BC                 42         6189. 0.7%  11.9%         50.8%          
-#&gt; 13 RISK               52        12378. 0.4%  13.5%         46.7%          
-#&gt; 14 POL                42        32407. 0.1%  6.5%          29.2%          
+#&gt;    &lt;chr&gt;           &lt;int&gt;         &lt;int&gt; &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;          
+#&gt;  1 AC               5621          5621 100%  34.4%         &lt;NA&gt;           
+#&gt;  2 ASSET            5621          5621 100%  36.9%         &lt;NA&gt;           
+#&gt;  3 ISMP            24644         25727 96%   11.8%         2.2%           
+#&gt;  4 IM              61225        105286 58%   15.2%         12.8%          
+#&gt;  5 HR              11277         22484 50%   30.7%         15.2%          
+#&gt;  6 OPS             32561         68317 48%   47.3%         22.4%          
+#&gt;  7 COMP            26006         57075 46%   16.6%         15.9%          
+#&gt;  8 ORG             22679         68317 33%   3.8%          6.4%           
+#&gt;  9 PRI              1371         31348 4%    3.0%          33.1%          
+#&gt; 10 BC                  0          5621 0%    &lt;NA&gt;          51.0%          
+#&gt; 11 PHY                 0          5621 0%    &lt;NA&gt;          32.8%          
+#&gt; 12 POL                 0         31348 0%    &lt;NA&gt;          29.2%          
+#&gt; 13 RISK                0         11242 0%    &lt;NA&gt;          46.7%          
+#&gt; 14 ADM                 0             0 NaN%  &lt;NA&gt;          &lt;NA&gt;           
 #&gt; # ... with 1 more variable: domain &lt;chr&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -198,3 +211,4 @@ and mean difficult exceedance.</p>
 
   </body>
 </html>
+

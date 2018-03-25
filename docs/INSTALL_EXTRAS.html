@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Format dollar amounts in terms of millions of USD — dollar_millions • evaluator</title>
+<title>Installation Extras • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -22,13 +22,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
-<script src="../pkgdown.js"></script>
-<meta property="og:title" content="Format dollar amounts in terms of millions of USD — dollar_millions" />
-
-<meta property="og:description" content="Given a number, return a string formatted in terms of millions of dollars." />
-<meta name="twitter:card" content="summary" />
+<link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script>
+<script src="pkgdown.js"></script>
+<meta property="og:title" content="Installation Extras" />
 
 
 <!-- mathjax -->
@@ -55,7 +52,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -66,7 +63,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">evaluator</a>
+        <a class="navbar-link" href="index.html">evaluator</a>
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.900</span>
       </span>
     </div>
@@ -74,16 +71,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/usage.html">Geting Started</a>
+  <a href="articles/usage.html">Geting Started</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -93,10 +90,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/customization.html">Advanced Customization</a>
+      <a href="articles/customization.html">Advanced Customization</a>
     </li>
     <li>
-      <a href="../articles/process.html">Process</a>
+      <a href="articles/process.html">Process</a>
     </li>
   </ul>
 </li>
@@ -113,7 +110,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
       
@@ -128,47 +125,76 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Format dollar amounts in terms of millions of USD</h1>
-    
+      <h1>Installation Extras</h1>
     </div>
 
-    
-    <p>Given a number, return a string formatted in terms of millions of dollars.</p>
-    
 
-    <pre class="usage"><span class='fu'>dollar_millions</span>(<span class='no'>x</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>A number.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+<div id="installation-extras" class="section level1">
 
-    <p>String in the format of $xM.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>dollar_millions</span>(<span class='fl'>1.523</span> * <span class='fl'>10</span>^<span class='fl'>6</span>)</div><div class='output co'>#&gt; [1] "$1.52M"</div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-  </div>
+<p>While using the full power of Evaluator is easier with some basic proficency with the R langauge, making quantitative risk analysis available to a broader audience has always been a core goal of this project. Users with less R experience may appreciate these notes on setting up a R environment.</p>
 </div>
+<div id="docker" class="section level1">
+<h1 class="hasAnchor">
+<a href="#docker" class="anchor"></a>Docker</h1>
+<p>The simplest method applicable to most users is the corresponding <a href="https://github.com/davidski/evaluator-docker">evaluator-docker</a> project. This Dockerfile (and the corresponding pre-built image on <a href="https://hub.docker.com/r/davidski/evaluator-docker/">Docker Hub</a>) is the fastest and surest means of getting started with Evaluator.</p>
+</div>
+<div id="macos" class="section level1">
+<h1 class="hasAnchor">
+<a href="#macos" class="anchor"></a>MacOS</h1>
+<p>For Mac users running homebrew, the following terminal commands can be used to set up a functional environment.</p>
+<pre><code># R and RStudio under homebrew derived from @hrbrmstr's post
+# https://rud.is/b/2015/10/22/installing-r-on-os-x-100-homebrew-edition/
+
+# Core R and RStudio
+brew install homebrew/science/R
+brew install Caskroom/cask/rstudio
+
+# Latex required for PDF knitting
+brew cask install mactex
+ 
+# extra libraries to make other packages easier to work with 
+brew install libsvg curl libxml2 gdal geos boost
+ 
+# font installation
+brew tap caskroom/fonts
+brew cask install font-fira-code font-iosevka font-inconsolata font-open-sans-condensed font-open-sans font-roboto-condensed
+R -e 'install.package("extrafont", repos="http://cran.cnr.berkeley.edu")'
+R -e 'extrafont::font_import(prompt = FALSE)'</code></pre>
+<p>Then install the Evaluator library either directly from CRAN via <code>install.packages('evaluator')</code> or from GitHub via <code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">devtools::install_github('davidski/evaluator')</a></code>.</p>
+</div>
+<div id="windows" class="section level1">
+<h1 class="hasAnchor">
+<a href="#windows" class="anchor"></a>Windows</h1>
+<p>Windows users should use <a href="https://chocolatey.org/install">chocolately</a> for a simple <code>homebrew</code>-like package manager experience.</p>
+<ul>
+<li>
+<p>Install R</p>
+<ul>
+<li><code>choco install --yes r</code></li>
+</ul>
+</li>
+<li>
+<p>Install miktex for PDF knitting</p>
+<ul>
+<li><code>choco install --yes miktex</code></li>
+</ul>
+</li>
+<li>
+<p>Install RStudio (not available on Chocolately)</p>
+<ul>
+<li><a href="https://www.rstudio.com/products/rstudio/download/#download" class="uri">https://www.rstudio.com/products/rstudio/download/#download</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+  </div>
+
+</div>
+
 
       <footer>
       <div class="copyright">

@@ -1,8 +1,8 @@
 ## Regenerate sample data sets
-
+library(evaluator)
 
 # read in and save domain mappings
-domains <- readr::read_csv("./inst/extdata/domains.csv")
+domains <- readr::read_csv(here::here("inst/extdata/domains.csv"))
 devtools::use_data(domains, overwrite = TRUE)
 
 # read in capabilities
@@ -10,7 +10,7 @@ capabilities <- import_capabilities(domains = domains)
 devtools::use_data(capabilities, overwrite = TRUE)
 
 # read in mappings
-mappings <- readr::read_csv("./inst/extdata/qualitative_mappings.csv")
+mappings <- readr::read_csv(here::here("inst/extdata/qualitative_mappings.csv"))
 devtools::use_data(mappings, overwrite = TRUE)
 
 # read in and save qualitative scenarios
