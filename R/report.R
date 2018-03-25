@@ -35,21 +35,8 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
                             intermediates_dir = tempdir(),
                             quiet = TRUE,
                             ...) {
-  if (!requireNamespace("psych", quietly = TRUE)) {
-    stop("Install the psych package to generate reports.")
-  }
-  if (!requireNamespace("pander", quietly = TRUE)) {
-    stop("Install the pander package to generate reports.")
-  }
-  if (!requireNamespace("purrrlyr", quietly = TRUE)) {
-    stop("Install the purrrlyr package to generate reports.")
-  }
-  if (!requireNamespace("ggalt", quietly = TRUE)) {
-    stop("Install the ggalt package to generate reports.")
-  }
-  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
-    stop("Install the rmarkdown package to generate reports.")
-  }
+  check_availability(packages = c("psych", "pander", "purrrlyr", "ggalt", "rmarkdown"),
+                     func = "generate_report")
 
   # figure out the correct style format to apply
   styles <- if (is.null(styles)) {
@@ -104,21 +91,8 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
                               intermediates_dir = tempdir(),
                               quiet = TRUE,
                               ...) {
-  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
-    stop("Install the rmarkdown package to generate reports.")
-  }
-  if (!requireNamespace("shiny", quietly = TRUE)) {
-    stop("Install the shiny package to run the Scenario Explorer.")
-  }
-  if (!requireNamespace("DT", quietly = TRUE)) {
-    stop("Install the DT package to run the Scenario Explorer.")
-  }
-  if (!requireNamespace("statip", quietly = TRUE)) {
-    stop("Install the statip package to run the Scenario Explorer.")
-  }
-  if (!requireNamespace("flexdashboard", quietly = TRUE)) {
-    stop("Install the flexdashboard package to run the Scenario Explorer.")
-  }
+  check_availability(c("rmarkdown", "shiny", "DT", "statip", "flexdashboard"),
+                     func = "explore_scenarios")
 
   # figure out the correct style format to apply
   if (is.null(styles)) {
@@ -156,15 +130,8 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
 #' }
 openfair_example <- function(intermediates_dir = tempdir(),
                              quiet = TRUE) {
-  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
-    stop("Install the rmarkdown package to run the OpenFAIR demonstration application.")
-  }
-  if (!requireNamespace("shiny", quietly = TRUE)) {
-    stop("Install the shiny package to run the OpenFAIR demonstration application.")
-  }
-  if (!requireNamespace("flexdashboard", quietly = TRUE)) {
-    stop("Install the flexdashboard package to run the OpenFAIR demonstration application.")
-  }
+  check_availability(c("rmarkdown", "shiny", "flexdashboard"),
+                     func = "openfair_example")
 
   styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
   icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
@@ -206,15 +173,9 @@ risk_dashboard <- function(input_directory = "~/evaluator/inputs",
                            intermediates_dir = tempdir(),
                            quiet = TRUE,
                            ...) {
-  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
-    stop("Install the rmarkdown package to generate the risk dashboard.")
-  }
-  if (!requireNamespace("flexdashboard", quietly = TRUE)) {
-    stop("Install the flexdashboard to generate the risk dashboard.")
-  }
-  if (!requireNamespace("forcats", quietly = TRUE)) {
-    stop("Install the forcats package to generate the risk dashboard.")
-  }
+  check_availability(c("rmarkdown", "shiny", "flexdashboard", "forcats"),
+                     func = "risk_dashboard")
+
   styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
   icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
 

@@ -1,3 +1,31 @@
+#' Helper function to verify package availability
+#'
+#' @importFrom purrr map_df
+#' @importFrom tibble tibble
+#' @param packages Packages to verify are available
+#' @param func Calling function
+#'
+#' @return Invisible
+#'
+#' @examples
+#' \dontrun{
+#' check_availability(packages = c("ggplot2", "dplyr"), func = "my_function")
+#' }
+check_availability <- function(packages, func) {
+  res <- purrr::map_df(packages,
+                       ~ tibble(package = .x,
+                                available = requireNamespace(.x, quietly=TRUE)))
+  if (sum(res$available) != length(packages)) {
+    stop(func, " requires the following packages which are not available: ",
+         paste0(res[, ]$package, collapse = ", "), "\n",
+         "Please install and try again.", call. = FALSE)
+  }
+
+  invisible()
+
+}
+
+
 #' Format dollar amounts in terms of millions of USD
 #'
 #' Given a number, return a string formatted in terms of millions of dollars.

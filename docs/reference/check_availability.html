@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Contributing • evaluator</title>
+<title>Helper function to verify package availability — check_availability • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -22,10 +22,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script>
-<script src="pkgdown.js"></script>
-<meta property="og:title" content="Contributing" />
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
+<script src="../pkgdown.js"></script>
+<meta property="og:title" content="Helper function to verify package availability — check_availability" />
+
+<meta property="og:description" content="Helper function to verify package availability" />
+<meta name="twitter:card" content="summary" />
 
 
 <!-- mathjax -->
@@ -52,7 +55,7 @@
   </head>
 
   <body>
-    <div class="container template-title-body">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -63,7 +66,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">evaluator</a>
+        <a class="navbar-link" href="../index.html">evaluator</a>
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.900</span>
       </span>
     </div>
@@ -71,16 +74,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="articles/usage.html">Geting Started</a>
+  <a href="../articles/usage.html">Geting Started</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -90,10 +93,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/customization.html">Advanced Customization</a>
+      <a href="../articles/customization.html">Advanced Customization</a>
     </li>
     <li>
-      <a href="articles/process.html">Process</a>
+      <a href="../articles/process.html">Process</a>
     </li>
   </ul>
 </li>
@@ -110,7 +113,7 @@
   </ul>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
       
@@ -125,28 +128,53 @@
       </header>
 
       <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Contributing</h1>
+    <h1>Helper function to verify package availability</h1>
+    
     </div>
 
-<div id="contributing" class="section level1">
+    
+    <p>Helper function to verify package availability</p>
+    
 
-<p>Pull requests are awesome! By participating in this project, you agree to abide by the Evaluator <a href="CODE_OF_CONDUCT.html">code of conduct</a>.</p>
-<p>Fork, then clone the repo:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">git clone https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span><span class="er">&lt;</span>your_user_name<span class="op">&gt;</span><span class="er">/</span>evaluator.git</a></code></pre></div>
-<p>Make sure the tests pass:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/test">test</a></span>()</a></code></pre></div>
-<p>Make your change. Add tests for your change. Make the tests pass:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/test">test</a></span>()</a></code></pre></div>
-<p>Push to your fork and <a href="https://github.com/davidski/evaluator/compare/">submit a pull request</a>.</p>
-<p>At this point you’re waiting on me!</p>
-</div>
+    <pre class="usage"><span class='fu'>check_availability</span>(<span class='no'>packages</span>, <span class='no'>func</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>packages</th>
+      <td><p>Packages to verify are available</p></td>
+    </tr>
+    <tr>
+      <th>func</th>
+      <td><p>Calling function</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Invisible</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>check_availability</span>(<span class='kw'>packages</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ggplot2"</span>, <span class='st'>"dplyr"</span>), <span class='kw'>func</span> <span class='kw'>=</span> <span class='st'>"my_function"</span>)
+<span class='co'># }</span></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
-
 </div>
-
 
       <footer>
       <div class="copyright">
