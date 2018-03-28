@@ -1,4 +1,4 @@
-# evaluator 0.2.1.900 (unreleased)
+# evaluator 0.2.2
 
 ## Analysis Change
 * Previous versions sampled threat frequency (TEF) as a continuous distribution.
