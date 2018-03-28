@@ -12,7 +12,7 @@
 sample_tef <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
   list(type = "tef",
-       samples = as.integer(floor(invoke(func, params))),
+       samples = as.integer(round(invoke(func, params))),
        details = list())
 }
 

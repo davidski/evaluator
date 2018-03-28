@@ -11,7 +11,7 @@ test_that("Sample TEF", {
   expect_is(tef$samples, "integer")
   # ensure that values of samples is correct
   expect_equal(unlist(tef$samples),
-               c(6., 30, 1, 34, 36, 13, 13, 13, 9, 14))
+               c(7, 30, 2, 34, 36, 13, 14, 14, 9, 15))
 })
 
 context("Sample DIFF")
@@ -114,7 +114,7 @@ test_that("Sample LEF works with composition function", {
   # ensure that LEF samples are always integers
   expect_is(dat$samples, "integer")
   # ensure that values of samples is correct
-  expect_equal(dat$samples, c(5, 11, 14, 2, 12, 0, 7, 0, 0, 6))
+  expect_equal(dat$samples, c(5, 11, 15, 2, 12, 0, 8, 0, 0, 6))
 })
 
 context("Standard simulation model")
@@ -127,8 +127,8 @@ test_that("Default simulation model returns expected results", {
   expect_s3_class(sim, "tbl_df")
   expect_equal(nrow(sim), 100)
   expect_equal(length(sim), 12)
-  expect_equal(sum(sim$threat_events), 2238)
-  expect_equal(sum(sim$loss_events), 769)
+  expect_equal(sum(sim$threat_events), 2287)
+  expect_equal(sum(sim$loss_events), 786)
 })
 
 context("Main simulation")
@@ -157,6 +157,6 @@ test_that("Full wrapped scenario works as expected", {
   expect_s3_class(results$result, "tbl_df")
   expect_equal(nrow(results$result), 100)
   expect_equal(length(results$result), 13)
-  expect_equal(sum(results$result$threat_events), 2638)
-  expect_equal(sum(results$result$loss_events), 734)
+  expect_equal(sum(results$result$threat_events), 2686)
+  expect_equal(sum(results$result$loss_events), 764)
 })
