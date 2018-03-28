@@ -18,22 +18,13 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
-<!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Create scenario-level summary of simulation results — summarize_scenarios" />
-
-<meta property="og:description" content="Given a dataframe of raw results from run_simulations, summarize
-the individual results at a per-scenario level. This is generally the most
-granular level of data for reporting and analysis (full simulation results
-are rarely directly helpful)." />
-<meta name="twitter:card" content="summary" />
-
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -68,12 +59,8 @@ are rarely directly helpful)." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.900</span>
-      </span>
+      <a class="navbar-brand" href="../index.html">evaluator</a>
     </div>
-
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -134,7 +121,6 @@ are rarely directly helpful)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create scenario-level summary of simulation results</h1>
-    
     </div>
 
     
@@ -146,7 +132,7 @@ are rarely directly helpful).</p>
 
     <pre class="usage"><span class='fu'>summarize_scenarios</span>(<span class='no'>simulation_results</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -177,16 +163,16 @@ are rarely directly helpful).</p>
 <span class='fu'>summarize_scenarios</span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; # A tibble: 56 x 18
 #&gt;    domain_id scenario_id loss_events_mean loss_events_min loss_events_max
 #&gt;    &lt;chr&gt;           &lt;int&gt;            &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
-#&gt;  1 AC                 48             0.                0.              0.
-#&gt;  2 AC                 51             5.62              1.             11.
-#&gt;  3 ADM                56             0.                0.              0.
-#&gt;  4 ASSET              45             5.62              1.             11.
-#&gt;  5 ASSET              46             0.                0.              0.
-#&gt;  6 ASSET              47             0.                0.              0.
-#&gt;  7 BC                 31             0.                0.              0.
-#&gt;  8 BC                 55             0.                0.              0.
-#&gt;  9 COMP                9             0.                0.              0.
-#&gt; 10 COMP               10             1.90              0.              9.
+#&gt;  1 AC                 48           0.                  0.              0.
+#&gt;  2 AC                 51           6.12                1.             12.
+#&gt;  3 ADM                56           0.0430              0.              1.
+#&gt;  4 ASSET              45           6.12                1.             12.
+#&gt;  5 ASSET              46           0.0430              0.              1.
+#&gt;  6 ASSET              47           0.0640              0.              1.
+#&gt;  7 BC                 31           0.                  0.              0.
+#&gt;  8 BC                 55           0.0420              0.              1.
+#&gt;  9 COMP                9           0.                  0.              0.
+#&gt; 10 COMP               10           1.90                0.              9.
 #&gt; # ... with 46 more rows, and 13 more variables: loss_events_median &lt;dbl&gt;,
 #&gt; #   ale_median &lt;dbl&gt;, ale_max &lt;dbl&gt;, ale_var &lt;dbl&gt;, sle_mean &lt;dbl&gt;,
 #&gt; #   sle_median &lt;dbl&gt;, sle_max &lt;dbl&gt;, sle_min &lt;dbl&gt;, mean_tc_exceedance &lt;dbl&gt;,
@@ -222,4 +208,3 @@ are rarely directly helpful).</p>
 
   </body>
 </html>
-

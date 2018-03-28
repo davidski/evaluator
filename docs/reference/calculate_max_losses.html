@@ -18,21 +18,13 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
-<!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Calculate maximum losses — calculate_max_losses" />
-
-<meta property="og:description" content="Calculate the biggest single annual loss for each scenario, as well as
-the minimum and maximum ALE across all simulations. Calculations both
-with and without outliers (if passed) are returned." />
-<meta name="twitter:card" content="summary" />
-
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -67,12 +59,8 @@ with and without outliers (if passed) are returned." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.900</span>
-      </span>
+      <a class="navbar-brand" href="../index.html">evaluator</a>
     </div>
-
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -133,7 +121,6 @@ with and without outliers (if passed) are returned." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate maximum losses</h1>
-    
     </div>
 
     
@@ -144,7 +131,7 @@ with and without outliers (if passed) are returned.</p>
 
     <pre class="usage"><span class='fu'>calculate_max_losses</span>(<span class='no'>simulation_results</span>, <span class='kw'>scenario_outliers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -167,16 +154,16 @@ with and without outliers (if passed) are returned.</p>
 <span class='fu'>calculate_max_losses</span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; # A tibble: 2,000 x 5
 #&gt;    simulation biggest_single_scenario_loss min_loss  max_loss outliers
 #&gt;         &lt;int&gt;                        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;lgl&gt;   
-#&gt;  1        348                     3001657.       0. 15359616. TRUE    
-#&gt;  2        148                     3261317.       0. 11655467. TRUE    
-#&gt;  3         64                     2008713.       0.  8402674. TRUE    
-#&gt;  4        348                     3001657.       0. 15359616. FALSE   
-#&gt;  5        148                     3261317.       0. 11655467. FALSE   
-#&gt;  6          6                     3047940.       0. 14860970. FALSE   
-#&gt;  7        504                     2800414.       0. 10835176. TRUE    
-#&gt;  8        335                     2943985.       0. 11371494. FALSE   
-#&gt;  9        504                     2800414.       0. 10835176. FALSE   
-#&gt; 10          6                     3047940.       0. 14860970. TRUE    
+#&gt;  1       1000                     4290192.       0. 16412517. TRUE    
+#&gt;  2        995                     1885085.       0.  7378662. TRUE    
+#&gt;  3        993                     2581467.       0. 13406060. TRUE    
+#&gt;  4        991                     3826876.       0. 17791174. TRUE    
+#&gt;  5        990                     2482773.       0. 10363853. TRUE    
+#&gt;  6        986                     1988210.       0. 11459660. TRUE    
+#&gt;  7        984                     1417221.       0.  6049021. TRUE    
+#&gt;  8        983                     3974145.       0. 19302038. TRUE    
+#&gt;  9        977                     3201378.       0. 16143376. TRUE    
+#&gt; 10        975                     3245901.       0. 13967947. TRUE    
 #&gt; # ... with 1,990 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -206,4 +193,3 @@ with and without outliers (if passed) are returned.</p>
 
   </body>
 </html>
-

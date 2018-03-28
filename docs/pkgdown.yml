@@ -1,11 +1,8 @@
-pandoc: 2.1.3
-pkgdown: 0.1.0.9000
-pkgdown_sha: 5e4825875751c009444c56ce43d06324ec53e910
+urls:
+  reference: https://evaluator.severski.net/reference
+  article: https://evaluator.severski.net/articles
 articles:
   customization: customization.html
   process: process.html
   usage: usage.html
-urls:
-  reference: https://evaluator.severski.net/reference
-  article: https://evaluator.severski.net/articles
 
