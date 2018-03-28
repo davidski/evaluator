@@ -1,8 +1,9 @@
 ## Update
 
-This is a bug-fix update for an existing package. Of particular note for 
-CRAN, issues with files being written to the package directory and test 
-failure on missing long-double support are corrected.
+This is a bug-fix update for an existing package that was just archived today 
+(March 28th) due to a failure on systems without long-double support which 
+has just been fixed.  Other fixes include files being written to the package 
+directory, traced to an inadvertant `cache` option in a supplied Rmd document.
 
 ## Test environments
 
@@ -19,6 +20,9 @@ failure on missing long-double support are corrected.
 
 * Win-builder R-Release (not R-Devel) issues a false positive NOTE on a 
   potential mis-spelling.
+* Win-builder R-Devel intermittently fails due to an Rcpp error with dplyr. 
+  The error does not consistently generate and there is no Rcpp code in this 
+  pacakge.
 * There were no ERRORs or WARNINGs.
 
 ## Downstream dependencies
