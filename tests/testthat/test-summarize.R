@@ -3,7 +3,7 @@ test_that("Simulation summary", {
   data("simulation_results")
   data("scenario_summary")
   dat <- summarize_scenarios(simulation_results)
-  expect_equivalent(dat, scenario_summary)
+  expect_equivalent(as.data.frame(dat), as.data.frame(scenario_summary))
 })
 
 test_that("Domain summary", {

@@ -1,3 +1,9 @@
+# evaluator 0.2.2.900 (unreleased)
+
+## Bug Fixes
+* Update tests to convert tibbles to data.frames prior to comparion as a work 
+around for [dplyr/2751](https://github.com/tidyverse/dplyr/issues/2751).
+
 # evaluator 0.2.2
 
 ## Analysis Change
