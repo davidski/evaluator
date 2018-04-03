@@ -20,8 +20,8 @@ formal risk report. A starter analysis report, overview dashboard, and a sample
 [Shiny](https://shiny.rstudio.com/) application are all included in the toolkit.
 
 Evaluator takes a domain-driven and framework-independent approach to strategic 
-security risk analysis. It is compatible with ISO, COBIT, HITRUST CSF, 
-PCI-DSS or any other model used for organizing an information security program. 
+risk analysis. For information security analysis -- where Evaluator originated --
+ISO, COBIT, HITRUST CSF, PCI-DSS or any similar model may be used.
 If you are able to describe the domains of your program and the controls and 
 threat scenarios applicable to each domain, you will be able to use Evaluator!
 
