@@ -25,6 +25,8 @@ test_that("Analyze report renders", {
 
   skip_if_not(rmarkdown::pandoc_available(),
               message = "Cannot test report generation without pandoc available.")
+  purrr::walk(c("psych", "pander", "purrrlyr", "ggalt", "rmarkdown"),
+              ~ skip_if_not_installed(.))
 
   file <- tempfile(fileext = ".html")
 
@@ -52,6 +54,8 @@ test_that("Risk Dashboard renders", {
 
   skip_if_not(rmarkdown::pandoc_available(),
               message = "Cannot test dashboard generation without pandoc available.")
+  purrr::walk(c("rmarkdown", "shiny", "flexdashboard", "forcats"),
+              ~ skip_if_not_installed(.))
 
   file <- tempfile(fileext = ".html")
 
