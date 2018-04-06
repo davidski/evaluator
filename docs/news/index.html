@@ -125,44 +125,37 @@
     </div>
 
     <div class="contents">
-    <div id="evaluator-0-2-2-900-unreleased" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-2-2-900-unreleased" class="anchor"></a>evaluator 0.2.2.900 (unreleased)</h1>
-<div id="bug-fixes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
+    <div class="section level1">
+<h1>evaluator 0.2.2.900 (unreleased)</h1>
+<div class="section level2">
+<h2>Bug Fixes</h2>
 <ul>
 <li>Additional logic in tests to verify that supplemental packages are available, skipping the test if said packages are not installed.</li>
 <li>Update tests to convert tibbles to data.frames prior to comparion as a work around for <a href="https://github.com/tidyverse/dplyr/issues/2751">dplyr/2751</a>.</li>
 </ul>
 </div>
 </div>
-    <div id="evaluator-0-2-2" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-2-2" class="anchor"></a>evaluator 0.2.2</h1>
-<div id="analysis-change" class="section level2">
-<h2 class="hasAnchor">
-<a href="#analysis-change" class="anchor"></a>Analysis Change</h2>
+    <div class="section level1">
+<h1>evaluator 0.2.2</h1>
+<div class="section level2">
+<h2>Analysis Change</h2>
 <ul>
 <li>Previous versions sampled threat frequency (TEF) as a continuous distribution. Threat event counts are discrete (they either happen or don’t in a given simulated period), so this previous method was incorrect and inflated threat counts. The differences are small in the standard 10,000 evaluation range, but users should note the change.</li>
 <li>Part of the discretization step for TEF has a positive side effect of making the threat_event column in data objects an integer rather than a double- long. As this is still a numeric type, there should be no impact on users for this change apart from a slightly tidyer data output.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h2>
+<div class="section level2">
+<h2>Bug Fixes</h2>
 <ul>
 <li>Update risk_dashboard to not cache any chunks. This keeps <code>render</code> from from trying to write to the package install directory.</li>
 <li>Updated tests to use four significant digits where long refrence values are passed, avoiding precission issues on machines without long doubles.</li>
 </ul>
 </div>
 </div>
-    <div id="evaluator-0-2-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-2-1" class="anchor"></a>evaluator 0.2.1</h1>
-<div id="bug-fixes-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h2>
+    <div class="section level1">
+<h1>evaluator 0.2.1</h1>
+<div class="section level2">
+<h2>Bug Fixes</h2>
 <ul>
 <li>Document optional dependency on pandoc and add test skip logic to avoid rmarkdown tests on systems where pandoc is not available.
 <ul>
@@ -175,12 +168,10 @@
 </ul>
 </div>
 </div>
-    <div id="evaluator-0-2-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-2-0" class="anchor"></a>evaluator 0.2.0</h1>
-<div id="new-functionality" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functionality" class="anchor"></a>New Functionality</h2>
+    <div class="section level1">
+<h1>evaluator 0.2.0</h1>
+<div class="section level2">
+<h2>New Functionality</h2>
 <ul>
 <li>New sample dataset: <code>mappings</code> contains sample qualitative to quantitative parameters.</li>
 <li>risk_dashboard expects a mandatory output parameter to the desired rendered output.</li>
@@ -222,9 +213,8 @@
 </li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug Fixes</h2>
+<div class="section level2">
+<h2>Bug Fixes</h2>
 <ul>
 <li>Improved help documentation on many functions</li>
 <li>Update of usage vignette</li>
@@ -243,18 +233,16 @@
 </li>
 </ul>
 </div>
-<div id="miscellaneous-changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#miscellaneous-changes" class="anchor"></a>Miscellaneous Changes</h2>
+<div class="section level2">
+<h2>Miscellaneous Changes</h2>
 <ul>
 <li>
 <code>generate_report</code> defaults to creating a MS Word document as the output type</li>
 </ul>
 </div>
 </div>
-    <div id="evaluator-0-1-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-1-1" class="anchor"></a>evaluator 0.1.1</h1>
+    <div class="section level1">
+<h1>evaluator 0.1.1</h1>
 <ul>
 <li>Replaced dependency on <code>modeest</code> with a slimmer <code>statip</code> dependency</li>
 <li>Removed dependency on <code>magrittr</code>
@@ -267,21 +255,23 @@
 <li>
 <code>summarize_all</code> renamed to the more descriptive <code>summarize_to_disk</code> to avoid dplyr conflict</li>
 <li>Add requirement for at least pander v0.6.1 for <code>tibble</code> compatibility</li>
-<li>Substantial refactoring on vignette</li>
+<li>Substantial refactoring on vignette
+<ul>
 <li>Added missing save steps</li>
 <li>Corrected package name for <code>Viewer</code> to <code>rstudioapi</code>
 </li>
 <li>Fixed a few incorrect placeholders</li>
 <li>Properly committed compiled files to package for distribution and installation</li>
+</ul>
+</li>
 <li>Update all tidyverse calls to account for deprecations and split out of <code>purrrlyr</code>
 </li>
 <li>Windows CI builds added via Appveyor</li>
 <li>Use <code>annotate_logticks</code> over manual breaks on risk_dashboard</li>
 </ul>
 </div>
-    <div id="evaluator-0-1-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#evaluator-0-1-0" class="anchor"></a>evaluator 0.1.0</h1>
+    <div class="section level1">
+<h1>evaluator 0.1.0</h1>
 <ul>
 <li>Initial submission to CRAN</li>
 </ul>
@@ -293,12 +283,12 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#evaluator-0-2-2-900-unreleased">0.2.2.900</a></li>
-        <li><a href="#evaluator-0-2-2">0.2.2</a></li>
-        <li><a href="#evaluator-0-2-1">0.2.1</a></li>
-        <li><a href="#evaluator-0-2-0">0.2.0</a></li>
-        <li><a href="#evaluator-0-1-1">0.1.1</a></li>
-        <li><a href="#evaluator-0-1-0">0.1.0</a></li>
+        <li><a href="#NA">0.2.2.900</a></li>
+        <li><a href="#NA">0.2.2</a></li>
+        <li><a href="#NA">0.2.1</a></li>
+        <li><a href="#NA">0.2.0</a></li>
+        <li><a href="#NA">0.1.1</a></li>
+        <li><a href="#NA">0.1.0</a></li>
       </ul>
     </div>
   </div>

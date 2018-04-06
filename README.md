@@ -86,10 +86,18 @@ comfortable with quantitative risk analysis, you may wish to dive deeper
 into these areas (and I hope you do\!). The following resources may help
 you explore these and other topics in risk management.
 
-### Commercial Software
+### Alternative Software
 
-  - [RiskLens](http://www.risklens.com/), founded by the original
-    creator of the FAIR methodology
+  - [RiskLens](http://www.risklens.com/), a commercial analysis suite,
+    founded by the original creator of the FAIR methodology
+  - [FAIR Tool](https://github.com/zugo01/FAIRTool), a Shiny and R based
+    two scenario simulator, authored by Ezeugo Aguta under an MIT
+    license
+  - [FAIR-U](https://www.fairinstitute.org/fair-u), a free educational
+    tool for learning FAIR analysis, powered by RiskLens
+  - [Open FAIR Risk Analysis
+    Tool](https://publications.opengroup.org/i181), an Excel and SIPMath
+    base tool with a limited open license
 
 ### Blogs/Books/Training
 
