@@ -1,4 +1,4 @@
-# evaluator 0.2.2.900 (unreleased)
+# evaluator 0.2.3
 
 ## Bug Fixes
 * Additional logic in tests to verify that supplemental packages are available, 
