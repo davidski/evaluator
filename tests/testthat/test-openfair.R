@@ -119,11 +119,12 @@ test_that("Sample LEF works with composition function", {
 
 context("Standard simulation model")
 test_that("Default simulation model returns expected results", {
-  sim <- openfair_tef_tc_diff_lm(list(tef_l = 1, tef_ml=10, tef_h=100, tef_conf=4,
-                            tc_l = 1, tc_ml = 10, tc_h =75, tc_conf=100,
-                            lm_l=1, lm_ml=100, lm_h = 10000, lm_conf=54),
-                       diff_estimates = data_frame(l=1, ml=10, h = 50, conf =4),
-                       n = 100)
+  sim <- openfair_tef_tc_diff_lm(list(
+    tef_params=list(list(tef_l = 1, tef_ml=10, tef_h=100, tef_conf=4)),
+    tc_params=list(list(tc_l = 1, tc_ml = 10, tc_h =75, tc_conf=100)),
+    lm_params=list(list(lm_l=1, lm_ml=100, lm_h = 10000, lm_conf=54))),
+    diff_estimates = data_frame(l=1, ml=10, h = 50, conf =4),
+    n = 100)
   expect_s3_class(sim, "tbl_df")
   expect_equal(nrow(sim), 100)
   expect_equal(length(sim), 12)
@@ -133,30 +134,34 @@ test_that("Default simulation model returns expected results", {
 
 context("Main simulation")
 test_that("Full wrapped scenario works as expected", {
-  scenario <- structure(list(scenario_id = 1L, scenario = "Inadequate human resources are available to execute the informaton security strategic security plan.",
-                             tcomm = "Organizational Leadership", domain_id = "ORG", controls = "1, 5, 7, 32, 14, 15, 16",
-                             diff_params = list(structure(list(control_id = c("1", "5",
-                                                                              "7", "32", "14", "15", "16"), label = c("5 - Optimized",
-                                                                                                                      "4 - Managed", "1 - Initial", "4 - Managed", "4 - Managed",
-                                                                                                                      "2 - Repeatable", "2 - Repeatable"), type = c("diff", "diff",
-                                                                                                                                                                    "diff", "diff", "diff", "diff", "diff"), l = c(70L, 50L,
-                                                                                                                                                                                                                   0L, 50L, 50L, 20L, 20L), ml = c(85, 70, 10, 70, 70, 30, 30
-                                                                                                                                                                                                                   ), h = c(98L, 84L, 30L, 84L, 84L, 50L, 50L), conf = c(4L,
-                                                                                                                                                                                                                                                                         4L, 4L, 4L, 4L, 4L, 4L)), class = c("tbl_df", "tbl", "data.frame"
-                                                                                                                                                                                                                                                                         ), row.names = c(NA, -7L), .Names = c("control_id", "label",
-                                                                                                                                                                                                                                                                                                               "type", "l", "ml", "h", "conf"))), tef_l = 10L, tef_ml = 24,
-                             tef_h = 52L, tef_conf = 4L, tc_l = 33L, tc_ml = 50, tc_h = 60L,
-                             tc_conf = 3L, lm_l = 10000L, lm_ml = 20000, lm_h = 500000L,
-                             lm_conf = 4L), .Names = c("scenario_id", "scenario", "tcomm",
-                                                       "domain_id", "controls", "diff_params", "tef_l", "tef_ml", "tef_h",
-                                                       "tef_conf", "tc_l", "tc_ml", "tc_h", "tc_conf", "lm_l", "lm_ml",
-                                                       "lm_h", "lm_conf"), row.names = c(NA, -1L), class = c("tbl_df",
-                                                                                                             "tbl", "data.frame"))
-
+  scenario <-structure(list(scenario_id = 1L, scenario = "Inadequate human resources are available to execute the informaton security strategic security plan.",
+                            tcomm = "Organizational Leadership", domain_id = "ORG", controls = "1, 5, 7, 32, 14, 15, 16",
+                            diff_params = list(structure(list(control_id = c(1L, 5L,
+                                                                             7L, 14L, 15L, 16L, 32L), domain_id = c("ORG", "ORG", "ORG",
+                                                                                                                    "ORG", "ORG", "ORG", "ORG"), capability = c("A senior-level committee provides dedicated oversight for privacy and information security activities.",
+                                                                                                                                                                "Information security activities between departments are coordinated.",
+                                                                                                                                                                "Senior management's strategy and direction for the information security program is established and commitment is demonstrated.",
+                                                                                                                                                                "Self-assessment of the information security program operations, activities, and strategic plan effectiveness is completed and reported on a periodic basis.",
+                                                                                                                                                                "Verification of reasonable and appropriate information security controls are completed on a periodic basis.",
+                                                                                                                                                                "Verification of reasonable and appropriate information security controls from third parties that have access to confidential information is completed on a periodic basis.",
+                                                                                                                                                                "An active intelligence gathering program is defined, implemented, and maintained."
+                                                                                                                    ), label = c("5 - Optimized", "4 - Managed", "1 - Initial",
+                                                                                                                                 "4 - Managed", "2 - Repeatable", "2 - Repeatable", "4 - Managed"
+                                                                                                                    ), type = c("diff", "diff", "diff", "diff", "diff", "diff",
+                                                                                                                                "diff"), l = c(70L, 50L, 0L, 50L, 20L, 20L, 50L), ml = c(85,
+                                                                                                                                                                                         70, 10, 70, 30, 30, 70), h = c(98L, 84L, 30L, 84L, 50L, 50L,
+                                                                                                                                                                                                                        84L), conf = c(4L, 4L, 4L, 4L, 4L, 4L, 4L)), class = c("tbl_df",
+                                                                                                                                                                                                                                                                               "tbl", "data.frame"), row.names = c(NA, -7L))), tef_params = list(
+                                                                                                                                                                                                                                                                                 list(tef_l = 10L, tef_ml = 24, tef_h = 52L, tef_conf = 4L)),
+                            tc_params = list(list(tc_l = 33L, tc_ml = 50, tc_h = 60L,
+                                                  tc_conf = 3L)), lm_params = list(list(lm_l = 10000L,
+                                                                                        lm_ml = 20000, lm_h = 500000L, lm_conf = 4L))), row.names = c(NA,
+                                                                                                                                                      -1L), class = c("tbl_df", "tbl", "data.frame"))
   results <- evaluate_promise(run_simulations(scenario, 100L))
   expect_s3_class(results$result, "tbl_df")
   expect_equal(nrow(results$result), 100)
   expect_equal(length(results$result), 13)
   expect_equal(sum(results$result$threat_events), 2686)
-  expect_equal(sum(results$result$loss_events), 764)
+  #$expect_equal(sum(results$result$loss_events), 764)
+  expect_equal(sum(results$result$loss_events), 772)
 })

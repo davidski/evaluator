@@ -7,7 +7,7 @@
 #'
 #' Create a unified dataframe of quantitative scenarios ready for simulation.
 #'
-#' @importFrom dplyr rename_ select_ left_join
+#' @importFrom dplyr rename_ select_ left_join filter rowwise
 #' @importFrom rlang .data
 #' @importFrom purrr map
 #' @param scenarios Qualitative risk scenarios dataframe.
@@ -25,25 +25,34 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
                                               capabilities = capabilities,
                                               mappings = mappings))
   # fetch TEF params
-  scenarios <- dplyr::left_join(scenarios, mappings[mappings$type == "tef",],
+  tef_nested <- dplyr::filter(mappings, type=="tef") %>%
+    dplyr::rowwise() %>%
+    dplyr::do(tef_params = list(tef_l = .$l, tef_ml = .$ml, tef_h = .$h,
+                                tef_conf = .$conf), label = .$label) %>%
+    dplyr::mutate(label = as.character(label))
+  scenarios <- dplyr::left_join(scenarios, tef_nested,
                                 by = c("tef" = "label")) %>%
-    dplyr::rename("tef_l" = .data$l, "tef_ml" = .data$ml, "tef_h" = .data$h,
-                  "tef_conf" = .data$conf) %>%
-    dplyr::select_('-c(tef, type)')
+    dplyr::select(-tef)
 
   # fetch TC params
-  scenarios <- dplyr::left_join(scenarios, mappings[mappings$type == "tc",],
+  tc_nested <- dplyr::filter(mappings, type=="tc") %>%
+    dplyr::rowwise() %>%
+    dplyr::do(tc_params = list(tc_l = .$l, tc_ml = .$ml, tc_h = .$h,
+                               tc_conf = .$conf), label = .$label) %>%
+    dplyr::mutate(label = as.character(label))
+  scenarios <- dplyr::left_join(scenarios, tc_nested,
                                 by = c("tc" = "label")) %>%
-    dplyr::rename_("tc_l" = "l", "tc_ml" = "ml", "tc_h" = "h",
-                   "tc_conf" = "conf") %>%
-    dplyr::select_('-c(tc, type)')
+    dplyr::select(-tc)
 
   # fetch LM params
-  scenarios <- dplyr::left_join(scenarios, mappings[mappings$type == "lm",],
+  lm_nested <- dplyr::filter(mappings, type=="lm") %>%
+    dplyr::rowwise() %>%
+    dplyr::do(lm_params = list(lm_l = .$l, lm_ml = .$ml, lm_h = .$h,
+                               lm_conf = .$conf), label = .$label) %>%
+    dplyr::mutate(label = as.character(label))
+  scenarios <- dplyr::left_join(scenarios, lm_nested,
                                 by = c("lm" = "label")) %>%
-    dplyr::rename_("lm_l" = "l", "lm_ml" = "ml", "lm_h" = "h",
-                   "lm_conf" = "conf") %>%
-    dplyr::select_('-c(lm, type)')
+    dplyr::select(-lm)
 
   scenarios
 }

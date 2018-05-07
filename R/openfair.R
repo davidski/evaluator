@@ -206,10 +206,10 @@ select_loss_opportunities <- function(tc, diff) {
 #' arithmetic mean (average) is taken across samples for all controls to get
 #' the effective control strength for a given simulation.
 #'
-#' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int
-#' @importFrom tibble tibble
+#' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int flatten
+#' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr %>%
-#' @param scenario List of tef_, tc_, and LM_ l/ml/h/conf parameters.
+#' @param scenario List of tef_, tc_, and LM_ parameters.
 #' @param diff_estimates Parameters for estimating the scenario difficulty.
 #' @param n Number of simulations to run.
 #' @param title Optional name of scenario.
@@ -236,22 +236,22 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
     }
 
     # TEF - how many contacts do we have in each simulated period
-    TEFestimate <- with(scenario, tibble::tibble(l = tef_l, ml = tef_ml,
-                                                 h = tef_h, conf = tef_conf))
-    TEFsamples <- sample_tef(params = list(n, TEFestimate$l, TEFestimate$ml,
-                                           TEFestimate$h,
-                                           shape = TEFestimate$conf))
+    TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
+      tibble::as_tibble()
+    TEFsamples <- sample_tef(params = list(n, TEFestimate$tef_l,
+                                           TEFestimate$tef_ml,
+                                           TEFestimate$tef_h,
+                                           shape = TEFestimate$tef_conf))
     TEFsamples <- TEFsamples$samples
 
     # TC - what is the strength of each threat event
     #    - get the threat capability parameters for this scenario
-    TCestimate <- with(scenario, tibble::tibble(l = tc_l, ml = tc_ml,
-                                                h = tc_h, conf = tc_conf))
+    TCestimate <- scenario$tc_params %>% purrr::flatten() %>%
+      tibble::as_tibble()
     #    - sample threat capability for each TEF event in each sample period
-    TCsamples <- purrr::map(1:n, ~ sample_tc(params = list(TEFsamples[.x], TCestimate$l,
-                                                   TCestimate$ml,
-                                                   TCestimate$h,
-                                                   shape = TCestimate$conf))$samples)
+    TCsamples <- purrr::map(1:n, ~ sample_tc(
+      params = list(TEFsamples[.x], TCestimate$tc_l, TCestimate$tc_ml,
+                    TCestimate$tc_h, shape = TCestimate$tc_conf))$samples)
     # TCSamples is now a list of of the TC for each threat event
 
     # DIFF - calculate the mean strength of controls for each threat event
@@ -278,11 +278,11 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
     LEFsamples <- purrr::map(LEFsamples, c("samples")) %>% purrr::map_int(sum)
 
     # LM - determine the size of losses for each simulation
-    LMestimate <- with(scenario, tibble::tibble(l = lm_l, ml = lm_ml,
-                                                h = lm_h, conf = lm_conf))
+    LMestimate <- scenario$lm_params %>% purrr::flatten() %>%
+      tibble::as_tibble()
     loss_samples <- purrr::map(LEFsamples, function(x) {
-      dat <- sample_lm(params = list(x, LMestimate$l, LMestimate$ml,
-                                    LMestimate$h, LMestimate$conf))
+      dat <- sample_lm(params = list(x, LMestimate$lm_l, LMestimate$lm_ml,
+                                    LMestimate$lm_h, LMestimate$lm_conf))
       dat$samples <- sum(dat$samples)
       dat
       })

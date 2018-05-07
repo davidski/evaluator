@@ -8,7 +8,7 @@ openfair_tef_tc_diff_lm(scenario, diff_estimates, n = 10^4,
   title = "Untitled", verbose = FALSE)
 }
 \arguments{
-\item{scenario}{List of tef_, tc_, and LM_ l/ml/h/conf parameters.}
+\item{scenario}{List of tef_, tc_, and LM_ parameters.}
 
 \item{diff_estimates}{Parameters for estimating the scenario difficulty.}
 
