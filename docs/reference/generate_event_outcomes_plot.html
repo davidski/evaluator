@@ -19,13 +19,25 @@ all domains — generate_event_outcomes_plot • evaluator</title>
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Display the distribution of threat events contained vs. realized across
+all domains — generate_event_outcomes_plot" />
+
+<meta property="og:description" content="Creates a barbell plot showing the number and percentage of events
+contained (not resulting in loss) vs the number and percentage of
+loss events (threat events resulting in losses)." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -35,16 +47,14 @@ all domains — generate_event_outcomes_plot • evaluator</title>
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-87348339-3"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-87348339-3', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-87348339-3');
 </script>
 
   </head>
@@ -60,8 +70,12 @@ all domains — generate_event_outcomes_plot • evaluator</title>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">evaluator</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">evaluator</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.900</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -111,6 +125,7 @@ all domains — generate_event_outcomes_plot • evaluator</title>
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -118,22 +133,26 @@ all domains — generate_event_outcomes_plot • evaluator</title>
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Display the distribution of threat events contained vs. realized across
 all domains</h1>
+    
+    <div class="hidden name"><code>generate_event_outcomes_plot.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Creates a barbell plot showing the number and percentage of events
 contained (not resulting in loss) vs the number and percentage of
 loss events (threat events resulting in losses).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>generate_event_outcomes_plot</span>(<span class='no'>control_weakness</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -151,7 +170,7 @@ loss events (threat events resulting in losses).</p>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>simulation_results</span>)
 <span class='fu'>data</span>(<span class='no'>domains</span>)
 <span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_weak_domains.html'>calculate_weak_domains</a></span>(<span class='no'>simulation_results</span>, <span class='no'>domains</span>)
-<span class='fu'>generate_event_outcomes_plot</span>(<span class='no'>dat</span>)</div><div class='img'><img src='generate_event_outcomes_plot-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>generate_event_outcomes_plot</span>(<span class='no'>dat</span>)</div><div class='img'><img src='generate_event_outcomes_plot-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -178,5 +197,8 @@ loss events (threat events resulting in losses).</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

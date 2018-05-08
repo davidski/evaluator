@@ -35,6 +35,5 @@ test_that("Control Encoding", {
                          l = c(70, 0), ml = c(80, 20), h = c(95, 30),
                          conf = 3, stringsAsFactors = FALSE)
   dat <- derive_controls(capability_ids, capabilities, mappings)
-  expect_equal(nrow(dat), 2)
-  expect_equal(sum(complete.cases(dat)), 2)
+  expect_equal(length(dat), 2)
 })

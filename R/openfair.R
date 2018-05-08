@@ -12,7 +12,7 @@
 sample_tef <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
   list(type = "tef",
-       samples = as.integer(round(invoke(func, params))),
+       samples = as.integer(round(purrr::invoke(func, params))),
        details = list())
 }
 
@@ -28,7 +28,7 @@ sample_tef <- function(func = NULL, params = NULL) {
 sample_tc <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
   list(type = "tc",
-       samples = invoke(func, params),
+       samples = purrr::invoke(func, params),
        details = list())
 }
 
@@ -59,7 +59,7 @@ sample_diff <- function(func = NULL, params = NULL) {
 #' @export
 sample_vuln <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rbinom", asNamespace("stats"))
-  dat <- invoke(func, params)
+  dat <- purrr::invoke(func, params)
   list(type = "vuln",
        samples = if (purrr::is_list(dat)) dat$samples else dat,
        details = if (purrr::is_list(dat)) dat$details else list()
@@ -78,7 +78,7 @@ sample_vuln <- function(func = NULL, params = NULL) {
 sample_lm <- function(func = NULL, params = NULL) {
 
   if (is.null(func)) func <- get("rpert", asNamespace("mc2d"))
-  samples <- invoke(func, params)
+  samples <- purrr::invoke(func, params)
 
   # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
   details <- if (length(samples) == 0 | sum(samples) == 0) {
@@ -107,7 +107,7 @@ sample_lm <- function(func = NULL, params = NULL) {
 #' @export
 sample_lef <- function(func = NULL, params = NULL) {
   if (is.null(func)) func <- get("rnorm", asNamespace("stats"))
-  dat <- invoke(func, params)
+  dat <- purrr::invoke(func, params)
   list(type = "lef",
        samples = if (purrr::is_list(dat)) dat$samples else dat,
        details = if (purrr::is_list(dat)) dat$details else list()
@@ -124,25 +124,31 @@ sample_lef <- function(func = NULL, params = NULL) {
 #' @importFrom dplyr %>%
 #' @importFrom purrr pmap map transpose simplify_all map_dbl
 #' @param n Number of threat events to sample controls across.
-#' @param diff_estimates Parameters to pass to \code{\link{sample_diff}}.
+#' @param diff_parameters Parameters to pass to \code{\link{sample_diff}}.
 #' @return Vector of control effectiveness.
 #' @family OpenFAIR helpers
 #' @export
-get_mean_control_strength <- function(n, diff_estimates)  {
-  # ensure control estimates are in the order we expect
-  control_params <- with(diff_estimates, list(l = l, ml = ml, h = h,
-                                              conf = conf))
-  cs <- purrr::pmap(control_params, ~ sample_diff(
-    params = list(n, ..1, ..2, ..3, ..4))) %>%
+get_mean_control_strength <- function(n, diff_parameters)  {
+  # get the list of control parameters, including the function to call
+  control_list <- diff_parameters %>% purrr::flatten()
+
+  # iterate over the control parameters, getting a number of samples for
+  # each control
+  cs <- purrr::map(control_list, function(x) {
+    # create a nested tibble (func, params)
+    diff_tbl <- purrr::flatten(x) %>% tibble::as_tibble() %>%
+      nest(-func, .key = "params")
+    params <- c(n = n, diff_tbl$params %>% unlist())
+    sample_diff(func = diff_tbl$func, params = params)
+    }) %>%
     purrr::map("samples")
-  cs <- cs %>% purrr::transpose(.) %>%  purrr::simplify_all(.)
-  # take the mean of all controls
+
+  # pivot the results so each list has 1 sample for each control
+  cs <- purrr::transpose(cs) %>% purrr::simplify_all()
+
+  # take the mean of each list, giving the mean control strength for that event
   outcomes <- cs %>% purrr::map_dbl(mean)
-  # placeholder for control importance work
-  # cs_df <- purrr::map_dfc(cs, tibble::as_tibble) %>% t %>% tibble::as_tibble
-  # control_importance <- caret::filterVarImp(cs_df, outcomes, nonpara = TRUE) %>%
-  #   tibble::rownames_to_column(var = "control") %>%
-  #   arrange(desc(Overall)) %>% dplyr::pull("control")
+
   outcomes
 }
 
@@ -209,8 +215,7 @@ select_loss_opportunities <- function(tc, diff) {
 #' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int flatten
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr %>%
-#' @param scenario List of tef_, tc_, and LM_ parameters.
-#' @param diff_estimates Parameters for estimating the scenario difficulty.
+#' @param scenario List of TEF, TC, and LM parameters.
 #' @param n Number of simulations to run.
 #' @param title Optional name of scenario.
 #' @param verbose Whether to print progress indicators.
@@ -221,10 +226,9 @@ select_loss_opportunities <- function(tc, diff) {
 #' @examples
 #' data(quantitative_scenarios)
 #' scenario <- quantitative_scenarios[1, ]
-#' controls <- scenario[[1, "diff_params"]]
-#' openfair_tef_tc_diff_lm(scenario, controls, 10)
-openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
-                                    title = "Untitled", verbose = FALSE) {
+#' openfair_tef_tc_diff_lm(scenario, 10)
+openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
+                                    verbose = FALSE) {
 
     # make samples repeatable (and l33t)
     set.seed(31337)
@@ -237,21 +241,20 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
 
     # TEF - how many contacts do we have in each simulated period
     TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
-      tibble::as_tibble()
-    TEFsamples <- sample_tef(params = list(n, TEFestimate$tef_l,
-                                           TEFestimate$tef_ml,
-                                           TEFestimate$tef_h,
-                                           shape = TEFestimate$tef_conf))
+      tibble::as_tibble() %>% nest(-func, .key = "params")
+    params <- c(n = n, TEFestimate$params %>% unlist())
+    TEFsamples <- sample_tef(func = TEFestimate$func, params = params)
     TEFsamples <- TEFsamples$samples
 
     # TC - what is the strength of each threat event
     #    - get the threat capability parameters for this scenario
     TCestimate <- scenario$tc_params %>% purrr::flatten() %>%
-      tibble::as_tibble()
+      tibble::as_tibble() %>% nest(-func, .key = "params")
     #    - sample threat capability for each TEF event in each sample period
-    TCsamples <- purrr::map(1:n, ~ sample_tc(
-      params = list(TEFsamples[.x], TCestimate$tc_l, TCestimate$tc_ml,
-                    TCestimate$tc_h, shape = TCestimate$tc_conf))$samples)
+    TCsamples <- purrr::map(1:n, function(x) {
+      params <- c(n = TEFsamples[x], TCestimate$params %>% unlist())
+      sample_tc(func = TCestimate$func, params = params)
+      })
     # TCSamples is now a list of of the TC for each threat event
 
     # DIFF - calculate the mean strength of controls for each threat event
@@ -260,7 +263,7 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
     # get the difficulty for each threat event across all the simulated periods
     DIFFsamples <- purrr::map(1:n, function(x) {
       if (is.numeric(TEFsamples[[x]]) && TEFsamples[[x]] > 0) {
-        get_mean_control_strength(TEFsamples[[x]], diff_estimates)
+        get_mean_control_strength(TEFsamples[[x]], scenario$diff_params)
         } else {NA}
       })
     # DIFFsamples is now a list of vectors of the control strength for
@@ -269,7 +272,7 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
     # LEF - determine how many threat events become losses (TC > DIFF)
     LEFsamples <- purrr::map(1:n, function(x) {
       sample_lef(func = select_loss_opportunities,
-                 params = list(tc = TCsamples[[x]],
+                 params = list(tc = TCsamples[[x]]$samples,
                                diff = DIFFsamples[[x]]))
     })
 
@@ -279,10 +282,10 @@ openfair_tef_tc_diff_lm <- function(scenario, diff_estimates, n = 10^4,
 
     # LM - determine the size of losses for each simulation
     LMestimate <- scenario$lm_params %>% purrr::flatten() %>%
-      tibble::as_tibble()
+      tibble::as_tibble() %>% nest(-func, .key = "params")
     loss_samples <- purrr::map(LEFsamples, function(x) {
-      dat <- sample_lm(params = list(x, LMestimate$lm_l, LMestimate$lm_ml,
-                                    LMestimate$lm_h, LMestimate$lm_conf))
+      params <- c(n = x, LMestimate$params %>% unlist())
+      dat <- sample_lm(func = LMestimate$func, params = params)
       dat$samples <- sum(dat$samples)
       dat
       })

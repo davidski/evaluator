@@ -27,8 +27,9 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch TEF params
   tef_nested <- dplyr::filter(mappings, type=="tef") %>%
     dplyr::rowwise() %>%
-    dplyr::do(tef_params = list(tef_l = .$l, tef_ml = .$ml, tef_h = .$h,
-                                tef_conf = .$conf), label = .$label) %>%
+    dplyr::do(tef_params = list(min = .$l, mode = .$ml, max = .$h,
+                                shape = .$conf, func = "rpert"),
+              label = .$label) %>%
     dplyr::mutate(label = as.character(label))
   scenarios <- dplyr::left_join(scenarios, tef_nested,
                                 by = c("tef" = "label")) %>%
@@ -37,8 +38,9 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch TC params
   tc_nested <- dplyr::filter(mappings, type=="tc") %>%
     dplyr::rowwise() %>%
-    dplyr::do(tc_params = list(tc_l = .$l, tc_ml = .$ml, tc_h = .$h,
-                               tc_conf = .$conf), label = .$label) %>%
+    dplyr::do(tc_params = list(min = .$l, mode = .$ml, max = .$h,
+                               shape = .$conf, func = "rpert"),
+              label = .$label) %>%
     dplyr::mutate(label = as.character(label))
   scenarios <- dplyr::left_join(scenarios, tc_nested,
                                 by = c("tc" = "label")) %>%
@@ -47,8 +49,9 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch LM params
   lm_nested <- dplyr::filter(mappings, type=="lm") %>%
     dplyr::rowwise() %>%
-    dplyr::do(lm_params = list(lm_l = .$l, lm_ml = .$ml, lm_h = .$h,
-                               lm_conf = .$conf), label = .$label) %>%
+    dplyr::do(lm_params = list(min = .$l, mode = .$ml, max = .$h,
+                               shape = .$conf, func = "rpert"),
+              label = .$label) %>%
     dplyr::mutate(label = as.character(label))
   scenarios <- dplyr::left_join(scenarios, lm_nested,
                                 by = c("lm" = "label")) %>%
@@ -64,7 +67,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' their quantitative parameters, and return a dataframe of the set of
 #' parameters.
 #'
-#' @importFrom dplyr left_join mutate_ select rename
+#' @importFrom dplyr left_join mutate_ select rename pull
 #' @importFrom stringi stri_split_fixed
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
 #' @param capabilities Dataframe of master list of all qualitative capabilities.
@@ -91,7 +94,11 @@ derive_controls <- function(capability_ids, capabilities, mappings) {
   results <- control_list %>%
     dplyr::mutate_(label = ~ as.character(diff)) %>% dplyr::select(-diff) %>%
     dplyr::left_join(mappings[mappings$type == "diff", ],
-                     by = c(label = "label"))
+                     by = c(label = "label")) %>%
+    dplyr::rowwise() %>%
+    dplyr::do(diff_params = list(min = .$l, mode = .$ml, max = .$h,
+                                 shape = .$conf, func = "rpert")) %>%
+    dplyr::pull()
 
   return(results)
 }

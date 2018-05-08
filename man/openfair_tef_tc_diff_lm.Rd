@@ -4,13 +4,11 @@
 \alias{openfair_tef_tc_diff_lm}
 \title{Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels}
 \usage{
-openfair_tef_tc_diff_lm(scenario, diff_estimates, n = 10^4,
-  title = "Untitled", verbose = FALSE)
+openfair_tef_tc_diff_lm(scenario, n = 10^4, title = "Untitled",
+  verbose = FALSE)
 }
 \arguments{
-\item{scenario}{List of tef_, tc_, and LM_ parameters.}
-
-\item{diff_estimates}{Parameters for estimating the scenario difficulty.}
+\item{scenario}{List of TEF, TC, and LM parameters.}
 
 \item{n}{Number of simulations to run.}
 
@@ -31,8 +29,7 @@ the effective control strength for a given simulation.
 \examples{
 data(quantitative_scenarios)
 scenario <- quantitative_scenarios[1, ]
-controls <- scenario[[1, "diff_params"]]
-openfair_tef_tc_diff_lm(scenario, controls, 10)
+openfair_tef_tc_diff_lm(scenario, 10)
 }
 \seealso{
 Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},

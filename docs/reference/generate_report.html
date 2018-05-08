@@ -18,13 +18,26 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Generate sample analysis report — generate_report" />
+
+<meta property="og:description" content="Given a set of input files and summarized simulation results, create a
+skeleton risk analysis report. This report attempts to summarize the results
+of the analysis at a top level, using 95
+metric, while also providing more detailed analysis at both a per-domain and
+per-scenario level." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -34,16 +47,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-87348339-3"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-87348339-3', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-87348339-3');
 </script>
 
   </head>
@@ -59,8 +70,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">evaluator</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">evaluator</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.900</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -110,6 +125,7 @@
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -117,12 +133,15 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate sample analysis report</h1>
+    
+    <div class="hidden name"><code>generate_report.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Given a set of input files and summarized simulation results, create a
 skeleton risk analysis report. This report attempts to summarize the results
@@ -130,13 +149,14 @@ of the analysis at a top level, using 95<!-- % Value at Risk (VaR) as the primar
 metric, while also providing more detailed analysis at both a per-domain and
 per-scenario level.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>generate_report</span>(<span class='kw'>input_directory</span> <span class='kw'>=</span> <span class='st'>"~/evaluator/inputs"</span>,
   <span class='kw'>results_directory</span> <span class='kw'>=</span> <span class='st'>"~/evaluator/results"</span>, <span class='no'>output_file</span>, <span class='kw'>styles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>focus_scenario_ids</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>51</span>, <span class='fl'>12</span>), <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"html"</span>,
   <span class='kw'>intermediates_dir</span> <span class='kw'>=</span> <span class='fu'>tempdir</span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -220,5 +240,8 @@ Recommendations section, which will always need to be updated.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

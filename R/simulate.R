@@ -28,7 +28,6 @@ run_simulations <- function(scenario, simulation_count = 10000L,
 
     safe_calculate <- purrr::safely(eval(as.name(model)))
     safe_calculate(scenario = x,
-                  diff_estimates = x[[1, "diff_params"]],
                   n = simulation_count,
                   title = x$scenario_id,
                   verbose = verbose)

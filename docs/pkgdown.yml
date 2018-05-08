@@ -1,8 +1,11 @@
-urls:
-  reference: https://evaluator.severski.net/reference
-  article: https://evaluator.severski.net/articles
+pandoc: '2.2'
+pkgdown: 1.0.0
+pkgdown_sha: ~
 articles:
   customization: customization.html
   process: process.html
   usage: usage.html
+urls:
+  reference: https://evaluator.severski.net/reference
+  article: https://evaluator.severski.net/articles
 

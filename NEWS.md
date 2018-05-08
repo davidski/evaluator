@@ -1,9 +1,13 @@
 # evaluator 0.2.3.900 (unreleased)
 
-* Data structure change - Quantified scenarios now uses list columns to store 
-parameters for TEF, TC, and LM. This allows non L/ML/H/CONF distributions to 
-be more easily sampled. Qualitative scenario structure is unchange so this 
-should have no impact on most users.
+* Data structure change - Quantified scenarios now store parameters for TEF, 
+TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF 
+distributions to be more easily sampled. Qualitative scenario structure is 
+unchanged so this should have no impact on most users.
+* Model inteface change - With the unification on list columns for OpenFAIR 
+parameters, the top level model objects no longer take a dedicated `diff_estimates` 
+option. The `run_simulations` function accounts for this change. Users using 
+the standard flow will not be impacted.
 
 # evaluator 0.2.3
 
