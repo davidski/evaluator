@@ -9,6 +9,11 @@ parameters, the top level model objects no longer take a dedicated `diff_estimat
 option. The `run_simulations` function accounts for this change. Users using 
 the standard flow will not be impacted.
 
+## Bug Fixes
+* Using distributions not in the `base` or `stats` namespaces was practically 
+impossible. All atomic OpenFAIR functions have been refactored to take a 
+fully qualified function (i.e. `EnvStats::rnormTrunc`).
+
 # evaluator 0.2.3
 
 ## Bug Fixes

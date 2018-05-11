@@ -39,6 +39,7 @@ Suggests:
   rmarkdown (>= 1.9),
   shiny,
   testthat,
+  EnvStats,
   covr,
   mockery
 SystemRequirements: pandoc
