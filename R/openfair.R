@@ -106,7 +106,7 @@ sample_lm <- function(func = NULL, params = NULL) {
     requireNamespace(func_split[1], quietly = TRUE)
     func <- get(func_split[2], asNamespace(func_split[1]))
   }
-  samples <- purrr::invoke(func, params)
+  samples <- if (params["n"] != 0) purrr::invoke(func, params) else 0
 
   # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
   details <- if (length(samples) == 0 | sum(samples) == 0) {
