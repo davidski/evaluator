@@ -141,14 +141,28 @@
 <li>Data structure change - Quantified scenarios now store parameters for TEF, TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF distributions to be more easily sampled. Qualitative scenario structure is unchanged so this should have no impact on most users.</li>
 <li>Model inteface change - With the unification on list columns for OpenFAIR parameters, the top level model objects no longer take a dedicated <code>diff_estimates</code> option. The <code>run_simulations</code> function accounts for this change. Users using the standard flow will not be impacted.</li>
 </ul>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
+<ul>
+<li>Using distributions not in the <code>base</code> or <code>stats</code> namespaces was practically impossible. All atomic OpenFAIR functions have been refactored to take a fully qualified function (i.e. <code><a href="http://www.rdocumentation.org/packages/EnvStats/topics/NormalTrunc">EnvStats::rnormTrunc</a></code>).</li>
+</ul>
+</div>
+<div id="improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements" class="anchor"></a>Improvements</h2>
+<ul>
+<li>Errors encountered during <code>run_simulation</code> runs are now reported better.</li>
+</ul>
+</div>
 </div>
     <div id="evaluator-0-2-3" class="section level1">
 <h1 class="page-header">
 <a href="#evaluator-0-2-3" class="anchor"></a>evaluator 0.2.3<small> 2018-04-09 </small>
 </h1>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Additional logic in tests to verify that supplemental packages are available, skipping the test if said packages are not installed.</li>
 <li>Update tests to convert tibbles to data.frames prior to comparion as a work around for <a href="https://github.com/tidyverse/dplyr/issues/2751">dplyr/2751</a>.</li>
@@ -167,9 +181,9 @@
 <li>Part of the discretization step for TEF has a positive side effect of making the threat_event column in data objects an integer rather than a double- long. As this is still a numeric type, there should be no impact on users for this change apart from a slightly tidyer data output.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Update risk_dashboard to not cache any chunks. This keeps <code>render</code> from from trying to write to the package install directory.</li>
 <li>Updated tests to use four significant digits where long refrence values are passed, avoiding precission issues on machines without long doubles.</li>
@@ -180,9 +194,9 @@
 <h1 class="page-header">
 <a href="#evaluator-0-2-1" class="anchor"></a>evaluator 0.2.1<small> 2018-03-22 </small>
 </h1>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Document optional dependency on pandoc and add test skip logic to avoid rmarkdown tests on systems where pandoc is not available.
 <ul>
@@ -243,9 +257,9 @@
 </li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug Fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Improved help documentation on many functions</li>
 <li>Update of usage vignette</li>
