@@ -14,6 +14,9 @@ the standard flow will not be impacted.
 impossible. All atomic OpenFAIR functions have been refactored to take a 
 fully qualified function (i.e. `EnvStats::rnormTrunc`).
 
+## Improvements
+* Errors encountered during `run_simulation` runs are now reported better.
+
 # evaluator 0.2.3
 
 ## Bug Fixes

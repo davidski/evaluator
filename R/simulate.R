@@ -6,7 +6,7 @@
 #'
 #' @import dplyr
 #' @importFrom dplyr progress_estimated bind_rows %>% mutate row_number
-#' @importFrom purrr safely is_null map_lgl transpose simplify
+#' @importFrom purrr safely is_null map_lgl transpose simplify keep
 #' @importFrom tidyr nest
 #' @param scenario Quantitative scenarios.
 #' @param model OpenFAIR model to use.
@@ -43,10 +43,12 @@ run_simulations <- function(scenario, simulation_count = 10000L,
 
   y <- simulation_results %>% purrr::transpose() %>% purrr::simplify()
   is_ok <- y$error %>% purrr::map_lgl(purrr::is_null)
+  errors <- y$error %>% purrr::keep(!is_ok)
 
   if (sum(is_ok) != nrow(scenario)) {
-    stop("Error encountered with with scenario IDs: ",
-         paste0(scenario[!is_ok,]$scenario_id, collapse = ", "))
+    stop("Errors encountered with one or more scenarios:\n",
+         paste(scenario[!is_ok,]$scenario_id, errors, sep = " - Error: ",
+               collapse = "\n"))
   }
 
   simulation_results <- dplyr::bind_rows(y$result)
