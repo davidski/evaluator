@@ -66,6 +66,7 @@ summarize_scenarios <- function(simulation_results) {
 #' * Z-score of ALE (outliers flagged as 2 >= z-score)
 #'
 #' @import dplyr
+#' @importFrom rlang .data
 #' @param simulation_results Simulation results dataframe.
 #' @param domains Domain mappings dataframe.
 #' @export
@@ -76,9 +77,9 @@ summarize_scenarios <- function(simulation_results) {
 #' summarize_domains(simulation_results, domains)
 summarize_domains <- function(simulation_results, domains) {
   simulation_results %>% group_by_("domain_id", "simulation") %>%
-    dplyr::summarize_(ale = ~ sum(ale)) %>%
+    dplyr::summarize(ale = sum(.data$ale)) %>%
     dplyr::left_join(domains, by = c("domain_id" = "domain_id")) %>%
-    dplyr::select_("domain_id", "domain", "simulation", "ale", ~ everything())
+    dplyr::select(.data$domain_id, .data$domain, .data$simulation, .data$ale, everything())
 }
 
 #' Create all summary files and write to disk

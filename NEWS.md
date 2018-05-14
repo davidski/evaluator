@@ -18,6 +18,8 @@ fully qualified function (i.e. `EnvStats::rnormTrunc`).
 * Errors encountered during `run_simulation` runs are now reported better.
 * sample_lm explicitly checks for 0 loss events to simulate as a catch for ill-
 behaved functions that don't return a numeric(0) when asked to generate 0 samples.
+* Removed all deprecated `foo_` tidyverse verbs in favor of `rlang::.data` 
+constructs, making CRAN checks mcuh simpler.
 
 # evaluator 0.2.3
 

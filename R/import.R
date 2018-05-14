@@ -92,9 +92,10 @@ import_scenarios <- function(survey_file = system.file("survey",
 
 #' Import capabilities from survey spreadsheet
 #'
-#' @importFrom dplyr mutate_ select_ arrange_
+#' @importFrom dplyr mutate select arrange
 #' @importFrom readxl read_excel
 #' @importFrom purrr map
+#' @importFrom rlang .data
 #' @param survey_file Path to survey XLSX file. If not supplied, a default sample file is used.
 #' @param domains Dataframe of domains and domain IDs.
 #' @export
@@ -106,19 +107,19 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
                                domains){
 
   raw_domains <- domains %>%
-    dplyr::mutate_(raw_data = ~ purrr::map(domain_id, ~ readxl::read_excel(
+    dplyr::mutate(raw_data = purrr::map(.data$domain_id, ~ readxl::read_excel(
       survey_file, skip=1, sheet=.)))
 
   ## ----walk_the_frame------------------------------------------------------
   dat <- raw_domains %>%
-    dplyr::mutate_(capabilities = ~ purrr::map(raw_data, split_sheet)) %>%
-    dplyr::select_(~ -raw_data)
+    dplyr::mutate(capabilities = purrr::map(.data$raw_data, split_sheet)) %>%
+    dplyr::select(-.data$raw_data)
 
   # fetch and clean capabilities
   capabilities <- tidyr::unnest(dat, capabilities) %>%
-    dplyr::select_(id = "CapabilityID", "domain_id", capability = "Name",
+    dplyr::select(id = "CapabilityID", .data$domain_id, capability = "Name",
                    diff = "DIFF") %>%
-    dplyr::mutate_("id" = ~ as.integer(id)) %>% dplyr::arrange_("id")
+    dplyr::mutate("id" = as.integer(.data$id)) %>% dplyr::arrange(.data$id)
 
   capabilities
 }

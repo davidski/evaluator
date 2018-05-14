@@ -157,6 +157,7 @@ sample_lef <- function(func = NULL, params = NULL) {
 #' @importFrom dplyr %>% bind_rows
 #' @importFrom purrr pmap map transpose simplify_all map_dbl
 #' @importFrom stringi stri_split_fixed
+#' @importFrom rlang .data
 #' @param n Number of threat events to sample controls across.
 #' @param diff_parameters Parameters to pass to \code{\link{sample_diff}}.
 #' @return Vector of control effectiveness.
@@ -171,7 +172,7 @@ get_mean_control_strength <- function(n, diff_parameters)  {
   # getting a number of samples for each control
   cs <- purrr::map(control_list, function(x) {
     # create a nested tibble (func, params)
-    diff_tbl <- x %>% dplyr::bind_rows() %>% nest(-func, .key = "params")
+    diff_tbl <- x %>% dplyr::bind_rows() %>% nest(-.data$func, .key = "params")
     # extract the parameters list from the tibble
     params <- c(n = n, diff_tbl$params %>% unlist())
     #generate the samples
@@ -249,6 +250,7 @@ select_loss_opportunities <- function(tc, diff) {
 #'
 #' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int flatten
 #' @importFrom tibble tibble as_tibble
+#' @importFrom rlang .data
 #' @importFrom dplyr %>%
 #' @param scenario List of TEF, TC, and LM parameters.
 #' @param n Number of simulations to run.
@@ -276,7 +278,7 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
 
     # TEF - how many contacts do we have in each simulated period
     TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
-      tibble::as_tibble() %>% nest(-func, .key = "params")
+      tibble::as_tibble() %>% nest(-.data$func, .key = "params")
     params <- c(n = n, TEFestimate$params %>% unlist())
     TEFsamples <- sample_tef(func = TEFestimate$func, params = params)
     TEFsamples <- TEFsamples$samples
@@ -284,7 +286,7 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
     # TC - what is the strength of each threat event
     #    - get the threat capability parameters for this scenario
     TCestimate <- scenario$tc_params %>% purrr::flatten() %>%
-      tibble::as_tibble() %>% nest(-func, .key = "params")
+      tibble::as_tibble() %>% nest(-.data$func, .key = "params")
     #    - sample threat capability for each TEF event in each sample period
     TCsamples <- purrr::map(1:n, function(x) {
       params <- c(n = TEFsamples[x], TCestimate$params %>% unlist())
@@ -317,7 +319,7 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
 
     # LM - determine the size of losses for each simulation
     LMestimate <- scenario$lm_params %>% purrr::flatten() %>%
-      tibble::as_tibble() %>% nest(-func, .key = "params")
+      tibble::as_tibble() %>% nest(-.data$func, .key = "params")
     loss_samples <- purrr::map(LEFsamples, function(x) {
       params <- c(n = x, LMestimate$params %>% unlist())
       dat <- sample_lm(func = LMestimate$func, params = params)

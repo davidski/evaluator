@@ -48,7 +48,9 @@ dollar_millions <- function(x) {
 #' events, percentage of vulnerability, mean threat capability exceedance,
 #' and mean difficult exceedance.
 #'
-#' @importFrom dplyr summarize_ mutate_ arrange_ group_by_ select left_join
+#' @importFrom dplyr summarize mutate arrange group_by select left_join
+#' @importFrom rlang .data
+#' @importFrom scales percent
 #' @param simulation_results Results of running the risk simulations.
 #' @param domains Domain titles and IDs as a dataframe.
 #' @return Dataframe.
@@ -58,28 +60,29 @@ dollar_millions <- function(x) {
 #' data(domains)
 #' calculate_weak_domains(simulation_results, domains)
 calculate_weak_domains <- function(simulation_results, domains) {
-  control_weakness <- simulation_results %>% dplyr::group_by_("domain_id") %>%
-    dplyr::summarize_(loss_events = ~ sum(loss_events), threat_events = ~ sum(threat_events)) %>%
-    dplyr::mutate_(vuln = ~ loss_events/threat_events) %>%
-    dplyr::arrange_(~ desc(vuln)) %>% dplyr::mutate_(vuln = ~ scales::percent(vuln))
+  control_weakness <- simulation_results %>% dplyr::group_by(.data$domain_id) %>%
+    dplyr::summarize(loss_events = sum(.data$loss_events),
+                     threat_events = sum(.data$threat_events)) %>%
+    dplyr::mutate(vuln = .data$loss_events / .data$threat_events) %>%
+    dplyr::arrange(desc(.data$vuln)) %>% dplyr::mutate(vuln = scales::percent(.data$vuln))
   # recalc domain_level tc_exceedance
-  tc_exceedance <- simulation_results %>% dplyr::group_by_("domain_id") %>%
-    dplyr::mutate_(avoided_events = ~ threat_events - loss_events) %>%
-    dplyr::summarize_(tc_exceedance = ~ sum(mean_tc_exceedance * loss_events),
-                      diff_exceedance = ~ sum(mean_diff_exceedance * avoided_events),
-                      avoided_events = ~ sum(avoided_events),
-                      loss_events = ~ sum(loss_events)) %>%
-    dplyr::mutate_(tc_exceedance = ~ tc_exceedance / loss_events,
-                   diff_exceedance = ~diff_exceedance / avoided_events) %>%
-    dplyr::mutate_(tc_exceedance = ~ ifelse(is.na(tc_exceedance), NA,
+  tc_exceedance <- simulation_results %>% dplyr::group_by(.data$domain_id) %>%
+    dplyr::mutate(avoided_events = .data$threat_events - .data$loss_events) %>%
+    dplyr::summarize(tc_exceedance = sum(.data$mean_tc_exceedance * .data$loss_events),
+                      diff_exceedance = sum(.data$mean_diff_exceedance * .data$avoided_events),
+                      avoided_events = sum(.data$avoided_events),
+                      loss_events = sum(.data$loss_events)) %>%
+    dplyr::mutate(tc_exceedance = .data$tc_exceedance / .data$loss_events,
+                   diff_exceedance = .data$diff_exceedance / .data$avoided_events) %>%
+    dplyr::mutate(tc_exceedance = ifelse(is.na(.data$tc_exceedance), NA,
                                             scales::percent(tc_exceedance/100)),
-                   diff_exceedance = ~ ifelse(is.na(diff_exceedance), NA,
-                                              scales::percent(diff_exceedance/100))) %>%
-    dplyr::select_("tc_exceedance", "diff_exceedance", "domain_id")
+                   diff_exceedance = ifelse(is.na(.data$diff_exceedance), NA,
+                                              scales::percent(.data$diff_exceedance/100))) %>%
+    dplyr::select(.data$tc_exceedance, .data$diff_exceedance, .data$domain_id)
   control_weakness <- dplyr::left_join(control_weakness, tc_exceedance,
                                 by = c(domain_id = "domain_id")) %>%
     dplyr::left_join(domains, by = c(domain_id = "domain_id")) %>%
-      dplyr::mutate_(domain = ~ paste0(domain, " (", domain_id, ")"))
+      dplyr::mutate(domain = paste0(.data$domain, " (", .data$domain_id, ")"))
   control_weakness
 }
 

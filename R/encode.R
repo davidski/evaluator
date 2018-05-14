@@ -25,37 +25,37 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
                                               capabilities = capabilities,
                                               mappings = mappings))
   # fetch TEF params
-  tef_nested <- dplyr::filter(mappings, type=="tef") %>%
+  tef_nested <- dplyr::filter(mappings, .data$type=="tef") %>%
     dplyr::rowwise() %>%
     dplyr::do(tef_params = list(min = .$l, mode = .$ml, max = .$h,
                                 shape = .$conf, func = "mc2d::rpert"),
               label = .$label) %>%
-    dplyr::mutate(label = as.character(label))
+    dplyr::mutate(label = as.character(.data$label))
   scenarios <- dplyr::left_join(scenarios, tef_nested,
                                 by = c("tef" = "label")) %>%
-    dplyr::select(-tef)
+    dplyr::select(-.data$tef)
 
   # fetch TC params
-  tc_nested <- dplyr::filter(mappings, type=="tc") %>%
+  tc_nested <- dplyr::filter(mappings, .data$type=="tc") %>%
     dplyr::rowwise() %>%
     dplyr::do(tc_params = list(min = .$l, mode = .$ml, max = .$h,
                                shape = .$conf, func = "mc2d::rpert"),
               label = .$label) %>%
-    dplyr::mutate(label = as.character(label))
+    dplyr::mutate(label = as.character(.data$label))
   scenarios <- dplyr::left_join(scenarios, tc_nested,
                                 by = c("tc" = "label")) %>%
-    dplyr::select(-tc)
+    dplyr::select(-.data$tc)
 
   # fetch LM params
-  lm_nested <- dplyr::filter(mappings, type=="lm") %>%
+  lm_nested <- dplyr::filter(mappings, .data$type=="lm") %>%
     dplyr::rowwise() %>%
     dplyr::do(lm_params = list(min = .$l, mode = .$ml, max = .$h,
                                shape = .$conf, func = "mc2d::rpert"),
               label = .$label) %>%
-    dplyr::mutate(label = as.character(label))
+    dplyr::mutate(label = as.character(.data$label))
   scenarios <- dplyr::left_join(scenarios, lm_nested,
                                 by = c("lm" = "label")) %>%
-    dplyr::select(-lm)
+    dplyr::select(-.data$lm)
 
   scenarios
 }

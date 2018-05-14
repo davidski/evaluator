@@ -34,3 +34,4 @@ devtools::use_data(domain_summary, overwrite = TRUE)
 # calculate and save scenario summary
 scenario_summary <- summarize_scenarios(simulation_results)
 devtools::use_data(scenario_summary, overwrite = TRUE)
+
