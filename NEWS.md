@@ -13,6 +13,7 @@ the standard flow will not be impacted.
 * Using distributions not in the `base` or `stats` namespaces was practically 
 impossible. All atomic OpenFAIR functions have been refactored to take a 
 fully qualified function (i.e. `EnvStats::rnormTrunc`).
+* Minor documentation cleanup.
 
 ## Improvements
 * Errors encountered during `run_simulation` runs are now reported better.

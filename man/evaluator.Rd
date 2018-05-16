@@ -6,10 +6,10 @@
 \alias{evaluator-package}
 \title{\code{evaluator} package}
 \description{
-Information Security Risk Simulation Toolkit
+Quantified Information Risk Simulation Toolkit
 }
 \details{
 See the README on
-\href{https://cran.r-project.org/package=googlesheets/README.html}{CRAN}
+\href{https://cran.r-project.org/package=evaluator/README.html}{CRAN}
 or \href{https://github.com/davidski/evaluator}{GitHub}
 }
