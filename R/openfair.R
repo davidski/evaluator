@@ -18,7 +18,7 @@ sample_tef <- function(func = NULL, params = NULL) {
   }
 
   list(type = "tef",
-       samples = as.integer(round(purrr::invoke(func, params))),
+       samples =  as.integer(round(purrr::invoke(func, params))),
        details = list())
 }
 
@@ -39,7 +39,7 @@ sample_tc <- function(func = NULL, params = NULL) {
     func <- get(func_split[2], asNamespace(func_split[1]))
   }
   list(type = "tc",
-       samples = purrr::invoke(func, params),
+       samples = if (params["n"] != 0) purrr::invoke(func, params) else NA,
        details = list())
 }
 
@@ -106,7 +106,7 @@ sample_lm <- function(func = NULL, params = NULL) {
     requireNamespace(func_split[1], quietly = TRUE)
     func <- get(func_split[2], asNamespace(func_split[1]))
   }
-  samples <- if (params["n"] != 0) purrr::invoke(func, params) else 0
+  samples <- if (params["n"] != 0 & !is.na(params["n"])) purrr::invoke(func, params) else 0
 
   # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
   details <- if (length(samples) == 0 | sum(samples) == 0) {
@@ -228,11 +228,11 @@ select_loss_opportunities <- function(tc, diff) {
   samples <-  tc > diff
 
   # mean amount threat strength exceeds control strength, if that ever occurs
-  tc_exceedance <- if (sum(samples) > 0) {
+  tc_exceedance <- if (sum(samples, na.rm = TRUE) > 0) {
     mean(tc[samples] - diff[samples], na.rm = TRUE)
     } else {0}
   # mean amount control strength exceeds threat strength, if that ever occurs
-  diff_exceedance <- if (sum(samples) != length(tc)) {
+  diff_exceedance <- if (sum(samples, na.rm = TRUE) != length(tc)) {
     mean(diff[!samples] - tc[!samples], na.rm = TRUE)
     } else {0}
   list(samples = samples, details = list(mean_tc_exceedance = tc_exceedance,

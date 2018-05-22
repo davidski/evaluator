@@ -146,16 +146,17 @@
 <a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Using distributions not in the <code>base</code> or <code>stats</code> namespaces was practically impossible. All atomic OpenFAIR functions have been refactored to take a fully qualified function (i.e. <code><a href="http://www.rdocumentation.org/packages/EnvStats/topics/NormalTrunc">EnvStats::rnormTrunc</a></code>).</li>
-<li>Minor documentation cleanup.</li>
 </ul>
 </div>
 <div id="improvements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
+<li>Minor documentation cleanup.</li>
 <li>Errors encountered during <code>run_simulation</code> runs are now reported better.</li>
-<li>sample_lm explicitly checks for 0 loss events to simulate as a catch for ill- behaved functions that don’t return a numeric(0) when asked to generate 0 samples.</li>
-<li>Removed all deprecated <code>foo_</code> tidyverse verbs in favor of <code><a href="http://www.rdocumentation.org/packages/rlang/topics/tidyeval-data">rlang::.data</a></code> constructs, making CRAN checks mcuh simpler.</li>
+<li>
+<code>sample_lm</code> and <code>sample_tc</code> check if they are asked to generate zero requested samples, bypassing calling the underlying generation function. This avoids problems with generating functions which do not gracefully handle being asked to sample a non positive number (zero) of events.</li>
+<li>Removed all deprecated standard-evaluation tidyverse verbs in favor of <code><a href="http://www.rdocumentation.org/packages/rlang/topics/tidyeval-data">rlang::.data</a></code> constructs, making CRAN checks mcuh simpler.</li>
 </ul>
 </div>
 </div>

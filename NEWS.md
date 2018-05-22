@@ -13,14 +13,16 @@ the standard flow will not be impacted.
 * Using distributions not in the `base` or `stats` namespaces was practically 
 impossible. All atomic OpenFAIR functions have been refactored to take a 
 fully qualified function (i.e. `EnvStats::rnormTrunc`).
-* Minor documentation cleanup.
 
 ## Improvements
+* Minor documentation cleanup.
 * Errors encountered during `run_simulation` runs are now reported better.
-* sample_lm explicitly checks for 0 loss events to simulate as a catch for ill-
-behaved functions that don't return a numeric(0) when asked to generate 0 samples.
-* Removed all deprecated `foo_` tidyverse verbs in favor of `rlang::.data` 
-constructs, making CRAN checks mcuh simpler.
+* `sample_lm` and `sample_tc` check if they are asked to generate zero 
+requested samples, bypassing calling the underlying generation function. This 
+avoids problems with generating functions which do not gracefully handle being 
+asked to sample a non positive number (zero) of events.
+* Removed all deprecated standard-evaluation tidyverse verbs in favor of 
+`rlang::.data` constructs, making CRAN checks mcuh simpler.
 
 # evaluator 0.2.3
 
