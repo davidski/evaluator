@@ -32,9 +32,9 @@ results_directory <- params$results_directory
 
 ```{r load_data, include=FALSE}
 dat <- load_data(input_directory, results_directory)
-simulation_results<- dat$simulation_results
-scenario_summary<- dat$scenario_summary
-domain_summary<- dat$domain_summary
+simulation_results <- dat$simulation_results
+scenario_summary <- dat$scenario_summary
+domain_summary <- dat$domain_summary
 domains <- dat$domains
 mappings <- dat$mappings
 capabilities <-  dat$capabilities
