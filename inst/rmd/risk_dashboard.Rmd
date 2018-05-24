@@ -8,7 +8,7 @@ output:
     logo: "img/evaluator_logo_48px.png"
     navbar:
     - align: right
-      href: https://github.com/davidski/evaluator
+      href: https://evaluator.severski.net
       title: About
     orientation: row
     source_code: embed
