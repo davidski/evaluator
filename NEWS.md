@@ -26,6 +26,8 @@ avoids problems with generating functions which do not gracefully handle being
 asked to sample a non positive number (zero) of events.
 * Removed all deprecated standard-evaluation tidyverse verbs in favor of 
 `rlang::.data` constructs, making CRAN checks mcuh simpler.
+* `load_data` now fully specifies the expected CSV file formats, avoiding 
+possible surpises and making invocations less noisy on the console.
 
 # evaluator 0.2.3
 

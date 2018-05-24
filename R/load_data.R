@@ -53,7 +53,7 @@ create_templates <- function(base_directory = "~/evaluator"){
 #' of the key Evaluator data objects into memory.
 #'
 #' @importFrom dplyr summarize mutate_ group_by_
-#' @importFrom readr read_csv
+#' @importFrom readr read_csv cols col_character col_integer col_double
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
 #' @return List of all key data objects.
@@ -72,11 +72,45 @@ load_data <- function(input_directory = "~/evaluator/inputs", results_directory 
   load(file.path(results_directory, "domain_summary.rda"))
 
   # all input files
-  domains <- readr::read_csv(file.path(input_directory, "domains.csv"))  # domain catalog
-  mappings <- readr::read_csv(file.path(input_directory, "qualitative_mappings.csv"))  # qualitative translations
-  capabilities <- readr::read_csv(file.path(input_directory, "capabilities.csv"))  # i.e. objectives & controls
-  risk_tolerances <- readr::read_csv(file.path(input_directory, "risk_tolerances.csv"))  # i.e. risk tolerances
-  qualitative_scenarios <- readr::read_csv(file.path(input_directory, "qualitative_scenarios.csv")) %>%
+  domains <- readr::read_csv(file.path(input_directory, "domains.csv"),
+                             col_types = readr::cols(
+                                 domain_id = readr::col_character(),
+                                 domain = readr::col_character()
+                                 )) # domain catalog
+  mappings <- readr::read_csv(file.path(input_directory, "qualitative_mappings.csv"),
+                              col_types = readr::cols(
+                                type = readr::col_character(),
+                                label = readr::col_character(),
+                                l = readr::col_integer(),
+                                ml = readr::col_double(),
+                                h = readr::col_integer(),
+                                conf = readr::col_integer()
+                              ))  # qualitative translations
+  capabilities <- readr::read_csv(file.path(input_directory,
+                                            "capabilities.csv"),
+                                  col_types = readr::cols(
+                                    id = readr::col_integer(),
+                                    domain_id = readr::col_character(),
+                                    capability = readr::col_character(),
+                                    diff = readr::col_character()))  # i.e. objectives & controls
+  risk_tolerances <- readr::read_csv(file.path(input_directory,
+                                               "risk_tolerances.csv"),
+                                     col_types = readr::cols(
+                                       level = readr::col_character(),
+                                       amount = readr::col_integer()
+                                     ))  # i.e. risk tolerances
+  qualitative_scenarios <- readr::read_csv(file.path(input_directory,
+                                                     "qualitative_scenarios.csv"),
+                                           col_types = readr::cols(
+                                             scenario_id = readr::col_integer(),
+                                             scenario = readr::col_character(),
+                                             tcomm = readr::col_character(),
+                                             tef = readr::col_character(),
+                                             tc = readr::col_character(),
+                                             lm = readr::col_character(),
+                                             domain_id = readr::col_character(),
+                                             controls = readr::col_character()
+                                           )) %>%
     dplyr::mutate_("tef" = ~ tolower(tef), "lm" = ~ tolower(lm), "tc" = ~ tolower(tc))
 
   # precalculate the standard order of scenarios (domain, then ID of the scenario)
