@@ -1,6 +1,6 @@
 ---
-title: "Strategic Information Security Risk Analysis"
-author: "Evaluator toolkit (https://github.com/davidski/evaluator)"
+title: "Strategic Information Risk Analysis"
+author: "Evaluator toolkit (https://evaluator.severski.net)"
 output:
   html_document:
     css: "html-styles.css"
@@ -55,6 +55,7 @@ library(rlang)
 library(psych)
 library(tidyr)
 library(pander)
+library(tibble)
 library(evaluator)
 
 panderOptions('table.split.table', Inf) # allow pander to make pages wide
@@ -145,7 +146,7 @@ mean, and minimum annual losses.
 overall <- simulation_results %>% group_by(simulation) %>% 
                      summarize(ale = sum(ale)) %>% select(ale) %>%
                      ungroup
-data_frame("Value at Risk" = dollar(quantile(overall$ale, c(0.95))),
+tibble::tibble("Value at Risk" = dollar(quantile(overall$ale, c(0.95))),
            "Maximum Loss" = dollar(max(overall$ale)),
            "Mean Loss" = dollar(mean(overall$ale)),
            "Minimum Loss" = dollar(min(overall$ale))

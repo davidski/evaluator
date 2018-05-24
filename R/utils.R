@@ -13,8 +13,8 @@
 #' }
 check_availability <- function(packages, func) {
   res <- purrr::map_df(packages,
-                       ~ tibble(package = .x,
-                                available = requireNamespace(.x, quietly=TRUE)))
+                       ~ tibble::tibble(package = .x,
+                                        available = requireNamespace(.x, quietly=TRUE)))
   if (sum(res$available) != length(packages)) {
     stop(func, " requires the following packages which are not available: ",
          paste0(res[, ]$package, collapse = ", "), "\n",

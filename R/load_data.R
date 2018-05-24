@@ -6,8 +6,8 @@
 #' Preexisting files, if present, will not be overwritten. Also creates an
 #' empty `results` subdirectory as a default location for evaluator output.
 #'
-#' @importFrom dplyr data_frame
 #' @importFrom purrr map_dfr
+#' @importFrom tibble add_row tibble
 #' @param base_directory Parent directory under which to create starter files.
 #' @export
 #' @return A dataframe of the starter filenames, along with a flag on whether a file was copied.
@@ -26,7 +26,7 @@ create_templates <- function(base_directory = "~/evaluator"){
   # copy all the standard CSV files
   res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
     purrr::map_dfr(
-      ~ dplyr::data_frame(filename = .x,
+      ~ tibble::tibble(filename = .x,
                           copied = file.copy(system.file("extdata", .x,
                                                          package = "evaluator"),
                                              inputs_dir)))

@@ -24,6 +24,7 @@ library(scales)
 library(viridis)
 library(ggplot2)
 library(dplyr)
+library(tibble)
 library(evaluator)
 library(extrafont)
 input_directory <- params$input_directory
@@ -59,7 +60,7 @@ custom_percent <- function(x) {
 
 get_loss_table <- function(tid) {
   scenario_data <- simulation_results[simulation_results$scenario_id == tid, ]
-  loss_table <- tibble::data_frame(Category = c("Loss Events / Year", "Loss Magnitude", 
+  loss_table <- tibble::tibble(Category = c("Loss Events / Year", "Loss Magnitude", 
                                                 "Total Loss Exposure"),
                                    Minimum = c(min(scenario_data$loss_events), 
                                                min(scenario_data$sle_min) %>% dollar,
