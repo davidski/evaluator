@@ -93,8 +93,9 @@ calculate_weak_domains <- function(simulation_results, domains) {
 #' at the minimum, mean, maximum, standard deviation, and 95% value at risk
 #' levels.
 #'
-#' @importFrom dplyr select_ summarize_at funs arrange_ ungroup left_join mutate_
+#' @importFrom dplyr select summarize_at funs arrange ungroup left_join mutate desc group_by_at
 #' @importFrom stats sd quantile
+#' @importFrom rlang .data
 #' @param domain_summary Domain-level summary of simulation results as returned by \code{\link{summarize_domains}}.
 #' @param domains Dataframe of all domains in scope.
 #' @return Dataframe.
@@ -104,13 +105,13 @@ calculate_weak_domains <- function(simulation_results, domains) {
 #' data(domains)
 #' calculate_domain_impact(domain_summary, domains)
 calculate_domain_impact <- function(domain_summary, domains) {
-  domain_summary %>% dplyr::group_by_(~domain_id) %>%
-    dplyr::select_("domain_id", "ale") %>%
+  domain_summary %>% dplyr::group_by_at(.vars = "domain_id") %>%
+    dplyr::select(.data$domain_id, .data$ale) %>%
     dplyr::summarize_at(vars("ale"), dplyr::funs(min, mean, max, sd,
                                                  var = quantile(., probs = 0.95))) %>%
-    dplyr::arrange_("desc(var)") %>% dplyr::ungroup() %>%
-    dplyr::left_join(domains, by = c(domain_id = "domain_id")) %>%
-    dplyr::mutate_(domain = quote(paste0(domain, " (", domain_id, ")")))
+    dplyr::arrange(dplyr::desc(.data$var)) %>% dplyr::ungroup() %>%
+    dplyr::left_join(domains, by = "domain_id") %>%
+    dplyr::mutate(domain = paste0(.data$domain, " (", .data$domain_id, ")"))
 }
 
 #' Calculate maximum losses
@@ -119,7 +120,8 @@ calculate_domain_impact <- function(domain_summary, domains) {
 #' the minimum and maximum ALE across all simulations. Calculations both
 #' with and without outliers (if passed) are returned.
 #'
-#' @importFrom dplyr filter_ group_by_ summarize_ ungroup union
+#' @importFrom dplyr filter group_by summarize ungroup union
+#' @importFrom rlang .data
 #' @param simulation_results Simulation results dataframe.
 #' @param scenario_outliers Optional vector of IDs of outlier scenarios.
 #' @return Dataframe.
@@ -129,17 +131,17 @@ calculate_domain_impact <- function(domain_summary, domains) {
 #' calculate_max_losses(simulation_results)
 calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
   max_loss <- simulation_results %>%
-    dplyr::filter_(~ !scenario_id %in% scenario_outliers) %>%
-    dplyr::group_by_("simulation") %>%
-    dplyr::summarize_(biggest_single_scenario_loss = ~ max(ale),
-                      min_loss = ~ min(ale), max_loss = ~ sum(ale),
+    dplyr::filter(!.data$scenario_id %in% scenario_outliers) %>%
+    dplyr::group_by(.data$simulation) %>%
+    dplyr::summarize(biggest_single_scenario_loss = max(.data$ale),
+                      min_loss = min(.data$ale), max_loss = sum(.data$ale),
                       outliers = FALSE) %>%
     dplyr::ungroup()
   max_loss_w_outliers <- simulation_results %>%
-    dplyr::group_by_("simulation") %>%
-    dplyr::summarize_(biggest_single_scenario_loss = ~ max(ale),
-                      min_loss = ~ min(ale),
-                      max_loss = ~ sum(ale), outliers = TRUE) %>%
+    dplyr::group_by(.data$simulation) %>%
+    dplyr::summarize(biggest_single_scenario_loss = max(.data$ale),
+                      min_loss = min(.data$ale),
+                      max_loss = sum(.data$ale), outliers = TRUE) %>%
     dplyr::ungroup()
   dplyr::union(max_loss, max_loss_w_outliers)
 }

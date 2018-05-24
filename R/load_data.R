@@ -52,7 +52,8 @@ create_templates <- function(base_directory = "~/evaluator"){
 #' Given a input directory and a directory of simulation results, load all
 #' of the key Evaluator data objects into memory.
 #'
-#' @importFrom dplyr summarize mutate_ group_by_
+#' @importFrom dplyr summarize mutate group_by_at
+#' @importFrom rlang .data
 #' @importFrom readr read_csv cols col_character col_integer col_double
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
@@ -111,11 +112,13 @@ load_data <- function(input_directory = "~/evaluator/inputs", results_directory 
                                              domain_id = readr::col_character(),
                                              controls = readr::col_character()
                                            )) %>%
-    dplyr::mutate_("tef" = ~ tolower(tef), "lm" = ~ tolower(lm), "tc" = ~ tolower(tc))
+    dplyr::mutate(tef = tolower(.data$tef),
+                  lm = tolower(.data$lm),
+                  tc = tolower(.data$tc))
 
   # precalculate the standard order of scenarios (domain, then ID of the scenario)
-  scenario_order <- dplyr::group_by_(simulation_results, "domain_id",
-                                     "scenario_id") %>%
+  scenario_order <- dplyr::group_by_at(simulation_results,
+                                       .vars = c("domain_id", "scenario_id")) %>%
     dplyr::summarize()
 
   # build a vector of scenario outliers
@@ -127,13 +130,15 @@ load_data <- function(input_directory = "~/evaluator/inputs", results_directory 
   names(risk_tolerance) <- risk_tolerances$level %>% tolower
 
   # enhance scenario_summary assign loss tolerance to ALE VaR size
-  scenario_summary <- mutate_(scenario_summary,
-                              annual_tolerance = ~ ifelse(ale_var >= risk_tolerance["high"],
-                                                          "High",
-                                                          ifelse(ale_var >= risk_tolerance["medium"], "Medium", "Low"))) %>%
-    mutate_(annual_tolerance = ~factor(annual_tolerance,
-                                       levels = c("High", "Medium", "Low"),
-                                       ordered = TRUE))
+  scenario_summary <- mutate(scenario_summary, annual_tolerance =
+                               ifelse(.data$ale_var >= risk_tolerance["high"],
+                                      "High",
+                                      ifelse(.data$ale_var >= risk_tolerance["medium"],
+                                             "Medium",
+                                             "Low"))) %>%
+    mutate(annual_tolerance = factor(.data$annual_tolerance,
+                                     levels = c("High", "Medium", "Low"),
+                                     ordered = TRUE))
 
   list(simulation_results = simulation_results,
        scenario_summary = scenario_summary,

@@ -68,6 +68,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' parameters.
 #'
 #' @importFrom dplyr left_join mutate_ select rename pull
+#' @importFrom rlang .data
 #' @importFrom stringi stri_split_fixed
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
 #' @param capabilities Dataframe of master list of all qualitative capabilities.
@@ -92,7 +93,8 @@ derive_controls <- function(capability_ids, capabilities, mappings) {
   #results <- capabilities[capabilities$id %in%
   #                          as.numeric(control_list), "diff"] %>%
   results <- control_list %>%
-    dplyr::mutate_(label = ~ as.character(diff)) %>% dplyr::select(-diff) %>%
+    dplyr::mutate(label = as.character(.data$diff)) %>%
+    dplyr::select(-diff) %>%
     dplyr::left_join(mappings[mappings$type == "diff", ],
                      by = c(label = "label")) %>%
     dplyr::rowwise() %>%

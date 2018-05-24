@@ -15,6 +15,8 @@
 #' * Z-score of ALE (outliers flagged as 2 >= z-score)
 #'
 #' @import dplyr
+#' @importFrom rlang .data
+#' @importFrom stats median
 #' @param simulation_results Simulation results dataframe.
 #' @export
 #' @return Dataframe.
@@ -23,31 +25,32 @@
 #' summarize_scenarios(simulation_results)
 summarize_scenarios <- function(simulation_results) {
   scenario_summary <- simulation_results %>%
-    dplyr::group_by_("domain_id", "scenario_id") %>%
-    dplyr::summarize_(
-    loss_events_mean = ~ mean(loss_events, na.rm = TRUE),
-    loss_events_min = ~ min(loss_events, na.rm = TRUE),
-    loss_events_max = ~ max(loss_events, na.rm = TRUE),
-    loss_events_median = ~ median(loss_events, na.rm = TRUE),
-    ale_median = ~ median(ale, na.rm = TRUE),
-    ale_max = ~ max(ale, na.rm = TRUE),
-    ale_var = ~ quantile(ale, 0.95),
-    sle_mean = ~ mean(sle_median, na.rm = TRUE),
-    sle_median = ~ median(sle_median, na.rm = TRUE),
-    sle_max = ~ max(sle_max, na.rm = TRUE),
-    sle_min = ~ min(sle_min, na.rm = TRUE),
-    mean_tc_exceedance = ~ (sum(mean_tc_exceedance * loss_events) /
-      sum(loss_events)) %>% ifelse(is.finite(.), ., 0),
-    mean_diff_exceedance = ~(sum(mean_diff_exceedance *
-                                  (threat_events - loss_events)) /
-      sum(threat_events - loss_events)) %>% ifelse(is.finite(.), ., 0),
-    mean_vuln = ~ mean(vuln, na.rm = TRUE)) %>%
-  dplyr::mutate_(sle_median = ~ ifelse(is.nan(sle_median), NA, sle_median)) %>%
+    dplyr::group_by_at(.vars = c("domain_id", "scenario_id")) %>%
+    dplyr::summarize(
+    loss_events_mean = mean(.data$loss_events, na.rm = TRUE),
+    loss_events_min = min(.data$loss_events, na.rm = TRUE),
+    loss_events_max = max(.data$loss_events, na.rm = TRUE),
+    loss_events_median = stats::median(.data$loss_events, na.rm = TRUE),
+    ale_median = median(.data$ale, na.rm = TRUE),
+    ale_max = max(.data$ale, na.rm = TRUE),
+    ale_var = quantile(.data$ale, 0.95),
+    sle_mean = mean(.data$sle_median, na.rm = TRUE),
+    sle_median = median(.data$sle_median, na.rm = TRUE),
+    sle_max = max(.data$sle_max, na.rm = TRUE),
+    sle_min = min(.data$sle_min, na.rm = TRUE),
+    mean_tc_exceedance = (sum(.data$mean_tc_exceedance * .data$loss_events) /
+      sum(.data$loss_events)) %>% ifelse(is.finite(.), ., 0),
+    mean_diff_exceedance = (sum(.data$mean_diff_exceedance *
+                                  (.data$threat_events - .data$loss_events)) /
+      sum(.data$threat_events - .data$loss_events)) %>% ifelse(is.finite(.), ., 0),
+    mean_vuln = mean(.data$vuln, na.rm = TRUE)) %>%
+  dplyr::mutate(sle_median = ifelse(is.nan(.data$sle_median), NA, .data$sle_median)) %>%
   dplyr::ungroup()
 
   # calculate z-score for ALE VaR and assign outliers as >= 2 SD
-  dplyr::mutate_(scenario_summary, ale_var_zscore = ~ scale(ale_var),
-                 outlier = ~ ale_var_zscore >= 2)
+  dplyr::mutate(scenario_summary,
+                ale_var_zscore = scale(.data$ale_var),
+                outlier = .data$ale_var_zscore >= 2)
 }
 
 #' Create domain-level summary of simulation results
@@ -76,10 +79,11 @@ summarize_scenarios <- function(simulation_results) {
 #' data(domains)
 #' summarize_domains(simulation_results, domains)
 summarize_domains <- function(simulation_results, domains) {
-  simulation_results %>% group_by_("domain_id", "simulation") %>%
+  simulation_results %>% group_by_at(.vars = c("domain_id", "simulation")) %>%
     dplyr::summarize(ale = sum(.data$ale)) %>%
     dplyr::left_join(domains, by = c("domain_id" = "domain_id")) %>%
-    dplyr::select(.data$domain_id, .data$domain, .data$simulation, .data$ale, everything())
+    dplyr::select(.data$domain_id, .data$domain, .data$simulation, .data$ale,
+                  dplyr::everything())
 }
 
 #' Create all summary files and write to disk
