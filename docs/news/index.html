@@ -21,14 +21,17 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
 <meta property="og:title" content="Changelog" />
+
 
 
 <!-- mathjax -->
@@ -139,13 +142,17 @@
 </h1>
 <ul>
 <li>Data structure change - Quantified scenarios now store parameters for TEF, TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF distributions to be more easily sampled. Qualitative scenario structure is unchanged so this should have no impact on most users.</li>
-<li>Model inteface change - With the unification on list columns for OpenFAIR parameters, the top level model objects no longer take a dedicated <code>diff_estimates</code> option. The <code>run_simulations</code> function accounts for this change. Users using the standard flow will not be impacted.</li>
+<li>Model interface change - With the unification on list columns for OpenFAIR parameters, the top level model objects no longer take a dedicated <code>diff_estimates</code> option. The <code>run_simulations</code> function accounts for this change. Users using the standard flow will not be impacted.</li>
 </ul>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Using distributions not in the <code>base</code> or <code>stats</code> namespaces was practically impossible. All atomic OpenFAIR functions have been refactored to take a fully qualified function (i.e. <code><a href="http://www.rdocumentation.org/packages/EnvStats/topics/NormalTrunc">EnvStats::rnormTrunc</a></code>).</li>
+<li>
+<code>explore_scenarios</code> was trying to assign a mappings variable to the global context, which rightly failed. Scaled back the assignment to the current scope.</li>
+<li>
+<code>select_loss_opportunities</code> properly returns an NA for the threat &amp; difficulty exceedance calculations when there are no threat events in a given simualated period.</li>
 </ul>
 </div>
 <div id="improvements" class="section level2">
@@ -157,6 +164,8 @@
 <li>
 <code>sample_lm</code> and <code>sample_tc</code> check if they are asked to generate zero requested samples, bypassing calling the underlying generation function. This avoids problems with generating functions which do not gracefully handle being asked to sample a non positive number (zero) of events.</li>
 <li>Removed all deprecated standard-evaluation tidyverse verbs in favor of <code><a href="http://www.rdocumentation.org/packages/rlang/topics/tidyeval-data">rlang::.data</a></code> constructs, making CRAN checks mcuh simpler.</li>
+<li>
+<code>load_data</code> now fully specifies the expected CSV file formats, avoiding possible surpises and making invocations less noisy on the console.</li>
 </ul>
 </div>
 </div>

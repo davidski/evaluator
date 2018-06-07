@@ -123,10 +123,11 @@ Scenario Results {.data-height=250}
 sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
   cluster_hack <- max(dat$cluster_id)
   full_label <- "full_label"
+  sortby <- rlang::enquo(sortby)
   
   # assign a flag on outliers
-  keep_nokeep <- dat %>% group_by_(full_label) %>% 
-    summarise_(foo= ~max(sortby)) %>% 
+  keep_nokeep <- dat %>% group_by_at(.vars = full_label) %>% 
+    summarise(foo = max(!!sortby)) %>% 
     mutate(keep = ifelse(row_number() <= top_n, TRUE, FALSE)) %>% 
     select(-foo)
   

@@ -230,11 +230,17 @@ select_loss_opportunities <- function(tc, diff) {
   samples <-  tc > diff
 
   # mean amount threat strength exceeds control strength, if that ever occurs
-  tc_exceedance <- if (sum(samples, na.rm = TRUE) > 0) {
-    mean(tc[samples] - diff[samples], na.rm = TRUE)
-    } else {0}
+  tc_exceedance <- if (
+    all(is.na(samples))) {NA} else # if there are no threat events, then NA
+      if (
+      sum(samples, na.rm = TRUE) > 0) {
+      mean(tc[samples] - diff[samples], na.rm = TRUE)
+      } else {0}
   # mean amount control strength exceeds threat strength, if that ever occurs
-  diff_exceedance <- if (sum(samples, na.rm = TRUE) != length(tc)) {
+  diff_exceedance <- if (
+    all(is.na(samples))) {NA} else # if there are no threat events, then NA
+      if (sum(samples, na.rm = TRUE) > 0 &
+                         sum(samples, na.rm = TRUE) != length(tc)) {
     mean(diff[!samples] - tc[!samples], na.rm = TRUE)
     } else {0}
   list(samples = samples, details = list(mean_tc_exceedance = tc_exceedance,

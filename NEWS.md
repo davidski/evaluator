@@ -4,7 +4,7 @@
 TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF 
 distributions to be more easily sampled. Qualitative scenario structure is 
 unchanged so this should have no impact on most users.
-* Model inteface change - With the unification on list columns for OpenFAIR 
+* Model interface change - With the unification on list columns for OpenFAIR 
 parameters, the top level model objects no longer take a dedicated `diff_estimates` 
 option. The `run_simulations` function accounts for this change. Users using 
 the standard flow will not be impacted.
@@ -16,6 +16,9 @@ fully qualified function (i.e. `EnvStats::rnormTrunc`).
 * `explore_scenarios` was trying to assign a mappings variable to the global 
 context, which rightly failed. Scaled back the assignment to the current 
 scope.
+* `select_loss_opportunities` properly returns an NA for the threat & difficulty 
+exceedance calculations when there are no threat events in a given simualated 
+period.
 
 ## Improvements
 * Minor documentation cleanup.

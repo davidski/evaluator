@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -35,6 +37,7 @@ the individual results at a per-scenario level. This is generally the most
 granular level of data for reporting and analysis (full simulation results
 are rarely directly helpful)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -181,7 +184,7 @@ are rarely directly helpful).</p>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>simulation_results</span>)
 <span class='fu'>summarize_scenarios</span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; # A tibble: 56 x 18
 #&gt;    domain_id scenario_id loss_events_mean loss_events_min loss_events_max
-#&gt;    &lt;chr&gt;           &lt;int&gt;            &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+#&gt;    &lt;chr&gt;           &lt;int&gt;            &lt;dbl&gt;           &lt;int&gt;           &lt;int&gt;
 #&gt;  1 AC                 48            0                   0               0
 #&gt;  2 AC                 51            6.12                1              12
 #&gt;  3 ADM                56            0.043               0               1

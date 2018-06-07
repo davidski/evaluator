@@ -80,6 +80,17 @@ test_that("Sample VULN works with TC and DIFF", {
   # ensure that mean_diff_exceedance is set correctly
   expect_equivalent(floor(dat$details$mean_diff_exceedance), 8)
 })
+test_that("TC and DIFF exceedance handles NA threat events", {
+  set.seed(1234)
+  tc <- c(NA)
+  diff <- sample_diff(params = list(n=2, 50, 70, 85, 2))$samples
+  dat <- sample_vuln(func = "evaluator::select_loss_opportunities", params = list(tc = tc, diff = diff))
+  expect_is(dat, "list")
+  # ensure that mean_tc_exceedance is set correctly
+  expect_equivalent(dat$details$mean_tc_exceedance, NA)
+  # ensure that mean_diff_exceedance is set correctly
+  expect_equivalent(dat$details$mean_diff_exceedance, NA)
+})
 
 context("Sample LM")
 test_that("Sample LM", {
