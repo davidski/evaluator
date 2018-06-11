@@ -1,5 +1,9 @@
 # evaluator 0.2.3.900 (unreleased)
 
+* `run_simulations` now supports parallel execution via the `furrr` package. 
+To run simulations across all cores of a local machine, load `furrr` and 
+run `plan(multicore)` before launching an analysis. For more information, 
+see the `furrr::future_map` documentation.
 * Data structure change - Quantified scenarios now store parameters for TEF, 
 TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF 
 distributions to be more easily sampled. Qualitative scenario structure is 

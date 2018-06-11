@@ -15,6 +15,7 @@ Imports:
   extrafont,
   ggplot2,
   mc2d,
+  furrr,
   purrr,
   readr,
   readxl,

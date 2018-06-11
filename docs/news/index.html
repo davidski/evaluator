@@ -141,6 +141,8 @@
 <a href="#evaluator-0-2-3-900-unreleased" class="anchor"></a>evaluator 0.2.3.900 (unreleased)<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<code>run_simulations</code> now supports parallel execution via the <code>furrr</code> package. To run simulations across all cores of a local machine, load <code>furrr</code> and run <code>plan(multicore)</code> before launching an analysis. For more information, see the <code><a href="http://www.rdocumentation.org/packages/furrr/topics/future_map">furrr::future_map</a></code> documentation.</li>
 <li>Data structure change - Quantified scenarios now store parameters for TEF, TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF distributions to be more easily sampled. Qualitative scenario structure is unchanged so this should have no impact on most users.</li>
 <li>Model interface change - With the unification on list columns for OpenFAIR parameters, the top level model objects no longer take a dedicated <code>diff_estimates</code> option. The <code>run_simulations</code> function accounts for this change. Users using the standard flow will not be impacted.</li>
 </ul>

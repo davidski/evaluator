@@ -6,6 +6,7 @@
 #'
 #' @import dplyr
 #' @importFrom dplyr progress_estimated bind_rows %>% mutate row_number
+#' @importFrom furrr future_map
 #' @importFrom purrr safely is_null map_lgl transpose simplify keep
 #' @importFrom tidyr nest
 #' @importFrom rlang .data
@@ -37,10 +38,7 @@ run_simulations <- function(scenario, simulation_count = 10000L,
   pb <- dplyr::progress_estimated(nrow(scenario))
   dat <- scenario %>% dplyr::mutate(id = row_number()) %>% tidyr::nest(-id)
   pb$print()
-  simulation_results <- dat$data %>% purrr::map(~ wrapped_calc(.x, .pb = pb))
-
-  #simulation_results <- purrrlyr::by_row(scenario, wrapped_calc, .pb = pb, .labels = FALSE)
-  #y <- simulation_results$`.out` %>% purrr::transpose()
+  simulation_results <- dat$data %>% furrr::future_map(~ {library(evaluator); wrapped_calc(.x, .pb = pb)}, .progress = TRUE)
 
   y <- simulation_results %>% purrr::transpose() %>% purrr::simplify()
   is_ok <- y$error %>% purrr::map_lgl(purrr::is_null)
