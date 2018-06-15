@@ -141,6 +141,7 @@
 <a href="#evaluator-0-2-3-900-unreleased" class="anchor"></a>evaluator 0.2.3.900 (unreleased)<small> Unreleased </small>
 </h1>
 <ul>
+<li>IDs for simulations and capabilities no longer need to be numeric. ID styles in the format of “FOO-123” and “MY_Scenario” are now supported.</li>
 <li>
 <code>run_simulations</code> now supports parallel execution via the <code>furrr</code> package. To run simulations across all cores of a local machine, load <code>furrr</code> and run <code>plan(multicore)</code> before launching an analysis. For more information, see the <code><a href="http://www.rdocumentation.org/packages/furrr/topics/future_map">furrr::future_map</a></code> documentation.</li>
 <li>Data structure change - Quantified scenarios now store parameters for TEF, TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF distributions to be more easily sampled. Qualitative scenario structure is unchanged so this should have no impact on most users.</li>
@@ -165,7 +166,7 @@
 <li>Errors encountered during <code>run_simulation</code> runs are now reported better.</li>
 <li>
 <code>sample_lm</code> and <code>sample_tc</code> check if they are asked to generate zero requested samples, bypassing calling the underlying generation function. This avoids problems with generating functions which do not gracefully handle being asked to sample a non positive number (zero) of events.</li>
-<li>Removed all deprecated standard-evaluation tidyverse verbs in favor of <code><a href="http://www.rdocumentation.org/packages/rlang/topics/tidyeval-data">rlang::.data</a></code> constructs, making CRAN checks mcuh simpler.</li>
+<li>Removed all deprecated standard-evaluation tidyverse verbs in favor of <code><a href="http://www.rdocumentation.org/packages/rlang/topics/tidyeval-data">rlang::.data</a></code> constructs, making CRAN checks much simpler.</li>
 <li>
 <code>load_data</code> now fully specifies the expected CSV file formats, avoiding possible surpises and making invocations less noisy on the console.</li>
 </ul>

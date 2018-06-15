@@ -84,7 +84,6 @@ import_scenarios <- function(survey_file = system.file("survey",
   dplyr::select(scenarios, scenario_id = "ScenarioID", scenario = "Scenario",
          tcomm = "TComm", tef = "TEF", tc = "TC", lm = "LM",
          domain_id = "domain_id", controls = "Capabilities") %>%
-    dplyr::mutate(scenario_id = as.integer(.data$scenario_id)) %>%
     dplyr::mutate_at(vars("tef", "lm", "tc"), dplyr::funs(tolower)) %>%
     dplyr::arrange(.data$scenario_id)
 
@@ -119,7 +118,7 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
   capabilities <- tidyr::unnest(dat, capabilities) %>%
     dplyr::select(id = "CapabilityID", .data$domain_id, capability = "Name",
                    diff = "DIFF") %>%
-    dplyr::mutate("id" = as.integer(.data$id)) %>% dplyr::arrange(.data$id)
+    dplyr::arrange(.data$id)
 
   capabilities
 }

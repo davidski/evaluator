@@ -28,16 +28,6 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
 
   validated <- TRUE
 
-  # Check that scenario IDs have no gaps
-  scenario_gaps <- setdiff(seq(range(scenarios$scenario_id)[1],
-                               range(scenarios$scenario_id)[2]),
-                           scenarios$scenario_id)
-  if (length(scenario_gaps) != 0) {
-    warning(paste("Scenario gaps found:", scenario_gaps, collapse = "\n"),
-            call. = FALSE)
-    validated <- FALSE
-  }
-
   # Verify there are no duplicate scenarios
   scenarios %>% dplyr::group_by_at(.vars = "scenario_id") %>% dplyr::tally() %>%
     dplyr::filter(.data$n > 1) %>%
@@ -51,21 +41,9 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
     validated <- FALSE
   }
 
-  # Check that control IDs have no gaps
-  capability_gaps <- setdiff(seq(range(capabilities$id)[1],
-                                 range(capabilities$id)[2]),
-                             capabilities$id)
-  if (length(capability_gaps) != 0) {
-    warning(paste("Capability gaps found:",
-                  paste0(capability_gaps, collapse = ", "),
-                  "\n"),
-            call. = FALSE)
-    validated <- FALSE
-  }
-
   # Are all the capabilities referenced in the scenarios defined?
   missing_capabilities <- scenarios %>%
-    tidyr::separate_rows(.data$controls, sep = ",", convert = TRUE) %>%
+    tidyr::separate_rows(.data$controls, sep = ", ", convert = FALSE) %>%
     dplyr::anti_join(capabilities, by = c("controls" = "id"))
   if (nrow(missing_capabilities) != 0) {
     warning(paste("Scenarios with undefined capabilities:",

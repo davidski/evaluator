@@ -1,5 +1,7 @@
 # evaluator 0.2.3.900 (unreleased)
 
+* IDs for simulations and capabilities no longer need to be numeric. ID styles 
+in the format of "FOO-123" and "MY_Scenario" are now supported.
 * `run_simulations` now supports parallel execution via the `furrr` package. 
 To run simulations across all cores of a local machine, load `furrr` and 
 run `plan(multicore)` before launching an analysis. For more information, 
@@ -32,7 +34,7 @@ requested samples, bypassing calling the underlying generation function. This
 avoids problems with generating functions which do not gracefully handle being 
 asked to sample a non positive number (zero) of events.
 * Removed all deprecated standard-evaluation tidyverse verbs in favor of 
-`rlang::.data` constructs, making CRAN checks mcuh simpler.
+`rlang::.data` constructs, making CRAN checks much simpler.
 * `load_data` now fully specifies the expected CSV file formats, avoiding 
 possible surpises and making invocations less noisy on the console.
 

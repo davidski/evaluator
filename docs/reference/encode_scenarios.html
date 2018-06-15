@@ -186,17 +186,17 @@ translation table from qualitative labels to quantitative parameters
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>qualitative_scenarios</span>, <span class='no'>capabilities</span>, <span class='no'>mappings</span>)
 <span class='fu'>encode_scenarios</span>(<span class='no'>qualitative_scenarios</span>, <span class='no'>capabilities</span>, <span class='no'>mappings</span>)</div><div class='output co'>#&gt; # A tibble: 56 x 9
 #&gt;    scenario_id scenario        tcomm  domain_id controls diff_params tef_params
-#&gt;          &lt;int&gt; &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;    &lt;list&gt;      &lt;list&gt;    
-#&gt;  1           1 Inadequate hum… Organ… ORG       1, 5, 7… &lt;list [7]&gt;  &lt;list [5]&gt;
-#&gt;  2           2 Budget does no… Organ… ORG       1, 5, 7… &lt;list [7]&gt;  &lt;list [5]&gt;
-#&gt;  3           3 Competing prio… Organ… ORG       1, 5, 7… &lt;list [7]&gt;  &lt;list [5]&gt;
-#&gt;  4           4 Increased negl… Organ… ORG       1, 3, 5… &lt;list [8]&gt;  &lt;list [5]&gt;
-#&gt;  5           5 The informatio… Organ… ORG       1, 7, 1… &lt;list [5]&gt;  &lt;list [5]&gt;
-#&gt;  6           6 Inconsistent i… Organ… POL       9, 10, … &lt;list [4]&gt;  &lt;list [5]&gt;
-#&gt;  7           7 Misuse of info… Organ… POL       9, 10, … &lt;list [4]&gt;  &lt;list [5]&gt;
-#&gt;  8           8 Noncompliance … Organ… POL       9, 10, … &lt;list [4]&gt;  &lt;list [5]&gt;
-#&gt;  9           9 New or changin… Exter… COMP      8, 13    &lt;list [2]&gt;  &lt;list [5]&gt;
-#&gt; 10          10 Internal workf… Organ… COMP      8, 13    &lt;list [2]&gt;  &lt;list [5]&gt;
+#&gt;    &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;    &lt;list&gt;      &lt;list&gt;    
+#&gt;  1 1           Inadequate hum… Organ… ORG       1, 5, 7… &lt;list [7]&gt;  &lt;list [5]&gt;
+#&gt;  2 10          Internal workf… Organ… COMP      8, 13    &lt;list [2]&gt;  &lt;list [5]&gt;
+#&gt;  3 11          External attac… Exter… COMP      8, 13    &lt;list [2]&gt;  &lt;list [5]&gt;
+#&gt;  4 12          External audit… Exter… COMP      8, 13    &lt;list [2]&gt;  &lt;list [5]&gt;
+#&gt;  5 13          Inability to a… Organ… RISK      17, 18,… &lt;list [4]&gt;  &lt;list [5]&gt;
+#&gt;  6 14          Lack of risk m… Organ… RISK      17, 18,… &lt;list [4]&gt;  &lt;list [5]&gt;
+#&gt;  7 15          Inability to u… Exter… RISK      17, 18,… &lt;list [4]&gt;  &lt;list [5]&gt;
+#&gt;  8 16          Security failu… Organ… RISK      17, 18,… &lt;list [4]&gt;  &lt;list [5]&gt;
+#&gt;  9 17          Internal user … Organ… PRI       21, 22,… &lt;list [4]&gt;  &lt;list [5]&gt;
+#&gt; 10 18          Systemic nonco… Exter… PRI       21, 22,… &lt;list [4]&gt;  &lt;list [5]&gt;
 #&gt; # ... with 46 more rows, and 2 more variables: tc_params &lt;list&gt;,
 #&gt; #   lm_params &lt;list&gt;</div></pre>
   </div>

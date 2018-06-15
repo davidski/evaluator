@@ -54,9 +54,7 @@ run_simulations <- function(scenario, simulation_count = 10000L,
 
   ## ----tidy_results--------------------------------------------------------
   # convert title back to scenario_id
-  simulation_results <- dplyr::mutate(simulation_results,
-                                      title = as.integer(.data$title)) %>%
-    rename(scenario_id = .data$title)
+  simulation_results <- rename(simulation_results, scenario_id = .data$title)
 
   # add the domain_id column
   simulation_results <- simulation_results %>%

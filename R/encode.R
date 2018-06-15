@@ -85,10 +85,10 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 derive_controls <- function(capability_ids, capabilities, mappings) {
   control_list <- stringi::stri_split_fixed(capability_ids, ", ") %>% unlist()
 
-  control_list <- capabilities[capabilities$id %in% as.numeric(control_list), ] %>%
+  control_list <- capabilities[capabilities$id %in% control_list, ] %>%
     dplyr::rename(control_id = id)
 
-  # Find the qualitative rating for each control ID, then lookup it's
+  # Find the qualitative rating for each control ID, then lookup its
   # distribution parameters from the mappings table
   #results <- capabilities[capabilities$id %in%
   #                          as.numeric(control_list), "diff"] %>%

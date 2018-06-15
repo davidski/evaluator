@@ -158,7 +158,7 @@ test_that("Default simulation model returns expected results", {
 
 context("Main simulation")
 test_that("Full wrapped scenario works as expected", {
-  scenario <-structure(list(scenario_id = 1L, scenario = "Inadequate human resources are available to execute the informaton security strategic security plan.",
+  scenario <-structure(list(scenario_id = "1", scenario = "Inadequate human resources are available to execute the informaton security strategic security plan.",
                             tcomm = "Organizational Leadership", domain_id = "ORG",
                             controls = "1, 5, 7, 32, 14, 15, 16",
                             diff_params = list(list(list(func = "mc2d::rpert", min = 70L, mode = 85L, max = 98L, shape = 4L),

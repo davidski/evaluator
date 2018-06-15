@@ -167,7 +167,7 @@ Loss Distribution Scatterplot
 
 ```{r show_all_boxplot, fig.height=4}
 shiny::renderPlot({
-  gg <- ggplot(simulation_results, aes(x = as.character(scenario_id), y = ale))
+  gg <- ggplot(simulation_results, aes(x = scenario_id, y = ale))
   gg <- gg + scale_y_continuous(label = dollar_millions)
   gg <- gg + labs(x = "Risk Scenario", y = "Annual Loss")
   gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
