@@ -1,5 +1,7 @@
 ## Regenerate sample data sets
 library(evaluator)
+library(future)
+plan(multiprocess)
 
 # read in and save domain mappings
 domains <- readr::read_csv(here::here("inst/extdata/domains.csv"))

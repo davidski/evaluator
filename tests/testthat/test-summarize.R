@@ -5,6 +5,14 @@ test_that("Simulation summary", {
   dat <- summarize_scenarios(simulation_results)
   expect_equivalent(as.data.frame(dat), as.data.frame(scenario_summary))
 })
+test_that("Simulation summary handles NAs for tc/diff exceedance", {
+  data("simulation_results")
+  simulation_results[1, "mean_tc_exceedance"] <- NA
+  simulation_results[simulation_results$scenario_id==18 &
+                       simulation_results$simulation==1, "mean_diff_exceedance"] <- NA
+  dat <- summarize_scenarios(simulation_results)
+  expect_gt(dat[[54,"mean_tc_exceedance"]], 0)
+})
 
 test_that("Domain summary", {
   data("simulation_results")

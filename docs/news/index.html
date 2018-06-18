@@ -156,6 +156,8 @@
 <code>explore_scenarios</code> was trying to assign a mappings variable to the global context, which rightly failed. Scaled back the assignment to the current scope.</li>
 <li>
 <code>select_loss_opportunities</code> properly returns an NA for the threat &amp; difficulty exceedance calculations when there are no threat events in a given simualated period.</li>
+<li>
+<code>summarize_scenarios</code> now correctly handles scenarios in which no threat events occur in a given simulation. Impact was limited to <code>mean_tc_exceedance</code>. For previously run simulations, resummarizing the <code>scenarios_results</code> will generate the corrected values.</li>
 </ul>
 </div>
 <div id="improvements" class="section level2">

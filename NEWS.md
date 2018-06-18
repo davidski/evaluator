@@ -25,6 +25,10 @@ scope.
 * `select_loss_opportunities` properly returns an NA for the threat & difficulty 
 exceedance calculations when there are no threat events in a given simualated 
 period.
+* `summarize_scenarios` now correctly handles scenarios in which no threat 
+events occur in a given simulation. Impact was limited to `mean_tc_exceedance`. 
+For previously run simulations, resummarizing the `scenarios_results` will 
+generate the corrected values.
 
 ## Improvements
 * Minor documentation cleanup.
