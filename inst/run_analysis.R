@@ -26,22 +26,20 @@ message("Beginning analysis run with input directory (", inputs_dir, ")",
 # Load and Validate -------------------------------------------------------
 message("Loading and validating inputs...")
 
-domains <-  readr::read_csv(file.path(inputs_dir, "domains.csv"),
-                            col_types = readr::cols(.default = readr::col_character()))
+domains <- readr::read_csv(file.path(inputs_dir, "domains.csv"),
+                           col_types = readr::cols(.default = readr::col_character()))
 import_spreadsheet(file.path(inputs_dir, "survey.xlsx"), domains, inputs_dir)
 
 qualitative_scenarios <- readr::read_csv(file.path(inputs_dir,
                                                    "qualitative_scenarios.csv"),
-                                         col_types = readr::cols(.default = readr::col_character(),
-                                                          scenario_id = readr::col_integer()))
+                                         col_types = readr::cols(.default = readr::col_character()))
 mappings <- readr::read_csv(file.path(inputs_dir, "qualitative_mappings.csv"),
                             col_types = readr::cols(.default = readr::col_integer(),
                                              type = readr::col_character(),
                                              label = readr::col_character(),
                                              ml = readr::col_double()))
 capabilities <- readr::read_csv(file.path(inputs_dir, "capabilities.csv"),
-                                col_types = readr::cols(.default = readr::col_character(),
-                                                 id = readr::col_integer()))
+                                col_types = readr::cols(.default = readr::col_character()))
 validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
 
 # Encode ------------------------------------------------------------------
