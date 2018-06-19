@@ -1,11 +1,11 @@
 #' Encode qualitative data to quantitative parameters
 #'
 #' Given an input of:
-#' * qualitative risk scenarios
-#' * qualitative capabilities
-#' * translation table from qualitative labels to quantitative parameters
+#'   * qualitative risk scenarios
+#'   * qualitative capabilities
+#'   * translation table from qualitative labels to quantitative parameters
 #'
-#' Create a unified dataframe of quantitative scenarios ready for simulation.
+#'   Create a unified dataframe of quantitative scenarios ready for simulation.
 #'
 #' @importFrom dplyr rename_ select_ left_join filter rowwise
 #' @importFrom rlang .data
@@ -63,9 +63,9 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' Derive control difficulty parameters for a given qualitative scenario
 #'
 #' Given a comma-separated list of control IDs in a scenario, identify
-#' the qualitative rankings associated with each scenario, convert to
-#' their quantitative parameters, and return a dataframe of the set of
-#' parameters.
+#'   the qualitative rankings associated with each scenario, convert to
+#'   their quantitative parameters, and return a dataframe of the set of
+#'   parameters.
 #'
 #' @importFrom dplyr left_join mutate_ select rename pull
 #' @importFrom rlang .data

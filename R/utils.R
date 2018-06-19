@@ -2,11 +2,11 @@
 #'
 #' @importFrom purrr map_df
 #' @importFrom tibble tibble
-#' @param packages Packages to verify are available
-#' @param func Calling function
+#' @param packages Packages to verify are available.
+#' @param func Calling function.
 #'
 #' @return Invisible
-#'
+#' @noRd
 #' @examples
 #' \dontrun{
 #' check_availability(packages = c("ggplot2", "dplyr"), func = "my_function")
@@ -24,7 +24,6 @@ check_availability <- function(packages, func) {
   invisible()
 
 }
-
 
 #' Format dollar amounts in terms of millions of USD
 #'
@@ -45,8 +44,8 @@ dollar_millions <- function(x) {
 #' Calculate control weaknesses on a domain level
 #'
 #' For each domain, calculate the total number of threat events, loss
-#' events, percentage of vulnerability, mean threat capability exceedance,
-#' and mean difficult exceedance.
+#'   events, percentage of vulnerability, mean threat capability exceedance,
+#'   and mean difficult exceedance.
 #'
 #' @importFrom dplyr summarize mutate arrange group_by select left_join
 #' @importFrom rlang .data
@@ -89,9 +88,9 @@ calculate_weak_domains <- function(simulation_results, domains) {
 #' Calculate quantified impact at a domain level
 #'
 #' Given a dataframe of simulation results summarized at the domain level,
-#' create a summarization of the annual loss expected (ALE) with descriptors
-#' at the minimum, mean, maximum, standard deviation, and 95% value at risk
-#' levels.
+#'   create a summarization of the annual loss expected (ALE) with descriptors
+#'   at the minimum, mean, maximum, standard deviation, and 95% value at risk
+#'   levels.
 #'
 #' @importFrom dplyr select summarize_at funs arrange ungroup left_join mutate desc group_by_at
 #' @importFrom stats sd quantile
@@ -117,8 +116,8 @@ calculate_domain_impact <- function(domain_summary, domains) {
 #' Calculate maximum losses
 #'
 #' Calculate the biggest single annual loss for each scenario, as well as
-#' the minimum and maximum ALE across all simulations. Calculations both
-#' with and without outliers (if passed) are returned.
+#'   the minimum and maximum ALE across all simulations. Calculations both
+#'   with and without outliers (if passed) are returned.
 #'
 #' @importFrom dplyr filter group_by summarize ungroup union
 #' @importFrom rlang .data

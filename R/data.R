@@ -13,7 +13,7 @@
 #' Qualitative to quantitative mappings
 #'
 #' A dataset of sample mappings from qualitative labels to quantitative
-#' distribution parameters.
+#'   distribution parameters.
 #'
 #' \describe{
 #'   \item{type}{OpenFAIR taxonomy to which this mapping applies}
@@ -38,7 +38,7 @@
 #' Domain-level risk summary
 #'
 #' A dataset of quantified information security risk, summarized at the
-#' domain level.
+#'   domain level.
 #'
 #' \describe{
 #'   \item{domain_id}{abbreviated name of the domain}
@@ -51,7 +51,7 @@
 #' Scenario-level risk summary
 #'
 #' A dataset of quantified information security risk, summarized at the
-#' scenario level.
+#'   scenario level.
 #'
 #' \describe{
 #'   \item{domain_id}{domain id}
@@ -78,7 +78,7 @@
 #' Quantified information risk scenarios
 #'
 #' A dataset of quantified risk scenarios, with parameters
-#' describing the distribution of each input.
+#'   describing the distribution of each input.
 #'
 #' \describe{
 #'   \item{scenario}{full text description of the risk scenario}
@@ -112,7 +112,7 @@
 #' Information security risk simulation results
 #'
 #' A dataset containing the full results of sample Monte Carlo
-#' simulations of information security risk scenarios.
+#'   simulations of information security risk scenarios.
 #'
 #' \describe{
 #'   \item{domain_id}{domain abbreviation}

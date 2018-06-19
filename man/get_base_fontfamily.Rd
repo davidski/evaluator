@@ -7,7 +7,7 @@
 get_base_fontfamily()
 }
 \value{
-String of the preferred base font
+String of the preferred base font.
 }
 \description{
 The Benton Sans Regular font is preferred with a fallback of Arial Narrow.

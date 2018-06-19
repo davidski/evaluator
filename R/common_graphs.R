@@ -1,10 +1,10 @@
 #' Select a base graphics font family
 #'
 #' The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
-#' If neither font is available, use a default `sans` family font.
+#'   If neither font is available, use a default `sans` family font.
 #'
 #' @importFrom extrafont choose_font
-#' @return String of the preferred base font
+#' @return String of the preferred base font.
 #' @export
 #' @examples
 #' get_base_fontfamily()
@@ -39,8 +39,8 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #' Display a heatmap of impact by domain
 #'
 #' Given a domain_summary and a list of all domains, generate a heatmap colored
-#' by the 95% VaR. This plot displays the domains in which aggregreate risk is
-#' greater than others.
+#'   by the 95% VaR. This plot displays the domains in which aggregreate risk is
+#'   greater than others.
 #'
 #' @importFrom dplyr arrange mutate
 #' @import ggplot2
@@ -75,9 +75,9 @@ generate_heatmap <- function(domain_impact) {
 #' Display a scatterplot for a particular scenario ID
 #'
 #' Given a detailed results dataframe and a specific scenario identifier,
-#' create a scatterplot of the number of loss events versus the annual loss
-#' expected. This provides a detailed view on the results for a particular
-#' scenario.
+#'   create a scatterplot of the number of loss events versus the annual loss
+#'   expected. This provides a detailed view on the results for a particular
+#'   scenario.
 #'
 #' @import ggplot2
 #' @importFrom scales comma
@@ -105,11 +105,11 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 }
 
 #' Display the distribution of threat events contained vs. realized across
-#' all domains
+#'   all domains
 #'
 #' Creates a barbell plot showing the number and percentage of events
-#' contained (not resulting in loss) vs the number and percentage of
-#' loss events (threat events resulting in losses).
+#'   contained (not resulting in loss) vs the number and percentage of
+#'   loss events (threat events resulting in losses).
 #'
 #' @importFrom dplyr arrange mutate desc
 #' @import ggplot2
@@ -117,8 +117,8 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' @importFrom viridis viridis
 #' @importFrom tidyr gather
 #' @importFrom rlang .data
-#' @param control_weakness Domain-level control weakness from \code{calculate_weak_domains}
-#' @return ggplot object
+#' @param control_weakness Domain-level control weakness from \code{calculate_weak_domains}.
+#' @return ggplot object.
 #' @export
 #' @examples
 #' data(simulation_results)

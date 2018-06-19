@@ -1,14 +1,12 @@
 #' Validate qualitative scenario data
 #'
 #' Run a set of basic consistency checks on the key qualitative data inputs
-#' (scenarios, capabilities, domains, and mappings).
+#'   (scenarios, capabilities, domains, and mappings).
 #'
-#' Checks that:
-#' - All scenarios IDs are consecutive
-#' - All scenarios are distinct
-#' - There are no gaps in control IDs
-#' - All controls referenced in scenarios are defined in the controls table
-#' - All controls are distinct
+#'   Checks that:
+#'   - All scenarios are distinct
+#'   - All controls referenced in scenarios are defined in the controls table
+#'   - All controls are distinct
 #'
 #' @importFrom dplyr tally filter left_join rename_ anti_join
 #' @importFrom rlang .data

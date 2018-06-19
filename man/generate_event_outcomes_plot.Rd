@@ -8,10 +8,10 @@ all domains}
 generate_event_outcomes_plot(control_weakness)
 }
 \arguments{
-\item{control_weakness}{Domain-level control weakness from \code{calculate_weak_domains}}
+\item{control_weakness}{Domain-level control weakness from \code{calculate_weak_domains}.}
 }
 \value{
-ggplot object
+ggplot object.
 }
 \description{
 Creates a barbell plot showing the number and percentage of events

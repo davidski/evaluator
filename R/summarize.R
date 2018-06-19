@@ -1,18 +1,18 @@
 #' Create scenario-level summary of simulation results
 #'
 #' Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
-#' the individual results at a per-scenario level. This is generally the most
-#' granular level of data for reporting and analysis (full simulation results
-#' are rarely directly helpful).
+#'   the individual results at a per-scenario level. This is generally the most
+#'   granular level of data for reporting and analysis (full simulation results
+#'   are rarely directly helpful).
 #'
-#' Summary stats created include:
-#' * Mean/Min/Max/Median are calculated for loss events
-#' * Median/Max/VaR are calculated for annual loss expected (ALE)
-#' * Mean/Median/Max/Min are calculated for single loss expected (SLE)
-#' * Mean percentage of threat capability exceeding difficulty on successful threat events
-#' * Mean percentage of difficulty exceeding threat capability on defended events
-#' * Vulnerability percentage
-#' * Z-score of ALE (outliers flagged as 2 >= z-score)
+#'   Summary stats created include:
+#'     * Mean/Min/Max/Median are calculated for loss events
+#'     * Median/Max/VaR are calculated for annual loss expected (ALE)
+#'     * Mean/Median/Max/Min are calculated for single loss expected (SLE)
+#'     * Mean percentage of threat capability exceeding difficulty on successful threat events
+#'     * Mean percentage of difficulty exceeding threat capability on defended events
+#'     * Vulnerability percentage
+#'     * Z-score of ALE (outliers flagged as 2 >= z-score)
 #'
 #' @import dplyr
 #' @importFrom rlang .data
@@ -56,17 +56,17 @@ summarize_scenarios <- function(simulation_results) {
 #' Create domain-level summary of simulation results
 #'
 #' Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
-#' the individual results at a per-domain level. This domain-level summary
-#' is a useful data structure for aggregate reporting.
+#'   the individual results at a per-domain level. This domain-level summary
+#'   is a useful data structure for aggregate reporting.
 #'
-#' Summary stats created include:
-#' * Mean/Min/Max/Median are calculated for loss events
-#' * Median/Max/VaR are calculated for annual loss expected (ALE)
-#' * Mean/Median/Max/Min are calculated for single loss expected (SLE)
-#' * Mean percentage of threat capability exceeding difficulty on successful threat events
-#' * Mean percentage of difficulty exceeding threat capability on defended events
-#' * Vulnerability percentage
-#' * Z-score of ALE (outliers flagged as 2 >= z-score)
+#'   Summary stats created include:
+#'   * Mean/Min/Max/Median are calculated for loss events
+#'   * Median/Max/VaR are calculated for annual loss expected (ALE)
+#'   * Mean/Median/Max/Min are calculated for single loss expected (SLE)
+#'   * Mean percentage of threat capability exceeding difficulty on successful threat events
+#'   * Mean percentage of difficulty exceeding threat capability on defended events
+#'   * Vulnerability percentage
+#'   * Z-score of ALE (outliers flagged as 2 >= z-score)
 #'
 #' @import dplyr
 #' @importFrom rlang .data
@@ -89,8 +89,8 @@ summarize_domains <- function(simulation_results, domains) {
 #' Create all summary files and write to disk
 #'
 #' This is a wrapper around \code{\link{summarize_scenarios}} and
-#' \code{\link{summarize_domains}}, calling both functions and writing the
-#' dataframes to a location on disk.
+#'   \code{\link{summarize_domains}}, calling both functions and writing the
+#'   dataframes to a location on disk.
 #'
 #' @importFrom dplyr "%>%"
 #' @importFrom tibble rownames_to_column as_tibble

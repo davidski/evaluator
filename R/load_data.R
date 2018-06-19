@@ -1,10 +1,10 @@
 #' Create initial template files
 #'
 #' Given a base directory, copy the provided sample files into an `inputs`
-#' subdirectory. This makes the starter files available for customizing and
-#' data collection. The `inputs` directory will be created if not already present.
-#' Preexisting files, if present, will not be overwritten. Also creates an
-#' empty `results` subdirectory as a default location for evaluator output.
+#'   subdirectory. This makes the starter files available for customizing and
+#'   data collection. The `inputs` directory will be created if not already present.
+#'   Preexisting files, if present, will not be overwritten. Also creates an
+#'  empty `results` subdirectory as a default location for evaluator output.
 #'
 #' @importFrom purrr map_dfr
 #' @importFrom tibble add_row tibble
@@ -50,7 +50,7 @@ create_templates <- function(base_directory = "~/evaluator"){
 #' Load input and results files
 #'
 #' Given a input directory and a directory of simulation results, load all
-#' of the key Evaluator data objects into memory.
+#'   of the key Evaluator data objects into memory.
 #'
 #' @importFrom dplyr summarize mutate group_by_at
 #' @importFrom rlang .data

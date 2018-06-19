@@ -1,14 +1,14 @@
 #' Generate sample analysis report
 #'
 #' Given a set of input files and summarized simulation results, create a
-#' skeleton risk analysis report. This report attempts to summarize the results
-#' of the analysis at a top level, using 95% Value at Risk (VaR) as the primary
-#' metric, while also providing more detailed analysis at both a per-domain and
-#' per-scenario level.
+#'   skeleton risk analysis report. This report attempts to summarize the results
+#'   of the analysis at a top level, using 95% Value at Risk (VaR) as the primary
+#'   metric, while also providing more detailed analysis at both a per-domain and
+#'   per-scenario level.
 #'
-#' This report includes several sections where an analyst will need to modify and
-#' fill in details for their specific organization. Of particular note is the
-#' Recommendations section, which will always need to be updated.
+#'   This report includes several sections where an analyst will need to modify and
+#'   fill in details for their specific organization. Of particular note is the
+#'   Recommendations section, which will always need to be updated.
 #'
 #' @importFrom dplyr case_when
 #' @param input_directory Location of input files.
@@ -65,11 +65,11 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
 #' Launch the Scenario Explorer web application
 #'
 #' Evaluator provides a simple Shiny-based web application for interactive
-#' exploration of simulation results. This allows a user to interactively
-#' review simulation output without generating an extensive report. For users
-#' comfortable with R, working directly with the result dataframes will usually
-#' be preferable, with the Explorer application provided as a bare-bones data
-#' exploration tool.
+#'   exploration of simulation results. This allows a user to interactively
+#'   review simulation output without generating an extensive report. For users
+#'   comfortable with R, working directly with the result dataframes will usually
+#'   be preferable, with the Explorer application provided as a bare-bones data
+#'   exploration tool.
 #'
 #' @param input_directory Location of input files.
 #' @param results_directory Location of simulation results.
@@ -116,9 +116,9 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
 #' Launch OpenFAIR demonstration web application
 #'
 #' A simple web application to demonstrate OpenFAIR modeling. This application
-#' allows a user to enter beta PERT parameters and run simulations to see the
-#' distribution of results, with high level summary statistics. As a demonstration
-#' application, only TEF+TC+DIFF+LM parameters may be entered.
+#'   allows a user to enter beta PERT parameters and run simulations to see the
+#'   distribution of results, with high level summary statistics. As a demonstration
+#'   application, only TEF+TC+DIFF+LM parameters may be entered.
 #'
 #' @param intermediates_dir Location for intermediate knit files.
 #' @param quiet TRUE to suppress printing of pandoc output.
@@ -151,9 +151,9 @@ openfair_example <- function(intermediates_dir = tempdir(),
 #' Launch a single page summary risk dashboard
 #'
 #' Given the input files and the analysis summary file, create a basic one-
-#' page summary with an overview of the results per domain and scenario.
-#' Intended as a skeleton showing how the results could be displayed at an
-#' executive level.
+#'   page summary with an overview of the results per domain and scenario.
+#'   Intended as a skeleton showing how the results could be displayed at an
+#'   executive level.
 #'
 #' @param input_directory Location of input files
 #' @param results_directory Location of simulation results

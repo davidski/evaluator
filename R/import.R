@@ -1,8 +1,8 @@
 #' Import the scenario spreadsheet
 #'
 #' This is a wrapper function around \code{\link{import_scenarios}} and
-#' \code{\link{import_capabilities}}. When invoked, the output of both functions
-#' are written to disk.
+#'   \code{\link{import_capabilities}}. When invoked, the output of both functions
+#'   are written to disk.
 #'
 #' @importFrom dplyr %>%
 #' @importFrom readr write_csv
@@ -126,10 +126,10 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
 #' Split a sheet of the survey spreadsheet into either capabilities or threats
 #'
 #' The default data collection Excel spreadsheet solicits threat
-#' scenarios and applicable controls for each domain. This function
-#' takes a single sheet from the spreadsheet, as read by \code{\link[readxl]{readxl}}
-#' and pulls out either the capabilities or threats, as directed by the
-#' user.
+#'   scenarios and applicable controls for each domain. This function
+#'   takes a single sheet from the spreadsheet, as read by \code{\link[readxl]{readxl}}
+#'   and pulls out either the capabilities or threats, as directed by the
+#'   user.
 #'
 #' @importFrom dplyr %>% select
 #' @param dat Raw sheet input from \code{\link[readxl]{readxl}}.

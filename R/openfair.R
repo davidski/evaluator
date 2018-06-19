@@ -152,7 +152,7 @@ sample_lef <- function(func = NULL, params = NULL) {
 #' Calculate difficulty strength across multiple controls by taking the mean
 #'
 #' Given a set of estimation parameters, calculate control strength as the
-#' arithmetic mean of sampled control effectiveness.
+#'   arithmetic mean of sampled control effectiveness.
 #'
 #' @importFrom dplyr %>% bind_rows
 #' @importFrom purrr pmap map transpose simplify_all map_dbl
@@ -195,8 +195,8 @@ get_mean_control_strength <- function(n, diff_parameters)  {
 #' Calculate number of loss events which occur in a simulated period
 #'
 #' Composition function for use in \code{\link{sample_lef}}. Given a count of
-#' the number of threat events (TEF) and the level of vulnerability (as a
-#' percentage), calculate how many of those become loss events (LEF).
+#'   the number of threat events (TEF) and the level of vulnerability (as a
+#'   percentage), calculate how many of those become loss events (LEF).
 #'
 #' @param tef Threat event frequency (n).
 #' @param vuln Vulnerability (percentage).
@@ -214,8 +214,8 @@ compare_tef_vuln <- function(tef, vuln) {
 #' Determine which threat events result in loss opportunities
 #'
 #' Composition function for use in \code{\link{sample_vuln}}, does a simple
-#' compare of all threat events where the threat capability (TC) is greater
-#' than the difficulty (DIFF).
+#'   compare of all threat events where the threat capability (TC) is greater
+#'   than the difficulty (DIFF).
 #'
 #' @param tc Threat capability (as a percentage).
 #' @param diff Difficulty (as a percentage).
@@ -252,9 +252,9 @@ select_loss_opportunities <- function(tc, diff) {
 #' Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels
 #'
 #' Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, and
-#' LM sampling. If there are multiple controls provided for a scenarios, the
-#' arithmetic mean (average) is taken across samples for all controls to get
-#' the effective control strength for a given simulation.
+#'   LM sampling. If there are multiple controls provided for a scenarios, the
+#'   arithmetic mean (average) is taken across samples for all controls to get
+#'   the effective control strength for a given simulation.
 #'
 #' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int flatten
 #' @importFrom tidyr nest
