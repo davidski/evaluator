@@ -5,7 +5,7 @@
 \title{Run simulations for all scenarios}
 \usage{
 run_simulations(scenario, simulation_count = 10000L,
-  model = "openfair_tef_tc_diff_lm", verbose = FALSE)
+  model = "openfair_tef_tc_diff_lm", ale_maximum = NULL, verbose = FALSE)
 }
 \arguments{
 \item{scenario}{Quantitative scenarios.}
@@ -13,6 +13,8 @@ run_simulations(scenario, simulation_count = 10000L,
 \item{simulation_count}{Number of simulations for each scenario.}
 
 \item{model}{OpenFAIR model to use.}
+
+\item{ale_maximum}{Apply a maximum per year, per simulation, loss maximum.}
 
 \item{verbose}{Whether verbose console output is requested.}
 }

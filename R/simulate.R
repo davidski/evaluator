@@ -13,6 +13,7 @@
 #' @param scenario Quantitative scenarios.
 #' @param model OpenFAIR model to use.
 #' @param simulation_count Number of simulations for each scenario.
+#' @param ale_maximum Apply a maximum per year, per simulation, loss maximum.
 #' @param verbose Whether verbose console output is requested.
 #' @export
 #' @return Dataframe of raw results.
@@ -21,7 +22,9 @@
 #' # run a single scenario in a trivial number (10) of trials
 #' run_simulations(quantitative_scenarios[1, ], 10)
 run_simulations <- function(scenario, simulation_count = 10000L,
-                            model = "openfair_tef_tc_diff_lm", verbose = FALSE) {
+                            model = "openfair_tef_tc_diff_lm",
+                            ale_maximum = NULL,
+                            verbose = FALSE) {
 
   #model <- rlang::sym(model) # convert characters to symbol
   ## ----run_simulations-----------------------------------------------------
@@ -51,6 +54,9 @@ run_simulations <- function(scenario, simulation_count = 10000L,
   }
 
   simulation_results <- dplyr::bind_rows(y$result)
+
+  # apply a maximum per year ALE, if requested
+  if (!(is.null(ale_maximum))) simulation_results$ale <- pmin(simulation_results$ale, ale_maximum)
 
   ## ----tidy_results--------------------------------------------------------
   # convert title back to scenario_id

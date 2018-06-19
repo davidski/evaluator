@@ -2,10 +2,6 @@
 
 * IDs for simulations and capabilities no longer need to be numeric. ID styles 
 in the format of "FOO-123" and "MY_Scenario" are now supported.
-* `run_simulations` now supports parallel execution via the `furrr` package. 
-To run simulations across all cores of a local machine, load `furrr` and 
-run `plan(multicore)` before launching an analysis. For more information, 
-see the `furrr::future_map` documentation.
 * Data structure change - Quantified scenarios now store parameters for TEF, 
 TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF 
 distributions to be more easily sampled. Qualitative scenario structure is 
@@ -25,22 +21,29 @@ scope.
 * `select_loss_opportunities` properly returns an NA for the threat & difficulty 
 exceedance calculations when there are no threat events in a given simualated 
 period.
-* `summarize_scenarios` now correctly handles scenarios in which no threat 
-events occur in a given simulation. Impact was limited to `mean_tc_exceedance`. 
-For previously run simulations, resummarizing the `scenarios_results` will 
-generate the corrected values.
+* `summarize_scenarios` - correctly handles scenarios in which no threat 
+events occur in a given simulation. This bug was limited to `mean_tc_exceedance`. 
+For previously run simulations, resummarizing the `scenario_results` will 
+generate corrected values.
 
 ## Improvements
-* Minor documentation cleanup.
-* Errors encountered during `run_simulation` runs are now reported better.
+* `run_simulations` - New `ale_maximum` parameter allows an absolute cap on 
+per simulation annual losses to be set. This is an interim step in lieu of 
+full hierarchial interaction modelling.
+* `run_simulations` - Errors encountered during runs are now reported better.
+* `run_simulations` - Implements parallel execution via the `furrr` package. 
+To run simulations across all cores of a local machine, load `furrr` and 
+run `plan(multicore)` before launching an analysis. For more information, 
+see the `furrr::future_map` documentation.
 * `sample_lm` and `sample_tc` check if they are asked to generate zero 
 requested samples, bypassing calling the underlying generation function. This 
 avoids problems with generating functions which do not gracefully handle being 
 asked to sample a non positive number (zero) of events.
-* Removed all deprecated standard-evaluation tidyverse verbs in favor of 
-`rlang::.data` constructs, making CRAN checks much simpler.
 * `load_data` now fully specifies the expected CSV file formats, avoiding 
 possible surpises and making invocations less noisy on the console.
+* Removed all deprecated standard-evaluation tidyverse verbs in favor of 
+`rlang::.data` constructs, making CRAN checks much simpler.
+* Minor documentation cleanup.
 
 # evaluator 0.2.3
 
