@@ -167,25 +167,32 @@ with and without outliers (if passed) are returned.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Dataframe.</p>
+    <p>A dataframe with the following columns:</p><ul>
+<li><p><code>scenario_id</code> - index of the simulation</p></li>
+<li><p><code>biggest_single_scenario_loss</code> - the biggest annual loss in that simulation,</p></li>
+<li><p><code>min_loss</code> - the smallest annual loss in that simulation,</p></li>
+<li><p><code>max_loss</code> - the total annual losses in that simulation</p></li>
+<li><p><code>outliers</code> - logical of whether or not outliers are included</p></li>
+</ul>
+
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>simulation_results</span>)
-<span class='fu'>calculate_max_losses</span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; # A tibble: 2,000 x 5
+<span class='fu'>calculate_max_losses</span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; # A tibble: 1,000 x 5
 #&gt;    simulation biggest_single_scenario_loss min_loss  max_loss outliers
 #&gt;         &lt;int&gt;                        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;lgl&gt;   
-#&gt;  1       1000                     4290192.        0 16829730. TRUE    
-#&gt;  2        999                     3902349.        0 15412159. TRUE    
-#&gt;  3        996                     3649356.        0 16470645. TRUE    
-#&gt;  4        994                     3634978.        0 15832708. TRUE    
-#&gt;  5        988                     2392660.        0 11787726. TRUE    
-#&gt;  6        985                     2318615.        0 11257171. TRUE    
-#&gt;  7        979                     2036239.        0 11351277. TRUE    
-#&gt;  8        978                     2203581.        0  7938067. TRUE    
-#&gt;  9        975                     3245901.        0 14514727. TRUE    
-#&gt; 10        970                     2229932.        0 14589420. TRUE    
-#&gt; # ... with 1,990 more rows</div></pre>
+#&gt;  1          1                     2721058.        0 12622839. FALSE   
+#&gt;  2          2                     3137768.        0 14208481. FALSE   
+#&gt;  3          3                     2937112.        0 13776227. FALSE   
+#&gt;  4          4                     2142845.        0  9286817. FALSE   
+#&gt;  5          5                     2610111.        0 10158854. FALSE   
+#&gt;  6          6                     3734973.        0 17223784. FALSE   
+#&gt;  7          7                     3812536.        0 18182688. FALSE   
+#&gt;  8          8                     3705607.        0 16542508. FALSE   
+#&gt;  9          9                     3888987.        0 19204050. FALSE   
+#&gt; 10         10                     2440504.        0 11499125. FALSE   
+#&gt; # ... with 990 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

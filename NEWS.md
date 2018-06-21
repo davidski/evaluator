@@ -25,6 +25,8 @@ period.
 events occur in a given simulation. This bug was limited to `mean_tc_exceedance`. 
 For previously run simulations, resummarizing the `scenario_results` will 
 generate corrected values.
+* `calculate_max_losses()` - no longer returns a duplicate set of results if 
+not passed any outliers.
 
 ## Improvements
 * `run_simulations()` - New `ale_maximum` parameter allows an absolute cap on 

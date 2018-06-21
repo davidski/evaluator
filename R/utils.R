@@ -123,7 +123,12 @@ calculate_domain_impact <- function(domain_summary, domains) {
 #' @importFrom rlang .data
 #' @param simulation_results Simulation results dataframe.
 #' @param scenario_outliers Optional vector of IDs of outlier scenarios.
-#' @return Dataframe.
+#' @return A dataframe with the following columns:
+#'   - `scenario_id` - index of the simulation
+#'   - `biggest_single_scenario_loss` - the biggest annual loss in that simulation,
+#'   - `min_loss` - the smallest annual loss in that simulation,
+#'   - `max_loss` - the total annual losses in that simulation
+#'   - `outliers` - logical of whether or not outliers are included
 #' @export
 #' @examples
 #' data(simulation_results)
@@ -136,6 +141,9 @@ calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
                       min_loss = min(.data$ale), max_loss = sum(.data$ale),
                       outliers = FALSE) %>%
     dplyr::ungroup()
+  # if we're not passed any outliers, don't bother calculating outliers
+  if (is.null(scenario_outliers)) return(max_loss)
+
   max_loss_w_outliers <- simulation_results %>%
     dplyr::group_by(.data$simulation) %>%
     dplyr::summarize(biggest_single_scenario_loss = max(.data$ale),

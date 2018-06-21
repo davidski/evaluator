@@ -156,6 +156,8 @@
 <code><a href="../reference/select_loss_opportunities.html">select_loss_opportunities()</a></code> properly returns an NA for the threat &amp; difficulty exceedance calculations when there are no threat events in a given simualated period.</li>
 <li>
 <code><a href="../reference/summarize_scenarios.html">summarize_scenarios()</a></code> - correctly handles scenarios in which no threat events occur in a given simulation. This bug was limited to <code>mean_tc_exceedance</code>. For previously run simulations, resummarizing the <code>scenario_results</code> will generate corrected values.</li>
+<li>
+<code><a href="../reference/calculate_max_losses.html">calculate_max_losses()</a></code> - no longer returns a duplicate set of results if not passed any outliers.</li>
 </ul>
 </div>
 <div id="improvements" class="section level2">

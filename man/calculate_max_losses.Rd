@@ -12,7 +12,14 @@ calculate_max_losses(simulation_results, scenario_outliers = NULL)
 \item{scenario_outliers}{Optional vector of IDs of outlier scenarios.}
 }
 \value{
-Dataframe.
+A dataframe with the following columns:
+\itemize{
+\item \code{scenario_id} - index of the simulation
+\item \code{biggest_single_scenario_loss} - the biggest annual loss in that simulation,
+\item \code{min_loss} - the smallest annual loss in that simulation,
+\item \code{max_loss} - the total annual losses in that simulation
+\item \code{outliers} - logical of whether or not outliers are included
+}
 }
 \description{
 Calculate the biggest single annual loss for each scenario, as well as

@@ -24,8 +24,14 @@ test_that("Calculate max losses", {
   expect_equal(nrow(dat[dat$outliers == TRUE,]), 1000)
   expect_equal(nrow(dat), 2000)
 })
+test_that("calculate_max_losess handles NULL outliers", {
+  data("simulation_results")
+  dat <- calculate_max_losses(simulation_results)
+  expect_s3_class(dat, "data.frame")
+  expect_equal(nrow(dat), 1000)
+})
 
-test_that("Calculate max losses", {
+test_that("Calculate domain impact", {
   data("simulation_results")
   data("domains")
   dat <- calculate_domain_impact(domain_summary, domains)
