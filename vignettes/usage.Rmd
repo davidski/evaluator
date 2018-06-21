@@ -51,7 +51,7 @@ demonstration model based upon the
 To start a fresh analysis using the default starter files, run 
 `create_templates()`. This creates an `evaluator` directory in your home 
 location with an `inputs` subdirectory containing a survey tool (Excel), a 
-comma-seperated file defining the domains used in the survey tool, and a file 
+comma-separated file defining the domains used in the survey tool, and a file 
 defining the risk tolerance levels for your organization.
 
 If you have a different domain structure (e.g. ISO2700x, NIST CSF, or COBIT), 
@@ -110,7 +110,7 @@ source("~/evaluator/run_analysis.R")
 
 To extract the spreadsheet into data files for further analysis, run 
 `import_spreadsheet()`. Evaluator will extract the data and 
-save two comma seperated files in the `inputs` directory with the results. 
+save two comma separated files in the `inputs` directory with the results. 
 
 ```{r import, eval=FALSE}
 domains <- readr::read_csv("~/evaluator/inputs/domains.csv")
@@ -213,4 +213,4 @@ generate_report("~/evaluator/inputs", "~/evaluator/results",
 ```
 
 To view that same report as a Word document for editing, use 
-`generate_report("~/evaluator/inputs", "~/evaluator/results", "~/evaluator/risk_report.docx", output_format = "word_document")`.
+`generate_report("~/evaluator/inputs", "~/evaluator/results", "~/evaluator/risk_report.docx", format = "word")`.
