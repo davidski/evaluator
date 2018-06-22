@@ -100,7 +100,7 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
   }
   icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
 
-  rmarkdown::run(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator"),
+  rmarkdown::run(system.file("explore_scenarios", "explore_scenarios.Rmd", package = "evaluator"),
                  #dir = file.path(basename(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator")), ".."),
                  render_args = list(
                    output_options =  list(css = styles, favicon = icon,
@@ -136,7 +136,7 @@ openfair_example <- function(intermediates_dir = tempdir(),
   styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
   icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
 
-  rmarkdown::run(system.file("rmd", "openfair_example.Rmd",
+  rmarkdown::run(system.file("openfair_example", "openfair_example.Rmd",
                              package = "evaluator"),
                  render_args = list(output_options =  list(css = styles,
                                                            favicon = icon,

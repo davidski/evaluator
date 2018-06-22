@@ -1,0 +1,309 @@
+{
+  "input": {
+    "csconf": 2,
+    "csh": 60,
+    "csl": 40,
+    "csml": 50,
+    "lmconf": 1,
+    "lmh": 10000,
+    "lml": 100,
+    "lmml": 500,
+    "N": 100,
+    "runmodel": 1,
+    "tcapconf": 1,
+    "tcaph": 70,
+    "tcapl": 20,
+    "tcapml": 30,
+    "tefconf": 1,
+    "tefh": 100,
+    "tefl": 9,
+    "tefml": 30
+  },
+  "output": {
+    "__reactivedoc__": {
+      "html": "[html data sha1: ae7b7ef14115e34d0060ecb3b5e9666333a12e30]",
+      "deps": [
+        {
+          "name": "jquery",
+          "version": "1.12.4",
+          "src": {
+            "href": "jquery-1.12.4"
+          },
+          "meta": null,
+          "script": "jquery.min.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "bootstrap",
+          "version": "3.3.5",
+          "src": {
+            "href": "bootstrap-3.3.5"
+          },
+          "meta": {
+            "viewport": "width=device-width, initial-scale=1"
+          },
+          "script": [
+            "js/bootstrap.min.js",
+            "shim/html5shiv.min.js",
+            "shim/respond.min.js"
+          ],
+          "stylesheet": "css/cosmo.min.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "stickytableheaders",
+          "version": "0.1.19",
+          "src": {
+            "href": "stickytableheaders-0.1.19"
+          },
+          "meta": null,
+          "script": "jquery.stickytableheaders.min.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "font-awesome",
+          "version": "5.0.13",
+          "src": {
+            "href": "font-awesome-5.0.13"
+          },
+          "meta": null,
+          "script": [
+            "js/fontawesome-all.min.js",
+            "js/fa-v4-shims.min.js"
+          ],
+          "stylesheet": "css/fa-svg-with-js.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "featherlight",
+          "version": "1.3.5",
+          "src": {
+            "href": "featherlight-1.3.5"
+          },
+          "meta": null,
+          "script": "featherlight.min.js",
+          "stylesheet": "featherlight.min.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "prism",
+          "version": "1.4.1",
+          "src": {
+            "href": "prism-1.4.1"
+          },
+          "meta": null,
+          "script": "prism.js",
+          "stylesheet": "prism.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "htmlwidgets",
+          "version": "1.2",
+          "src": {
+            "href": "htmlwidgets-1.2"
+          },
+          "meta": null,
+          "script": "htmlwidgets.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "datatables-css",
+          "version": "0.0.0",
+          "src": {
+            "href": "datatables-css-0.0.0"
+          },
+          "meta": null,
+          "script": null,
+          "stylesheet": "datatables-crosstalk.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "datatables-binding",
+          "version": "0.4",
+          "src": {
+            "href": "datatables-binding-0.4"
+          },
+          "meta": null,
+          "script": "datatables.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "crosstalk",
+          "version": "1.0.0",
+          "src": {
+            "href": "crosstalk-1.0.0"
+          },
+          "meta": null,
+          "script": "js/crosstalk.min.js",
+          "stylesheet": "css/crosstalk.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "rmarkdown-performance",
+          "version": "0.1",
+          "src": {
+            "href": "rmarkdown-performance-0.1"
+          },
+          "meta": null,
+          "script": "rmd_perf.js",
+          "stylesheet": "rmd_perf.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "out2b867a62545e3017": "",
+    "out3cf3ae3e9c3050f3": {
+      "src": "[image data sha1: 44395a088670e3c294e17cd50e56b891571e6966]",
+      "width": 558,
+      "height": 625,
+      "coordmap": [
+        {
+          "domain": {
+            "left": -0.04,
+            "right": 1.04,
+            "bottom": -0.04,
+            "top": 1.04
+          },
+          "range": {
+            "left": 0,
+            "right": 558,
+            "bottom": 624,
+            "top": -1
+          },
+          "log": {
+            "x": null,
+            "y": null
+          },
+          "mapping": {
+
+          }
+        }
+      ]
+    },
+    "out77f77788c872a00b": {
+      "src": "[image data sha1: 7ef5e613a0a232884580bfd0a4861e05003852df]",
+      "width": 576,
+      "height": 400,
+      "coordmap": [
+        {
+          "domain": {
+            "left": -0.04,
+            "right": 1.04,
+            "bottom": -0.04,
+            "top": 1.04
+          },
+          "range": {
+            "left": 0,
+            "right": 576,
+            "bottom": 399,
+            "top": -1
+          },
+          "log": {
+            "x": null,
+            "y": null
+          },
+          "mapping": {
+
+          }
+        }
+      ]
+    },
+    "out9813a02d30c5186d": {
+      "x": null,
+      "evals": [
+
+      ],
+      "jsHooks": [
+
+      ],
+      "deps": [
+        {
+          "name": "dt-core",
+          "version": "1.10.16",
+          "src": {
+            "href": "dt-core-1.10.16"
+          },
+          "meta": null,
+          "script": "js/jquery.dataTables.min.js",
+          "stylesheet": [
+            "css/jquery.dataTables.min.css",
+            "css/jquery.dataTables.extra.css"
+          ],
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": false
+        },
+        {
+          "name": "jquery",
+          "version": "1.11.3",
+          "src": {
+            "href": "jquery-1.11.3"
+          },
+          "meta": null,
+          "script": "jquery.min.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "crosstalk",
+          "version": "1.0.0",
+          "src": {
+            "href": "crosstalk-1.0.0"
+          },
+          "meta": null,
+          "script": "js/crosstalk.min.js",
+          "stylesheet": "css/crosstalk.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "outb9c6a5ed58003115": ""
+  },
+  "export": {
+
+  }
+}

@@ -38,6 +38,7 @@ test_that("Analyze report renders", {
   unlink(file)
 })
 
+
 # test_that("Scenario Explorer launches", {
 #   expect_is(explore_scenarios(input_directory = tmpinputs,
 #                               results_directory = tmpdata,
