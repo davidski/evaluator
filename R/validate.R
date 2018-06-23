@@ -42,7 +42,7 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   # Are all the capabilities referenced in the scenarios defined?
   missing_capabilities <- scenarios %>%
     tidyr::separate_rows(.data$controls, sep = ", ", convert = FALSE) %>%
-    dplyr::anti_join(capabilities, by = c("controls" = "id"))
+    dplyr::anti_join(capabilities, by = c("controls" = "capability_id"))
   if (nrow(missing_capabilities) != 0) {
     warning(paste("Scenarios with undefined capabilities:",
                   missing_capabilities$scenario_id, collapse = "\n"),
@@ -51,13 +51,13 @@ validate_scenarios <- function(scenarios, capabilities, domains, mappings) {
   }
 
   # Verify there are no duplicate controls
-  capabilities %>% dplyr::group_by_at(.vars = "id") %>% dplyr::tally() %>%
+  capabilities %>% dplyr::group_by_at(.vars = "capability_id") %>% dplyr::tally() %>%
     dplyr::filter(.data$n > 1) %>%
-    dplyr::left_join(capabilities, by = "id") %>%
+    dplyr::left_join(capabilities, by = "capability_id") %>%
     dplyr::rename(times_duplicated = .data$n) -> duplicate_capabilities
   if (nrow(duplicate_capabilities) != 0) {
     warning(paste("Duplicate capabilities found:",
-                  duplicate_capabilities$id, collapse = "\n"),
+                  duplicate_capabilities$capability_id, collapse = "\n"),
             call. = FALSE)
     validated <- FALSE
   }

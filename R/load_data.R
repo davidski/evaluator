@@ -90,7 +90,7 @@ load_data <- function(input_directory = "~/evaluator/inputs", results_directory 
   capabilities <- readr::read_csv(file.path(input_directory,
                                             "capabilities.csv"),
                                   col_types = readr::cols(
-                                    id = readr::col_character(),
+                                    capability_id = readr::col_character(),
                                     domain_id = readr::col_character(),
                                     capability = readr::col_character(),
                                     diff = readr::col_character()))  # i.e. objectives & controls

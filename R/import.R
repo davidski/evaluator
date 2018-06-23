@@ -116,9 +116,9 @@ import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx
 
   # fetch and clean capabilities
   capabilities <- tidyr::unnest(dat, capabilities) %>%
-    dplyr::select(id = "CapabilityID", .data$domain_id, capability = "Name",
-                   diff = "DIFF") %>%
-    dplyr::arrange(.data$id)
+    dplyr::select(capability_id = .data$CapabilityID, .data$domain_id,
+                  capability = .data$Name, diff = .data$DIFF) %>%
+    dplyr::arrange(.data$capability_id)
 
   capabilities
 }

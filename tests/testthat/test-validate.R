@@ -9,7 +9,7 @@ qualitative_scenarios <- data.frame(scenario_id = c("1", "2"),
                                     controls = c("1, 5, 7, 32, 14",
                                                  "14, 15, 16"),
                                     stringsAsFactors = FALSE)
-capabilities <- data.frame(id = c("1", "5", "7", "32", "14", "15", "16"),
+capabilities <- data.frame(capability_id = c("1", "5", "7", "32", "14", "15", "16"),
                            domain_id = c("ORG", "ORG", "ORG", "ORG", "ORG", "ORG", "ORG"),
                            capability = c("Capability 1.",  "Capability 5.", "Capability 7", "Capability 32.", "Capability 14.", "Capability 15.", "Capability 16."),
                            diff = c("5 - Optimized", "4 - Managed", "1 - Initial", "4 - Managed", "4 - Managed", "2 - Repeatable", "2 - Repeatable"),
@@ -37,7 +37,7 @@ test_that("Duplicate scenarios detected", {
                  regexp = "Duplicate scenarios")
 })
 test_that("Duplicate capabilities detected", {
-  capabilities <- data.frame(id = c("1", "5", "5", "32", "14", "15", "16"),
+  capabilities <- data.frame(capability_id = c("1", "5", "5", "32", "14", "15", "16"),
                              domain_id = c("ORG", "ORG", "ORG", "ORG", "ORG", "ORG", "ORG"),
                              capability = c("Capability 1.",  "Capability 5.", "Capability 7", "Capability 32.", "Capability 14.", "Capability 15.", "Capability 16."),
                              diff = c("5 - Optimized", "4 - Managed", "1 - Initial", "4 - Managed", "4 - Managed", "2 - Repeatable", "2 - Repeatable"),

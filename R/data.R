@@ -3,7 +3,7 @@
 #' A qualitative dataset of sample capabilities and qualitative level of effectiveness.
 #'
 #' \describe{
-#'   \item{id}{unique id of the capability}
+#'   \item{capability_id}{unique id of the capability}
 #'   \item{domain_id}{domain id to which the capability applies}
 #'   \item{capability}{full text summary of the capability}
 #'   \item{diff}{qualitative label of control effectiveness}

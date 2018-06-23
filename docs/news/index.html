@@ -141,8 +141,14 @@
 <a href="#evaluator-0-2-3-900-unreleased" class="anchor"></a>evaluator 0.2.3.900 (unreleased)<small> Unreleased </small>
 </h1>
 <ul>
+<li>Data structure changes
+<ul>
 <li>IDs for simulations and capabilities no longer need to be numeric. ID styles in the format of “FOO-123” and “MY_Scenario” are now supported.</li>
-<li>Data structure change - Quantified scenarios now store parameters for TEF, TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF distributions to be more easily sampled. Qualitative scenario structure is unchanged so this should have no impact on most users.</li>
+<li>Quantified scenarios now store parameters for TEF, TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF distributions to be more easily sampled. Qualitative scenario structure is unchanged so this should have no impact on most users.</li>
+<li>
+<code>capabilities</code> table has renamed the <code>id</code> column to <code>capability_id</code> to be consistent with other ID columns throughout the schema. Survey (Excel) users are not impacted by this change.</li>
+</ul>
+</li>
 <li>Model interface change - With the unification on list columns for OpenFAIR parameters, the top level model objects no longer take a dedicated <code>diff_estimates</code> option. The <code><a href="../reference/run_simulations.html">run_simulations()</a></code> function accounts for this change. Users using the standard flow will not be impacted.</li>
 </ul>
 <div id="bug-fixes" class="section level2">

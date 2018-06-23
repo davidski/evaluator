@@ -1,11 +1,15 @@
 # evaluator 0.2.3.900 (unreleased)
 
-* IDs for simulations and capabilities no longer need to be numeric. ID styles 
-in the format of "FOO-123" and "MY_Scenario" are now supported.
-* Data structure change - Quantified scenarios now store parameters for TEF, 
-TC, LM, and DIFF values as list columns. This allows non L/ML/H/CONF 
-distributions to be more easily sampled. Qualitative scenario structure is 
-unchanged so this should have no impact on most users.
+* Data structure changes 
+    * IDs for simulations and capabilities no longer need to be numeric. ID 
+    styles in the format of "FOO-123" and "MY_Scenario" are now supported.
+    * Quantified scenarios now store parameters for TEF, TC, LM, and DIFF 
+    values as list columns. This allows non L/ML/H/CONF distributions to be 
+    more easily sampled. Qualitative scenario structure is unchanged so this 
+    should have no impact on most users.
+    * `capabilities` table has renamed the `id` column to `capability_id` to 
+    be consistent with other ID columns throughout the schema. Survey (Excel) 
+    users are not impacted by this change.
 * Model interface change - With the unification on list columns for OpenFAIR 
 parameters, the top level model objects no longer take a dedicated `diff_estimates` 
 option. The `run_simulations()` function accounts for this change. Users using 
