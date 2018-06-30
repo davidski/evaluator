@@ -27,14 +27,34 @@ navbar:
       href: news/index.html
 
 reference:
+  - title: Data Import and Cleansing Functions
+    contents:
+      - create_templates
+      - derive_controls
+      - encode_scenarios
+      - starts_with("import")
+      - load_data
+      - openfair_example
+      - split_sheet
+      - validate_scenarios
   - title: Modelling Functions
     desc: OpenFAIR modelling components
     contents:
       - compare_tef_vuln
       - get_mean_control_strength
       - openfair_tef_tc_diff_lm
+      - run_simulations
       - starts_with("sample")
       - select_loss_opportunities
+  - title: Reporting Functions
+    contents:
+      - starts_with("calculate")
+      - explore_scenarios
+      - dollar_millions
+      - starts_with("generate")
+      - get_base_fontfamily
+      - risk_dashboard
+      - theme_evaluator
   - title: Sample Data Sets
     desc: Default demonstration data sets
     contents:
@@ -46,22 +66,6 @@ reference:
       - quantitative_scenarios
       - scenario_summary
       - simulation_results
-  - title: All Other Functions
+  - title: Summarization Functions
     contents:
-      - starts_with("calculate")
-      - create_templates
-      - derive_controls
-      - dollar_millions
-      - encode_scenarios
-      - explore_scenarios
-      - starts_with("generate")
-      - get_base_fontfamily
-      - starts_with("import")
-      - load_data
-      - openfair_example
-      - risk_dashboard
-      - run_simulations
-      - split_sheet
       - starts_with("summarize")
-      - theme_evaluator
-      - validate_scenarios
