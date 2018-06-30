@@ -4,13 +4,7 @@
     <loc>https://evaluator.severski.net/index.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/calculate_domain_impact.html</loc>
-  </url>
-  <url>
     <loc>https://evaluator.severski.net/reference/calculate_max_losses.html</loc>
-  </url>
-  <url>
-    <loc>https://evaluator.severski.net/reference/calculate_weak_domains.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/capabilities.html</loc>
@@ -128,6 +122,9 @@
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/summarize_scenarios.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/summarize_simulations.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/summarize_to_disk.html</loc>

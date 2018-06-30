@@ -5,10 +5,10 @@
 \title{Display the distribution of threat events contained vs. realized across
 all domains}
 \usage{
-generate_event_outcomes_plot(control_weakness)
+generate_event_outcomes_plot(domain_summary)
 }
 \arguments{
-\item{control_weakness}{Domain-level control weakness from \code{calculate_weak_domains}.}
+\item{domain_summary}{Domain-level summary from \code{domain_summary}.}
 }
 \value{
 ggplot object.
@@ -19,8 +19,6 @@ contained (not resulting in loss) vs the number and percentage of
 loss events (threat events resulting in losses).
 }
 \examples{
-data(simulation_results)
-data(domains)
-dat <- calculate_weak_domains(simulation_results, domains)
-generate_event_outcomes_plot(dat)
+data(domain_summary)
+generate_event_outcomes_plot(domain_summary)
 }

@@ -46,20 +46,20 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #' @import ggplot2
 #' @importFrom viridis scale_fill_viridis
 #' @importFrom rlang .data
-#' @param domain_impact Domain impact information from \code{calculate_domain_impact}.
+#' @param domain_summary Simulations summarized at a domain level via \code{summarize_domains}.
 #' @return A ggplot object.
 #' @export
 #' @examples
-#' dat <- calculate_domain_impact(domain_summary, domains)
-#' generate_heatmap(dat)
-generate_heatmap <- function(domain_impact) {
-  dat <- domain_impact %>% dplyr::arrange(.data$domain_id) %>%
+#' data(domain_summary)
+#' generate_heatmap(domain_summary)
+generate_heatmap <- function(domain_summary) {
+  dat <- domain_summary %>% dplyr::arrange(.data$domain_id) %>%
     dplyr::mutate(full_label = paste0(.data$domain_id, "\n",
-                                      "$", round(.data$var/10^6), "M"),
+                                      "$", round(.data$ale_var/10^6), "M"),
                    aux = seq(1, 2 * nrow(.), by = 2))
   gg <- ggplot(dat, aes_(x = quote(aux), y = 1))
   gg <- gg + geom_tile(stat = "identity", color = "white",
-                       aes_(fill = quote(var)), width = 1)
+                       aes_(fill = quote(ale_var)), width = 1)
   gg <- gg + geom_text(aes_(x = quote(aux), y = 1, label = quote(full_label)),
                        color = "white", size = 3)
   gg <- gg + coord_equal()
@@ -117,38 +117,37 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' @importFrom viridis viridis
 #' @importFrom tidyr gather
 #' @importFrom rlang .data
-#' @param control_weakness Domain-level control weakness from \code{calculate_weak_domains}.
+#' @param domain_summary Domain-level summary from \code{domain_summary}.
 #' @return ggplot object.
 #' @export
 #' @examples
-#' data(simulation_results)
-#' data(domains)
-#' dat <- calculate_weak_domains(simulation_results, domains)
-#' generate_event_outcomes_plot(dat)
-generate_event_outcomes_plot <- function(control_weakness) {
-  dat <- control_weakness %>%
-    dplyr::arrange(dplyr::desc(.data$loss_events), dplyr::desc(.data$threat_events)) %>%
+#' data(domain_summary)
+#' generate_event_outcomes_plot(domain_summary)
+generate_event_outcomes_plot <- function(domain_summary) {
+  dat <- domain_summary %>%
+    dplyr::arrange(dplyr::desc(.data$mean_loss_events),
+                   dplyr::desc(.data$mean_threat_events)) %>%
     dplyr::mutate(domain_id = factor(.data$domain_id,
                                      levels = rev(unique(.data$domain_id)),
                                      ordered = TRUE)) %>%
-    dplyr::mutate(contained_events = .data$threat_events - .data$loss_events)
+    dplyr::mutate(contained_events = .data$mean_threat_events - .data$mean_loss_events)
 
   # nudge labels 5% off from the end of the segment
-  label_nudge <- c(max(dat$loss_events) / 20 * -1, max(dat$contained_events) / 20)
+  label_nudge <- c(max(dat$mean_loss_events) / 20 * -1, max(dat$contained_events) / 20)
 
   # set breakpoints to half of the range
-  break_locations <-  c(max(dat$loss_events) / 2 * -1.5, max(dat$contained_events) / 2 * 1.5)
+  break_locations <-  c(max(dat$mean_loss_events) / 2 * -1.5, max(dat$contained_events) / 2 * 1.5)
 
   # convert data into tidy-er format
-  dat <- tidyr::gather(dat, "type", "events", c("loss_events", "contained_events")) %>%
+  dat <- tidyr::gather(dat, "type", "events", c("mean_loss_events", "contained_events")) %>%
     dplyr::mutate(actual_events = .data$events,
                    events = .data$events + 25000,
-                   events = ifelse(.data$type == "loss_events", -1 * .data$events, .data$events)) %>%
-    dplyr::mutate(nudge = ifelse(.data$type == "loss_events", label_nudge[1], label_nudge[2])) %>%
-    dplyr::mutate(hjust = ifelse(.data$type == "loss_events", "right", "left")) %>%
-    dplyr::mutate(full_lab = ifelse(.data$type == "loss_events",
-                                         sprintf("%s (%s)", scales::comma(.data$actual_events), .data$tc_exceedance),
-                                         sprintf("%s (%s)", scales::comma(.data$actual_events), .data$diff_exceedance)))
+                   events = ifelse(.data$type == "mean_loss_events", -1 * .data$events, .data$events)) %>%
+    dplyr::mutate(nudge = ifelse(.data$type == "mean_loss_events", label_nudge[1], label_nudge[2])) %>%
+    dplyr::mutate(hjust = ifelse(.data$type == "mean_loss_events", "right", "left")) %>%
+    dplyr::mutate(full_lab = ifelse(.data$type == "mean_loss_events",
+                                         sprintf("%s (%s)", scales::comma(.data$actual_events), .data$mean_tc_exceedance),
+                                         sprintf("%s (%s)", scales::comma(.data$actual_events), .data$mean_diff_exceedance)))
 
   # auto-calculate the limits of the plot
   event_range <- range(dat$events) * c(1.4, 1.5)

@@ -232,17 +232,17 @@ select_loss_opportunities <- function(tc, diff) {
   # mean amount threat strength exceeds control strength, if that ever occurs
   tc_exceedance <- if (
     all(is.na(samples))) {NA} else # if there are no threat events, then NA
-      if (
-      sum(samples, na.rm = TRUE) > 0) {
-      mean(tc[samples] - diff[samples], na.rm = TRUE)
+      if (sum(samples, na.rm = TRUE) > 0) {
+        mean(tc[samples] - diff[samples], na.rm = TRUE)
       } else {0}
   # mean amount control strength exceeds threat strength, if that ever occurs
   diff_exceedance <- if (
     all(is.na(samples))) {NA} else # if there are no threat events, then NA
-      if (sum(samples, na.rm = TRUE) > 0 &
-                         sum(samples, na.rm = TRUE) != length(tc)) {
-    mean(diff[!samples] - tc[!samples], na.rm = TRUE)
-    } else {0}
+      if (
+        #sum(samples, na.rm = TRUE) > 0 &
+          sum(samples, na.rm = TRUE) != length(tc)) {
+        mean(diff[!samples] - tc[!samples], na.rm = TRUE)
+        } else {0}
   list(samples = samples, details = list(mean_tc_exceedance = tc_exceedance,
                                          mean_diff_exceedance = diff_exceedance))
 }
@@ -339,8 +339,8 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
     # summary stats for ALE
     if (verbose) {
         print(summary(purrr::map_dbl(loss_samples, "samples")))
-        value_at_risk <- quantile(purrr::map_dbl(loss_samples, "samples"),
-                                  probs = (0.95), na.rm = TRUE)
+        value_at_risk <- stats::quantile(purrr::map_dbl(loss_samples, "samples"),
+                                         probs = (0.95), na.rm = TRUE)
         message(paste0("Losses at 95th percentile are $",
                        format(value_at_risk, nsmall = 2, digits = 2,
                               big.mark = ",")))

@@ -96,6 +96,9 @@ numbers <- c("one", "two", "three", "four", "five", "six", "seven", "eight",
 
 # determine the correct base font family to use
 basefont <- get_base_fontfamily()
+
+# domain summary, add domain names
+domain_summary <- left_join(domain_summary, domains, by = "domain_id")
 ```
 
 ```{r enhance_summary_object}
@@ -113,10 +116,6 @@ scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE),
 
 ```{r calculate_max_losses}
 max_loss <- calculate_max_losses(simulation_results, scenario_outliers)
-```
-
-```{r calculate_weak_domains}
-control_weakness <- calculate_weak_domains(simulation_results, domains)
 ```
 
 # Summary
@@ -202,23 +201,19 @@ gg
 
 ## Risk By Domain
 
-```{r calculate_domain_impact}
-domain_impact <- calculate_domain_impact(domain_summary, domains)
-```
-
 The top three information security program domains with the largest likely 
-losses are `r domain_impact[[1, "domain"]]`, `r domain_impact[[2, "domain"]]`, and 
-`r domain_impact[[3, "domain"]]`. The losses associated with each domain of the 
+losses are `r domain_summary[[1, "domain"]]`, `r domain_summary[[2, "domain"]]`, and 
+`r domain_summary[[3, "domain"]]`. The losses associated with each domain of the 
 program are described in the following table.
 
 ```{r domain_impact, echo = FALSE}
-mutate_at(domain_impact, vars(-one_of("domain_id", "domain")), funs(dollar)) %>% 
+mutate_at(domain_summary, vars(-one_of("domain_id", "domain")), funs(dollar)) %>% 
   select("Domain" = domain, 
-         "Value at Risk" = var,
-         "Maximum" = max, 
-         "Mean (Average)" = mean,
-         "Minimum" = min,
-         "Standard Deviation" = sd) %>% 
+         "Value at Risk" = ale_var,
+         "Maximum" = ale_max, 
+         "Mean (Average)" = ale_mean,
+         "Minimum" = ale_min,
+         "Standard Deviation" = ale_sd) %>% 
   pander(justify = c(rep("left", 1), rep("right", 5)),
          emphasize.strong.rows = 1:3,
          split.cells = 20, caption = "Annual Loss by Domain")
@@ -236,7 +231,7 @@ distribution of loss vs. contained events, and the average amount of control
 strength gap/surplus is displayed below.
 
 ```{r events_contained_vs_losses}
-generate_event_outcomes_plot(control_weakness)
+generate_event_outcomes_plot(domain_summary)
 ```
 
 ## Top Risk Scenarios
@@ -262,15 +257,15 @@ A list of all evaluated risk scenarios is in [Appendix A](#scenario_list).
 ## Key Capability Weaknesses
 
 Threats most frequently overcome the control capabilities, resulting in 
-losses, in  the domains of `r control_weakness[[1, "domain"]]`, 
-`r control_weakness[[2, "domain"]]`, and `r control_weakness[[3, "domain"]]`.
+losses, in  the domains of `r domain_summary[[1, "domain"]]`, 
+`r domain_summary[[2, "domain"]]`, and `r domain_summary[[3, "domain"]]`.
 
 ```{r domain_weakness, echo = FALSE}
-select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>% 
+select(domain_summary, domain, mean_vuln, mean_tc_exceedance, mean_diff_exceedance) %>% 
   rename("Domain" = domain, 
-       "Succesful Threat Events" = vuln,
-       "Control Gap" = tc_exceedance,
-       "Surplus Control Strength" = diff_exceedance) %>% 
+       "Succesful Threat Events" = mean_vuln,
+       "Control Gap" = mean_tc_exceedance,
+       "Surplus Control Strength" = mean_diff_exceedance) %>% 
   pander(justify = c("left", "right", "right", "right"), 
                  caption = "Domain Weaknesses")
 ```
@@ -774,23 +769,23 @@ profile.
 Heatmap of Value at Risk by domain.
 
 ```{r domain_heatmap, fig.asp=.33, fig.width=6.5, fig.cap = "Domain VaR Heatmap"}
-generate_heatmap(domain_impact)
+generate_heatmap(domain_summary)
 ```
 
 This figure shows the range of expected annual losses by domain.
 
 ```{r risk_by_domain, fig.cap="Risk by Domain"}
-
 test_position <- domain_summary[[nrow(domain_summary), "domain_id"]]
 
 # plot of all ales
-gg <- ggplot(domain_summary, aes(x = domain_id, y = ale + 1))
-if (max(domain_summary$ale) >= risk_tolerance["high"] * .9) {
-  gg <- gg + geom_hline(aes(yintercept = risk_tolerance["high"]), color = "red") +
+gg <- ggplot(simulation_results, aes(x = domain_id, y = ale + 1))
+if (max(simulation_results$ale) >= risk_tolerance["high"] * .9) {
+  gg <- gg + geom_hline(aes(yintercept = risk_tolerance["high"]), 
+                        color = "red") +
     annotate("text", x = test_position, y = risk_tolerance["high"], 
              label = "High", vjust = "bottom", hjust = "right")
 }
-if (max(domain_summary$ale) >= risk_tolerance["medium"] * .9) {
+if (max(simulation_results$ale) >= risk_tolerance["medium"] * .9) {
   gg <- gg + geom_hline(aes(yintercept = risk_tolerance["medium"]), 
                         color = "lightsteelblue") +
     annotate("text", x = test_position, y = risk_tolerance["medium"], 

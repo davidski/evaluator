@@ -39,14 +39,7 @@ risk_tolerances <-  dat$risk_tolerances
 risk_tolerance <- dat$risk_tolerance
 scenario_outliers <-  dat$scenario_outliers
 scenarios <- dat$scenarios
-```
-
-```{r calculate_domain_impact}
-domain_impact <- calculate_domain_impact(domain_summary, domains)
-```
-
-```{r calculate_weak_domains}
-control_weakness <- calculate_weak_domains(simulation_results, domains)
+domain_summary <- left_join(domain_summary, domains, by = "domain_id")
 ```
 
 ```{r font_detection}
@@ -104,7 +97,7 @@ Domain Summary {data-height=150}
 ### Domain Heatmap {.no-padding}
 
 ```{r display, fig.width=15, fig.height=1}
-gg <- generate_heatmap(domain_impact)
+gg <- generate_heatmap(domain_summary)
 # modify the base plot for displaying on the dashboard
 gg <- gg + labs(title = NULL, caption = NULL)
 gg <- gg + theme(legend.position = "right")
@@ -214,11 +207,12 @@ Details
 ### Control Gaps/Surplus by Domain
 
 ```{r control_table}
-select(control_weakness, domain, vuln, tc_exceedance, diff_exceedance) %>% 
+select(domain_summary, domain, mean_vuln, mean_tc_exceedance, 
+       mean_diff_exceedance) %>% 
   rename("Domain" = domain, 
-       "Succesful Threat Events" = vuln,
-       "Control Gap" = tc_exceedance,
-       "Surplus Control Strength" = diff_exceedance) %>% 
+         "Succesful Threat Events" = mean_vuln,
+         "Control Gap" = mean_tc_exceedance,
+         "Surplus Control Strength" = mean_diff_exceedance) %>% 
   pander::pander(justify = c("left", "right", "right", "right"), 
          split.cells = c(35, rep(10, 3)))
 ```

@@ -51,6 +51,14 @@ test_that("Sample TC", {
                         64.9764652390671), digits = 4))
 })
 
+context("Select Loss Opportunities")
+test_that("Mean Difficulty Exceedance works when there are zero losses", {
+  threat_strengths <- c(0.2, 0.3, 0.4)
+  diff_strengths   <- c(0.3, 0.4, 0.5)
+  dat <- select_loss_opportunities(threat_strengths, diff_strengths)
+  expect_equal(dat$details$mean_diff_exceedance, 0.1)
+})
+
 context("Sample VULN")
 test_that("Sample VULN works with binom", {
   set.seed(1234)

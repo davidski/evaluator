@@ -30,7 +30,7 @@ simulation_results <- run_simulations(quantitative_scenarios, 1000L)
 devtools::use_data(simulation_results, overwrite = TRUE)
 
 # calculate and save domain summary
-domain_summary <- summarize_domains(simulation_results, domains)
+domain_summary <- summarize_domains(simulation_results)
 devtools::use_data(domain_summary, overwrite = TRUE)
 
 # calculate and save scenario summary

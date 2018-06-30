@@ -150,14 +150,14 @@ greater than others.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>generate_heatmap</span>(<span class='no'>domain_impact</span>)</pre>
+    <pre class="usage"><span class='fu'>generate_heatmap</span>(<span class='no'>domain_summary</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>domain_impact</th>
-      <td><p>Domain impact information from <code>calculate_domain_impact</code>.</p></td>
+      <th>domain_summary</th>
+      <td><p>Simulations summarized at a domain level via <code>summarize_domains</code>.</p></td>
     </tr>
     </table>
     
@@ -167,8 +167,8 @@ greater than others.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_domain_impact.html'>calculate_domain_impact</a></span>(<span class='no'>domain_summary</span>, <span class='no'>domains</span>)
-<span class='fu'>generate_heatmap</span>(<span class='no'>dat</span>)</div><div class='img'><img src='generate_heatmap-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>domain_summary</span>)
+<span class='fu'>generate_heatmap</span>(<span class='no'>domain_summary</span>)</div><div class='img'><img src='generate_heatmap-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -86,7 +86,7 @@ derive_controls <- function(capability_ids, capabilities, mappings) {
   control_list <- stringi::stri_split_fixed(capability_ids, ", ") %>% unlist()
 
   control_list <- capabilities[capabilities$capability_id %in% control_list, ] %>%
-    dplyr::rename(control_id = capability_id)
+    dplyr::rename(control_id = .data$capability_id)
 
   # Find the qualitative rating for each control ID, then lookup its
   # distribution parameters from the mappings table

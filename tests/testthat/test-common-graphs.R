@@ -22,9 +22,7 @@ test_that("Theme functions", {
 
 test_that("Domain VaR heatmap", {
   data(domain_summary)
-  data(domains)
-  dat <- calculate_domain_impact(domain_summary, domains)
-  gg <- generate_heatmap(dat)
+  gg <- generate_heatmap(domain_summary)
   expect_s3_class(gg, "gg")
 })
 
@@ -35,8 +33,7 @@ test_that("Scatterplot", {
 })
 
 test_that("Domain-level outcomes", {
-  data(domains)
-  dat <- calculate_weak_domains(simulation_results, domains)
-  gg <- generate_event_outcomes_plot(dat)
+  data(domain_summary)
+  gg <- generate_event_outcomes_plot(domain_summary)
   expect_s3_class(gg, "gg")
 })

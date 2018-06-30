@@ -4,10 +4,10 @@
 \alias{generate_heatmap}
 \title{Display a heatmap of impact by domain}
 \usage{
-generate_heatmap(domain_impact)
+generate_heatmap(domain_summary)
 }
 \arguments{
-\item{domain_impact}{Domain impact information from \code{calculate_domain_impact}.}
+\item{domain_summary}{Simulations summarized at a domain level via \code{summarize_domains}.}
 }
 \value{
 A ggplot object.
@@ -18,6 +18,6 @@ by the 95% VaR. This plot displays the domains in which aggregreate risk is
 greater than others.
 }
 \examples{
-dat <- calculate_domain_impact(domain_summary, domains)
-generate_heatmap(dat)
+data(domain_summary)
+generate_heatmap(domain_summary)
 }

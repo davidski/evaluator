@@ -150,6 +150,12 @@
 </ul>
 </li>
 <li>Model interface change - With the unification on list columns for OpenFAIR parameters, the top level model objects no longer take a dedicated <code>diff_estimates</code> option. The <code><a href="../reference/run_simulations.html">run_simulations()</a></code> function accounts for this change. Users using the standard flow will not be impacted.</li>
+<li>
+<code><a href="../reference/summarize_domains.html">summarize_domains()</a></code> - Incorporates the now removed <code>calculate_domain_impact()</code> and <code>calculate_weak_domains()</code> functions. As part of this consolidation, the <code>mean_tc_exceedance</code> and <code>mean_diff_exceedance</code> calculations are improved by handling NAs in some simulations without zeroing out the entire calculation.</li>
+<li>
+<code><a href="../reference/summarize_domains.html">summarize_domains()</a></code> - Properly calculates <code>mean_diff_exceedance</code> when there all threat events are successfully avoided.</li>
+<li>
+<code><a href="../reference/generate_heatmap.html">generate_heatmap()</a></code> - Takes a <code>domain_summary</code> input rather than the deprecated <code>domain_impact</code> structure.</li>
 </ul>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
@@ -159,9 +165,9 @@
 <li>
 <code><a href="../reference/explore_scenarios.html">explore_scenarios()</a></code> was trying to assign a mappings variable to the global context, which rightly failed. Scaled back the assignment to the current scope.</li>
 <li>
-<code><a href="../reference/select_loss_opportunities.html">select_loss_opportunities()</a></code> properly returns an NA for the threat &amp; difficulty exceedance calculations when there are no threat events in a given simualated period.</li>
+<code><a href="../reference/select_loss_opportunities.html">select_loss_opportunities()</a></code> properly returns an NA for the threat &amp; difficulty exceedance calculations when there are no threat events in a given simulated period.</li>
 <li>
-<code><a href="../reference/summarize_scenarios.html">summarize_scenarios()</a></code> - correctly handles scenarios in which no threat events occur in a given simulation. This bug was limited to <code>mean_tc_exceedance</code>. For previously run simulations, resummarizing the <code>scenario_results</code> will generate corrected values.</li>
+<code><a href="../reference/summarize_scenarios.html">summarize_scenarios()</a></code> - correctly handles scenarios in which no threat events occur in a given simulation. This bug was limited to <code>mean_tc_exceedance</code>. For previously run simulations, re-summarizing the <code>scenario_results</code> will generate corrected values.</li>
 <li>
 <code><a href="../reference/calculate_max_losses.html">calculate_max_losses()</a></code> - no longer returns a duplicate set of results if not passed any outliers.</li>
 </ul>
@@ -171,7 +177,7 @@
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
 <li>
-<code><a href="../reference/run_simulations.html">run_simulations()</a></code> - New <code>ale_maximum</code> parameter allows an absolute cap on per simulation annual losses to be set. This is an interim step in lieu of full hierarchial interaction modelling.</li>
+<code><a href="../reference/run_simulations.html">run_simulations()</a></code> - New <code>ale_maximum</code> parameter allows an absolute cap on per simulation annual losses to be set. This is an interim step in lieu of full hierarchical interaction modelling.</li>
 <li>
 <code><a href="../reference/run_simulations.html">run_simulations()</a></code> - Errors encountered during runs are now reported better.</li>
 <li>
@@ -179,7 +185,7 @@
 <li>
 <code><a href="../reference/sample_lm.html">sample_lm()</a></code> and <code><a href="../reference/sample_tc.html">sample_tc()</a></code> check if they are asked to generate zero requested samples, bypassing calling the underlying generation function. This avoids problems with generating functions which do not gracefully handle being asked to sample a non positive number (zero) of events.</li>
 <li>
-<code><a href="../reference/load_data.html">load_data()</a></code> now fully specifies the expected CSV file formats, avoiding possible surpises and making invocations less noisy on the console.</li>
+<code><a href="../reference/load_data.html">load_data()</a></code> now fully specifies the expected CSV file formats, avoiding possible surprises and making invocations less noisy on the console.</li>
 <li>Removed all deprecated standard-evaluation tidyverse verbs in favor of <code><a href="http://www.rdocumentation.org/packages/rlang/topics/tidyeval-data">rlang::.data</a></code> constructs, making CRAN checks much simpler.</li>
 <li>Minor documentation cleanup.</li>
 </ul>
@@ -194,7 +200,7 @@
 <a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Additional logic in tests to verify that supplemental packages are available, skipping the test if said packages are not installed.</li>
-<li>Update tests to convert tibbles to data.frames prior to comparion as a work around for <a href="https://github.com/tidyverse/dplyr/issues/2751">dplyr/2751</a>.</li>
+<li>Update tests to convert tibbles to data.frames prior to comparison as a work around for <a href="https://github.com/tidyverse/dplyr/issues/2751">dplyr/2751</a>.</li>
 </ul>
 </div>
 </div>
@@ -215,7 +221,7 @@
 <a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>Update risk_dashboard to not cache any chunks. This keeps <code>render</code> from from trying to write to the package install directory.</li>
-<li>Updated tests to use four significant digits where long refrence values are passed, avoiding precission issues on machines without long doubles.</li>
+<li>Updated tests to use four significant digits where long reference values are passed, avoiding precision issues on machines without long doubles.</li>
 </ul>
 </div>
 </div>
@@ -263,7 +269,7 @@
 </li>
 <li>New <code><a href="../reference/create_templates.html">create_templates()</a></code> function for populating starter/sample files, making starting a fresh analysis easier than ever!</li>
 <li>Experimental quick start script, run_analysis.R, supplied with <code><a href="../reference/create_templates.html">create_templates()</a></code>.</li>
-<li>All default directories normallized to ~/evaluator/[inputs|results]</li>
+<li>All default directories normalized to ~/evaluator/[inputs|results]</li>
 <li>New OpenFAIR primitives:
 <ul>
 <li>sample_tef</li>

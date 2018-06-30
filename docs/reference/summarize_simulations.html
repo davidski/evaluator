@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Capabilities — capabilities • evaluator</title>
+<title>Create simulation-level summary of simulation results — summarize_simulations • evaluator</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Capabilities — capabilities" />
+<meta property="og:title" content="Create simulation-level summary of simulation results — summarize_simulations" />
 
-<meta property="og:description" content="A qualitative dataset of sample capabilities and qualitative level of effectiveness." />
+<meta property="og:description" content="Given a dataframe of raw results from run_simulations, summarize
+the individual results at a per-simulation level." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -135,42 +136,77 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Capabilities</h1>
+    <h1>Create simulation-level summary of simulation results</h1>
     
-    <div class="hidden name"><code>capabilities.Rd</code></div>
+    <div class="hidden name"><code>summarize_simulations.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A qualitative dataset of sample capabilities and qualitative level of effectiveness.</p>
+    <p>Given a dataframe of raw results from <code><a href='run_simulations.html'>run_simulations</a></code>, summarize
+the individual results at a per-simulation level.</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>capabilities</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <pre class="usage"><span class='fu'>summarize_simulations</span>(<span class='no'>simulation_results</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>simulation_results</th>
+      <td><p>Simulation results dataframe.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 60 rows and 4 columns.</p>
+    <p>Dataframe.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <dl class='dl-horizontal'>
-<dt>capability_id</dt><dd><p>unique id of the capability</p></dd>
-<dt>domain_id</dt><dd><p>domain id to which the capability applies</p></dd>
-<dt>capability</dt><dd><p>full text summary of the capability</p></dd>
-<dt>diff</dt><dd><p>qualitative label of control effectiveness</p></dd>
-</dl>
+    <p>Summary stats created include:
+* Mean/Min/Max/Median are calculated for loss events
+* Median/Max/VaR are calculated for annual loss expected (ALE)
+* Mean/Median/Max/Min are calculated for single loss expected (SLE)
+* Mean percentage of threat capability exceeding difficulty on successful threat events
+* Mean percentage of difficulty exceeding threat capability on defended events
+* Vulnerability percentage
+* Z-score of ALE (outliers flagged as 2 &gt;= z-score)</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>simulation_results</span>)
+<span class='fu'><a href='summarize_scenarios.html'>summarize_scenarios</a></span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; # A tibble: 56 x 18
+#&gt;    domain_id scenario_id loss_events_mean loss_events_min loss_events_max
+#&gt;    &lt;chr&gt;     &lt;chr&gt;                  &lt;dbl&gt;           &lt;int&gt;           &lt;int&gt;
+#&gt;  1 AC        48                     0                   0               0
+#&gt;  2 AC        51                     6.12                1              12
+#&gt;  3 ADM       56                     0.672               0               1
+#&gt;  4 ASSET     45                     6.12                1              12
+#&gt;  5 ASSET     46                     0.672               0               1
+#&gt;  6 ASSET     47                     1                   1               1
+#&gt;  7 BC        31                     0                   0               0
+#&gt;  8 BC        55                     0.656               0               1
+#&gt;  9 COMP      10                     1.94                0               8
+#&gt; 10 COMP      11                    24.6                 9              47
+#&gt; # ... with 46 more rows, and 13 more variables: loss_events_median &lt;dbl&gt;,
+#&gt; #   ale_median &lt;dbl&gt;, ale_max &lt;dbl&gt;, ale_var &lt;dbl&gt;, sle_mean &lt;dbl&gt;,
+#&gt; #   sle_median &lt;dbl&gt;, sle_max &lt;dbl&gt;, sle_min &lt;dbl&gt;, mean_tc_exceedance &lt;dbl&gt;,
+#&gt; #   mean_diff_exceedance &lt;dbl&gt;, mean_vuln &lt;dbl&gt;, ale_var_zscore &lt;dbl&gt;,
+#&gt; #   outlier &lt;lgl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
+      <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
