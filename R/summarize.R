@@ -106,8 +106,10 @@ summarize_scenarios <- function(simulation_results) {
 #' @export
 #' @return Simulation results summarized by domain
 #' @examples
+#' \dontrun{
 #' data(simulation_results)
 #' summarize_domains(simulation_results)
+#' }
 summarize_domains <- function(simulation_results) {
   simulation_results %>%
     group_by(.data$domain_id, .data$simulation) %>%

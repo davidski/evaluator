@@ -1,4 +1,4 @@
-# evaluator 0.2.3.900 (unreleased)
+# evaluator 0.3.0
 
 * Data structure changes 
     * IDs for simulations and capabilities no longer need to be numeric. ID 

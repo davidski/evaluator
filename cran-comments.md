@@ -1,17 +1,13 @@
 ## Update
 
-This is a bug-fix update, primarily correcting for an upstream `dplyr` issue 
-resulting in test errors on systems without long double support. A local version 
-of R-devel without long-double support was used to track down and resolve this 
-persistent issue. Additional bug fixes to the test suite include better 
-checking for the availability of suggested pacakges.
+This is a significant new feature and bug fix update.
 
 ## Test environments
 
-* local Windows 10 64 install, R 3.4.4
+* local Windows 10 64 install, R 3.5.0
 * local R-devel --enable-long-double=no via docker
-* local OS X, R 3.4.4
-* Windows Server 2012 R2 x64 (on appveyor), R 3.4.4
+* local OS X, R 3.5.0
+* Windows Server 2012 R2 x64 (on appveyor), R 3.5.0
 * Ubuntu 14.04 LTS (on travis-ci)
   * R-release (both with and without pandoc)
   * R-devel  (both with and without pandoc)

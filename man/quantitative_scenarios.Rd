@@ -22,7 +22,7 @@ describing the distribution of each input.
 \item{diff_params}{nested dataframe of the controls and difficulty parameters associated with the scenario}
 \item{tef_params}{list of the threat expected frequency parameters}
 \item{tc_params}{list of the threat capability parameters}
-\item{lm_params}{list of the loss magniture parameters}
+\item{lm_params}{list of the loss magnitude parameters}
 }
 }
 \keyword{datasets}
