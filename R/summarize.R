@@ -140,7 +140,7 @@ summarize_domains <- function(simulation_results) {
       mean_vuln = (.data$mean_loss_events / .data$mean_threat_events)
 
     ) %>%
-    dplyr::select(.data$domain_id, .data$ale, dplyr::everything())
+    dplyr::select(.data$domain_id, dplyr::everything())
 }
 
 #' Create all summary files and write to disk
