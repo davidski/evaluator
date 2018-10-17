@@ -6,7 +6,7 @@ tmpinputs <- file.path(tmpdir, "inputs")
 dir.create(tmpinputs, showWarnings = FALSE)
 
 data("simulation_results", package = "evaluator", envir = environment())
-save(simulation_results, file = file.path(tmpdata, "simulation_results.rda"))
+saveRDS(simulation_results, file = file.path(tmpdata, "simulation_results.Rds"))
 data("scenario_summary", package = "evaluator", envir = environment())
 save(scenario_summary, file = file.path(tmpdata, "scenario_summary.rda"))
 data("domain_summary", package = "evaluator", envir = environment())
@@ -19,6 +19,8 @@ data("capabilities", envir = environment())
 readr::write_csv(capabilities, file.path(tmpinputs, "capabilities.csv"))
 data("qualitative_scenarios", envir = environment())
 readr::write_csv(qualitative_scenarios, file.path(tmpinputs, "qualitative_scenarios.csv"))
+data("quantitative_scenarios", envir = environment())
+saveRDS(quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.Rds"))
 
 
 test_that("Analyze report renders", {
