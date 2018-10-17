@@ -151,3 +151,42 @@ load_data <- function(input_directory = "~/evaluator/inputs", results_directory 
        scenario_outliers = scenario_outliers,
        scenarios = qualitative_scenarios)
 }
+
+#' Load quantitative inputs
+#'
+#' Given an input directory, load the key quantitative objects into memory.
+#'   The key quantitative inputs for Evaluator processing include:
+#'     * domains - domains and domain_ids
+#'     * risk_tolerances - the risk tolerances of the organization
+#'     * quantitative_scenarios - risk scenarios and quantified parameters
+#'
+#' @importFrom dplyr summarize mutate group_by_at
+#' @importFrom rlang .data
+#' @importFrom readr read_csv cols col_character col_integer col_double
+#' @param input_directory Location of input files.
+#' @return List of domains, quantitative_scenarios, and risk_tolerances
+#' @export
+#' @examples
+#' \dontrun{
+#' read_quantitative_inputs("~/evaluator/inputs")
+#' }
+read_quantitative_inputs <- function(input_directory = "~/evaluator/inputs") {
+
+  # all input files
+  domains <- readr::read_csv(file.path(input_directory, "domains.csv"),
+                             col_types = readr::cols(
+                               domain_id = readr::col_character(),
+                               domain = readr::col_character()
+                             )) # domain catalog
+  risk_tolerances <- readr::read_csv(file.path(input_directory,
+                                               "risk_tolerances.csv"),
+                                     col_types = readr::cols(
+                                       level = readr::col_character(),
+                                       amount = readr::col_integer()
+                                     ))  # i.e. risk tolerances
+  quantitative_scenarios <- readRDS(file.path(input_directory, "quantitative_scenarios.Rds"))
+
+  list(domains = domains,
+       risk_tolerances = risk_tolerances,
+       quantitative_scenarios = quantitative_scenarios)
+}
