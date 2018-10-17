@@ -5,8 +5,8 @@
 \title{Generate sample analysis report}
 \usage{
 generate_report(input_directory = "~/evaluator/inputs",
-  results_directory = "~/evaluator/results", output_file, styles = NULL,
-  focus_scenario_ids = c(51, 12), format = "html",
+  results_directory = "~/evaluator/results", output_file,
+  styles = NULL, focus_scenario_ids = c(51, 12), format = "html",
   intermediates_dir = tempdir(), quiet = TRUE, ...)
 }
 \arguments{

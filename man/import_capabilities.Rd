@@ -4,8 +4,8 @@
 \alias{import_capabilities}
 \title{Import capabilities from survey spreadsheet}
 \usage{
-import_capabilities(survey_file = system.file("survey", "survey.xlsx", package
-  = "evaluator"), domains)
+import_capabilities(survey_file = system.file("survey", "survey.xlsx",
+  package = "evaluator"), domains)
 }
 \arguments{
 \item{survey_file}{Path to survey XLSX file. If not supplied, a default sample file is used.}

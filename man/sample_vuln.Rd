@@ -26,3 +26,4 @@ Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
   \code{\link{sample_tef}},
   \code{\link{select_loss_opportunities}}
 }
+\concept{OpenFAIR helpers}

@@ -34,6 +34,7 @@ reference:
       - encode_scenarios
       - starts_with("import")
       - load_data
+      - read_quantitative_data
       - openfair_example
       - split_sheet
       - validate_scenarios

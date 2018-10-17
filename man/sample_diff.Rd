@@ -28,3 +28,4 @@ Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
   \code{\link{sample_vuln}},
   \code{\link{select_loss_opportunities}}
 }
+\concept{OpenFAIR helpers}

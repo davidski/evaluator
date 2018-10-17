@@ -4,8 +4,8 @@
 \alias{import_scenarios}
 \title{Import scenarios from survey spreadsheet}
 \usage{
-import_scenarios(survey_file = system.file("survey", "survey.xlsx", package =
-  "evaluator"), domains)
+import_scenarios(survey_file = system.file("survey", "survey.xlsx",
+  package = "evaluator"), domains)
 }
 \arguments{
 \item{survey_file}{Path to survey XLSX file. Defaults to a sample file if not supplied.}

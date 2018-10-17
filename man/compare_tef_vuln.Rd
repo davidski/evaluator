@@ -30,3 +30,4 @@ Other OpenFAIR helpers: \code{\link{get_mean_control_strength}},
   \code{\link{sample_tef}}, \code{\link{sample_vuln}},
   \code{\link{select_loss_opportunities}}
 }
+\concept{OpenFAIR helpers}

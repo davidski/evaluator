@@ -5,7 +5,8 @@
 \title{Run simulations for all scenarios}
 \usage{
 run_simulations(scenario, simulation_count = 10000L,
-  model = "openfair_tef_tc_diff_lm", ale_maximum = NULL, verbose = FALSE)
+  model = "openfair_tef_tc_diff_lm", ale_maximum = NULL,
+  verbose = FALSE)
 }
 \arguments{
 \item{scenario}{Quantitative scenarios.}
