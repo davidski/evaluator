@@ -24,22 +24,26 @@ Sample narrative section.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE) 
 library(extrafont)
+library(evaluator)
+library(dplyr)
 
 input_directory <- params$input_directory
 results_directory <- params$results_directory
 ```
 
 ```{r load_data, echo = FALSE, message = FALSE}
-dat <- load_data(input_directory, results_directory)
-simulation_results <- dat$simulation_results
-scenario_summary <- dat$scenario_summary
-domain_summary <- dat$domain_summary
+dat <- read_quantitative_inputs(input_directory)
+simulation_results <- readRDS(file.path(results_directory, "simulation_results.Rds"))
+scenario_summary <- summarize_scenarios(simulation_results)
+
 domains <- dat$domains
-risk_tolerances <-  dat$risk_tolerances
-risk_tolerance <- dat$risk_tolerance
-scenario_outliers <-  dat$scenario_outliers
-scenarios <- dat$scenarios
-domain_summary <- left_join(domain_summary, domains, by = "domain_id")
+domain_summary <- summarize_domains(simulation_results) %>% 
+  left_join(domains, by = "domain_id")
+
+risk_tolerances <- dat$risk_tolerances
+scenarios <- dat$quantitative_scenarios
+
+scenario_outliers <- filter(scenario_summary, outlier == TRUE) %>% pull(scenario_id)
 ```
 
 ```{r font_detection}
@@ -65,8 +69,8 @@ overall <- simulation_results %>% group_by(simulation) %>%
 agg_risk <- quantile(overall$ale, 0.95)
 flexdashboard::valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
          caption = "Aggregate 95% Value at Risk",
-         color = ifelse(agg_risk > risk_tolerance["high"], "danger", ifelse(
-           agg_risk > risk_tolerance["medium"], "warning", "info")))
+         color = ifelse(agg_risk > risk_tolerances[risk_tolerances$level == "high", "amount"], "danger", ifelse(
+           agg_risk > risk_tolerances[risk_tolerances$level == "medium", "amount"], "warning", "info")))
 ```
 
 ### Minimum Expected Annual Losses
@@ -75,8 +79,10 @@ flexdashboard::valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
 loss_exceedance <- quantile(filter(max_loss, outliers==FALSE)$max_loss, .2)
 flexdashboard::valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
          caption = "Minimum Expected Annual Losses",
-         color = ifelse(loss_exceedance > risk_tolerance["high"], "danger", ifelse(
-           loss_exceedance > risk_tolerance["medium"], "warning", "info")))
+         color = ifelse(
+           loss_exceedance > risk_tolerances[risk_tolerances$level == "high", "amount"], "danger", 
+           ifelse(loss_exceedance > risk_tolerances[risk_tolerances$level == "medium", "amount"], 
+                  "warning", "info")))
 ```
 
 ### Expected Loss Events Per Year
