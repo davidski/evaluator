@@ -68,16 +68,23 @@ results_directory <- params$results_directory
 ```
 
 ```{r load_data, echo = FALSE, message = FALSE}
-dat <- load_data(input_directory, results_directory)
-simulation_results <- dat$simulation_results
-scenario_summary <- dat$scenario_summary
-domain_summary <- dat$domain_summary
+dat <- read_quantitative_inputs(input_directory)
+
+simulation_results <- readRDS(file.path(results_directory, "simulation_results.Rds"))
+scenario_summary <- summarize_scenarios(simulation_results)
+domain_summary <- summarize_domains(simulation_results)
+
+capabilities <- readr::read_csv(file.path(input_directory, "capabilities.csv"),
+                                col_types = readr::cols(.default = readr::col_character()))
+
 domains <- dat$domains
-mappings <- dat$mappings
-capabilities <- dat$capabilities
 risk_tolerances <- dat$risk_tolerances
-scenario_outliers <- dat$scenario_outliers
-scenarios <- dat$scenarios
+scenario_outliers <- filter(scenario_summary, outlier == TRUE) %>% pull(scenario_id)
+scenarios <- dat$quantitative_scenarios
+
+qualitative_scenarios <- readr::read_csv(file.path(
+  input_directory, "qualitative_scenarios.csv"),
+  col_types = readr::cols(.default = readr::col_character()))
 ```
 
 ```{r useful_values}
@@ -400,8 +407,8 @@ beta pert distribution. These distributions are used to run `r comma(attr(simula
 simulations over each risk scenario. Within a given simulation, a scenario is
 evaluated for potential losses using:
 
-1. The number of times the threat community against the organization.
-2. The capabilities of the threat community.
+1. The number of times the threat community acts against the organization.
+2. The force of the threat community applies against the organization.
 3. The difficulty the relevant controls present to the threat community. For 
     scenarios which have multiple controls applied, difficulty is the 
     arithmetic mean of all the applicable controls.
@@ -963,7 +970,7 @@ Supplemental details are included as appendices.
 ## Appendix A {#scenario_list}
 
 ```{r scenario_table}
-arrange(scenarios, domain_id, scenario_id) %>% 
+arrange(qualitative_scenarios, domain_id, scenario_id) %>% 
   mutate(scenario_id = paste(domain_id, scenario_id, sep = " - "), 
          tef = stringi::stri_trans_totitle(tef),
          lm = stringi::stri_trans_totitle(lm)) %>% 
@@ -976,7 +983,7 @@ arrange(scenarios, domain_id, scenario_id) %>%
 ## Appendix B {#scenario_results}
 
 ```{r risk_list, echo=FALSE}
-left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
+left_join(qualitative_scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
                                             "domain_id" = "domain_id")) %>% 
   arrange(desc(ale_median), desc(ale_var)) %>% 
   mutate_at(vars("ale_median", "ale_var"), funs(dollar)) %>% 
@@ -994,7 +1001,8 @@ left_join(scenarios, scenario_summary, by = c("scenario_id" = "scenario_id",
 ## Appendix C {#capabilities_list}
 
 ```{r capabilities_table}
-arrange(capabilities, .data$domain_id, .data$capability_id) %>%
+capabilities %>% 
+  arrange(domain_id, capability_id) %>%
   select("Domain ID" = domain_id, "Capability" = capability, 
          "Maturity" = diff) %>%
   pander(caption = "Capability Listing", split.cells = c(10, 40, 15), 
