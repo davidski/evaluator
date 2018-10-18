@@ -17,9 +17,7 @@ picked up by CRAN.
 
 ## R CMD check results
 
-* Win-builder R-Release (not R-Devel) issues a false positive NOTE on a 
-  potential mis-spelling.
-* There were no ERRORs or WARNINGs.
+* There were no NOTEs, ERRORs or WARNINGs.
 
 ## Downstream dependencies
 
