@@ -1,4 +1,4 @@
-# evaluator 0.3.0.900 (unreleased)
+# evaluator 0.3.1
 
 * Correct ORCID identifier
 
