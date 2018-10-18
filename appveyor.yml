@@ -12,6 +12,10 @@ install:
 
 # Adapt as necessary starting from here
 
+environment:
+  GCC_PATH: mingw_64
+  NOT_CRAN: true
+
 # begin pandoc fix via https://github.com/krlmlr/r-appveyor/issues/82
 cache:
   - C:\RLibrary
