@@ -9,7 +9,6 @@
 Quantified Information Risk Simulation Toolkit
 }
 \details{
-See the README on
-\href{https://cran.r-project.org/package=evaluator/README.html}{CRAN}
-or \href{https://github.com/davidski/evaluator}{GitHub}
+See the online documentation located at
+\href{https://evaluator.severski.net/}{https://evaluator.severski.net/}
 }
