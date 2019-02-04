@@ -21,7 +21,7 @@
   },
   "output": {
     "__reactivedoc__": {
-      "html": "[html data sha1: ae7b7ef14115e34d0060ecb3b5e9666333a12e30]",
+      "html": "[html data sha1: 1da06fdc41f3232db4c0d8c5d31bf9279d7dfbff]",
       "deps": [
         {
           "name": "jquery",
@@ -73,16 +73,16 @@
         },
         {
           "name": "font-awesome",
-          "version": "5.0.13",
+          "version": "5.1.0",
           "src": {
-            "href": "font-awesome-5.0.13"
+            "href": "font-awesome-5.1.0"
           },
           "meta": null,
-          "script": [
-            "js/fontawesome-all.min.js",
-            "js/fa-v4-shims.min.js"
+          "script": null,
+          "stylesheet": [
+            "css/all.css",
+            "css/v4-shims.css"
           ],
-          "stylesheet": "css/fa-svg-with-js.css",
           "head": null,
           "attachment": null,
           "package": null,
@@ -146,9 +146,9 @@
         },
         {
           "name": "datatables-binding",
-          "version": "0.4",
+          "version": "0.5",
           "src": {
-            "href": "datatables-binding-0.4"
+            "href": "datatables-binding-0.5"
           },
           "meta": null,
           "script": "datatables.js",
@@ -188,64 +188,75 @@
         }
       ]
     },
-    "out2b867a62545e3017": "",
-    "out3cf3ae3e9c3050f3": {
-      "src": "[image data sha1: 44395a088670e3c294e17cd50e56b891571e6966]",
-      "width": 558,
-      "height": 625,
-      "coordmap": [
-        {
-          "domain": {
-            "left": -0.04,
-            "right": 1.04,
-            "bottom": -0.04,
-            "top": 1.04
-          },
-          "range": {
-            "left": 0,
-            "right": 558,
-            "bottom": 624,
-            "top": -1
-          },
-          "log": {
-            "x": null,
-            "y": null
-          },
-          "mapping": {
-
-          }
-        }
-      ]
-    },
-    "out77f77788c872a00b": {
-      "src": "[image data sha1: 7ef5e613a0a232884580bfd0a4861e05003852df]",
+    "out02449c2bf155232c": {
+      "src": "[image data sha1: 4f605c86ffbe82094aceff2d0117d7e01aa64126]",
       "width": 576,
       "height": 400,
-      "coordmap": [
-        {
-          "domain": {
-            "left": -0.04,
-            "right": 1.04,
-            "bottom": -0.04,
-            "top": 1.04
-          },
-          "range": {
-            "left": 0,
-            "right": 576,
-            "bottom": 399,
-            "top": -1
-          },
-          "log": {
-            "x": null,
-            "y": null
-          },
-          "mapping": {
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": -0.04,
+              "right": 1.04,
+              "bottom": -0.04,
+              "top": 1.04
+            },
+            "range": {
+              "left": 0,
+              "right": 576,
+              "bottom": 399,
+              "top": -1
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
 
+            }
           }
+        ],
+        "dims": {
+          "width": 576,
+          "height": 400
         }
-      ]
+      }
     },
-    "out9813a02d30c5186d": {
+    "out2b867a62545e3017": {
+      "src": "[image data sha1: 7fd6c087f42c7f15dc1f55ae7eb146d44ae496ea]",
+      "width": 558,
+      "height": 625,
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": -0.04,
+              "right": 1.04,
+              "bottom": -0.04,
+              "top": 1.04
+            },
+            "range": {
+              "left": 0,
+              "right": 558,
+              "bottom": 624,
+              "top": -1
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 558,
+          "height": 625
+        }
+      }
+    },
+    "out77f77788c872a00b": {
       "x": null,
       "evals": [
 
@@ -301,6 +312,7 @@
         }
       ]
     },
+    "out9813a02d30c5186d": "",
     "outb9c6a5ed58003115": ""
   },
   "export": {
