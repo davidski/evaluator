@@ -18,7 +18,13 @@ test_that("Domain summary", {
   data("simulation_results")
   data("domains")
   data("domain_summary")
-  expect_equivalent(summarize_domains(simulation_results), domain_summary)
+
+  # round our objects to avoid floating point errors per
+  # https://github.com/tidyverse/dplyr/issues/2751
+  domain_summary <- dplyr::mutate_if(domain_summary, is.numeric, round, digits = 4)
+  summarized_domains <- dplyr::mutate_if(summarize_domains(simulation_results), is.numeric, round, digits = 4)
+
+  expect_equivalent(summarized_domains, domain_summary)
 })
 
 test_that("Summarize to disk", {

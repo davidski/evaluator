@@ -3,6 +3,8 @@
 ## Improvements
 
 * Removed depedency on `purrrlyr`
+* Improve checks on summary function to avoid floating point comparisons
+generating false failures.
 
 # evaluator 0.3.1
 
