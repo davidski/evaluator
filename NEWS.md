@@ -1,3 +1,9 @@
+# evaluator 0.3.1.900 (unreleased)
+
+## Improvements
+
+* Removed depedency on `purrrlyr`
+
 # evaluator 0.3.1
 
 * Correct ORCID identifier

@@ -49,7 +49,6 @@ library(scales)
 library(viridis)
 library(dplyr)
 library(purrr)
-library(purrrlyr)
 library(readr)
 library(rlang)
 library(psych)
@@ -173,10 +172,9 @@ outliers are included.
 
 ```{r loss_exceedance_curve, fig.cap="Loss Exceedance Curve"}
 max_loss %>% 
-  group_by(outliers) %>% 
-  purrrlyr::by_slice(~ arrange(.x, max_loss) %>% 
-             mutate(prob = 1 - percent_rank(max_loss)), .collate = "rows") %>% 
-  ggplot(., aes(prob, max_loss, group=outliers)) -> gg
+  arrange(outliers, max_loss) %>% 
+  group_by(outliers) %>% mutate(prob = 1 - percent_rank((max_loss))) %>% 
+  ggplot(., aes(prob, max_loss, group = outliers)) -> gg
 gg <- gg + geom_path()
 
 label_dat <- group_by(max_loss, outliers) %>% 
@@ -192,8 +190,8 @@ gg <- gg + annotate("text", x = 0.8, y = max(max_loss$max_loss),
 #                               labels = c("Excluded", "Included"), 
 #                               guide = FALSE)
 # add labels at end of each line
-gg <- gg + geom_label(data=label_dat, aes(x=0, y=max_loss, label=text), 
-                      hjust="right", vjust=0.5, label.size = NA)
+gg <- gg + geom_label(data = label_dat, aes(x = 0, y = max_loss, label = text), 
+                      hjust = "right", vjust = 0.5, label.size = NA)
 
 gg <- gg + scale_x_reverse(labels = percent)
 gg <- gg + scale_y_continuous(labels = dollar_millions)
@@ -622,9 +620,8 @@ then re-summarized at the domain level.
 ```{r prepare_skewness_and_kurtosis}
 domain_loss_frequency <- simulation_results %>% group_by(domain_id, simulation) %>% 
   summarize(loss_events = sum(loss_events)) %>% 
-  ungroup %>% 
-  purrrlyr::slice_rows("domain_id") %>% 
-  purrrlyr::by_slice(~ describe(.x$loss_events), .collate = "rows") %>% select(-vars)
+  summarize(stats = list(describe(loss_events))) %>% unnest(stats) %>% 
+  select(-vars)
 
 if (sum(domain_loss_frequency$skew <= 0, na.rm = TRUE) == 0) {
   narrative <- paste("All domains are skewed positively,",
