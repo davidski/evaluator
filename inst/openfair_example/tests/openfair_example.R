@@ -1,4 +1,6 @@
-app <- ShinyDriver$new("../openfair_example.Rmd", seed = 96255)
+app <- ShinyDriver$new("../openfair_example.Rmd", seed = 96255, loadTimeout = 10000)
+Sys.sleep(2) # let the app warm up
+
 app$snapshotInit("openfair_example")
 
 app$setInputs(tefml = 30)
