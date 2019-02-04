@@ -1,13 +1,13 @@
 ## Update
 
-This is a bug fix update, primarily correcting failing test suites recently
-picked up by CRAN.
+This is a minor update for dplyr 0.8.0 compatability, removing a dependency 
+on `purrr`.
 
 ## Test environments
 
-* local Windows 10 64 install, R 3.5.1
-* local OS X, R 3.5.1
-* Windows Server 2012 R2 x64 (on appveyor), R 3.5.1
+* local Windows 10 64 install, R 3.5.2
+* local OS X, R 3.5.2
+* Windows Server 2012 R2 x64 (on appveyor), R 3.5.2
 * Ubuntu 14.04 LTS (on travis-ci)
   * R-release (both with and without pandoc)
   * R-devel  (both with and without pandoc)
