@@ -1,4 +1,4 @@
-# evaluator 0.3.1.900 (unreleased)
+# evaluator 0.3.2
 
 ## Improvements
 
@@ -116,10 +116,10 @@ around for [dplyr/2751](https://github.com/tidyverse/dplyr/issues/2751).
 
 ## Bug Fixes
 * Document optional dependency on pandoc and add test skip logic to avoid 
-    rmarkdown tests on systems where pandoc is not available.
+    Rmarkdown tests on systems where pandoc is not available.
     + Add testing to travis matrix for Linux builds with and without pandoc.
 * run_analysis script was missing namespace calls for `readr::cols`.
-* All rmarkdown calls now specify an `intermediates_dir` value of `tempdir()`. 
+* All Rmarkdown calls now specify an `intermediates_dir` value of `tempdir()`. 
     This can be overwritten on the function call if needed.
 * Report generation is now much quieter by default.
 

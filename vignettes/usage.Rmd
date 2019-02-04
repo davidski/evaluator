@@ -59,7 +59,7 @@ you will need to edit the `inputs/domains.csv` file to include the domain
 names and the domain IDs, and a shorthand abbreviation for the domain (such as 
 POL for the Policy domain).
 
-Indentifying the controls (or capabilities) and risk scenarios associated with 
+Identifying the controls (or capabilities) and risk scenarios associated with 
 each of your domains is critical to the final analysis. The elements are 
 documented in the Excel workbook. The workbook includes one tab per domain, with 
 each tab named after the domain IDs defined in the previous step. Each tab 
@@ -142,7 +142,7 @@ quantitative_scenarios <- encode_scenarios(qualitative_scenarios,
 Once the quantitative scenarios are ready for simulation, run 
 `run_simulations(quantitative_scenarios)`. By default, 
 Evaluator puts each scenario through 10,000 individual simulated years, 
-modelling how often the threat actors come into contact with your assets,
+modeling how often the threat actors come into contact with your assets,
 the strength of the threat actors, the strength of your controls, and the 
 losses involved in any situation where the threat strength exceeds your 
 control strength. This simulation process is computationally intense. 
