@@ -146,7 +146,7 @@
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
-<li>Removed depedency on <code>purrrlyr</code>
+<li>Removed dependency on <code>purrrlyr</code>
 </li>
 <li>Improve checks on summary function to avoid floating point comparisons generating false failures.</li>
 </ul>
@@ -217,7 +217,7 @@
 <a href="#improvements-1" class="anchor"></a>Improvements</h2>
 <ul>
 <li>
-<code><a href="../reference/run_simulations.html">run_simulations()</a></code> - New <code>ale_maximum</code> parameter allows an absolute cap on per simulation annual losses to be set. This is an interim step in lieu of full hierarchical interaction modelling.</li>
+<code><a href="../reference/run_simulations.html">run_simulations()</a></code> - New <code>ale_maximum</code> parameter allows an absolute cap on per simulation annual losses to be set. This is an interim step in lieu of full hierarchical interaction modeling.</li>
 <li>
 <code><a href="../reference/run_simulations.html">run_simulations()</a></code> - Errors encountered during runs are now reported better.</li>
 <li>
@@ -253,7 +253,7 @@
 <a href="#analysis-change" class="anchor"></a>Analysis Change</h2>
 <ul>
 <li>Previous versions sampled threat frequency (TEF) as a continuous distribution. Threat event counts are discrete (they either happen or don’t in a given simulated period), so this previous method was incorrect and inflated threat counts. The differences are small in the standard 10,000 evaluation range, but users should note the change.</li>
-<li>Part of the discretization step for TEF has a positive side effect of making the threat_event column in data objects an integer rather than a double- long. As this is still a numeric type, there should be no impact on users for this change apart from a slightly tidyer data output.</li>
+<li>Part of the discretization step for TEF has a positive side effect of making the threat_event column in data objects an integer rather than a double- long. As this is still a numeric type, there should be no impact on users for this change apart from a slightly tidier data output.</li>
 </ul>
 </div>
 <div id="bug-fixes-2" class="section level2">
@@ -275,10 +275,10 @@
 <ul>
 <li>Document optional dependency on pandoc and add test skip logic to avoid Rmarkdown tests on systems where pandoc is not available.
 <ul>
-<li>Add testing to travis matrix for Linux builds with and without pandoc.</li>
+<li>Add testing to Travis matrix for Linux builds with and without pandoc.</li>
 </ul>
 </li>
-<li>run_analysis script was missing namespace calls for <code><a href="https://readr.tidyverse.org/reference/cols.html">readr::cols</a></code>.</li>
+<li>run_analysis script was missing namespace calls for <code><a href="https://www.rdocumentation.org/packages/readr/topics/cols">readr::cols</a></code>.</li>
 <li>All Rmarkdown calls now specify an <code>intermediates_dir</code> value of <code><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir()</a></code>. This can be overwritten on the function call if needed.</li>
 <li>Report generation is now much quieter by default.</li>
 </ul>
@@ -389,7 +389,7 @@
 </li>
 <li>Update all tidyverse calls to account for deprecations and split out of <code>purrrlyr</code>
 </li>
-<li>Windows CI builds added via Appveyor</li>
+<li>Windows CI builds added via AppVeyor</li>
 <li>Use <code>annotate_logticks()</code> over manual breaks on risk_dashboard</li>
 </ul>
 </div>

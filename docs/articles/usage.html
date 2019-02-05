@@ -117,7 +117,7 @@
 <ol style="list-style-type: decimal">
 <li>Define your controls and risk scenarios</li>
 <li>Import and validate the scenarios</li>
-<li>Encode the qualitative labels into quantiative parameters</li>
+<li>Encode the qualitative labels into quantitative parameters</li>
 <li>Run the simulations</li>
 <li>Summarize the simulation outputs</li>
 <li>Analyze the results</li>
@@ -152,12 +152,12 @@
 <h2 class="hasAnchor">
 <a href="#import-and-validate-the-scenarios" class="anchor"></a>Import and Validate the Scenarios</h2>
 <p>To extract the spreadsheet into data files for further analysis, run <code><a href="../reference/import_spreadsheet.html">import_spreadsheet()</a></code>. Evaluator will extract the data and save two comma separated files in the <code>inputs</code> directory with the results.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">domains &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="st">"~/evaluator/inputs/domains.csv"</span>)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">domains &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/domains.csv"</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="../reference/import_spreadsheet.html">import_spreadsheet</a></span>(<span class="st">"~/evaluator/inputs/survey.xlsx"</span>, domains, <span class="dt">output_dir =</span> <span class="st">"~/evaluator/inputs"</span>)</a></code></pre></div>
 <p>Afer importing, you are strongly encouraged to run <code><a href="../reference/validate_scenarios.html">validate_scenarios()</a></code> to verify there are no data integrity issues. If there are errors detected, the validation process will abort and a message summarizing the problem is displayed. Correct the errors displayed, reimport, and repeat the validation process until there are no errors reported.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_scenarios.csv"</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2">mappings &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_mappings.csv"</span>)</a>
-<a class="sourceLine" id="cb3-3" title="3">capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="st">"~/evaluator/inputs/capabilities.csv"</span>)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">qualitative_scenarios &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_scenarios.csv"</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2">mappings &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/qualitative_mappings.csv"</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3">capabilities &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="st">"~/evaluator/inputs/capabilities.csv"</span>)</a>
 <a class="sourceLine" id="cb3-4" title="4"><span class="kw"><a href="../reference/validate_scenarios.html">validate_scenarios</a></span>(qualitative_scenarios, capabilities, domains, mappings)</a></code></pre></div>
 </div>
 <div id="encode-the-data" class="section level2">
