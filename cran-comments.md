@@ -1,7 +1,8 @@
 ## Update
 
-This is a minor update for dplyr 0.8.0 compatability, removing a dependency 
-on `purrr`.
+This is a re-submission, removing a dependency on `purrr` (providing 
+compatability with `dplyr` 0.8.0) and correcting a test failure on systems 
+without long-double support.
 
 ## Test environments
 
