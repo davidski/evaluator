@@ -23,8 +23,8 @@ for users familiar with source control principles.
 ## Starting from Scratch
 
 - Create a starting Evaluator working directory via `create_templates()`
-- Customize the domains used in your organization by editting the `domains.csv` 
-file to include the domains (and their abreviations) which are appropriate for your 
+- Customize the domains used in your organization by editing the `domains.csv` 
+file to include the domains (and their abbreviations) which are appropriate for your 
 risk domain and organization.
 - Edit the `survey.xlsx` spreadsheet to include the risk scenarios and the threats 
 for each scenario which you wish to monitor on an ongoing basis.

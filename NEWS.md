@@ -2,7 +2,7 @@
 
 ## Improvements
 
-* Removed depedency on `purrrlyr`
+* Removed dependency on `purrrlyr`
 * Improve checks on summary function to avoid floating point comparisons
 generating false failures.
 
@@ -68,7 +68,7 @@ not passed any outliers.
 ## Improvements
 * `run_simulations()` - New `ale_maximum` parameter allows an absolute cap on 
 per simulation annual losses to be set. This is an interim step in lieu of 
-full hierarchical interaction modelling.
+full hierarchical interaction modeling.
 * `run_simulations()` - Errors encountered during runs are now reported better.
 * `run_simulations()` - Implements parallel execution via the `furrr` package. 
 To run simulations across all cores of a local machine, load `furrr` and 
@@ -103,7 +103,7 @@ around for [dplyr/2751](https://github.com/tidyverse/dplyr/issues/2751).
 * Part of the discretization step for TEF has a positive side effect of making 
     the threat_event column in data objects an integer rather than a double-
     long. As this is still a numeric type, there should be no impact on 
-    users for this change apart from a slightly tidyer data output.
+    users for this change apart from a slightly tidier data output.
 
 ## Bug Fixes
 * Update risk_dashboard to not cache any chunks. This keeps `render` from 
@@ -117,7 +117,7 @@ around for [dplyr/2751](https://github.com/tidyverse/dplyr/issues/2751).
 ## Bug Fixes
 * Document optional dependency on pandoc and add test skip logic to avoid 
     Rmarkdown tests on systems where pandoc is not available.
-    + Add testing to travis matrix for Linux builds with and without pandoc.
+    + Add testing to Travis matrix for Linux builds with and without pandoc.
 * run_analysis script was missing namespace calls for `readr::cols`.
 * All Rmarkdown calls now specify an `intermediates_dir` value of `tempdir()`. 
     This can be overwritten on the function call if needed.
@@ -188,7 +188,7 @@ around for [dplyr/2751](https://github.com/tidyverse/dplyr/issues/2751).
   * Fixed a few incorrect placeholders
   * Properly committed compiled files to package for distribution and installation
 * Update all tidyverse calls to account for deprecations and split out of `purrrlyr`
-* Windows CI builds added via Appveyor
+* Windows CI builds added via AppVeyor
 * Use `annotate_logticks()` over manual breaks on risk_dashboard
 
 # evaluator 0.1.0

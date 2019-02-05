@@ -47,7 +47,7 @@ install.packages("evaluator", dependencies = TRUE)
 ```
 
 If you wish to run the development (and potentially bleeding edge) version of 
-Evaluator, you can install directly from Github via the following `devtools` 
+Evaluator, you can install directly from GitHub via the following `devtools` 
 command.
 
 ```{r github_install, eval=FALSE}

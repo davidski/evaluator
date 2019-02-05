@@ -34,7 +34,7 @@ Follow these steps to complete an analysis:
 
 1. Define your controls and risk scenarios
 2. Import and validate the scenarios
-3. Encode the qualitative labels into quantiative parameters
+3. Encode the qualitative labels into quantitative parameters
 4. Run the simulations
 5. Summarize the simulation outputs
 6. Analyze the results
