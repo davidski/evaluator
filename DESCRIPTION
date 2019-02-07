@@ -1,6 +1,6 @@
 Package: evaluator
 Title: Quantified Risk Assessment Toolkit
-Version: 0.3.2
+Version: 0.3.2.900
 Authors@R: c(person("David", "Severski", email = "davidski@deadheaven.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-7867-0459")))
 Description: An open source risk analysis toolkit based on the OpenFAIR taxonomy 
   <https://www2.opengroup.org/ogsys/catalog/C13K> and risk assessment standard 
@@ -11,20 +11,21 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-  dplyr, 
-  extrafont,
-  ggplot2,
-  mc2d,
-  furrr,
-  purrr,
-  readr,
-  readxl,
-  rlang,
-  scales, 
-  stringi,
-  tibble,
-  tidyr,
-  viridis
+    dplyr,
+    extrafont,
+    ggplot2,
+    mc2d,
+    furrr,
+    purrr,
+    readr,
+    readxl,
+    rlang,
+    scales,
+    stringi,
+    tibble,
+    tidyr,
+    viridis,
+    magrittr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests:

@@ -1,3 +1,8 @@
+# evaluator 0.3.2.900 (unreleased)
+
+* New development round
+* Re-export the pipe operator `%>%`
+
 # evaluator 0.3.2
 
 ## Improvements
