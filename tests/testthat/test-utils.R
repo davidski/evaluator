@@ -14,7 +14,7 @@ test_that("Calculate max losses", {
   data("simulation_results")
   dat <- calculate_max_losses(simulation_results, c(1, 10))
   expect_s3_class(dat, "data.frame")
-  expect_equal(nrow(dat[dat$outliers == TRUE,]), 1000)
+  expect_equal(nrow(dat[dat$outliers == TRUE, ]), 1000)
   expect_equal(nrow(dat), 2000)
 })
 

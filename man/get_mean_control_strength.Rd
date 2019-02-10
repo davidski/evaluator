@@ -4,12 +4,12 @@
 \alias{get_mean_control_strength}
 \title{Calculate difficulty strength across multiple controls by taking the mean}
 \usage{
-get_mean_control_strength(n, diff_parameters)
+get_mean_control_strength(control, n)
 }
 \arguments{
-\item{n}{Number of threat events to sample controls across.}
+\item{control}{List of one or more controls with parameters interpreted by \code{\link{sample_diff}}.}
 
-\item{diff_parameters}{Parameters to pass to \code{\link{sample_diff}}.}
+\item{n}{Number of threat events to sample controls across.}
 }
 \value{
 Vector of control effectiveness.
