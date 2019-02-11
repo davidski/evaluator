@@ -2,7 +2,7 @@ new_risk_factor <- function(samples = vector(), factor_label = character(), deta
   stopifnot(is.vector(samples), is.character(factor_label), is.list(details))
   structure(list(samples = samples, factor_label = factor_label,
                  details = details),
-            class = "risk_factor")
+            class = c("risk_factor", "list"))
 }
 
 risk_factor <- function(samples, factor_label, details = list()) {
