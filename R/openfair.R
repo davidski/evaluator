@@ -5,21 +5,14 @@
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
 #' @importFrom stringi stri_split_fixed
-#' @param func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
-#' @param params Optional parameters to pass to `func`.
-#' @return List containing type ("tef"), samples (as a vector), and details (as a list).
+#' @param ... Additional parameters to pass to `func`.
+#' @param n Number of samples to take.
+#' @param .func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
+#' @return A \code{risk_factor} object.
 #' @family OpenFAIR helpers
 #' @export
-sample_tef <- function(func = NULL, params = NULL) {
-  if (is.null(func)) func <- get("rpert", asNamespace("mc2d")) else {
-    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
-    requireNamespace(func_split[1], quietly = TRUE)
-    func <- get(func_split[2], asNamespace(func_split[1]))
-  }
-
-  list(type = "tef",
-       samples =  as.integer(round(purrr::invoke(func, params))),
-       details = list())
+sample_tef <- function(..., .n, .func = round(mc2d::rpert)) {
+  risk_factory(factor_label = "TEF")(..., .n, .func)
 }
 
 #' Sample threat capabilities (TC) from a distribution function
@@ -27,7 +20,6 @@ sample_tef <- function(func = NULL, params = NULL) {
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
 #' @importFrom stringi stri_split_fixed
-#' @param ... Additional parameters to pass to `func`.
 #' @param n Number of samples to take, passed directly to `func`.
 #' @param func Function to use to simulate TC, defaults to \code{\link[mc2d]{rpert}}.
 #' @return List containing type ("tc"), samples (as a vector), and details (as a list).
