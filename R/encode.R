@@ -7,9 +7,9 @@
 #'
 #'   Create a unified dataframe of quantitative scenarios ready for simulation.
 #'
-#' @importFrom dplyr rename_ select_ left_join filter rowwise
+#' @importFrom dplyr rename select left_join filter rowwise mutate do
 #' @importFrom rlang .data
-#' @importFrom purrr map
+#' @importFrom purrr map pmap
 #' @param scenarios Qualitative risk scenarios dataframe.
 #' @param capabilities Qualitative program capabilities dataframe.
 #' @param mappings Qualitative to quantitative mapping dataframe.
@@ -25,7 +25,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
                                               capabilities = capabilities,
                                               mappings = mappings))
   # fetch TEF params
-  tef_nested <- dplyr::filter(mappings, .data$type=="tef") %>%
+  tef_nested <- dplyr::filter(mappings, .data$type == "tef") %>%
     dplyr::rowwise() %>%
     dplyr::do(tef_params = list(min = .$l, mode = .$ml, max = .$h,
                                 shape = .$conf, func = "mc2d::rpert"),
@@ -36,7 +36,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
     dplyr::select(-.data$tef)
 
   # fetch TC params
-  tc_nested <- dplyr::filter(mappings, .data$type=="tc") %>%
+  tc_nested <- dplyr::filter(mappings, .data$type == "tc") %>%
     dplyr::rowwise() %>%
     dplyr::do(tc_params = list(min = .$l, mode = .$ml, max = .$h,
                                shape = .$conf, func = "mc2d::rpert"),
@@ -47,7 +47,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
     dplyr::select(-.data$tc)
 
   # fetch LM params
-  lm_nested <- dplyr::filter(mappings, .data$type=="lm") %>%
+  lm_nested <- dplyr::filter(mappings, .data$type == "lm") %>%
     dplyr::rowwise() %>%
     dplyr::do(lm_params = list(min = .$l, mode = .$ml, max = .$h,
                                shape = .$conf, func = "mc2d::rpert"),
@@ -57,6 +57,11 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
                                 by = c("lm" = "label")) %>%
     dplyr::select(-.data$lm)
 
+  scenarios <- rename(scenarios, scenario_text = scenario)
+
+  scenarios <- dplyr::mutate(scenarios, scenario = purrr::pmap(
+    list(tef_params, tc_params, diff_params, lm_params), evaluator_scen)) %>%
+    select(-c(diff_params, tef_params, tc_params, lm_params))
   scenarios
 }
 

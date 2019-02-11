@@ -2,20 +2,17 @@
 % Please edit documentation in R/simulate.R
 \name{run_simulations}
 \alias{run_simulations}
-\title{Run simulations for all scenarios}
+\title{Run simulations for a scenario}
 \usage{
 run_simulations(scenario, simulation_count = 10000L,
-  model = "openfair_tef_tc_diff_lm", ale_maximum = NULL,
-  verbose = FALSE)
+  ale_maximum = NULL, verbose = FALSE)
 }
 \arguments{
-\item{scenario}{Quantitative scenarios.}
+\item{scenario}{A \code{evaluator_scen} object.}
 
-\item{simulation_count}{Number of simulations for each scenario.}
+\item{simulation_count}{Number of simulations to perform.}
 
-\item{model}{OpenFAIR model to use.}
-
-\item{ale_maximum}{Apply a maximum per year, per simulation, loss maximum.}
+\item{ale_maximum}{Maximum practical annual losses.}
 
 \item{verbose}{Whether verbose console output is requested.}
 }
@@ -23,12 +20,11 @@ run_simulations(scenario, simulation_count = 10000L,
 Dataframe of raw results.
 }
 \description{
-Given a dataframe of quantitative scenarios, run an OpenFAIR Monte
-Carlo simulation for each scenario, returning a combined dataframe of all
-results.
+Given a quantitative scenario object, run an OpenFAIR Monte Carlo simulation
+returning a dataframe of results.
 }
 \examples{
 data(quantitative_scenarios)
-# run a single scenario in a trivial number (10) of trials
-run_simulations(quantitative_scenarios[1, ], 10)
+# run a single scenario through a trivial number (10) of trials
+run_simulations(quantitative_scenarios[[1, "scenario"]], 10)
 }

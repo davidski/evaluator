@@ -4,7 +4,7 @@
 \name{quantitative_scenarios}
 \alias{quantitative_scenarios}
 \title{Quantified information risk scenarios}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 9 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 6 columns.}
 \usage{
 quantitative_scenarios
 }

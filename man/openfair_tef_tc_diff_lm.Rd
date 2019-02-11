@@ -4,15 +4,12 @@
 \alias{openfair_tef_tc_diff_lm}
 \title{Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels}
 \usage{
-openfair_tef_tc_diff_lm(scenario, n = 10^4, title = "Untitled",
-  verbose = FALSE)
+openfair_tef_tc_diff_lm(scenario, n = 10^4, verbose = FALSE)
 }
 \arguments{
-\item{scenario}{List of TEF, TC, and LM parameters.}
+\item{scenario}{A \code{evaluator_scen} object}
 
 \item{n}{Number of simulations to run.}
-
-\item{title}{Optional name of scenario.}
 
 \item{verbose}{Whether to print progress indicators.}
 }
@@ -28,7 +25,7 @@ the effective control strength for a given simulation.
 }
 \examples{
 data(quantitative_scenarios)
-scenario <- quantitative_scenarios[1, ]
+scenario <- quantitative_scenarios[[1, "scenario"]]
 openfair_tef_tc_diff_lm(scenario, 10)
 }
 \seealso{

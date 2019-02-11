@@ -15,3 +15,4 @@ cran-comments.md
 ^index.Rmd$
 meta_tags.html
 ^\.github$
+pkgdown

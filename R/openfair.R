@@ -5,14 +5,21 @@
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
 #' @importFrom stringi stri_split_fixed
-#' @param ... Additional parameters to pass to `func`.
-#' @param n Number of samples to take.
-#' @param .func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
-#' @return A \code{risk_factor} object.
+#' @param func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
+#' @param params Optional parameters to pass to `func`.
+#' @return List containing type ("tef"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
-sample_tef <- function(..., .n, .func = round(mc2d::rpert)) {
-  risk_factory(factor_label = "TEF")(..., .n, .func)
+sample_tef <- function(func = NULL, params = NULL) {
+  if (is.null(func)) func <- get("rpert", asNamespace("mc2d")) else {
+    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
+    requireNamespace(func_split[1], quietly = TRUE)
+    func <- get(func_split[2], asNamespace(func_split[1]))
+  }
+
+  list(type = "tef",
+       samples =  as.integer(round(purrr::invoke(func, params))),
+       details = list())
 }
 
 #' Sample threat capabilities (TC) from a distribution function
@@ -20,16 +27,19 @@ sample_tef <- function(..., .n, .func = round(mc2d::rpert)) {
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
 #' @importFrom stringi stri_split_fixed
-#' @param n Number of samples to take, passed directly to `func`.
 #' @param func Function to use to simulate TC, defaults to \code{\link[mc2d]{rpert}}.
+#' @param params Optional parameters to pass to `func`.
 #' @return List containing type ("tc"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
-sample_tc <- function(..., n, func = NULL) {
-  my_func <- if (is.null(func)) mc2d::rpert else enexpr(func)
-  requireNamespace("mc2d", quietly = TRUE)
+sample_tc <- function(func = NULL, params = NULL) {
+  if (is.null(func)) func <- get("rpert", asNamespace("mc2d")) else {
+    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
+    requireNamespace(func_split[1], quietly = TRUE)
+    func <- get(func_split[2], asNamespace(func_split[1]))
+  }
   list(type = "tc",
-       samples = if ("n" != 0) purrr::invoke(my_func, n = n, ...) else NA,
+       samples = if (params["n"] != 0) purrr::invoke(func, params) else NA,
        details = list())
 }
 
@@ -149,15 +159,16 @@ sample_lef <- function(func = NULL, params = NULL) {
 #' @importFrom tidyr nest
 #' @importFrom stringi stri_split_fixed
 #' @importFrom rlang .data
-#' @param control List of one or more controls with parameters interpreted by \code{\link{sample_diff}}.
 #' @param n Number of threat events to sample controls across.
+#' @param diff_parameters Parameters to pass to \code{\link{sample_diff}}.
 #' @return Vector of control effectiveness.
 #' @family OpenFAIR helpers
 #' @export
-get_mean_control_strength <- function(control, n)  {
+get_mean_control_strength <- function(n, diff_parameters)  {
   # get the list of control parameters, including the function to call
   # diff_parameters is a list of lists, so strip one layer to get a simple list
-  control_list <- control %>% purrr::flatten()
+  #control_list <- diff_parameters %>% purrr::flatten()
+  control_list <- diff_parameters
 
   # iterate over the control parameters list
   # getting a number of samples for each control
@@ -196,7 +207,7 @@ get_mean_control_strength <- function(control, n)  {
 #' @examples
 #' compare_tef_vuln(tef = 500, vuln = .25)
 compare_tef_vuln <- function(tef, vuln) {
-  samples <- tef * vuln
+  samples = tef * vuln
   list(samples = samples,
        details = list())
 }
@@ -251,9 +262,8 @@ select_loss_opportunities <- function(tc, diff) {
 #' @importFrom tibble tibble as_tibble
 #' @importFrom rlang .data
 #' @importFrom dplyr %>%
-#' @param scenario List of TEF, TC, and LM parameters.
+#' @param scenario A `evaluator_scen` object
 #' @param n Number of simulations to run.
-#' @param title Optional name of scenario.
 #' @param verbose Whether to print progress indicators.
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
 #'   mean TC and DIFF exceedance, and ALE samples.
@@ -261,16 +271,18 @@ select_loss_opportunities <- function(tc, diff) {
 #' @export
 #' @examples
 #' data(quantitative_scenarios)
-#' scenario <- quantitative_scenarios[1, ]
+#' scenario <- quantitative_scenarios[[1, "scenario"]]
 #' openfair_tef_tc_diff_lm(scenario, 10)
-openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
-                                    verbose = FALSE) {
+openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
 
+    if (!class(scenario) %in% ("evaluator_scen")) {
+      stop("Scenario must be an evaluator_scen object.", call. = FALSE)
+    }
     # make samples repeatable (and l33t)
     set.seed(31337)
 
     if (verbose) {
-        message("Working on scenario ", title)
+        message("Working on scenario ")
         message(paste("Scenario is: ", scenario[-which(names(scenario) %in% "diff_samples")], "\n"))
         # message(paste('Names are ', names(scenario)))
     }
@@ -288,7 +300,8 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
       tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
     #    - sample threat capability for each TEF event in each sample period
     TCsamples <- purrr::map(1:n, function(x) {
-      sample_tc(func = TCestimate$func, n = TEFsamples[x], !!TCestimate$params)
+      params <- c(n = TEFsamples[x], TCestimate$params %>% unlist())
+      sample_tc(func = TCestimate$func, params = params)
       })
     # TCSamples is now a list of of the TC for each threat event
 
@@ -298,8 +311,7 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
     # get the difficulty for each threat event across all the simulated periods
     DIFFsamples <- purrr::map(1:n, function(x) {
       if (is.numeric(TEFsamples[[x]]) && TEFsamples[[x]] > 0) {
-        get_mean_control_strength(control = scenario$diff_params,
-                                  n = TEFsamples[[x]])
+        get_mean_control_strength(TEFsamples[[x]], scenario$diff_params)
         } else {NA}
       })
     # DIFFsamples is now a list of vectors of the control strength for
@@ -336,11 +348,10 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, title = "Untitled",
                               big.mark = ",")))
     }
 
-    tibble::tibble(title = rep(as.character(title), n),
-                   simulation = seq(1:n),
+    tibble::tibble(simulation = seq(1:n),
                    threat_events = TEFsamples,
                    loss_events = LEFsamples,
-                   vuln = LEFsamples / TEFsamples,
+                   vuln = LEFsamples/TEFsamples,
                    mean_tc_exceedance = mean_tc_exceedance,
                    mean_diff_exceedance = mean_diff_exceedance,
                    ale = purrr::map_dbl(loss_samples, "samples"),
