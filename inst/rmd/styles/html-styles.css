@@ -6,7 +6,7 @@ ul li {
 	font-family: Open Sans Condensed, sans-serif;
 }
 
-ul li {
+ol li {
 	font-family: Open Sans Condensed, sans-serif;
 }
 
@@ -28,6 +28,7 @@ p {
 }
 
 body {
+	font-family: Open Sans Condensed, sans-serif;
   color: #333D47;
 }
 
