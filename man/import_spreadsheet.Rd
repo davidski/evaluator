@@ -9,18 +9,18 @@ import_spreadsheet(survey_file = system.file("survey", "survey.xlsx",
   output_dir = "~/evaluator/results")
 }
 \arguments{
-\item{survey_file}{Path to survey XLSX file. Defaults to an Evaluator-provided sample spreadsheet.}
+\item{survey_file}{Path to survey Excel file. Defaults to an Evaluator-provided sample spreadsheet.}
 
 \item{domains}{Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.}
 
-\item{output_dir}{Output file directory. Defaults to a \code{data}
-subdirectory in the current working directory.}
+\item{output_dir}{Output file directory.}
 }
 \value{
-Dataframe of generated files (capabilities.csv and scenarios.csv)
+Dataframe of file information on the two newly created files.
 }
 \description{
-This is a wrapper function around \code{\link{import_scenarios}} and
-\code{\link{import_capabilities}}. When invoked, the output of both functions
-are written to disk.
+This is a convenience wrapper around the \code{\link{import_scenarios}} and
+\code{\link{import_capabilities}} functions. Writes cleaned
+comma-separated formatted files for the scenarios and
+capabilities to disk.
 }

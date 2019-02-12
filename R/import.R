@@ -1,19 +1,19 @@
 #' Import the scenario spreadsheet
 #'
-#' This is a wrapper function around \code{\link{import_scenarios}} and
-#'   \code{\link{import_capabilities}}. When invoked, the output of both functions
-#'   are written to disk.
+#' This is a convenience wrapper around the \code{\link{import_scenarios}} and
+#'   \code{\link{import_capabilities}} functions. Writes cleaned
+#'   comma-separated formatted files for the scenarios and
+#'   capabilities to disk.
 #'
 #' @importFrom dplyr %>%
 #' @importFrom readr write_csv
 #' @importFrom utils data
 #' @importFrom tibble as_tibble rownames_to_column
-#' @param survey_file Path to survey XLSX file. Defaults to an Evaluator-provided sample spreadsheet.
+#' @param survey_file Path to survey Excel file. Defaults to an Evaluator-provided sample spreadsheet.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
-#' @param output_dir Output file directory. Defaults to a \code{data}
-#'   subdirectory in the current working directory.
+#' @param output_dir Output file directory.
 #' @export
-#' @return Dataframe of generated files (capabilities.csv and scenarios.csv)
+#' @return Dataframe of file information on the two newly created files.
 import_spreadsheet <- function(survey_file = system.file("survey",
                                                          "survey.xlsx",
                                                          package = "evaluator"),
@@ -22,12 +22,8 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 
   ## ----survey_sheet--------------------------------------------------------
   #message("Target file is ", survey_file)
-
-  # use default domains if none supplied
-  domains <- if (is.null(domains)) {
-    utils::data(domains, package = "evaluator", envir = environment())
-    domains
-  } else {domains}
+  if (!dir.exists(output_dir)) {
+    stop("Non existant output directory specified - ", output_dir)}
 
   qualitative_scenarios <- import_scenarios(survey_file = survey_file,
                                             domains = domains)
@@ -47,30 +43,44 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 
 #' Import scenarios from survey spreadsheet
 #'
-#' @importFrom dplyr funs select mutate mutate_at
+#' @importFrom dplyr funs select mutate mutate_at arrange
 #' @importFrom rlang .data
 #' @importFrom utils data
 #' @importFrom purrr map
 #' @importFrom tidyr unnest
 #' @importFrom readxl read_excel
-#' @param survey_file Path to survey XLSX file. Defaults to a sample file if not supplied.
+#' @param survey_file Path to survey Excel file. Defaults to a sample file if not supplied.
 #' @param domains Dataframe of domains and domain IDs.
 #' @export
 #' @return Extracted qualitative scenarios as a dataframe.
 #' @examples
 #' data(domains)
 #' import_scenarios(domains = domains)
-import_scenarios <- function(survey_file = system.file("survey",
-                                                       "survey.xlsx",
-                                                       package = "evaluator"),
-                               domains) {
+import_scenarios <- function(survey_file = NULL, domains = NULL) {
+
+  survey_file <- if (is.null(survey_file)) {
+    system.file("survey", "survey.xlsx", package = "evaluator")
+  } else {
+    survey_file
+  }
+  if (!file.exists(survey_file)) {
+    stop("Non existant survey file specified - ", survey_file)}
+
+  # use default domains if none supplied
+  domains <- if (is.null(domains)) {
+    utils::data(domains, package = "evaluator", envir = environment())
+    domains
+  } else {domains}
 
   # scenarios begin with the list of domains
   scenarios <- domains
 
   # attach each sheet as a nested dataframe to the domains object
   scenarios$raw_data <- scenarios$domain_id %>%
-    purrr::map(~ readxl::read_excel(survey_file, skip = 1, sheet = .x))
+    purrr::map(~ readxl::read_excel(
+      survey_file, skip = 2, col_names = c("Name", "DIFF", "Evidence",
+                                           "CapabilityID", letters[5:7]),
+      sheet = .))
 
   # separate out the threats from the nested frame
   scenarios$threats <- scenarios$raw_data %>%
@@ -95,19 +105,34 @@ import_scenarios <- function(survey_file = system.file("survey",
 #' @importFrom readxl read_excel
 #' @importFrom purrr map
 #' @importFrom rlang .data
-#' @param survey_file Path to survey XLSX file. If not supplied, a default sample file is used.
+#' @param survey_file Path to survey Excel file. If not supplied, a default sample file is used.
 #' @param domains Dataframe of domains and domain IDs.
 #' @export
 #' @return Extracted capabilities as a dataframe.
+#' @inheritParams import_scenarios
 #' @examples
 #' data(domains)
 #' import_capabilities(domains = domains)
-import_capabilities <- function(survey_file = system.file("survey", "survey.xlsx", package = "evaluator"),
-                               domains){
+import_capabilities <- function(survey_file = NULL, domains = NULL){
+
+  survey_file <- if (is.null(survey_file)) {
+    system.file("survey", "survey.xlsx", package = "evaluator")
+    } else {
+      survey_file
+    }
+  if (!file.exists(survey_file)) {
+    stop("Non existant survey file specified - ", survey_file)}
+
+  # use default domains if none supplied
+  domains <- if (is.null(domains)) {
+    utils::data(domains, package = "evaluator", envir = environment())
+    domains
+  } else {domains}
 
   raw_domains <- domains %>%
     dplyr::mutate(raw_data = purrr::map(.data$domain_id, ~ readxl::read_excel(
-      survey_file, skip=1, sheet=.)))
+      survey_file, skip = 2,
+      col_names = c("Name", "DIFF", "Evidence", "CapabilityID", letters[5:7]), sheet = .)))
 
   ## ----walk_the_frame------------------------------------------------------
   dat <- raw_domains %>%
