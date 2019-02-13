@@ -1,6 +1,6 @@
 test_that("Sample TEF", {
   set.seed(1234)
-  tef <- sample_tef(params = list(n = 10, 1, 10, 100))
+  tef <- sample_tef(n = 10, params = list(1, 10, 100))
   expect_is(tef, "list")
   # ensure that the list has the required elements
   expect_equal(names(tef), c("type", "samples", "details"))
@@ -16,7 +16,7 @@ test_that("Sample TEF", {
 context("Sample DIFF")
 test_that("Sample DIFF", {
   set.seed(1234)
-  dat <- sample_diff(params = list(n = 10, 50, 70, 75, 3))
+  dat <- sample_diff(n = 10, params = list(50, 70, 75, 3))
   expect_is(dat, "list")
   # ensure that the list has the required elements
   expect_equal(names(dat), c("type", "samples", "details"))
@@ -31,9 +31,9 @@ test_that("Sample DIFF", {
 })
 test_that("Multi control diff works", {
   set.seed(1234)
-  diff_estimates <- list(list(n = 10, min = 1, mode = 10, max = 20, shape = 1),
-                         list(n = 10, min =  2, mode = 15, max = 100, shape = 3))
-  dat <- map(diff_estimates, ~sample_diff(params = .x))
+  diff_estimates <- list(list(min = 1, mode = 10, max = 20, shape = 1),
+                         list(min =  2, mode = 15, max = 100, shape = 3))
+  dat <- map(diff_estimates, ~sample_diff(n = 10, params = .x))
   expect_is(dat, "list")
   # ensure that we received two responses back
   expect_equal(length(dat), 2)
@@ -57,7 +57,7 @@ test_that("Multi control diff works", {
 context("Sample TC")
 test_that("Sample TC", {
   set.seed(1234)
-  tc <- sample_tc(params = list(n = 10, 50, 75, 100, 4))
+  tc <- sample_tc(n = 10, params = list(50, 75, 100, 4))
   expect_is(tc, "list")
   # ensure that the list has the required elements
   expect_equal(names(tc), c("type", "samples", "details"))
@@ -82,7 +82,7 @@ test_that("Mean Difficulty Exceedance works when there are zero losses", {
 context("Sample VULN")
 test_that("Sample VULN works with binom", {
   set.seed(1234)
-  dat <- sample_vuln(params = list(n = 10, 1, .5))
+  dat <- sample_vuln(n = 10, params = list(1, .5))
   expect_is(dat, "list")
   # ensure that the list has the required elements
   expect_equal(names(dat), c("type", "samples", "details"))
@@ -93,9 +93,9 @@ test_that("Sample VULN works with binom", {
 })
 test_that("Sample VULN works with TC and DIFF", {
   set.seed(1234)
-  tc <- sample_tc(params = list(n = 10, 50, 70, 85, 2))$samples
-  diff <- sample_diff(params = list(n = 10, 50, 70, 85, 2))$samples
-  dat <- sample_vuln(func = "evaluator::select_loss_opportunities", params = list(tc = tc, diff = diff))
+  tc <- sample_tc(n = 10, params = list(50, 70, 85, 2))$samples
+  diff <- sample_diff(n = 10, params = list(50, 70, 85, 2))$samples
+  dat <- sample_vuln(n = 10, .func = "evaluator::select_loss_opportunities", params = list(tc = tc, diff = diff))
   expect_is(dat, "list")
   # ensure that the list has the required elements
   expect_equivalent(names(dat), c("type", "samples", "details"))
@@ -111,8 +111,8 @@ test_that("Sample VULN works with TC and DIFF", {
 test_that("TC and DIFF exceedance handles NA threat events", {
   set.seed(1234)
   tc <- c(NA)
-  diff <- sample_diff(params = list(n = 2, 50, 70, 85, 2))$samples
-  dat <- sample_vuln(func = "evaluator::select_loss_opportunities", params = list(tc = tc, diff = diff))
+  diff <- sample_diff(n = 2, params = list(50, 70, 85, 2))$samples
+  dat <- sample_vuln(n = 2, .func = "evaluator::select_loss_opportunities", params = list(tc = tc, diff = diff))
   expect_is(dat, "list")
   # ensure that mean_tc_exceedance is set correctly
   expect_equivalent(dat$details$mean_tc_exceedance, NA)
@@ -123,7 +123,7 @@ test_that("TC and DIFF exceedance handles NA threat events", {
 context("Sample LM")
 test_that("Sample LM", {
   set.seed(1234)
-  lm <- sample_lm(params = list(n = 10, min = 1*10^4, mode = 5*10^4,
+  lm <- sample_lm(n = 10, params = list(min = 1*10^4, mode = 5*10^4,
                                 max = 1*10^7, shape = 3))
   expect_is(lm, "list")
   # ensure that the list has the required elements
@@ -139,7 +139,8 @@ test_that("Sample LM", {
 })
 test_that("Non-standard distributions work as expected", {
   set.seed(1234)
-  lm <- sample_lm(func = "EnvStats::rlnormTrunc", list(n = 10, meanlog = 1, sdlog = 2, min = 1, max = 2))
+  lm <- sample_lm(.func = "EnvStats::rlnormTrunc", n = 10,
+                  params = list(meanlog = 1, sdlog = 2, min = 1, max = 2))
   expect_is(lm, "list")
   # ensure that the list has the required elements
   expect_equal(names(lm), c("type", "samples", "details"))
@@ -155,9 +156,9 @@ test_that("Non-standard distributions work as expected", {
 context("Sample LEF")
 test_that("Sample LEF works with composition function", {
   set.seed(1234)
-  tef <- sample_tef(params = list(n = 10, 1, 10, 20))
-  vuln <- sample_vuln(params = list(n = 10, 1, .6))
-  dat <- sample_lef(func = "evaluator::compare_tef_vuln",
+  tef <- sample_tef(n = 10, params = list(1, 10, 20))
+  vuln <- sample_vuln(n = 10, params = list(1, .6))
+  dat <- sample_lef(n = 10, .func = "evaluator::compare_tef_vuln",
              params = list(tef = tef$samples, vuln = vuln$samples))
   expect_is(dat, "list")
   # ensure that the list has the required elements

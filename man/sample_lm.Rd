@@ -4,12 +4,14 @@
 \alias{sample_lm}
 \title{Given a number of loss events and a loss distribution, calculate losses}
 \usage{
-sample_lm(func = NULL, params = NULL)
+sample_lm(n, .func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.}
+\item{n}{Number of samples to generate.}
 
-\item{params}{Optional parameters to pass to \code{func}.}
+\item{.func}{Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.}
+
+\item{params}{Optional parameters to pass to \code{.func}.}
 }
 \value{
 List containing type ("lm"), samples (as a vector), and details (as a list).

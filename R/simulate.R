@@ -9,7 +9,7 @@
 #' @importFrom purrr safely is_null map_lgl transpose simplify keep
 #' @importFrom tidyr nest
 #' @importFrom rlang .data
-#' @param scenario A `evaluator_scen` object.
+#' @param scenario An \link{evaluator_scen} object.
 #' @param simulation_count Number of simulations to perform.
 #' @param ale_maximum Maximum practical annual losses.
 #' @param verbose Whether verbose console output is requested.

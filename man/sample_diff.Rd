@@ -5,12 +5,14 @@
 \title{Calculate the difficulty presented by controls, given a function and
 parameters for that function}
 \usage{
-sample_diff(func = NULL, params = NULL)
+sample_diff(n, .func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate DIFF, defaults to \code{\link[mc2d]{rpert}}.}
+\item{n}{Number of samples to generate.}
 
-\item{params}{Optional parameters to pass to \code{func}.}
+\item{.func}{Function to use to simulate DIFF, defaults to \code{\link[mc2d]{rpert}}.}
+
+\item{params}{Optional parameters to pass to \code{.func}.}
 }
 \value{
 List containing type ("diff"), samples (as a vector), and details (as a list).

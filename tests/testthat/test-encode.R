@@ -23,6 +23,8 @@ test_that("Scenario Encoding", {
                          conf = c(4L, 4L, 4L, 3L, 3L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 1L),
                          stringsAsFactors = FALSE)
   dat <- encode_scenarios(qualitative_scenarios, capabilities, mappings)
+  expect_equal(nrow(dat), 2)
+  expect_true(is.data.frame(dat))
 })
 test_that("Control Encoding", {
   capability_ids <- "1, 7"
@@ -35,5 +37,7 @@ test_that("Control Encoding", {
                          l = c(70, 0), ml = c(80, 20), h = c(95, 30),
                          conf = 3, stringsAsFactors = FALSE)
   dat <- derive_controls(capability_ids, capabilities, mappings)
+  expect_type(dat, "list")
+  expect_named(dat, c("1", "7"))
   expect_equal(length(dat), 2)
 })

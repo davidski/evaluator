@@ -8,7 +8,7 @@ run_simulations(scenario, simulation_count = 10000L,
   ale_maximum = NULL, verbose = FALSE)
 }
 \arguments{
-\item{scenario}{A \code{evaluator_scen} object.}
+\item{scenario}{An \link{evaluator_scen} object.}
 
 \item{simulation_count}{Number of simulations to perform.}
 

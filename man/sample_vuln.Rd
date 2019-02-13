@@ -4,12 +4,14 @@
 \alias{sample_vuln}
 \title{Calculate the vulnerability}
 \usage{
-sample_vuln(func = NULL, params = NULL)
+sample_vuln(n, .func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate VULN, defaults to \code{\link[stats]{rbinom}}.}
+\item{n}{Number of samples to generate.}
 
-\item{params}{Optional parameters to pass to \code{func}.}
+\item{.func}{Function to use to simulate VULN, defaults to \code{\link[stats]{rbinom}}.}
+
+\item{params}{Optional parameters to pass to \code{.func}.}
 }
 \value{
 List containing type ("vuln"), samples (as a vector), and details (as a list).

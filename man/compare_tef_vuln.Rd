@@ -4,12 +4,14 @@
 \alias{compare_tef_vuln}
 \title{Calculate number of loss events which occur in a simulated period}
 \usage{
-compare_tef_vuln(tef, vuln)
+compare_tef_vuln(tef, vuln, n = NULL)
 }
 \arguments{
 \item{tef}{Threat event frequency (n).}
 
 \item{vuln}{Vulnerability (percentage).}
+
+\item{n}{Number of samples to generate.}
 }
 \value{
 List containing samples (as a vector) and details (as a list).

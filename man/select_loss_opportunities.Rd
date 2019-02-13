@@ -4,12 +4,16 @@
 \alias{select_loss_opportunities}
 \title{Determine which threat events result in loss opportunities}
 \usage{
-select_loss_opportunities(tc, diff)
+select_loss_opportunities(tc, diff, n = NULL, ...)
 }
 \arguments{
 \item{tc}{Threat capability (as a percentage).}
 
 \item{diff}{Difficulty (as a percentage).}
+
+\item{n}{Number of samples to generate.}
+
+\item{...}{Optional parameters (currently ignored).}
 }
 \value{
 List containing boolean values of length TC (as a vector) and details (as a list).

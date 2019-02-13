@@ -5,20 +5,21 @@
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
 #' @importFrom stringi stri_split_fixed
-#' @param func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
-#' @param params Optional parameters to pass to `func`.
+#' @param n Number of samples to generate.
+#' @param params Optional parameters to pass to `.func`.
+#' @param .func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
 #' @return List containing type ("tef"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
-sample_tef <- function(func = NULL, params = NULL) {
-  if (is.null(func)) func <- get("rpert", asNamespace("mc2d")) else {
-    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
+sample_tef <- function(n, params = NULL, .func = NULL) {
+  .func <- if (is.null(.func)) get("rpert", asNamespace("mc2d")) else {
+    func_split <- stringi::stri_split_fixed(.func, "::", simplify = TRUE)
     requireNamespace(func_split[1], quietly = TRUE)
-    func <- get(func_split[2], asNamespace(func_split[1]))
+    get(func_split[2], asNamespace(func_split[1]))
   }
 
   list(type = "tef",
-       samples =  as.integer(round(purrr::invoke(func, params))),
+       samples =  as.integer(round(purrr::invoke(.func, n = n, params))),
        details = list())
 }
 
@@ -27,19 +28,19 @@ sample_tef <- function(func = NULL, params = NULL) {
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
 #' @importFrom stringi stri_split_fixed
-#' @param func Function to use to simulate TC, defaults to \code{\link[mc2d]{rpert}}.
-#' @param params Optional parameters to pass to `func`.
+#' @inheritParams sample_tef
+#' @param .func Function to use to simulate TC, defaults to \code{\link[mc2d]{rpert}}.
 #' @return List containing type ("tc"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
-sample_tc <- function(func = NULL, params = NULL) {
-  if (is.null(func)) func <- get("rpert", asNamespace("mc2d")) else {
-    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
+sample_tc <- function(n, params = NULL, .func = NULL) {
+  .func <- if (is.null(.func)) get("rpert", asNamespace("mc2d")) else {
+    func_split <- stringi::stri_split_fixed(.func, "::", simplify = TRUE)
     requireNamespace(func_split[1], quietly = TRUE)
-    func <- get(func_split[2], asNamespace(func_split[1]))
+    get(func_split[2], asNamespace(func_split[1]))
   }
   list(type = "tc",
-       samples = if (params["n"] != 0) purrr::invoke(func, params) else NA,
+       samples = if (n != 0) purrr::invoke(.func, n = n, params) else NA,
        details = list())
 }
 
@@ -49,20 +50,20 @@ sample_tc <- function(func = NULL, params = NULL) {
 #' @importFrom purrr invoke
 #' @importFrom mc2d rpert
 #' @importFrom stringi stri_split_fixed
-#' @param func Function to use to simulate DIFF, defaults to \code{\link[mc2d]{rpert}}.
-#' @param params Optional parameters to pass to `func`.
+#' @inheritParams sample_tef
+#' @param .func Function to use to simulate DIFF, defaults to \code{\link[mc2d]{rpert}}.
 #' @return List containing type ("diff"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
-sample_diff <- function(func = NULL, params = NULL) {
-  if (is.null(func)) func <- get("rpert", asNamespace("mc2d")) else {
-    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
+sample_diff <- function(n, .func = NULL, params = NULL) {
+  .func <- if (is.null(.func)) get("rpert", asNamespace("mc2d")) else {
+    func_split <- stringi::stri_split_fixed(.func, "::", simplify = TRUE)
     requireNamespace(func_split[1], quietly = TRUE)
-    func <- get(func_split[2], asNamespace(func_split[1]))
+    get(func_split[2], asNamespace(func_split[1]))
   }
 
   list(type = "diff",
-       samples = invoke(func, params),
+       samples = invoke(.func, n = n, params),
        details = list())
 }
 
@@ -70,19 +71,19 @@ sample_diff <- function(func = NULL, params = NULL) {
 #'
 #' @importFrom purrr invoke is_list
 #' @importFrom stringi stri_split_fixed
-#' @param func Function to use to simulate VULN, defaults to \code{\link[stats]{rbinom}}.
-#' @param params Optional parameters to pass to `func`.
+#' @inheritParams sample_tef
+#' @param .func Function to use to simulate VULN, defaults to \code{\link[stats]{rbinom}}.
 #' @return List containing type ("vuln"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
-sample_vuln <- function(func = NULL, params = NULL) {
-  if (is.null(func)) func <- get("rbinom", asNamespace("stats")) else {
-    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
+sample_vuln <- function(n, .func = NULL, params = NULL) {
+  .func <- if (is.null(.func)) get("rbinom", asNamespace("stats")) else {
+    func_split <- stringi::stri_split_fixed(.func, "::", simplify = TRUE)
     requireNamespace(func_split[1], quietly = TRUE)
-    func <- get(func_split[2], asNamespace(func_split[1]))
+    get(func_split[2], asNamespace(func_split[1]))
   }
 
-  dat <- purrr::invoke(func, params)
+  dat <- purrr::invoke(.func, n = n, params)
   list(type = "vuln",
        samples = if (purrr::is_list(dat)) dat$samples else dat,
        details = if (purrr::is_list(dat)) dat$details else list()
@@ -94,22 +95,22 @@ sample_vuln <- function(func = NULL, params = NULL) {
 #' @importFrom purrr invoke
 #' @importFrom stringi stri_split_fixed
 #' @importFrom mc2d rpert
-#' @param func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
-#' @param params Optional parameters to pass to `func`.
+#' @inheritParams sample_tef
+#' @param .func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
 #' @return List containing type ("lm"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
-sample_lm <- function(func = NULL, params = NULL) {
+sample_lm <- function(n, .func = NULL, params = NULL) {
 
-  if (is.null(func)) func <- get("rpert", asNamespace("mc2d")) else {
-    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
+  .func <- if (is.null(.func)) get("rpert", asNamespace("mc2d")) else {
+    func_split <- stringi::stri_split_fixed(.func, "::", simplify = TRUE)
     requireNamespace(func_split[1], quietly = TRUE)
-    func <- get(func_split[2], asNamespace(func_split[1]))
+    get(func_split[2], asNamespace(func_split[1]))
   }
-  samples <- if (params["n"] != 0 & !is.na(params["n"])) purrr::invoke(func, params) else 0
+  samples <- if (!is.na(n) && n != 0) purrr::invoke(.func, n = n, params) else 0
 
   # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
-  details <- if (length(samples) == 0 | sum(samples) == 0) {
+  details <- if (length(samples) == 0 || sum(samples) == 0) {
       list(ale = 0, sle_max = 0, sle_min = 0, sle_mean = 0, sle_median = 0)
   } else {
       list(ale = sum(samples),
@@ -128,19 +129,19 @@ sample_lm <- function(func = NULL, params = NULL) {
 #' Sample loss event frequency
 #'
 #' @importFrom purrr invoke is_list
-#' @param func Function to use to simulate LEF, defaults to \code{\link[stats]{rnorm}}.
-#' @param params Optional parameters to pass to `func`
+#' @inheritParams sample_tef
+#' @param .func Function to use to simulate LEF, defaults to \code{\link[stats]{rnorm}}.
 #' @return List containing type ("lef"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
-sample_lef <- function(func = NULL, params = NULL) {
-  if (is.null(func)) func <- get("rpert", asNamespace("mc2d")) else {
-    func_split <- stringi::stri_split_fixed(func, "::", simplify = TRUE)
+sample_lef <- function(n, .func = NULL, params = NULL) {
+  .func <- if (is.null(.func)) get("rpert", asNamespace("mc2d")) else {
+    func_split <- stringi::stri_split_fixed(.func, "::", simplify = TRUE)
     requireNamespace(func_split[1], quietly = TRUE)
-    func <- get(func_split[2], asNamespace(func_split[1]))
+    get(func_split[2], asNamespace(func_split[1]))
   }
 
-  dat <- purrr::invoke(func, params)
+  dat <- purrr::invoke(.func, n = n, params)
   list(type = "lef",
        samples = if (purrr::is_list(dat)) dat$samples else dat,
        details = if (purrr::is_list(dat)) dat$details else list()
@@ -177,9 +178,9 @@ get_mean_control_strength <- function(n, diff_parameters)  {
     diff_tbl <- x %>% dplyr::bind_rows() %>%
       tidyr::nest(-.data$func, .key = "params")
     # extract the parameters list from the tibble
-    params <- c(n = n, diff_tbl$params %>% unlist())
+    params <- diff_tbl$params %>% unlist()
     #generate the samples
-    sample_diff(func = diff_tbl$func, params = params)
+    sample_diff(.func = diff_tbl$func, n = n, params = params)
     }) %>% purrr::map("samples")
 
   # pivot the results so each list has 1 sample for each control
@@ -201,13 +202,15 @@ get_mean_control_strength <- function(n, diff_parameters)  {
 #'
 #' @param tef Threat event frequency (n).
 #' @param vuln Vulnerability (percentage).
+#' @param n Number of samples to generate.
 #' @return List containing samples (as a vector) and details (as a list).
 #' @export
 #' @family OpenFAIR helpers
 #' @examples
 #' compare_tef_vuln(tef = 500, vuln = .25)
-compare_tef_vuln <- function(tef, vuln) {
-  samples = tef * vuln
+compare_tef_vuln <- function(tef, vuln, n = NULL) {
+  samples <- tef * vuln
+  samples <- if (!is.null(n) && n <= length(samples)) samples[1:n] else samples
   list(samples = samples,
        details = list())
 }
@@ -220,6 +223,8 @@ compare_tef_vuln <- function(tef, vuln) {
 #'
 #' @param tc Threat capability (as a percentage).
 #' @param diff Difficulty (as a percentage).
+#' @param n Number of samples to generate.
+#' @param ... Optional parameters (currently ignored).
 #' @return List containing boolean values of length TC (as a vector) and details (as a list).
 #' @export
 #' @family OpenFAIR helpers
@@ -227,8 +232,9 @@ compare_tef_vuln <- function(tef, vuln) {
 #' threat_capabilities <- c(.1, .5, .9)
 #' difficulties <- c(.09, .6, .8)
 #' select_loss_opportunities(threat_capabilities, difficulties)
-select_loss_opportunities <- function(tc, diff) {
+select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
   samples <-  tc > diff
+  samples <- if (!is.null(n) && n <= length(samples)) samples[1:n] else samples
 
   # mean amount threat strength exceeds control strength, if that ever occurs
   tc_exceedance <- if (
@@ -290,8 +296,8 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
     # TEF - how many contacts do we have in each simulated period
     TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
       tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
-    params <- c(n = n, TEFestimate$params %>% unlist())
-    TEFsamples <- sample_tef(func = TEFestimate$func, params = params)
+    params <- TEFestimate$params %>% unlist()
+    TEFsamples <- sample_tef(n = n, .func = TEFestimate$func, params = params)
     TEFsamples <- TEFsamples$samples
 
     # TC - what is the strength of each threat event
@@ -300,8 +306,8 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
       tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
     #    - sample threat capability for each TEF event in each sample period
     TCsamples <- purrr::map(1:n, function(x) {
-      params <- c(n = TEFsamples[x], TCestimate$params %>% unlist())
-      sample_tc(func = TCestimate$func, params = params)
+      params <- TCestimate$params %>% unlist()
+      sample_tc(n = TEFsamples[x], .func = TCestimate$func, params = params)
       })
     # TCSamples is now a list of of the TC for each threat event
 
@@ -319,7 +325,8 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
 
     # LEF - determine how many threat events become losses (TC > DIFF)
     LEFsamples <- purrr::map(1:n, function(x) {
-      sample_lef(func = "evaluator::select_loss_opportunities",
+      sample_lef(n = length(TCsamples[[x]]$samples),
+                 .func = "evaluator::select_loss_opportunities",
                  params = list(tc = TCsamples[[x]]$samples,
                                diff = DIFFsamples[[x]]))
     })
@@ -332,8 +339,8 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
     LMestimate <- scenario$lm_params %>% purrr::flatten() %>%
       tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
     loss_samples <- purrr::map(LEFsamples, function(x) {
-      params <- c(n = x, LMestimate$params %>% unlist())
-      dat <- sample_lm(func = LMestimate$func, params = params)
+      params <- LMestimate$params %>% unlist()
+      dat <- sample_lm(n = x, .func = LMestimate$func, params = params)
       dat$samples <- sum(dat$samples)
       dat
       })

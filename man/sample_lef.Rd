@@ -4,12 +4,14 @@
 \alias{sample_lef}
 \title{Sample loss event frequency}
 \usage{
-sample_lef(func = NULL, params = NULL)
+sample_lef(n, .func = NULL, params = NULL)
 }
 \arguments{
-\item{func}{Function to use to simulate LEF, defaults to \code{\link[stats]{rnorm}}.}
+\item{n}{Number of samples to generate.}
 
-\item{params}{Optional parameters to pass to \code{func}}
+\item{.func}{Function to use to simulate LEF, defaults to \code{\link[stats]{rnorm}}.}
+
+\item{params}{Optional parameters to pass to \code{.func}.}
 }
 \value{
 List containing type ("lef"), samples (as a vector), and details (as a list).
