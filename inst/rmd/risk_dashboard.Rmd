@@ -76,7 +76,7 @@ flexdashboard::valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
 ### Minimum Expected Annual Losses
 
 ```{r ale_exceedance_valuebox}
-loss_exceedance <- quantile(filter(max_loss, outliers==FALSE)$max_loss, .2)
+loss_exceedance <- quantile(filter(max_loss, outliers == FALSE)$max_loss, .2)
 flexdashboard::valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
          caption = "Minimum Expected Annual Losses",
          color = ifelse(
@@ -131,15 +131,15 @@ sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
     select(-foo)
   
   # sum up the outliers
-  others <- filter(keep_nokeep, keep==FALSE) %>% 
-    left_join(dat, by="full_label") %>% 
+  others <- filter(keep_nokeep, keep == FALSE) %>% 
+    left_join(dat, by = "full_label") %>% 
     group_by(simulation) %>% summarize(ale = max(ale), scenario_count = n()) %>% 
     mutate(full_label = paste0("others (", scenario_count, ")")) %>% 
     mutate(cluster_id = cluster_hack)
   
   # combine the outliers with the top_n items
-  union_all(filter(keep_nokeep, keep==TRUE) %>% 
-              left_join(dat, by="full_label"), others)
+  union_all(filter(keep_nokeep, keep == TRUE) %>% 
+              left_join(dat, by = "full_label"), others)
 }
 
 # assign the text label to scenarios and order
@@ -162,17 +162,17 @@ dat <- group_by(dat, full_label) %>% filter(sum(ale) != 0) %>%
 text_labels <- c("High", "Medium", "Low")
 cluster_descriptions <- group_by(dat, cluster_id, full_label) %>% 
   summarize(ale = max(max_ale)) %>% 
-  summarise(highest_ale = max(ale), n=n()) %>% 
+  summarise(highest_ale = max(ale), n = n()) %>% 
   arrange(desc(highest_ale)) %>% 
-  mutate(cluster_labels=factor(text_labels, levels = text_labels),
+  mutate(cluster_labels = factor(text_labels, levels = text_labels),
          top_n = min(last(n), n))
 
 # roll up on a per-cluster basis, addng descriptive text to the cluster
 summed_dat <- group_by(dat, cluster_id) %>% 
-  left_join(cluster_descriptions, by="cluster_id") %>% 
-  do(sum_bottom_n(., top_n=max(.$top_n))) %>% 
+  left_join(cluster_descriptions, by = "cluster_id") %>% 
+  do(sum_bottom_n(., top_n = max(.$top_n))) %>% 
   select(-c(cluster_labels, n, top_n, highest_ale)) %>% 
-  left_join(cluster_descriptions, by="cluster_id") %>% 
+  left_join(cluster_descriptions, by = "cluster_id") %>% 
   ungroup
 
 summed_dat <- group_by(summed_dat, full_label) %>% mutate(ale_median = median(ale))
@@ -199,7 +199,7 @@ gg <- gg + guides(fill = FALSE)
 gg <- gg + labs(x = NULL, y = "Annual\nLoss") 
 gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major.x = element_line())
-gg <- gg + theme(panel.grid.minor.x = element_line(color="grey92"))
+gg <- gg + theme(panel.grid.minor.x = element_line(color = "grey92"))
 #gg <- gg + theme(panel.grid.major = element_blank())
 #gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 0))
@@ -232,7 +232,8 @@ top_n(scenario_summary, 5, ale_var) %>%
                               "domain_id" = "domain_id")) %>%
   mutate(ale_var = scales::dollar(ale_var), ale_median = scales::dollar(ale_median),
          full_label = paste(domain_id, scenario_id, sep = " - ")) %>% 
-  select("ID" = full_label, Scenario = scenario, 
+  select("ID" = full_label, Scenario = scenario_description, 
          "Median Annual Loss" = ale_median, "Value at Risk" = ale_var) %>% 
-  pander::pander(justify = c(rep("left", 2), rep("right", 2)), split.cells=c(12, rep(30, 3)))
+  pander::pander(justify = c(rep("left", 2), rep("right", 2)), 
+                 split.cells = c(12, rep(30, 3)))
 ```

@@ -4,7 +4,11 @@ library(future)
 plan(multiprocess)
 
 # read in and save domain mappings
-domains <- readr::read_csv(here::here("inst/extdata/domains.csv"))
+domains <- readr::read_csv(here::here("inst/extdata/domains.csv"),
+                           col_types = readr::cols(
+                             domain_id = readr::col_character(),
+                             domain = readr::col_character()
+                           ))
 usethis::use_data(domains, overwrite = TRUE)
 
 # read in capabilities
@@ -12,7 +16,14 @@ capabilities <- import_capabilities(domains = domains)
 usethis::use_data(capabilities, overwrite = TRUE)
 
 # read in mappings
-mappings <- readr::read_csv(here::here("inst/extdata/qualitative_mappings.csv"))
+mappings <- readr::read_csv(here::here("inst/extdata/qualitative_mappings.csv"),
+                            col_types = readr::cols(
+                              type = readr::col_character(),
+                              label = readr::col_character(),
+                              l = readr::col_double(),
+                              ml = readr::col_double(),
+                              h = readr::col_double(),
+                              conf = readr::col_double()))
 usethis::use_data(mappings, overwrite = TRUE)
 
 # read in and save qualitative scenarios
@@ -28,9 +39,9 @@ usethis::use_data(quantitative_scenarios, overwrite = TRUE)
 # run simulations and save results
 simulation_results <- quantitative_scenarios %>%
   mutate(results = furrr::future_map(scenario, run_simulations, simulation_count = 1000)) %>%
-  select(-c(scenario, controls, tcomm, scenario_text), scenario_id, domain_id, results) %>%
+  select(-c(scenario, controls, tcomm, scenario_description), scenario_id, domain_id, results) %>%
   unnest(results)
-simulation_results <- run_simulations(quantitative_scenarios, 1000L)
+#simulation_results <- run_simulations(quantitative_scenarios, 1000L)
 usethis::use_data(simulation_results, overwrite = TRUE)
 
 # calculate and save domain summary

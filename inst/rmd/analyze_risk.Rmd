@@ -109,8 +109,8 @@ domain_summary <- left_join(domain_summary, domains, by = "domain_id")
 
 ```{r enhance_summary_object}
 # assign loss tolerance to ALE VaR size
-scenario_summary <-
-  mutate(scenario_summary, annual_tolerance = ifelse(ale_var >= risk_tolerance["high"], 
+scenario_summary <- mutate(scenario_summary, 
+                           annual_tolerance = ifelse(ale_var >= risk_tolerance["high"], 
                                                      "High", 
                                                      ifelse(ale_var >= risk_tolerance["medium"], "Medium", "Low"))) %>% 
   mutate(annual_tolerance = factor(annual_tolerance, 
@@ -251,7 +251,7 @@ top_n(scenario_summary, 5, ale_var) %>%
                               "domain_id" = "domain_id")) %>%
   mutate(ale_var = dollar(ale_var), ale_median = dollar(ale_median),
          full_label = paste(domain_id, scenario_id, sep = " - ")) %>% 
-  select("Scenario ID" = full_label, Scenario = scenario, 
+  select("Scenario ID" = full_label, Scenario = scenario_description, 
          "Median Annual Loss" = ale_median, "Value at Risk" = ale_var) %>% 
   pander(justify = c(rep("left", 2), rep("right", 2)), 
          caption = "Top Five Scenarios by Value at Risk")
@@ -303,7 +303,7 @@ display_scenario_table <- function(scenario_summary, id) {
 
 ### Key Scenario A
 
-Scenario: `r filter(scenarios, scenario_id == focus_scenarios[1]) %>% select(scenario) %>% unlist %>% unname`
+Scenario: `r filter(scenarios, scenario_id == focus_scenarios[1]) %>% select(scenario_description) %>% unlist %>% unname`
 
 ```{r scenarioA_details, echo=FALSE}
 display_scenario_table(scenario_summary, focus_scenarios[1])
@@ -311,7 +311,7 @@ display_scenario_table(scenario_summary, focus_scenarios[1])
 
 ### Key Scenario B
 
-Scenario: `r filter(scenarios, scenario_id == focus_scenarios[2]) %>% select(scenario) %>% unlist %>% unname`
+Scenario: `r filter(scenarios, scenario_id == focus_scenarios[2]) %>% select(scenario_description) %>% unlist %>% unname`
 
 
 ```{r scenarioB_details, echo=FALSE}
@@ -330,15 +330,15 @@ display filtered data. The outlier scenarios are:
 ```{r show_outliers}
 filter(scenario_summary, outlier == TRUE) %>% 
   left_join(scenarios, by = c("domain_id" = "domain_id", "scenario_id" = "scenario_id")) %>% 
-  select(domain_id, scenario_id, scenario, ale_var, ale_median, ale_max) %>% 
+  select(domain_id, scenario_id, scenario_description, ale_var, ale_median, ale_max) %>% 
   arrange(desc(ale_var)) %>% 
   mutate(full_label = paste(domain_id, scenario_id, sep = " - ")) %>% 
   mutate_at(c("ale_var", "ale_median", "ale_max"), dollar) %>% 
-  select(full_label, scenario, ale_var, ale_median, ale_max) %>% 
-  rename("Scenario ID" = full_label, "Description" = scenario, 
+  select(full_label, scenario_description, ale_var, ale_median, ale_max) %>% 
+  rename("Scenario ID" = full_label, "Description" = scenario_description, 
          "Value at Risk" = ale_var,
          "Median" = ale_median, "Maximum" = ale_max) %>% 
-  pander(justify=c("left", "left", rep("right", 3)))
+  pander(justify = c("left", "left", rep("right", 3)))
 ```
 
 \newpage
@@ -562,15 +562,15 @@ gg <- gg + geom_lollipop(horizontal = TRUE, point.size = 3)
 #gg <- gg + geom_text(aes(label = dollar_millions(ale_var)), color = "black",  hjust=0)
 gg <- gg + scale_x_continuous(labels = dollar_millions)
 gg <- gg + scale_color_viridis(discrete = TRUE, drop = FALSE, 
-                               breaks=c("Low", "Medium", "High"))
+                               breaks = c("Low", "Medium", "High"))
 gg <- gg + guides(color = guide_legend(title = "Risk Tolerance", 
-                                       override.aes = list(size=5)))
+                                       override.aes = list(size = 5)))
 gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
 gg <- gg + theme(panel.grid.major.y = element_blank())
-gg <- gg + labs(x=NULL, y="Scenario ID",
-                title="Top Scenarios",
-                subtitle="Ranked by Value at Risk",
-                caption="Source: Evaluator toolkit")
+gg <- gg + labs(x = NULL, y = "Scenario ID",
+                title = "Top Scenarios",
+                subtitle = "Ranked by Value at Risk",
+                caption = "Source: Evaluator toolkit")
 gg
 
 ```
@@ -583,8 +583,8 @@ represents the median annual loss total for that scenario.
 gg <- ggplot(scenario_summary, aes(x = loss_events_median, y = sle_mean, 
                                    text = scenario_id))
 gg <- gg + geom_point(aes(color = annual_tolerance, size = ale_median))
-gg <- gg + geom_text(aes(label=ifelse(annual_tolerance %in% c("High", "Medium"), 
-                                      paste0(domain_id, " - ", scenario_id), '')), 
+gg <- gg + geom_text(aes(label = ifelse(annual_tolerance %in% c("High", "Medium"), 
+                                        paste0(domain_id, " - ", scenario_id), '')), 
                      hjust = "right", vjust = 0.5, nudge_x = -0.35, size = 3)
 gg <- gg + labs(title = "Loss Frequency vs. Magnitude",
            subtitle = "All Scenarios",
@@ -661,7 +661,7 @@ gg <- gg + labs(x = "Loss Events Per Year",
                 subtitle = "All Scenarios Included",
                 caption = "Source: Evaluator toolkit")
 gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
-gg <- gg + theme(strip.text.y = element_text(angle = 180, hjust=0))
+gg <- gg + theme(strip.text.y = element_text(angle = 180, hjust = 0))
 gg <- gg + theme(panel.grid.major = element_blank())
 gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.ticks.y = element_blank(),
@@ -689,8 +689,8 @@ loss_events_by_scenario %>% mutate(n_zscore = round(scale(n), 2)) %>%
   left_join(scenarios, by = c("scenario_id" = "scenario_id")) %>% 
   mutate("Scenario ID" = paste0(domain_id, " - ", scenario_id),
          "Mean Loss Events" = comma(round(`Loss Events`))) %>% 
-  select(`Scenario ID`, Scenario = scenario, `Mean Loss Events`, `Z-Score`) %>% 
-  pander(justify=c("left", "left", "right", "right"), 
+  select(`Scenario ID`, Scenario = scenario_description, `Mean Loss Events`, `Z-Score`) %>% 
+  pander(justify = c("left", "left", "right", "right"), 
          emphasize.strong.rows = which(.$`Z-Score` > 2), 
          caption = "Scenario Mean Loss Frequency")
 ```
@@ -745,7 +745,8 @@ where losses occur.
 
 gg <- simulation_results %>% filter(ale > 0) %>% 
   ggplot(., aes(x = as.character(scenario_id), y = ale))
-gg <- gg + facet_wrap(~domain_id, ncol = 4, scales = "free", strip.position = "top")
+gg <- gg + facet_wrap(vars(domain_id), ncol = 4, scales = "free", 
+                      strip.position = "top")
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.5)
 gg <- gg + geom_boxplot(fill = viridis(1), alpha = 1/3,
                         outlier.color = viridis(1), outlier.alpha = 1/3, 
@@ -920,8 +921,8 @@ gg <- ggplot(dat, aes(value))
 gg <- gg + geom_histogram(binwidth = max(gg$data$value) / 50, 
                           aes(y = ..density..),
                           color = "black", fill = viridis(2)[1], alpha = 1/5)
-gg <- gg + geom_density(fill=viridis(2)[2], alpha = 1/5)
-gg <- gg + facet_wrap(~measure, nrow=2, scales = "free_x", strip.position = "left", 
+gg <- gg + geom_density(fill = viridis(2)[2], alpha = 1/5)
+gg <- gg + facet_wrap(vars(measure), nrow = 2, scales = "free_x", strip.position = "left", 
                       labeller = as_labeller(measure_names))
 gg <- gg + scale_x_continuous(labels = dollar_millions)
 #gg <- gg + scale_y_continuous(labels = comma)
@@ -953,7 +954,7 @@ scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>%
   arrange(domain_id, scenario_id) %>% 
   mutate("Domain" = paste0(domain, " (", domain_id, ")")) %>% 
   select(Domain, "Scenario ID" = scenario_id, 
-         Scenario = scenario) %>% 
+         Scenario = scenario_description) %>% 
   pander(justify = c("left", "left", "left"), 
                  split.cells = c(35, 15, 40), 
                  caption = "Fragile Scenarios")

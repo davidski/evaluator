@@ -57,11 +57,11 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
                                 by = c("lm" = "label")) %>%
     dplyr::select(-.data$lm)
 
-  scenarios <- rename(scenarios, scenario_text = scenario)
+  scenarios <- dplyr::rename(scenarios, scenario_description = .data$scenario)
 
   scenarios <- dplyr::mutate(scenarios, scenario = purrr::pmap(
-    list(tef_params, tc_params, diff_params, lm_params), evaluator_scen)) %>%
-    select(-c(diff_params, tef_params, tc_params, lm_params))
+    list(.data$tef_params, .data$tc_params, .data$diff_params, .data$lm_params), evaluator_scen)) %>%
+    select(-c(.data$diff_params, .data$tef_params, .data$tc_params, .data$lm_params))
   scenarios
 }
 
@@ -73,12 +73,12 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #'   parameters.
 #'
 #' @importFrom dplyr left_join mutate_ select rename pull
-#' @importFrom rlang .data
+#' @importFrom rlang .data set_names
 #' @importFrom stringi stri_split_fixed
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
 #' @param capabilities Dataframe of master list of all qualitative capabilities.
 #' @param mappings Qualitative mappings dataframe.
-#' @return A dataframe of quantitative estimate parameters for the capabilities
+#' @return A named list of quantitative estimate parameters for the capabilities
 #'   applicable to a given scenario.
 #' @export
 #' @examples
@@ -105,7 +105,8 @@ derive_controls <- function(capability_ids, capabilities, mappings) {
     dplyr::rowwise() %>%
     dplyr::do(diff_params = list(min = .$l, mode = .$ml, max = .$h,
                                  shape = .$conf, func = "mc2d::rpert")) %>%
-    dplyr::pull()
+    dplyr::pull() %>%
+    rlang::set_names(nm = control_list$control_id)
 
   return(results)
 }

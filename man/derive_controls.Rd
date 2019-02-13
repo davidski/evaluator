@@ -14,7 +14,7 @@ derive_controls(capability_ids, capabilities, mappings)
 \item{mappings}{Qualitative mappings dataframe.}
 }
 \value{
-A dataframe of quantitative estimate parameters for the capabilities
+A named list of quantitative estimate parameters for the capabilities
 applicable to a given scenario.
 }
 \description{
