@@ -10,7 +10,7 @@ test_that("openfairExample() works", {
               message = "Cannot run shinytest without pandoc available.")
 
   # Not quite ready to turn this on in CI
-  skip_on_appveyor()
+  #skip_on_appveyor()
   #skip_on_travis()
 
   # Use compareImages=FALSE because the expected image screenshots were created
