@@ -17,5 +17,6 @@ test_that("openfairExample() works", {
   # on a Mac, and they will differ from screenshots taken on the CI platform,
   # which runs on Linux.
   appdir <- system.file(package = "evaluator", "openfair_example")
+
   expect_pass(testApp(appdir, compareImages = FALSE))
 })

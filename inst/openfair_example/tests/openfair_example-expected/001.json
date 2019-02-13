@@ -1,5 +1,6 @@
 {
   "input": {
+    "N": 100,
     "csconf": 2,
     "csh": 60,
     "csl": 40,
@@ -8,7 +9,6 @@
     "lmh": 10000,
     "lml": 100,
     "lmml": 500,
-    "N": 100,
     "runmodel": 1,
     "tcapconf": 1,
     "tcaph": 70,
