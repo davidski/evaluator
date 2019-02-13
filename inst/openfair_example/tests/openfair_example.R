@@ -9,7 +9,7 @@ Sys.sleep(0.5) # slow down input speed
 app$setInputs(tefml = 30)
 
 Sys.sleep(0.5) # slow down input speed
-app$setInputs(N = 100)
+app$setInputs(iterations = 100)
 
 Sys.sleep(0.5) # slow down input speed
 app$setInputs(tefl = 9)

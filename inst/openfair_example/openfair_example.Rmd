@@ -30,11 +30,11 @@ basefont <- get_base_fontfamily()
 
 values <- reactiveValues() 
 
-values$N <- 10000
+values$iterations <- 10000
 
 observeEvent(input$runmodel, {
 	
-	values$N <- input$N
+	values$iterations <- input$iterations
 
 	TEFestimate <- data.frame(L = input$tefl, ML = input$tefml, H = input$tefh,
 	                          CONF = input$tefconf)
@@ -49,11 +49,11 @@ observeEvent(input$runmodel, {
 	  return(sum(rpert(x, LMestimate$L, LMestimate$ML, LMestimate$H, 
 	                   shape = LMestimate$CONF) ))
 			}
-	TEFsamples <- rpert(values$N, TEFestimate$L, TEFestimate$ML, TEFestimate$H, 
+	TEFsamples <- rpert(values$iterations, TEFestimate$L, TEFestimate$ML, TEFestimate$H, 
 	                    shape = TEFestimate$CONF)
-	TCsamples <- rpert(values$N, TCestimate$L, TCestimate$ML, TCestimate$H, 
+	TCsamples <- rpert(values$iterations, TCestimate$L, TCestimate$ML, TCestimate$H, 
 	                   shape = TCestimate$CONF)
-	DIFFsamples <- rpert(values$N, DIFFestimate$L, DIFFestimate$ML, 
+	DIFFsamples <- rpert(values$iterations, DIFFestimate$L, DIFFestimate$ML, 
 	                     DIFFestimate$H, shape = DIFFestimate$CONF)
 	
 	VULNsamples <- TCsamples > DIFFsamples
@@ -124,7 +124,7 @@ fillRow(height = 50,
 ### Params {.no-title}
 
 ```{r}
-numericInput("N", "# Iterations:", 10000, min = 1000, max = 100000, step = 1000)
+numericInput("iterations", "# Iterations:", 10000, min = 1000, max = 100000, step = 1000)
 actionButton("runmodel", "Run Model")
 ```
 
@@ -196,9 +196,9 @@ renderPlot({
                               avoided = (length(VULNsamples) - 
                                            sum(VULNsamples)) / 
                                 length(VULNsamples))
-    gg <- ggplot(tidyr::gather(VULNsamples), aes(x=key, y=value)) + 
+    gg <- ggplot(tidyr::gather(VULNsamples), aes(x = key, y = value)) + 
       geom_col(fill = "steelblue") +
-      labs(x="Event Type", y="Percent") + 
+      labs(x = "Event Type", y = "Percent") + 
       scale_y_continuous(labels = scales::percent_format()) +
       theme_evaluator(base_family = evaluator::get_base_fontfamily())
     print(gg)

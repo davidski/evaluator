@@ -1,10 +1,10 @@
 {
   "input": {
-    "N": 100,
     "csconf": 2,
     "csh": 60,
     "csl": 40,
     "csml": 50,
+    "iterations": 100,
     "lmconf": 1,
     "lmh": 10000,
     "lml": 100,
@@ -21,7 +21,7 @@
   },
   "output": {
     "__reactivedoc__": {
-      "html": "[html data sha1: 1da06fdc41f3232db4c0d8c5d31bf9279d7dfbff]",
+      "html": "[html data sha1: 3eb07043b512af8e5912ef46a063063da9b9e4e8]",
       "deps": [
         {
           "name": "jquery",
