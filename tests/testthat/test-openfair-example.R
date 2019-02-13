@@ -6,6 +6,9 @@ test_that("openfairExample() works", {
   # Don't run these tests on the CRAN build servers
   skip_on_cran()
 
+  skip_if_not(rmarkdown::pandoc_available(),
+              message = "Cannot run shinytest without pandoc available.")
+
   # Not quite ready to turn this on in CI
   skip_on_appveyor()
   #skip_on_travis()
