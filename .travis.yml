@@ -4,6 +4,7 @@ sudo: false
 branches:
   only:
   - heroku
+  - dev
   - master
 cache:
   packages: true
