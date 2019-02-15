@@ -34,9 +34,10 @@
   
 <meta property="og:title" content="Import the scenario spreadsheet — import_spreadsheet" />
 
-<meta property="og:description" content="This is a wrapper function around import_scenarios and
-import_capabilities. When invoked, the output of both functions
-are written to disk." />
+<meta property="og:description" content="This is a convenience wrapper around the import_scenarios and
+import_capabilities functions. Writes cleaned
+comma-separated formatted files for the scenarios and
+capabilities to disk." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -77,7 +78,7 @@ are written to disk." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.900</span>
       </span>
     </div>
 
@@ -148,9 +149,10 @@ are written to disk." />
 
     <div class="ref-description">
     
-    <p>This is a wrapper function around <code><a href='import_scenarios.html'>import_scenarios</a></code> and
-<code><a href='import_capabilities.html'>import_capabilities</a></code>. When invoked, the output of both functions
-are written to disk.</p>
+    <p>This is a convenience wrapper around the <code><a href='import_scenarios.html'>import_scenarios</a></code> and
+<code><a href='import_capabilities.html'>import_capabilities</a></code> functions. Writes cleaned
+comma-separated formatted files for the scenarios and
+capabilities to disk.</p>
     
     </div>
 
@@ -163,7 +165,7 @@ are written to disk.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>survey_file</th>
-      <td><p>Path to survey XLSX file. Defaults to an Evaluator-provided sample spreadsheet.</p></td>
+      <td><p>Path to survey Excel file. Defaults to an Evaluator-provided sample spreadsheet.</p></td>
     </tr>
     <tr>
       <th>domains</th>
@@ -171,14 +173,13 @@ are written to disk.</p>
     </tr>
     <tr>
       <th>output_dir</th>
-      <td><p>Output file directory. Defaults to a <code>data</code>
-subdirectory in the current working directory.</p></td>
+      <td><p>Output file directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Dataframe of generated files (capabilities.csv and scenarios.csv)</p>
+    <p>Dataframe of file information on the two newly created files.</p>
     
 
   </div>

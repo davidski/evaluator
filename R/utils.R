@@ -41,6 +41,26 @@ dollar_millions <- function(x) {
   paste0("$", x, "M")
 }
 
+#' Unnest a summarized results dataframe, adding outlier information
+#'
+#' Given a summarized results dataframe, unnest the summary results
+#' column and use the value at risk (VaR) column to identify all the
+#' elements that are outliers (having a VaR >= two standard deviations)
+#'
+#' @param results Scenario summary results
+#' @importFrom dplyr mutate
+#' @importFrom tidyr unnest
+#' @export
+#' @examples
+#' data(scenario_summary)
+#' identify_outliers(scenario_summary)
+identify_outliers <- function(results) {
+ results %>% tidyr::unnest(summary) %>%
+    dplyr::mutate(ale_var_zscore = scale(.data$ale_var),
+                  outlier = .data$ale_var_zscore >= 2)
+}
+
+
 #' Calculate maximum losses
 #'
 #' Calculate the biggest single annual loss for each scenario, as well as
@@ -48,6 +68,7 @@ dollar_millions <- function(x) {
 #'   with and without outliers (if passed) are returned.
 #'
 #' @importFrom dplyr filter group_by summarize ungroup union
+#' @importFrom tidyr unnest
 #' @importFrom rlang .data
 #' @param simulation_results Simulation results dataframe.
 #' @param scenario_outliers Optional vector of IDs of outlier scenarios.
@@ -62,7 +83,7 @@ dollar_millions <- function(x) {
 #' data(simulation_results)
 #' calculate_max_losses(simulation_results)
 calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
-  max_loss <- simulation_results %>%
+  max_loss <- tidyr::unnest(simulation_results, .data$results) %>%
     dplyr::filter(!.data$scenario_id %in% scenario_outliers) %>%
     dplyr::group_by(.data$simulation) %>%
     dplyr::summarize(biggest_single_scenario_loss = max(.data$ale),
@@ -72,7 +93,7 @@ calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
   # if we're not passed any outliers, don't bother calculating outliers
   if (is.null(scenario_outliers)) return(max_loss)
 
-  max_loss_w_outliers <- simulation_results %>%
+  max_loss_w_outliers <- tidyr::unnest(simulation_results) %>%
     dplyr::group_by(.data$simulation) %>%
     dplyr::summarize(biggest_single_scenario_loss = max(.data$ale),
                       min_loss = min(.data$ale),

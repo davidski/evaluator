@@ -77,7 +77,7 @@ is a useful data structure for aggregate reporting." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.900</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ is a useful data structure for aggregate reporting.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>summarize_domains</span>(<span class='no'>simulation_results</span>)</pre>
+    <pre class="usage"><span class='fu'>summarize_domains</span>(<span class='no'>simulation_results</span>, <span class='kw'>domain_variable</span> <span class='kw'>=</span> <span class='st'>"domain_id"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,11 +163,15 @@ is a useful data structure for aggregate reporting.</p>
       <th>simulation_results</th>
       <td><p>Simulation results dataframe.</p></td>
     </tr>
+    <tr>
+      <th>domain_variable</th>
+      <td><p>Variable by which individual simulatons should be grouped.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Simulation results summarized by domain</p>
+    <p>Simulation results summarized across domains.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 

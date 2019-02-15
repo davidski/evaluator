@@ -43,6 +43,7 @@ reference:
     contents:
       - compare_tef_vuln
       - get_mean_control_strength
+      - identify_outliers
       - openfair_tef_tc_diff_lm
       - run_simulations
       - starts_with("sample")

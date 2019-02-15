@@ -79,7 +79,7 @@ translation table from qualitative labels to quantitative parameters
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.900</span>
       </span>
     </div>
 
@@ -188,20 +188,20 @@ translation table from qualitative labels to quantitative parameters
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>qualitative_scenarios</span>, <span class='no'>capabilities</span>, <span class='no'>mappings</span>)
-<span class='fu'>encode_scenarios</span>(<span class='no'>qualitative_scenarios</span>, <span class='no'>capabilities</span>, <span class='no'>mappings</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 56 x 9</span><span>
-#&gt;    scenario_id scenario tcomm domain_id controls diff_params tef_params
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1           Inadequ… Orga… ORG       1, 5, 7… </span><span style='color: #949494;'>&lt;list [7]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 10          Interna… Orga… COMP      8, 13    </span><span style='color: #949494;'>&lt;list [2]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 11          Externa… Exte… COMP      8, 13    </span><span style='color: #949494;'>&lt;list [2]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 12          Externa… Exte… COMP      8, 13    </span><span style='color: #949494;'>&lt;list [2]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 13          Inabili… Orga… RISK      17, 18,… </span><span style='color: #949494;'>&lt;list [4]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 14          Lack of… Orga… RISK      17, 18,… </span><span style='color: #949494;'>&lt;list [4]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 15          Inabili… Exte… RISK      17, 18,… </span><span style='color: #949494;'>&lt;list [4]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 16          Securit… Orga… RISK      17, 18,… </span><span style='color: #949494;'>&lt;list [4]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 17          Interna… Orga… PRI       21, 22,… </span><span style='color: #949494;'>&lt;list [4]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 18          Systemi… Exte… PRI       21, 22,… </span><span style='color: #949494;'>&lt;list [4]&gt;</span><span>  </span><span style='color: #949494;'>&lt;list [5]&gt;</span><span>
-#&gt; </span><span style='color: #949494;'># … with 46 more rows, and 2 more variables: tc_params </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, lm_params </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
+<span class='fu'>encode_scenarios</span>(<span class='no'>qualitative_scenarios</span>, <span class='no'>capabilities</span>, <span class='no'>mappings</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 56 x 6</span><span>
+#&gt;    scenario_id scenario_description      tcomm    domain_id controls   scenario 
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1           Inadequate human resourc… Organiz… ORG       1, 5, 7, … </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 10          Internal workforce membe… Organiz… COMP      8, 13      </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 11          External attackers locat… Externa… COMP      8, 13      </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 12          External auditors find c… Externa… COMP      8, 13      </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 13          Inability to accurately … Organiz… RISK      17, 18, 1… </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 14          Lack of risk management … Organiz… RISK      17, 18, 1… </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 15          Inability to understand … Externa… RISK      17, 18, 1… </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 16          Security failure or inst… Organiz… RISK      17, 18, 1… </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 17          Internal user inappropri… Organiz… PRI       21, 22, 2… </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 18          Systemic noncompliance w… Externa… PRI       21, 22, 2… </span><span style='color: #949494;'>&lt;S3: eva</span><span>…
+#&gt; </span><span style='color: #949494;'># … with 46 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate sample analysis report — generate_report • evaluator</title>
+<title>Unnest a summarized results dataframe, adding outlier information — identify_outliers • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,13 +32,11 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Generate sample analysis report — generate_report" />
+<meta property="og:title" content="Unnest a summarized results dataframe, adding outlier information — identify_outliers" />
 
-<meta property="og:description" content="Given a set of input files and summarized simulation results, create a
-skeleton risk analysis report. This report attempts to summarize the results
-of the analysis at a top level, using 95
-metric, while also providing more detailed analysis at both a per-domain and
-per-scenario level." />
+<meta property="og:description" content="Given a summarized results dataframe, unnest the summary results
+column and use the value at risk (VaR) column to identify all the
+elements that are outliers (having a VaR &amp;gt;= two standard deviations)" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -143,92 +141,57 @@ per-scenario level." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate sample analysis report</h1>
+    <h1>Unnest a summarized results dataframe, adding outlier information</h1>
     
-    <div class="hidden name"><code>generate_report.Rd</code></div>
+    <div class="hidden name"><code>identify_outliers.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Given a set of input files and summarized simulation results, create a
-skeleton risk analysis report. This report attempts to summarize the results
-of the analysis at a top level, using 95<!-- % Value at Risk (VaR) as the primary -->
-metric, while also providing more detailed analysis at both a per-domain and
-per-scenario level.</p>
+    <p>Given a summarized results dataframe, unnest the summary results
+column and use the value at risk (VaR) column to identify all the
+elements that are outliers (having a VaR &gt;= two standard deviations)</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>generate_report</span>(<span class='kw'>input_directory</span> <span class='kw'>=</span> <span class='st'>"~/evaluator/inputs"</span>,
-  <span class='kw'>results_directory</span> <span class='kw'>=</span> <span class='st'>"~/evaluator/results"</span>, <span class='no'>output_file</span>,
-  <span class='kw'>styles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>focus_scenario_ids</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>51</span>, <span class='fl'>12</span>), <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"html"</span>,
-  <span class='kw'>intermediates_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>identify_outliers</span>(<span class='no'>results</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>input_directory</th>
-      <td><p>Location of input files.</p></td>
-    </tr>
-    <tr>
-      <th>results_directory</th>
-      <td><p>Location of simulation results.</p></td>
-    </tr>
-    <tr>
-      <th>output_file</th>
-      <td><p>Full path to output file.</p></td>
-    </tr>
-    <tr>
-      <th>styles</th>
-      <td><p>Optional full path to CSS file to override default styles.</p></td>
-    </tr>
-    <tr>
-      <th>focus_scenario_ids</th>
-      <td><p>IDs of scenarios of special interest.</p></td>
-    </tr>
-    <tr>
-      <th>format</th>
-      <td><p>Format to generate (html, pdf, word).</p></td>
-    </tr>
-    <tr>
-      <th>intermediates_dir</th>
-      <td><p>Location for intermediate knit files.</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p>TRUE to suppress printing of pandoc output.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Any other parameters to pass straight to <code><a href='https://www.rdocumentation.org/packages/rmarkdown/topics/render'>rmarkdown::render</a></code>.</p></td>
+      <th>results</th>
+      <td><p>Scenario summary results</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Default return values of the <code><a href='https://www.rdocumentation.org/packages/rmarkdown/topics/render'>rmarkdown::render</a></code> function.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This report includes several sections where an analyst will need to modify and
-fill in details for their specific organization. Of particular note is the
-Recommendations section, which will always need to be updated.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>generate_report</span>(<span class='st'>"~/inputs"</span>, <span class='st'>"~/results"</span>, <span class='st'>"~/risk_report.html"</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>scenario_summary</span>)
+<span class='fu'>identify_outliers</span>(<span class='no'>scenario_summary</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 56 x 19</span><span>
+#&gt;    scenario_id domain_id results loss_events_mean loss_events_med…
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1           ORG       </span><span style='color: #949494;'>&lt;tibbl</span><span>…           7.52                  7
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 10          COMP      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           1.94                  2
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 11          COMP      </span><span style='color: #949494;'>&lt;tibbl</span><span>…          24.6                  24
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 12          COMP      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0.078</span><span style='text-decoration: underline;'>1</span><span>                0
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 13          RISK      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0                     0
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 14          RISK      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0.812                 1
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 15          RISK      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0                     0
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 16          RISK      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0                     0
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 17          PRI       </span><span style='color: #949494;'>&lt;tibbl</span><span>…           1                     1
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 18          PRI       </span><span style='color: #949494;'>&lt;tibbl</span><span>…           1.51                  1
+#&gt; </span><span style='color: #949494;'># … with 46 more rows, and 14 more variables: loss_events_min </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
+#&gt; #   loss_events_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_var </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
+#&gt; #   sle_mean </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_min </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
+#&gt; #   mean_tc_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_diff_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_vuln </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
+#&gt; #   ale_var_zscore[,1] </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, outlier[,1] </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -2,12 +2,14 @@
 % Please edit documentation in R/summarize.R
 \name{summarize_simulations}
 \alias{summarize_simulations}
-\title{Create simulation-level summary of simulation results}
+\title{Create a summary of outcomes across scenarios}
 \usage{
-summarize_simulations(simulation_results)
+summarize_simulations(simulation_results, ...)
 }
 \arguments{
 \item{simulation_results}{Simulation results dataframe.}
+
+\item{...}{Additional simulation results to summarize.}
 }
 \value{
 Dataframe.
@@ -28,5 +30,5 @@ Summary stats created include:
 }
 \examples{
 data(simulation_results)
-summarize_scenarios(simulation_results)
+summarize_simulations(simulation_results$results)
 }

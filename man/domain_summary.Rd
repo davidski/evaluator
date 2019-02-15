@@ -4,7 +4,7 @@
 \name{domain_summary}
 \alias{domain_summary}
 \title{Domain-level risk summary}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 14 rows and 13 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 14 rows and 2 columns.}
 \usage{
 domain_summary
 }

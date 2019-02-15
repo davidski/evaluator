@@ -33,17 +33,25 @@ results_directory <- params$results_directory
 
 ```{r load_data, echo = FALSE, message = FALSE}
 dat <- read_quantitative_inputs(input_directory)
-simulation_results <- readRDS(file.path(results_directory, "simulation_results.Rds"))
-scenario_summary <- summarize_scenarios(simulation_results)
+
+simulation_results_new <- readRDS(file.path(results_directory, "simulation_results.Rds"))
+simulation_results <- simulation_results_new
+
+scenario_summary_new <- mutate(simulation_results_new, summary = map(results, summarize_scenario)) 
+scenario_summary <- unnest(scenario_summary_new, summary, .drop = TRUE)
+
+scenario_outliers <- identify_outliers(scenario_summary_new) %>% 
+  filter(outlier == TRUE) %>% pull(scenario_id)
 
 domains <- dat$domains
-domain_summary <- summarize_domains(simulation_results) %>% 
+domain_summary_new <- summarize_domains(simulation_results_new)
+domain_summary <- domain_summary_new %>% unnest() %>% 
   left_join(domains, by = "domain_id")
+simulation_results <- unnest(simulation_results_new, results) %>% 
+  mutate(outlier = scenario_id %in% scenario_outliers)
 
 risk_tolerances <- dat$risk_tolerances
 scenarios <- dat$quantitative_scenarios
-
-scenario_outliers <- filter(scenario_summary, outlier == TRUE) %>% pull(scenario_id)
 ```
 
 ```{r font_detection}
@@ -51,7 +59,7 @@ basefont <- get_base_fontfamily()
 ```
 
 ```{r calculate_max_losses}
-max_loss <- calculate_max_losses(simulation_results, scenario_outliers)
+max_loss <- calculate_max_losses(simulation_results_new, scenario_outliers)
 ```
 
 Risk Dashboard
@@ -103,7 +111,7 @@ Domain Summary {data-height=150}
 ### Domain Heatmap {.no-padding}
 
 ```{r display, fig.width=15, fig.height=1}
-gg <- generate_heatmap(domain_summary)
+gg <- generate_heatmap(domain_summary_new)
 # modify the base plot for displaying on the dashboard
 gg <- gg + labs(title = NULL, caption = NULL)
 gg <- gg + theme(legend.position = "right")

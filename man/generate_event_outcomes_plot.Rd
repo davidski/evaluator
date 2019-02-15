@@ -5,10 +5,12 @@
 \title{Display the distribution of threat events contained vs. realized across
 all domains}
 \usage{
-generate_event_outcomes_plot(domain_summary)
+generate_event_outcomes_plot(domain_summary, domain_id = domain_id)
 }
 \arguments{
 \item{domain_summary}{Domain-level summary from \code{domain_summary}.}
+
+\item{domain_id}{Variable to group plot by.}
 }
 \value{
 ggplot object.

@@ -54,6 +54,7 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #' generate_heatmap(domain_summary)
 generate_heatmap <- function(domain_summary) {
   dat <- domain_summary %>% dplyr::arrange(.data$domain_id) %>%
+    unnest(.data$summary) %>%
     dplyr::mutate(full_label = paste0(.data$domain_id, "\n",
                                       "$", round(.data$ale_var/10^6), "M"),
                    aux = seq(1, 2 * nrow(.), by = 2))
@@ -87,17 +88,18 @@ generate_heatmap <- function(domain_summary) {
 #' @export
 #' @examples
 #' data(simulation_results)
-#' generate_scatterplot(simulation_results, scenario_id = 50)
+#' generate_scatterplot(simulation_results, scenario_id = "50")
 generate_scatterplot <- function(simulation_results, scenario_id){
-  dat <- simulation_results[simulation_results$scenario_id == scenario_id, ]
+  all_results <- unnest(simulation_results, .data$results)
+  dat <- all_results[all_results$scenario_id == scenario_id, ]
 
-  gg <- ggplot(dat, aes_(x = quote(loss_events), y = quote(ale)))
+  gg <- ggplot(dat, aes(x = .data$loss_events, y = .data$ale))
   gg <- gg + geom_point(alpha = 1/4)
   gg <- gg + scale_y_continuous(labels = dollar_millions,
-                                limits = c(NA, max(simulation_results$ale,
+                                limits = c(NA, max(all_results$ale,
                                                    na.rm = TRUE)))
   gg <- gg + scale_x_continuous(labels = scales::comma,
-                                limits = c(NA, max(simulation_results$loss_events,
+                                limits = c(NA, max(all_results$loss_events,
                                                    na.rm = TRUE)))
   gg <- gg + labs(x = "Loss Frequency (Annualized)", y = "Total Annual Loss Size")
   gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
@@ -118,17 +120,20 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' @importFrom tidyr gather
 #' @importFrom rlang .data
 #' @param domain_summary Domain-level summary from \code{domain_summary}.
+#' @param domain_id Variable to group plot by.
 #' @return ggplot object.
 #' @export
 #' @examples
 #' data(domain_summary)
 #' generate_event_outcomes_plot(domain_summary)
-generate_event_outcomes_plot <- function(domain_summary) {
-  dat <- domain_summary %>%
+generate_event_outcomes_plot <- function(domain_summary, domain_id = domain_id) {
+  domain_id <- rlang::ensym(domain_id)
+  all_domains <- unnest(domain_summary, summary)
+  dat <- all_domains %>%
     dplyr::arrange(dplyr::desc(.data$mean_loss_events),
                    dplyr::desc(.data$mean_threat_events)) %>%
-    dplyr::mutate(domain_id = factor(.data$domain_id,
-                                     levels = rev(unique(.data$domain_id)),
+    dplyr::mutate(domain_id = factor(!!domain_id,
+                                     levels = rev(unique(!!domain_id)),
                                      ordered = TRUE)) %>%
     dplyr::mutate(contained_events = .data$mean_threat_events - .data$mean_loss_events)
 
@@ -153,13 +158,13 @@ generate_event_outcomes_plot <- function(domain_summary) {
   event_range <- range(dat$events) * c(1.4, 1.5)
 
   # graph
-  gg <- ggplot(dat, aes_(x = ~events, xend = 0, y = ~domain_id)) -> gg
-  gg <- gg + geom_segment(aes_(yend = ~domain_id), color = viridis::viridis(1))
+  gg <- ggplot(dat, aes(x = .data$events, xend = 0, y = !!domain_id)) -> gg
+  gg <- gg + geom_segment(aes(yend = !!domain_id), color = viridis::viridis(1))
   gg <- gg + geom_point(color = viridis::viridis(1), size = 2)
-  gg <- gg + geom_label(aes_(label = ~full_lab, x = ~events + nudge,
-                             y = ~domain_id, hjust = ~hjust),
+  gg <- gg + geom_label(aes(label = .data$full_lab, x = .data$events + .data$nudge,
+                             y = !!domain_id, hjust = .data$hjust),
                         size = 3, label.size = NA)
-  gg <- gg + geom_label(aes_(x = 0, y = ~domain_id, label = ~domain_id),
+  gg <- gg + geom_label(aes(x = 0, y = !!domain_id, label = !!domain_id),
                         size = 3, label.size = NA)
   gg <- gg + scale_x_continuous(breaks = c(break_locations[1], 0, break_locations[2]),
                                 labels = c("Loss Events", "Domain", "Contained Events"),

@@ -22,5 +22,5 @@ scenario.
 }
 \examples{
 data(simulation_results)
-generate_scatterplot(simulation_results, scenario_id = 50)
+generate_scatterplot(simulation_results, scenario_id = "50")
 }

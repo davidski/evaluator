@@ -77,7 +77,7 @@ than the difficulty (DIFF)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.900</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ than the difficulty (DIFF).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>select_loss_opportunities</span>(<span class='no'>tc</span>, <span class='no'>diff</span>)</pre>
+    <pre class="usage"><span class='fu'>select_loss_opportunities</span>(<span class='no'>tc</span>, <span class='no'>diff</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,6 +166,14 @@ than the difficulty (DIFF).</p>
     <tr>
       <th>diff</th>
       <td><p>Difficulty (as a percentage).</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>Number of samples to generate.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Optional parameters (currently ignored).</p></td>
     </tr>
     </table>
     

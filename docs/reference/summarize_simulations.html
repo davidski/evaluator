@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create simulation-level summary of simulation results — summarize_simulations • evaluator</title>
+<title>Create a summary of outcomes across scenarios — summarize_simulations • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Create simulation-level summary of simulation results — summarize_simulations" />
+<meta property="og:title" content="Create a summary of outcomes across scenarios — summarize_simulations" />
 
 <meta property="og:description" content="Given a dataframe of raw results from run_simulations, summarize
 the individual results at a per-simulation level." />
@@ -76,7 +76,7 @@ the individual results at a per-simulation level." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.900</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@ the individual results at a per-simulation level." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create simulation-level summary of simulation results</h1>
+    <h1>Create a summary of outcomes across scenarios</h1>
     
     <div class="hidden name"><code>summarize_simulations.Rd</code></div>
     </div>
@@ -152,7 +152,7 @@ the individual results at a per-simulation level.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>summarize_simulations</span>(<span class='no'>simulation_results</span>)</pre>
+    <pre class="usage"><span class='fu'>summarize_simulations</span>(<span class='no'>simulation_results</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,6 +160,10 @@ the individual results at a per-simulation level.</p>
     <tr>
       <th>simulation_results</th>
       <td><p>Simulation results dataframe.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional simulation results to summarize.</p></td>
     </tr>
     </table>
     
@@ -181,24 +185,21 @@ the individual results at a per-simulation level.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>simulation_results</span>)
-<span class='fu'><a href='summarize_scenarios.html'>summarize_scenarios</a></span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 56 x 18</span><span>
-#&gt;    domain_id scenario_id loss_events_mean loss_events_min loss_events_max
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> AC        48                     0                   0               0
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> AC        51                     6.12                1              12
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> ADM       56                     0.672               0               1
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> ASSET     45                     6.12                1              12
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> ASSET     46                     0.672               0               1
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> ASSET     47                     1                   1               1
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> BC        31                     0                   0               0
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> BC        55                     0.656               0               1
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> COMP      10                     1.94                0               8
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> COMP      11                    24.6                 9              47
-#&gt; </span><span style='color: #949494;'># … with 46 more rows, and 13 more variables: loss_events_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   ale_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_var </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_mean </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   sle_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_min </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_tc_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   mean_diff_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_vuln </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_var_zscore[,1] </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   outlier[,1] </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div></span></pre>
+<span class='fu'>summarize_simulations</span>(<span class='no'>simulation_results</span>$<span class='no'>results</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,000 x 11</span><span>
+#&gt;    simulation largest_single_… min_loss max_loss outliers ale_sum loss_events
+#&gt;         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>          1         2</span><span style='text-decoration: underline;'>721</span><span>058.        0   1.26</span><span style='color: #949494;'>e</span><span>7 TRUE      1.26</span><span style='color: #949494;'>e</span><span>7         203
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>          2         3</span><span style='text-decoration: underline;'>137</span><span>768.        0   1.42</span><span style='color: #949494;'>e</span><span>7 TRUE      1.42</span><span style='color: #949494;'>e</span><span>7         219
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>          3         2</span><span style='text-decoration: underline;'>937</span><span>112.        0   1.38</span><span style='color: #949494;'>e</span><span>7 TRUE      1.38</span><span style='color: #949494;'>e</span><span>7         219
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>          4         2</span><span style='text-decoration: underline;'>142</span><span>845.        0   9.29</span><span style='color: #949494;'>e</span><span>6 TRUE      9.29</span><span style='color: #949494;'>e</span><span>6         136
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>          5         2</span><span style='text-decoration: underline;'>610</span><span>111.        0   1.02</span><span style='color: #949494;'>e</span><span>7 TRUE      1.02</span><span style='color: #949494;'>e</span><span>7         157
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>          6         3</span><span style='text-decoration: underline;'>734</span><span>973.        0   1.72</span><span style='color: #949494;'>e</span><span>7 TRUE      1.72</span><span style='color: #949494;'>e</span><span>7         242
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>          7         3</span><span style='text-decoration: underline;'>812</span><span>536.        0   1.82</span><span style='color: #949494;'>e</span><span>7 TRUE      1.82</span><span style='color: #949494;'>e</span><span>7         253
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>          8         3</span><span style='text-decoration: underline;'>705</span><span>607.        0   1.65</span><span style='color: #949494;'>e</span><span>7 TRUE      1.65</span><span style='color: #949494;'>e</span><span>7         252
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>          9         3</span><span style='text-decoration: underline;'>888</span><span>987.        0   1.92</span><span style='color: #949494;'>e</span><span>7 TRUE      1.92</span><span style='color: #949494;'>e</span><span>7         288
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>         10         2</span><span style='text-decoration: underline;'>440</span><span>504.        0   1.15</span><span style='color: #949494;'>e</span><span>7 TRUE      1.15</span><span style='color: #949494;'>e</span><span>7         190
+#&gt; </span><span style='color: #949494;'># … with 990 more rows, and 4 more variables: threat_events </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,
+#&gt; #   avoided_events </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, mean_tc_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_diff_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

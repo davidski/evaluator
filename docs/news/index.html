@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.900</span>
       </span>
     </div>
 
@@ -140,6 +140,16 @@
       
     </div>
 
+    <div id="evaluator-032900-unreleased" class="section level1">
+<h1 class="page-header">
+<a href="#evaluator-032900-unreleased" class="anchor"></a>evaluator 0.3.2.900 (unreleased)<small> Unreleased </small>
+</h1>
+<ul>
+<li>New development round</li>
+<li>Re-export the pipe operator <code>%&gt;%</code>
+</li>
+</ul>
+</div>
     <div id="evaluator-032" class="section level1">
 <h1 class="page-header">
 <a href="#evaluator-032" class="anchor"></a>evaluator 0.3.2<small> 2019-02-05 </small>
@@ -209,7 +219,7 @@
 <li>
 <code><a href="../reference/select_loss_opportunities.html">select_loss_opportunities()</a></code> properly returns an NA for the threat &amp; difficulty exceedance calculations when there are no threat events in a given simulated period.</li>
 <li>
-<code><a href="../reference/summarize_scenarios.html">summarize_scenarios()</a></code> - correctly handles scenarios in which no threat events occur in a given simulation. This bug was limited to <code>mean_tc_exceedance</code>. For previously run simulations, re-summarizing the <code>scenario_results</code> will generate corrected values.</li>
+<code>summarize_scenarios()</code> - correctly handles scenarios in which no threat events occur in a given simulation. This bug was limited to <code>mean_tc_exceedance</code>. For previously run simulations, re-summarizing the <code>scenario_results</code> will generate corrected values.</li>
 <li>
 <code><a href="../reference/calculate_max_losses.html">calculate_max_losses()</a></code> - no longer returns a duplicate set of results if not passed any outliers.</li>
 </ul>
@@ -409,6 +419,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#evaluator-032900-unreleased">0.3.2.900</a></li>
         <li><a href="#evaluator-032">0.3.2</a></li>
         <li><a href="#evaluator-031">0.3.1</a></li>
         <li><a href="#evaluator-030">0.3.0</a></li>

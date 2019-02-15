@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample threat capabilities (TC) from a distribution function — sample_tc • evaluator</title>
+<title>Pipe operator — %&gt;% • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,9 +32,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Sample threat capabilities (TC) from a distribution function — sample_tc" />
+<meta property="og:title" content="Pipe operator — %&gt;%" />
 
-<meta property="og:description" content="Sample threat capabilities (TC) from a distribution function" />
+<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -139,61 +139,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sample threat capabilities (TC) from a distribution function</h1>
+    <h1>Pipe operator</h1>
     
-    <div class="hidden name"><code>sample_tc.Rd</code></div>
+    <div class="hidden name"><code>pipe.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Sample threat capabilities (TC) from a distribution function</p>
+    <p>See <code>magrittr::%&gt;%</code> for details.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>sample_tc</span>(<span class='no'>n</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.func</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>n</th>
-      <td><p>Number of samples to generate.</p></td>
-    </tr>
-    <tr>
-      <th>params</th>
-      <td><p>Optional parameters to pass to <code>.func</code>.</p></td>
-    </tr>
-    <tr>
-      <th>.func</th>
-      <td><p>Function to use to simulate TC, defaults to <code><a href='https://www.rdocumentation.org/packages/mc2d/topics/pert'>rpert</a></code>.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>List containing type ("tc"), samples (as a vector), and details (as a list).</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other OpenFAIR helpers: <code><a href='compare_tef_vuln.html'>compare_tef_vuln</a></code>,
-  <code><a href='get_mean_control_strength.html'>get_mean_control_strength</a></code>,
-  <code><a href='openfair_tef_tc_diff_lm.html'>openfair_tef_tc_diff_lm</a></code>,
-  <code><a href='sample_diff.html'>sample_diff</a></code>, <code><a href='sample_lef.html'>sample_lef</a></code>,
-  <code><a href='sample_lm.html'>sample_lm</a></code>, <code><a href='sample_tef.html'>sample_tef</a></code>,
-  <code><a href='sample_vuln.html'>sample_vuln</a></code>,
-  <code><a href='select_loss_opportunities.html'>select_loss_opportunities</a></code></p></div>
-    
+    <pre class="usage"><span class='no'>lhs</span> <span class='kw'>%&gt;%</span> <span class='no'>rhs</span></pre>
+        
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

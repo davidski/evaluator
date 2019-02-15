@@ -34,6 +34,9 @@
     <loc>https://evaluator.severski.net/reference/evaluator.html</loc>
   </url>
   <url>
+    <loc>https://evaluator.severski.net/reference/evaluator_elem.html</loc>
+  </url>
+  <url>
     <loc>https://evaluator.severski.net/reference/explore_scenarios.html</loc>
   </url>
   <url>
@@ -55,6 +58,9 @@
     <loc>https://evaluator.severski.net/reference/get_mean_control_strength.html</loc>
   </url>
   <url>
+    <loc>https://evaluator.severski.net/reference/identify_outliers.html</loc>
+  </url>
+  <url>
     <loc>https://evaluator.severski.net/reference/import_capabilities.html</loc>
   </url>
   <url>
@@ -70,10 +76,16 @@
     <loc>https://evaluator.severski.net/reference/mappings.html</loc>
   </url>
   <url>
+    <loc>https://evaluator.severski.net/reference/new_evaluator_scen.html</loc>
+  </url>
+  <url>
     <loc>https://evaluator.severski.net/reference/openfair_example.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/openfair_tef_tc_diff_lm.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/pipe.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/qualitative_scenarios.html</loc>
@@ -86,6 +98,9 @@
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/risk_dashboard.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/risk_factory.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/run_simulations.html</loc>
@@ -124,7 +139,7 @@
     <loc>https://evaluator.severski.net/reference/summarize_domains.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/summarize_scenarios.html</loc>
+    <loc>https://evaluator.severski.net/reference/summarize_scenario.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/summarize_simulations.html</loc>

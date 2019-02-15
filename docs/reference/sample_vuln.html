@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">evaluator</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.900</span>
       </span>
     </div>
 
@@ -150,18 +150,22 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>sample_vuln</span>(<span class='kw'>func</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>sample_vuln</span>(<span class='no'>n</span>, <span class='kw'>.func</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>func</th>
+      <th>n</th>
+      <td><p>Number of samples to generate.</p></td>
+    </tr>
+    <tr>
+      <th>.func</th>
       <td><p>Function to use to simulate VULN, defaults to <code><a href='https://www.rdocumentation.org/packages/stats/topics/Binomial'>rbinom</a></code>.</p></td>
     </tr>
     <tr>
       <th>params</th>
-      <td><p>Optional parameters to pass to <code>func</code>.</p></td>
+      <td><p>Optional parameters to pass to <code>.func</code>.</p></td>
     </tr>
     </table>
     

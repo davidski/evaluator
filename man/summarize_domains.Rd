@@ -4,13 +4,15 @@
 \alias{summarize_domains}
 \title{Create domain-level summary of simulation results}
 \usage{
-summarize_domains(simulation_results)
+summarize_domains(simulation_results, domain_variable = "domain_id")
 }
 \arguments{
 \item{simulation_results}{Simulation results dataframe.}
+
+\item{domain_variable}{Variable by which individual simulatons should be grouped.}
 }
 \value{
-Simulation results summarized by domain
+Simulation results summarized across domains.
 }
 \description{
 Given a dataframe of raw results from \code{\link{run_simulations}}, summarize

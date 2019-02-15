@@ -70,15 +70,25 @@ results_directory <- params$results_directory
 dat <- read_quantitative_inputs(input_directory)
 
 simulation_results <- readRDS(file.path(results_directory, "simulation_results.Rds"))
-scenario_summary <- summarize_scenarios(simulation_results)
-domain_summary <- summarize_domains(simulation_results)
+scenario_summary <- mutate(simulation_results, summary = map(results, summarize_scenario)) 
+scenario_outliers <- identify_outliers(scenario_summary) %>% 
+  filter(outlier == TRUE) %>% pull(scenario_id)
+scenario_summary <- scenario_summary %>% unnest(.data$summary, .drop = TRUE) %>% 
+  mutate(outlier = scenario_id %in% scenario_outliers)
+
+domain_summary_new <- summarize_domains(simulation_results)
+domain_summary <- tidyr::unnest(domain_summary)
+
+max_loss <- calculate_max_losses(simulation_results, scenario_outliers)
+
+simulation_results <- unnest(simulation_results)
 
 capabilities <- readr::read_csv(file.path(input_directory, "capabilities.csv"),
                                 col_types = readr::cols(.default = readr::col_character()))
 
 domains <- dat$domains
 risk_tolerances <- dat$risk_tolerances
-scenario_outliers <- filter(scenario_summary, outlier == TRUE) %>% pull(scenario_id)
+
 scenarios <- dat$quantitative_scenarios
 
 qualitative_scenarios <- readr::read_csv(file.path(
@@ -121,7 +131,6 @@ scenario_outliers <- scenario_summary[which(scenario_summary$outlier == TRUE),
 ```
 
 ```{r calculate_max_losses}
-max_loss <- calculate_max_losses(simulation_results, scenario_outliers)
 ```
 
 # Summary
@@ -236,7 +245,7 @@ distribution of loss vs. contained events, and the average amount of control
 strength gap/surplus is displayed below.
 
 ```{r events_contained_vs_losses}
-generate_event_outcomes_plot(domain_summary)
+generate_event_outcomes_plot(domain_summary_new)
 ```
 
 ## Top Risk Scenarios
@@ -774,7 +783,7 @@ profile.
 Heatmap of Value at Risk by domain.
 
 ```{r domain_heatmap, fig.asp=.33, fig.width=6.5, fig.cap = "Domain VaR Heatmap"}
-generate_heatmap(domain_summary)
+generate_heatmap(domain_summary_new)
 ```
 
 This figure shows the range of expected annual losses by domain.
