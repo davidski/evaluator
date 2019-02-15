@@ -488,12 +488,14 @@ Loss Magnitudes represent the economic impact when a loss event occurs. Types
 of losses include fines, response costs (notification & ID theft monitoring), 
 increased audit scrutiny, restoration costs, etc. Instead of modeling different 
 loss types (formally defined as primary and secondary losses), this 
-analysis takes a simplified approach. An absolute upper bound of $4.8 
-million for any single loss event is derived from the largest known HIPAA fine.
+analysis takes a simplified approach. An absolute upper bound of $16 
+million for any single loss event is derived from the largest known HIPAA fine[^1].
 
 ```{r loss_magnitudes_table}
 create_table("Loss Magnitudes", "lm")
 ```
+
+[^1]: https://www.hhs.gov/hipaa/for-professionals/compliance-enforcement/agreements/anthem/index.html
 
 \newpage
 # Recommendations
