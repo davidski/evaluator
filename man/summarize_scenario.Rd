@@ -2,9 +2,12 @@
 % Please edit documentation in R/summarize.R
 \name{summarize_scenario}
 \alias{summarize_scenario}
+\alias{summarize_scenarios}
 \title{Create a summary of the simulation results for a single scenario}
 \usage{
 summarize_scenario(simulation_results)
+
+summarize_scenarios(simulation_results)
 }
 \arguments{
 \item{simulation_results}{Simulation results dataframe.}
@@ -31,7 +34,6 @@ Summary stats created include:
 data(simulation_results)
 # summarize a single scenario
 summarize_scenario(simulation_results[[1, "results"]])
-
-# summarize all scenarios in a results frame
-dplyr::mutate(simulation_results, summary = purrr::map(results, summarize_scenario))
+data(simulation_results)
+summarize_scenarios(simulation_results)
 }

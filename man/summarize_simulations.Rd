@@ -4,12 +4,14 @@
 \alias{summarize_simulations}
 \title{Create a summary of outcomes across scenarios}
 \usage{
-summarize_simulations(simulation_results, ...)
+summarize_simulations(simulation_results, ..., .key = "simulation")
 }
 \arguments{
 \item{simulation_results}{Simulation results dataframe.}
 
 \item{...}{Additional simulation results to summarize.}
+
+\item{.key}{Simulation ID field}
 }
 \value{
 Dataframe.

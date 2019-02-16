@@ -24,8 +24,6 @@
 #' # summarize a single scenario
 #' summarize_scenario(simulation_results[[1, "results"]])
 #'
-#' # summarize all scenarios in a results frame
-#' dplyr::mutate(simulation_results, summary = purrr::map(results, summarize_scenario))
 summarize_scenario <- function(simulation_results) {
   scenario_summary <- simulation_results %>%
     dplyr::mutate(avoided_events = .data$threat_events - .data$loss_events) %>%
@@ -54,6 +52,18 @@ summarize_scenario <- function(simulation_results) {
   scenario_summary
 }
 
+#' @export
+#' @importFrom purrr map
+#' @importFrom dplyr mutate
+#' @rdname summarize_scenario
+#' @examples
+#' # summarize all scenarios in a data frame
+#' data(simulation_results)
+#' summarize_scenarios(simulation_results)
+summarize_scenarios <- function(simulation_results) {
+  dplyr::mutate(simulation_results, summary = purrr::map(results, summarize_scenario))
+}
+
 #' Create a summary of outcomes across scenarios
 #'
 #' Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
@@ -70,16 +80,19 @@ summarize_scenario <- function(simulation_results) {
 #'
 #' @importFrom dplyr bind_rows group_by summarize
 #' @importFrom purrr every
-#' @importFrom rlang .data
+#' @importFrom rlang .data ensym
 #' @importFrom stats median
 #' @param simulation_results Simulation results dataframe.
 #' @param ... Additional simulation results to summarize.
+#' @param .key Simulation ID field
 #' @export
 #' @return Dataframe.
 #' @examples
 #' data(simulation_results)
 #' summarize_simulations(simulation_results$results)
-summarize_simulations <- function(simulation_results, ...) {
+summarize_simulations <- function(simulation_results, ..., .key = "simulation") {
+
+  key <- rlang::ensym(.key)
 
   dots <- list(...)
   if (!purrr::every(dots, is.data.frame)) stop("All inputs must be data frames.")
@@ -87,7 +100,7 @@ summarize_simulations <- function(simulation_results, ...) {
   result_list <- dplyr::bind_rows(simulation_results, ...)
 
   result_list %>%
-    dplyr::group_by(.data$simulation) %>%
+    dplyr::group_by(!!key) %>%
     dplyr::summarize(largest_single_scenario_loss = max(.data$ale),
                      min_loss = min(.data$ale),
                      max_loss = sum(.data$ale),
@@ -120,7 +133,7 @@ summarize_simulations <- function(simulation_results, ...) {
 #'
 #' @importFrom dplyr group_by mutate summarize select
 #' @importFrom purrr map
-#' @importFrom rlang .data quo
+#' @importFrom rlang .data ensym
 #' @importFrom stats sd quantile
 #' @param simulation_results Simulation results dataframe.
 #' @param domain_variable Variable by which individual simulatons should be grouped.
