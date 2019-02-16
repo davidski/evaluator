@@ -41,3 +41,16 @@ test_that("Control Encoding", {
   expect_named(dat, c("1", "7"))
   expect_equal(length(dat), 2)
 })
+
+test_that("Control ID Mappings", {
+  capability_ids <- "1, 7"
+  capabilities <- data.frame(capability_id = c(1L, 5L, 7L, 32L, 14L, 15L, 16L),
+                             domain_id = c("ORG", "ORG", "ORG", "ORG", "ORG", "ORG", "ORG"),
+                             capability = c("Capability 1.",  "Capability 5.", "Capability 7.", "Capability 32.", "Capability 14.", "Capability 15.", "Capability 16."),
+                             diff = c("5 - Optimized", "4 - Managed", "1 - Initial", "4 - Managed", "4 - Managed", "2 - Repeatable", "2 - Repeatable"),
+                             stringsAsFactors = FALSE)
+  dat <- derive_control_key(capability_ids, capabilities)
+  expect_type(dat, "list")
+  expect_named(dat, c("1", "7"))
+  expect_equal(length(dat), 2)
+})

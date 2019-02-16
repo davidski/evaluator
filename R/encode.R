@@ -24,6 +24,11 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
                              ~derive_controls(capability_ids = .x,
                                               capabilities = capabilities,
                                               mappings = mappings))
+  scenarios$control_descriptions <- purrr::map(scenarios$controls,
+                                               ~derive_control_key(capability_ids = .x,
+                                                                   capabilities = capabilities))
+  scenarios <- dplyr::select(scenarios, -c(.data$controls))
+
   # fetch TEF params
   tef_nested <- dplyr::filter(mappings, .data$type == "tef") %>%
     dplyr::rowwise() %>%
@@ -65,6 +70,37 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   scenarios
 }
 
+#' Derive control ID to control description mappings.
+#'
+#' Given a comma-separated list of control IDs, return a named list
+#'   of descriptions for each control with the names set to the control
+#'   IDs.
+#'
+#' @importFrom dplyr filter select
+#' @importFrom rlang .data set_names as_list
+#' @importFrom stringi stri_split_fixed
+#' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
+#' @param capabilities Dataframe of master list of all qualitative capabilities.
+#' @param mappings Qualitative mappings dataframe.
+#' @return A named list of control IDs and descriptions.
+#' @export
+#' @examples
+#' data(capabilities)
+#' capability_ids <- c("1, 3")
+#' derive_control_key(capability_ids, capabilities)
+derive_control_key <- function(capability_ids, capabilities) {
+  control_list <- stringi::stri_split_fixed(capability_ids, ", ") %>% unlist()
+
+  control_frame <- dplyr::filter(capabilities, .data$capability_id %in% control_list) %>%
+    dplyr::select(.data$capability_id, .data$capability)
+
+  rlang::as_list(control_frame$capability) %>%
+    rlang::set_names(control_frame$capability_id)
+
+}
+
+
+#'
 #' Derive control difficulty parameters for a given qualitative scenario
 #'
 #' Given a comma-separated list of control IDs in a scenario, identify
@@ -72,7 +108,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #'   their quantitative parameters, and return a dataframe of the set of
 #'   parameters.
 #'
-#' @importFrom dplyr left_join mutate_ select rename pull
+#' @importFrom dplyr left_join mutate select rename pull
 #' @importFrom rlang .data set_names
 #' @importFrom stringi stri_split_fixed
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
