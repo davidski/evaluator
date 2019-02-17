@@ -56,7 +56,7 @@ dollar_millions <- function(x) {
 #' identify_outliers(scenario_summary)
 identify_outliers <- function(results) {
  results %>% tidyr::unnest(summary) %>%
-    dplyr::mutate(ale_var_zscore = scale(.data$ale_var),
+    dplyr::mutate(ale_var_zscore = as.vector(scale(.data$ale_var)),
                   outlier = .data$ale_var_zscore >= 2)
 }
 
