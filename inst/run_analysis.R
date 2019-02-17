@@ -55,8 +55,7 @@ save(simulation_results, file = file.path(results_dir, "simulation_results.rda")
 
 # Summarize ---------------------------------------------------------------
 message("Summarizing results...")
-summarize_to_disk(simulation_results = simulation_results,
-                  domains = domains, results_dir)
+summarize_to_disk(simulation_results = simulation_results, results_dir)
 
 # Report ---------------------------------------------------------------
 message("Generating reports...")
