@@ -34,6 +34,8 @@ Summary stats created include:
 data(simulation_results)
 # summarize a single scenario
 summarize_scenario(simulation_results[[1, "results"]])
+
+# summarize all scenarios in a data frame
 data(simulation_results)
 summarize_scenarios(simulation_results)
 }

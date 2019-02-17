@@ -55,13 +55,14 @@ summarize_scenario <- function(simulation_results) {
 #' @export
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
+#' @importFrom rlang .data
 #' @rdname summarize_scenario
 #' @examples
 #' # summarize all scenarios in a data frame
 #' data(simulation_results)
 #' summarize_scenarios(simulation_results)
 summarize_scenarios <- function(simulation_results) {
-  dplyr::mutate(simulation_results, summary = purrr::map(results, summarize_scenario))
+  dplyr::mutate(simulation_results, summary = purrr::map(.data$results, summarize_scenario))
 }
 
 #' Create a summary of outcomes across scenarios
@@ -136,7 +137,7 @@ summarize_simulations <- function(simulation_results, ..., .key = "simulation") 
 #' @importFrom rlang .data ensym
 #' @importFrom stats sd quantile
 #' @param simulation_results Simulation results dataframe.
-#' @param domain_variable Variable by which individual simulatons should be grouped.
+#' @param domain_variable Variable by which individual simulations should be grouped.
 #' @export
 #' @return Simulation results summarized across domains.
 #' @examples

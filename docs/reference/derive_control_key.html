@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Unnest a summarized results dataframe, adding outlier information — identify_outliers • evaluator</title>
+<title>Derive control ID to control description mappings. — derive_control_key • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,11 +32,11 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Unnest a summarized results dataframe, adding outlier information — identify_outliers" />
+<meta property="og:title" content="Derive control ID to control description mappings. — derive_control_key" />
 
-<meta property="og:description" content="Given a summarized results dataframe, unnest the summary results
-column and use the value at risk (VaR) column to identify all the
-elements that are outliers (having a VaR &amp;gt;= two standard deviations)" />
+<meta property="og:description" content="Given a comma-separated list of control IDs, return a named list
+of descriptions for each control with the names set to the control
+IDs." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -141,57 +141,56 @@ elements that are outliers (having a VaR &amp;gt;= two standard deviations)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Unnest a summarized results dataframe, adding outlier information</h1>
+    <h1>Derive control ID to control description mappings.</h1>
     
-    <div class="hidden name"><code>identify_outliers.Rd</code></div>
+    <div class="hidden name"><code>derive_control_key.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Given a summarized results dataframe, unnest the summary results
-column and use the value at risk (VaR) column to identify all the
-elements that are outliers (having a VaR &gt;= two standard deviations)</p>
+    <p>Given a comma-separated list of control IDs, return a named list
+of descriptions for each control with the names set to the control
+IDs.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>identify_outliers</span>(<span class='no'>results</span>)</pre>
+    <pre class="usage"><span class='fu'>derive_control_key</span>(<span class='no'>capability_ids</span>, <span class='no'>capabilities</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>results</th>
-      <td><p>Scenario summary results</p></td>
+      <th>capability_ids</th>
+      <td><p>Comma-delimited list of capabilities in scope for a scenario.</p></td>
+    </tr>
+    <tr>
+      <th>capabilities</th>
+      <td><p>Dataframe of master list of all qualitative capabilities.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A named list of control IDs and descriptions.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>scenario_summary</span>)
-<span class='fu'>identify_outliers</span>(<span class='no'>scenario_summary</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 56 x 19</span><span>
-#&gt;    scenario_id domain_id results loss_events_mean loss_events_med…
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1           ORG       </span><span style='color: #949494;'>&lt;tibbl</span><span>…           7.52                  7
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 10          COMP      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           1.94                  2
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 11          COMP      </span><span style='color: #949494;'>&lt;tibbl</span><span>…          24.6                  24
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 12          COMP      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0.078</span><span style='text-decoration: underline;'>1</span><span>                0
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 13          RISK      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0                     0
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 14          RISK      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0.812                 1
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 15          RISK      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0                     0
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 16          RISK      </span><span style='color: #949494;'>&lt;tibbl</span><span>…           0                     0
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 17          PRI       </span><span style='color: #949494;'>&lt;tibbl</span><span>…           1                     1
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 18          PRI       </span><span style='color: #949494;'>&lt;tibbl</span><span>…           1.51                  1
-#&gt; </span><span style='color: #949494;'># … with 46 more rows, and 14 more variables: loss_events_min </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   loss_events_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_var </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   sle_mean </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_min </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   mean_tc_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_diff_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_vuln </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   ale_var_zscore </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, outlier </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div></span></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>capabilities</span>)
+<span class='no'>capability_ids</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1, 3"</span>)
+<span class='fu'>derive_control_key</span>(<span class='no'>capability_ids</span>, <span class='no'>capabilities</span>)</div><div class='output co'>#&gt; $`1`
+#&gt; [1] "A senior-level committee provides dedicated oversight for privacy and information security activities."
+#&gt; 
+#&gt; $`3`
+#&gt; [1] "Delegated authority is established for incident response."
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

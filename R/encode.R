@@ -81,7 +81,6 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' @importFrom stringi stri_split_fixed
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
 #' @param capabilities Dataframe of master list of all qualitative capabilities.
-#' @param mappings Qualitative mappings dataframe.
 #' @return A named list of control IDs and descriptions.
 #' @export
 #' @examples

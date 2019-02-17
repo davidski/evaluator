@@ -156,7 +156,9 @@ are rarely directly helpful).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>summarize_scenario</span>(<span class='no'>simulation_results</span>)</pre>
+    <pre class="usage"><span class='fu'>summarize_scenario</span>(<span class='no'>simulation_results</span>)
+
+<span class='fu'>summarize_scenarios</span>(<span class='no'>simulation_results</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,8 +194,9 @@ are rarely directly helpful).</p>
 #&gt; </span><span style='color: #949494;'># … with 9 more variables: ale_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, ale_var </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_mean </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
 #&gt; #   sle_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_min </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_tc_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
 #&gt; #   mean_diff_exceedance </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, mean_vuln </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
-<span class='co'># summarize all scenarios in a results frame</span>
-<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='no'>simulation_results</span>, <span class='kw'>summary</span> <span class='kw'>=</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span>(<span class='no'>results</span>, <span class='no'>summarize_scenario</span>))</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 56 x 4</span><span>
+<span class='co'># summarize all scenarios in a data frame</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>simulation_results</span>)
+<span class='fu'>summarize_scenarios</span>(<span class='no'>simulation_results</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 56 x 4</span><span>
 #&gt;    scenario_id domain_id results               summary          
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>           
 #&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1           ORG       </span><span style='color: #949494;'>&lt;tibble [1,000 × 11]&gt;</span><span> </span><span style='color: #949494;'>&lt;tibble [1 × 14]&gt;</span><span>

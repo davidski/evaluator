@@ -2,7 +2,7 @@
 % Please edit documentation in R/encode.R
 \name{derive_control_key}
 \alias{derive_control_key}
-\title{Derive control difficulty parameters for a given qualitative scenario}
+\title{Derive control ID to control description mappings.}
 \usage{
 derive_control_key(capability_ids, capabilities)
 }
@@ -10,18 +10,14 @@ derive_control_key(capability_ids, capabilities)
 \item{capability_ids}{Comma-delimited list of capabilities in scope for a scenario.}
 
 \item{capabilities}{Dataframe of master list of all qualitative capabilities.}
-
-\item{mappings}{Qualitative mappings dataframe.}
 }
 \value{
-A named list of quantitative estimate parameters for the capabilities
-applicable to a given scenario.
+A named list of control IDs and descriptions.
 }
 \description{
-Given a comma-separated list of control IDs in a scenario, identify
-the qualitative rankings associated with each scenario, convert to
-their quantitative parameters, and return a dataframe of the set of
-parameters.
+Given a comma-separated list of control IDs, return a named list
+of descriptions for each control with the names set to the control
+IDs.
 }
 \examples{
 data(capabilities)

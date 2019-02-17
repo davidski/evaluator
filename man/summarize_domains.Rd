@@ -9,7 +9,7 @@ summarize_domains(simulation_results, domain_variable = "domain_id")
 \arguments{
 \item{simulation_results}{Simulation results dataframe.}
 
-\item{domain_variable}{Variable by which individual simulatons should be grouped.}
+\item{domain_variable}{Variable by which individual simulations should be grouped.}
 }
 \value{
 Simulation results summarized across domains.
