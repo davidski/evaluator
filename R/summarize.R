@@ -182,8 +182,6 @@ summarize_domains <- function(simulation_results, domain_variable = "domain_id")
 #'   \code{\link{summarize_domains}}, calling both functions and writing the
 #'   dataframes to a location on disk.
 #'
-#' @importFrom dplyr mutate
-#' @importFrom purrr map
 #' @importFrom rlang .data
 #' @importFrom tibble rownames_to_column as_tibble
 #' @param simulation_results Simulation results dataframe.
@@ -199,8 +197,7 @@ summarize_domains <- function(simulation_results, domain_variable = "domain_id")
 summarize_to_disk <- function(simulation_results, results_dir = "~/results") {
   if (!dir.exists(results_dir)) dir.create(results_dir)
 
-  scenario_summary <- dplyr::mutate(simulation_results,
-                             summary = purrr::map(.data$results, summarize_scenario))
+  scenario_summary <- summarize_scenarios(simulation_results)
   save(scenario_summary, file = file.path(results_dir, "scenario_summary.rda"))
 
   domain_summary <- summarize_domains(simulation_results)
