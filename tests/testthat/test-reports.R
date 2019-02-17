@@ -15,8 +15,6 @@ save(domain_summary, file = file.path(tmpdata, "domain_summary.rda"))
 res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
   purrr::map(~ file.copy(system.file("extdata", .x, package = "evaluator"),
                          tmpinputs))
-data("capabilities", envir = environment())
-readr::write_csv(capabilities, file.path(tmpinputs, "capabilities.csv"))
 data("qualitative_scenarios", envir = environment())
 readr::write_csv(qualitative_scenarios, file.path(tmpinputs, "qualitative_scenarios.csv"))
 data("quantitative_scenarios", envir = environment())
@@ -27,7 +25,7 @@ test_that("Analyze report renders", {
 
   skip_if_not(rmarkdown::pandoc_available(),
               message = "Cannot test report generation without pandoc available.")
-  purrr::walk(c("psych", "pander", "purrrlyr", "ggalt", "rmarkdown"),
+  purrr::walk(c("psych", "pander", "ggalt", "rmarkdown"),
               ~ skip_if_not_installed(.))
 
   file <- tempfile(fileext = ".html")
@@ -39,19 +37,6 @@ test_that("Analyze report renders", {
   expect_equivalent(normalizePath(result$result), normalizePath(file))
   unlink(file)
 })
-
-
-# test_that("Scenario Explorer launches", {
-#   expect_is(explore_scenarios(input_directory = tmpinputs,
-#                               results_directory = tmpdata,
-#                               shiny_args = list(launch.browser = FALSE)),
-#                               "shiny.appobj")
-# })
-
-# test_that("OpenFAIR Example launches", {
-#   expect_is(openfair_example(shiny_args = list(launch.browser = FALSE)),
-#             "shiny.appobj")
-# })
 
 test_that("Risk Dashboard renders", {
 
