@@ -32,21 +32,21 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests:
     spelling,
-  DT,
-  pander (>= 0.6.1),
-  psych,
-  ggalt (>= 0.4.0),
-  flexdashboard (>= 0.4),
-  forcats,
-  statip,
-  knitr,
-  rmarkdown (>= 1.9),
-  shiny,
-  testthat,
-  shinytest,
-  EnvStats,
-  covr,
-  mockery
+    DT,
+    pander (>= 0.6.1),
+    psych,
+    ggalt (>= 0.4.0),
+    flexdashboard (>= 0.4),
+    forcats,
+    statip,
+    knitr,
+    rmarkdown (>= 1.9),
+    shiny,
+    testthat,
+    shinytest,
+    EnvStats,
+    covr,
+    mockery
 SystemRequirements: pandoc
 VignetteBuilder: knitr
 URL: https://evaluator.severski.net

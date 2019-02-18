@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select a base graphics font family — get_base_fontfamily • evaluator</title>
+<title>Load input and results files — load_data-deprecated • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,10 +32,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Select a base graphics font family — get_base_fontfamily" />
+<meta property="og:title" content="Load input and results files — load_data-deprecated" />
 
-<meta property="og:description" content="The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
-If neither font is available, use a default sans family font." />
+<meta property="og:description" content="Given an input directory and a directory of simulation results, load all
+of the key Evaluator data objects into memory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,33 +140,55 @@ If neither font is available, use a default sans family font." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select a base graphics font family</h1>
+    <h1>Load input and results files</h1>
     
-    <div class="hidden name"><code>get_base_fontfamily.Rd</code></div>
+    <div class="hidden name"><code>load_data-deprecated.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
-If neither font is available, use a default <code>sans</code> family font.</p>
+    <p>Given an input directory and a directory of simulation results, load all
+of the key Evaluator data objects into memory.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_base_fontfamily</span>()</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>input_directory</th>
+      <td><p>Location of input files.</p></td>
+    </tr>
+    <tr>
+      <th>results_directory</th>
+      <td><p>Location of simulation results.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>String of the preferred base font.</p>
+    <p>List of all key data objects.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='evaluator-deprecated.html'>evaluator-deprecated</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>get_base_fontfamily</span>()</div><div class='output co'>#&gt; [1] "BentonSansRE"</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='evaluator-deprecated.html'>load_data</a></span>(<span class='st'>"~/evaluator/inputs"</span>, <span class='st'>"~/evaluator/results"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

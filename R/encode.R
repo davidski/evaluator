@@ -70,7 +70,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   scenarios
 }
 
-#' Derive control ID to control description mappings.
+#' Derive control ID to control description mappings
 #'
 #' Given a comma-separated list of control IDs, return a named list
 #'   of descriptions for each control with the names set to the control

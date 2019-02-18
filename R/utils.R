@@ -7,7 +7,7 @@
 #'
 #' @return Invisible
 #' @noRd
-#' @examples
+#' @keywords internal
 #' \dontrun{
 #' check_availability(packages = c("ggplot2", "dplyr"), func = "my_function")
 #' }

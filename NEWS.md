@@ -1,6 +1,27 @@
 # evaluator 0.3.2.900 (unreleased)
 
-* New development round
+This release includes a greatly improved flow for starting directly from 
+quantitative inputs. While the spreadsheet import is still supported, users 
+that have increased their maturity can create `evaluator_scen` objects that 
+contain their initial quantitative inputs. These users may also use 
+[collector](https://collector.severski.net) to work with quantitative data.
+
+## New Feature
+* New `read_qualitative_inputs()` function
+* New `evaluator_scen` object for containing the elements of a risk scenario for simulation.
+* New `summarize_scenario()` function creates summary for a single scenario's results. 
+  - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
+
+## Improvements
+* Scenario Explorer application reworked to operate with quantitative data only.
+* Removed all remaining uses to SE forms of dplyr verbs.
+* Removed use of soft deprecated ggplot `aes_()` functions.
+* Clean up CSS for HTML reports, improving style consistency, particularly around font family consistency.
+* Increase test coverage, including moving more shinytest tests to run on CI instances and package spelling tests.
+* Update default Risk Report and sample mapping files to reference the new maximum OCR fine (SLE) from the Anthem breach.
+
+## Other Changes
+* `load_data()` deprecated. Use `read_qualitative_inputs()` or `read_quantitative_inputs()` as appropriate.
 * Re-export the pipe operator `%>%`
 
 # evaluator 0.3.2

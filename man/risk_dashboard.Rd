@@ -19,7 +19,7 @@ risk_dashboard(input_directory = "~/evaluator/inputs",
 
 \item{quiet}{TRUE to suppress printing of pandoc output.}
 
-\item{...}{Any other parameters to pass straight to \code{rmarkdown::render}}
+\item{...}{Any other parameters to pass to \code{rmarkdown::render}}
 }
 \value{
 Default return values of the \code{rmarkdown::render} function.

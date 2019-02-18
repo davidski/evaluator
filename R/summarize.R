@@ -130,7 +130,6 @@ summarize_simulations <- function(simulation_results, ..., .key = "simulation") 
 #'   * Mean percentage of threat capability exceeding difficulty on successful threat events
 #'   * Mean percentage of difficulty exceeding threat capability on defended events
 #'   * Vulnerability percentage
-#'   * Z-score of ALE (outliers flagged as 2 >= z-score)
 #'
 #' @importFrom dplyr group_by mutate summarize select
 #' @importFrom purrr map

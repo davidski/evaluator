@@ -14,15 +14,12 @@ describing the distribution of each input.
 }
 \details{
 \describe{
-\item{scenario}{full text description of the risk scenario}
 \item{scenario_id}{id of the scenario, primary key}
-\item{tcomm}{full text name of threat community}
-\item{domain_id}{domain abbreviation}
-\item{controls}{comma separated list of control ids that apply to this scenario}
-\item{diff_params}{nested dataframe of the controls and difficulty parameters associated with the scenario}
-\item{tef_params}{list of the threat expected frequency parameters}
-\item{tc_params}{list of the threat capability parameters}
-\item{lm_params}{list of the loss magnitude parameters}
+\item{scenario_description}{full text description of the risk scenario}
+\item{tcomm}{description of the threat community}
+\item{domain_id}{domain id}
+\item{control_descriptons}{named list of the text description of controls involved}
+\item{scenario}{\code{\link{evaluator_scen}} objects}
 }
 }
 \keyword{datasets}

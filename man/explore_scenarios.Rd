@@ -19,7 +19,7 @@ explore_scenarios(input_directory = "~/evaluator/inputs",
 
 \item{quiet}{TRUE to suppress printing of pandoc output.}
 
-\item{...}{Any other parameters to pass straight to \code{rmarkdown::run}.}
+\item{...}{Any other parameters to pass to \code{rmarkdown::run}.}
 }
 \value{
 Invisible NULL.

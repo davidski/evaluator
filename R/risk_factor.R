@@ -6,7 +6,6 @@
 #' @name evaluator_elem
 NULL
 
-#' @export
 #' @rdname evaluator_elem
 new_evaluator_elem <- function(samples = vector(), factor_label = character(),
                                details = list()) {
@@ -19,13 +18,11 @@ new_evaluator_elem <- function(samples = vector(), factor_label = character(),
             class = c("evaluator_elem", "list"))
 }
 
-#' @export
 #' @rdname evaluator_elem
 evaluator_elem <- function(samples, factor_label, details = list()) {
   new_evaluator_elem(samples, factor_label, details)
 }
 
-#' @export
 #' @importFrom cli cat_line cat_bullet cat_rule cat_print
 #' @importFrom crayon bold
 #' @importFrom purrr walk2
@@ -45,12 +42,11 @@ print.evaluator_elem <- function(x, ...) {
   invisible(x)
 }
 
-#' @export
 summary.evaluator_elem <- function(object, ...) {
   samples <- object$samples
   switch(object$factor_label,
          LM = {
-           if (length(samples) == 0 | sum(samples) == 0) {
+           if (length(samples) == 0 || sum(samples, na.rm = TRUE) == 0) {
              list(ale = 0, sle_max = 0, sle_min = 0, sle_mean = 0,
                   sle_median = 0)
            } else {
@@ -67,7 +63,6 @@ summary.evaluator_elem <- function(object, ...) {
 
 #' Create a risk element sample function
 #'
-#' @export
 #' @param factor_label abbreviation of the OpenFAIR element
 risk_factory <- function(factor_label = "TC"){
 

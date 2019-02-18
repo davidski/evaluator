@@ -2,7 +2,7 @@
 % Please edit documentation in R/encode.R
 \name{derive_control_key}
 \alias{derive_control_key}
-\title{Derive control ID to control description mappings.}
+\title{Derive control ID to control description mappings}
 \usage{
 derive_control_key(capability_ids, capabilities)
 }

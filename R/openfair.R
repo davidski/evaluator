@@ -19,7 +19,7 @@ sample_tef <- function(n, params = NULL, .func = NULL) {
   }
 
   list(type = "tef",
-       samples =  as.integer(round(purrr::invoke(.func, n = n, params))),
+       samples = as.integer(round(purrr::invoke(.func, n = n, params))),
        details = list())
 }
 
@@ -281,90 +281,195 @@ select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
 #' openfair_tef_tc_diff_lm(scenario, 10)
 openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
 
-    if (!class(scenario) %in% ("evaluator_scen")) {
-      stop("Scenario must be an evaluator_scen object.", call. = FALSE)
-    }
-    # make samples repeatable (and l33t)
-    set.seed(31337)
+  # check for required elements
+  required_elements <- c("tef", "tc", "diff", "lm") %>% paste0("_params")
+  if (purrr::some(scenario[required_elements], is.null)) {
+    stop("Missing one or more required elements.", call. = FALSE)
+  }
 
-    if (verbose) {
-        message("Working on scenario ")
-        message(paste("Scenario is: ", scenario[-which(names(scenario) %in% "diff_samples")], "\n"))
-        # message(paste('Names are ', names(scenario)))
-    }
+  if (!class(scenario) %in% ("evaluator_scen")) {
+    stop("Scenario must be an evaluator_scen object.", call. = FALSE)
+  }
 
-    # TEF - how many contacts do we have in each simulated period
-    TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
-      tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
-    params <- TEFestimate$params %>% unlist()
-    TEFsamples <- sample_tef(n = n, .func = TEFestimate$func, params = params)
-    TEFsamples <- TEFsamples$samples
+  # make samples repeatable (and l33t)
+  set.seed(31337)
 
-    # TC - what is the strength of each threat event
-    #    - get the threat capability parameters for this scenario
-    TCestimate <- scenario$tc_params %>% purrr::flatten() %>%
-      tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
-    #    - sample threat capability for each TEF event in each sample period
-    TCsamples <- purrr::map(1:n, function(x) {
-      params <- TCestimate$params %>% unlist()
-      sample_tc(n = TEFsamples[x], .func = TCestimate$func, params = params)
-      })
-    # TCSamples is now a list of of the TC for each threat event
+  if (verbose) {
+    message("Working on scenario ")
 
-    # DIFF - calculate the mean strength of controls for each threat event
-    #        in a given period
+    message(paste("Scenario is: ", scenario[-which(names(scenario) %in% "diff_samples")], "\n"))
+    # message(paste('Names are ', names(scenario)))
+  }
 
-    # get the difficulty for each threat event across all the simulated periods
-    DIFFsamples <- purrr::map(1:n, function(x) {
-      if (is.numeric(TEFsamples[[x]]) && TEFsamples[[x]] > 0) {
-        get_mean_control_strength(TEFsamples[[x]], scenario$diff_params)
-        } else {NA}
-      })
-    # DIFFsamples is now a list of vectors of the control strength for
-    #   each individual threat event in the simulated period
+  # TEF - how many contacts do we have in each simulated period
+  TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
+    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+  params <- TEFestimate$params %>% unlist()
+  TEFsamples <- sample_tef(n = n, .func = TEFestimate$func, params = params)
+  TEFsamples <- TEFsamples$samples
 
-    # LEF - determine how many threat events become losses (TC > DIFF)
-    LEFsamples <- purrr::map(1:n, function(x) {
-      sample_lef(n = length(TCsamples[[x]]$samples),
-                 .func = "evaluator::select_loss_opportunities",
-                 params = list(tc = TCsamples[[x]]$samples,
-                               diff = DIFFsamples[[x]]))
-    })
+  # TC - what is the strength of each threat event
+  #    - get the threat capability parameters for this scenario
+  TCestimate <- scenario$tc_params %>% purrr::flatten() %>%
+    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+  #    - sample threat capability for each TEF event in each sample period
+  TCsamples <- purrr::map(1:n, function(x) {
+    params <- TCestimate$params %>% unlist()
+    sample_tc(n = TEFsamples[x], .func = TCestimate$func, params = params)
+  })
+  # TCSamples is now a list of of the TC for each threat event
 
-    mean_tc_exceedance <- purrr::map_dbl(LEFsamples, c("details", "mean_tc_exceedance"))
-    mean_diff_exceedance <- purrr::map_dbl(LEFsamples, c("details", "mean_diff_exceedance"))
-    LEFsamples <- purrr::map(LEFsamples, c("samples")) %>% purrr::map_int(sum)
+  # DIFF - calculate the mean strength of controls for each threat event
+  #        in a given period
 
-    # LM - determine the size of losses for each simulation
-    LMestimate <- scenario$lm_params %>% purrr::flatten() %>%
-      tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
-    loss_samples <- purrr::map(LEFsamples, function(x) {
-      params <- LMestimate$params %>% unlist()
-      dat <- sample_lm(n = x, .func = LMestimate$func, params = params)
-      dat$samples <- sum(dat$samples)
-      dat
-      })
+  # get the difficulty for each threat event across all the simulated periods
+  DIFFsamples <- purrr::map(1:n, function(x) {
+    if (is.numeric(TEFsamples[[x]]) && TEFsamples[[x]] > 0) {
+      get_mean_control_strength(TEFsamples[[x]], scenario$diff_params)
+    } else {NA}
+  })
+  # DIFFsamples is now a list of vectors of the control strength for
+  #   each individual threat event in the simulated period
 
-    # summary stats for ALE
-    if (verbose) {
-        print(summary(purrr::map_dbl(loss_samples, "samples")))
-        value_at_risk <- stats::quantile(purrr::map_dbl(loss_samples, "samples"),
-                                         probs = (0.95), na.rm = TRUE)
-        message(paste0("Losses at 95th percentile are $",
-                       format(value_at_risk, nsmall = 2, digits = 2,
-                              big.mark = ",")))
-    }
+  # LEF - determine how many threat events become losses (TC > DIFF)
+  LEFsamples <- purrr::map(1:n, function(x) {
+    sample_lef(n = length(TCsamples[[x]]$samples),
+               .func = "evaluator::select_loss_opportunities",
+               params = list(tc = TCsamples[[x]]$samples,
+                             diff = DIFFsamples[[x]]))
+  })
 
-    tibble::tibble(simulation = seq(1:n),
-                   threat_events = TEFsamples,
-                   loss_events = LEFsamples,
-                   vuln = LEFsamples/TEFsamples,
-                   mean_tc_exceedance = mean_tc_exceedance,
-                   mean_diff_exceedance = mean_diff_exceedance,
-                   ale = purrr::map_dbl(loss_samples, "samples"),
-                   sle_max = purrr::map_dbl(loss_samples, c("details", "sle_max")),
-                   sle_min = purrr::map_dbl(loss_samples, c("details", "sle_min")),
-                   sle_mean = purrr::map_dbl(loss_samples, c("details", "sle_mean")),
-                   sle_median = purrr::map_dbl(loss_samples, c("details", "sle_median"))
-    )
+  mean_tc_exceedance <- purrr::map_dbl(LEFsamples, c("details", "mean_tc_exceedance"))
+  mean_diff_exceedance <- purrr::map_dbl(LEFsamples, c("details", "mean_diff_exceedance"))
+  LEFsamples <- purrr::map(LEFsamples, c("samples")) %>% purrr::map_int(sum)
+
+  # LM - determine the size of losses for each simulation
+  LMestimate <- scenario$lm_params %>% purrr::flatten() %>%
+    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+  loss_samples <- purrr::map(LEFsamples, function(x) {
+    params <- LMestimate$params %>% unlist()
+    dat <- sample_lm(n = x, .func = LMestimate$func, params = params)
+    dat$samples <- sum(dat$samples)
+    dat
+  })
+
+  # summary stats for ALE
+  if (verbose) {
+    print(summary(purrr::map_dbl(loss_samples, "samples")))
+    value_at_risk <- stats::quantile(purrr::map_dbl(loss_samples, "samples"),
+                                     probs = (0.95), na.rm = TRUE)
+    message(paste0("Losses at 95th percentile are $",
+                   format(value_at_risk, nsmall = 2, digits = 2,
+                          big.mark = ",")))
+  }
+
+  tibble::tibble(simulation = seq(1:n),
+                 threat_events = TEFsamples,
+                 loss_events = LEFsamples,
+                 vuln = LEFsamples/TEFsamples,
+                 mean_tc_exceedance = mean_tc_exceedance,
+                 mean_diff_exceedance = mean_diff_exceedance,
+                 ale = purrr::map_dbl(loss_samples, "samples"),
+                 sle_max = purrr::map_dbl(loss_samples, c("details", "sle_max")),
+                 sle_min = purrr::map_dbl(loss_samples, c("details", "sle_min")),
+                 sle_mean = purrr::map_dbl(loss_samples, c("details", "sle_mean")),
+                 sle_median = purrr::map_dbl(loss_samples, c("details", "sle_median"))
+  )
+}
+
+#' @export
+#' @rdname openfair_tef_tc_diff_lm
+openfair_tef_tc_diff_plm_slm <- function(scenario, n = 10^4, verbose = FALSE) {
+
+  # check for required elements
+  required_elements <- c("tef", "tc", "diff", "plm", "slm") %>% paste0("_params")
+  if (purrr::some(scenario[required_elements], is.null)) {
+    stop("Missing one or more required elements.", call. = FALSE)
+  }
+
+  if (!class(scenario) %in% ("evaluator_scen")) {
+    stop("Scenario must be an evaluator_scen object.", call. = FALSE)
+  }
+
+  # make samples repeatable (and l33t)
+  set.seed(31337)
+
+  if (verbose) {
+    message("Working on scenario ")
+    message(paste("Scenario is: ", scenario[-which(names(scenario) %in% "diff_samples")], "\n"))
+    # message(paste('Names are ', names(scenario)))
+  }
+
+  # TEF - how many contacts do we have in each simulated period
+  TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
+    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+  params <- TEFestimate$params %>% unlist()
+  TEFsamples <- sample_tef(n = n, .func = TEFestimate$func, params = params)
+  TEFsamples <- TEFsamples$samples
+
+  # TC - what is the strength of each threat event
+  #    - get the threat capability parameters for this scenario
+  TCestimate <- scenario$tc_params %>% purrr::flatten() %>%
+    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+  #    - sample threat capability for each TEF event in each sample period
+  TCsamples <- purrr::map(1:n, function(x) {
+    params <- TCestimate$params %>% unlist()
+    sample_tc(n = TEFsamples[x], .func = TCestimate$func, params = params)
+  })
+  # TCSamples is now a list of of the TC for each threat event
+
+  # get the difficulty for each threat event across all the simulated periods
+  DIFFsamples <- purrr::map(1:n, function(x) {
+    if (is.numeric(TEFsamples[[x]]) && TEFsamples[[x]] > 0) {
+      get_mean_control_strength(TEFsamples[[x]], scenario$diff_params)
+    } else {NA}
+  })
+  # DIFFsamples is now a list of vectors of the control strength for
+  #   each individual threat event in the simulated period
+
+  # LEF - determine how many threat events become losses (TC > DIFF)
+  LEFsamples <- purrr::map(1:n, function(x) {
+    sample_lef(n = length(TCsamples[[x]]$samples),
+               .func = "evaluator::select_loss_opportunities",
+               params = list(tc = TCsamples[[x]]$samples,
+                             diff = DIFFsamples[[x]]))
+  })
+
+  mean_tc_exceedance <- purrr::map_dbl(LEFsamples, c("details", "mean_tc_exceedance"))
+  mean_diff_exceedance <- purrr::map_dbl(LEFsamples, c("details", "mean_diff_exceedance"))
+  LEFsamples <- purrr::map(LEFsamples, c("samples")) %>% purrr::map_int(sum)
+
+  # LM - determine the size of losses for each simulation
+  PLMestimate <- scenario$plm_params %>% purrr::flatten() %>%
+    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+  SLMestimate <- scenario$slm_params %>% purrr::flatten() %>%
+    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+  loss_samples$samples <- purrr::map(LEFsamples, function(x) {
+    dat_p <- sample_lm(n = x, .func = PLMestimate$func, params = params)
+    dat_s <- sample_lm(n = x, .func = SLMestimate$func, params = params)
+    sum(dat_p$samples + dat_s$samples)
+  })
+
+  # summary stats for ALE
+  if (verbose) {
+    print(summary(purrr::map_dbl(loss_samples, "samples")))
+    value_at_risk <- stats::quantile(purrr::map_dbl(loss_samples, "samples"),
+                                     probs = (0.95), na.rm = TRUE)
+    message(paste0("Losses at 95th percentile are $",
+                   format(value_at_risk, nsmall = 2, digits = 2,
+                          big.mark = ",")))
+  }
+
+  tibble::tibble(simulation = seq(1:n),
+                 threat_events = TEFsamples,
+                 loss_events = LEFsamples,
+                 vuln = LEFsamples/TEFsamples,
+                 mean_tc_exceedance = mean_tc_exceedance,
+                 mean_diff_exceedance = mean_diff_exceedance,
+                 ale = purrr::map_dbl(loss_samples, "samples"),
+                 sle_max = purrr::map_dbl(loss_samples, c("details", "sle_max")),
+                 sle_min = purrr::map_dbl(loss_samples, c("details", "sle_min")),
+                 sle_mean = purrr::map_dbl(loss_samples, c("details", "sle_mean")),
+                 sle_median = purrr::map_dbl(loss_samples, c("details", "sle_median"))
+  )
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select a base graphics font family — get_base_fontfamily • evaluator</title>
+<title>Load qualitative inputs — read_qualitative_inputs • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,10 +32,14 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Select a base graphics font family — get_base_fontfamily" />
+<meta property="og:title" content="Load qualitative inputs — read_qualitative_inputs" />
 
-<meta property="og:description" content="The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
-If neither font is available, use a default sans family font." />
+<meta property="og:description" content="Given an input directory, load the key qualitative objects into memory.
+The key qualitative inputs for Evaluator processing include:
+* domains - domains and domain_ids
+* mappings - qualitative to quantitative mappings
+* capabilities - qualitative capabilities
+* qualitative_scenarios - qualitative risk scenarios" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,31 +144,47 @@ If neither font is available, use a default sans family font." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select a base graphics font family</h1>
+    <h1>Load qualitative inputs</h1>
     
-    <div class="hidden name"><code>get_base_fontfamily.Rd</code></div>
+    <div class="hidden name"><code>read_qualitative_inputs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
-If neither font is available, use a default <code>sans</code> family font.</p>
+    <p>Given an input directory, load the key qualitative objects into memory.
+The key qualitative inputs for Evaluator processing include:
+* domains - domains and domain_ids
+* mappings - qualitative to quantitative mappings
+* capabilities - qualitative capabilities
+* qualitative_scenarios - qualitative risk scenarios</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_base_fontfamily</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>read_qualitative_inputs</span>(<span class='kw'>input_directory</span> <span class='kw'>=</span> <span class='st'>"~/evaluator/inputs"</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>input_directory</th>
+      <td><p>Location of input files.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>String of the preferred base font.</p>
+    <p>List of domains, quantitative_scenarios, and risk_tolerances</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>get_base_fontfamily</span>()</div><div class='output co'>#&gt; [1] "BentonSansRE"</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>read_qualitative_inputs</span>(<span class='st'>"~/evaluator/inputs"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
       

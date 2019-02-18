@@ -15,9 +15,7 @@ domain level.
 \details{
 \describe{
 \item{domain_id}{abbreviated name of the domain}
-\item{domain}{full title of the domain}
-\item{ale}{annual loss expected, in US dollars}
-\item{simulation}{simulation id number}
+\item{summary}{nested dataframe with summary statistics}
 }
 }
 \keyword{datasets}

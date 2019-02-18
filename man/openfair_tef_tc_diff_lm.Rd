@@ -2,9 +2,12 @@
 % Please edit documentation in R/openfair.R
 \name{openfair_tef_tc_diff_lm}
 \alias{openfair_tef_tc_diff_lm}
+\alias{openfair_tef_tc_diff_plm_slm}
 \title{Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels}
 \usage{
 openfair_tef_tc_diff_lm(scenario, n = 10^4, verbose = FALSE)
+
+openfair_tef_tc_diff_plm_slm(scenario, n = 10^4, verbose = FALSE)
 }
 \arguments{
 \item{scenario}{A \code{evaluator_scen} object}

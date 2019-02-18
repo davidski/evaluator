@@ -16,9 +16,9 @@ A ggplot object.
 }
 \description{
 Given a detailed results dataframe and a specific scenario identifier,
-create a scatterplot of the number of loss events versus the annual loss
-expected. This provides a detailed view on the results for a particular
-scenario.
+create a scatterplot of the number of loss events versus the total amount of
+expected annual loss expected for each simulation. This provides a
+detailed view on the results for a particular scenario.
 }
 \examples{
 data(simulation_results)

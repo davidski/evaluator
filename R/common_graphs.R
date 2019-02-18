@@ -76,9 +76,9 @@ generate_heatmap <- function(domain_summary) {
 #' Display a scatterplot for a particular scenario ID
 #'
 #' Given a detailed results dataframe and a specific scenario identifier,
-#'   create a scatterplot of the number of loss events versus the annual loss
-#'   expected. This provides a detailed view on the results for a particular
-#'   scenario.
+#'   create a scatterplot of the number of loss events versus the total amount of
+#'   expected annual loss expected for each simulation. This provides a
+#'   detailed view on the results for a particular scenario.
 #'
 #' @import ggplot2
 #' @importFrom scales comma

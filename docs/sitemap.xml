@@ -34,6 +34,9 @@
     <loc>https://evaluator.severski.net/reference/encode_scenarios.html</loc>
   </url>
   <url>
+    <loc>https://evaluator.severski.net/reference/evaluator-deprecated.html</loc>
+  </url>
+  <url>
     <loc>https://evaluator.severski.net/reference/evaluator.html</loc>
   </url>
   <url>
@@ -73,7 +76,7 @@
     <loc>https://evaluator.severski.net/reference/import_spreadsheet.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/load_data.html</loc>
+    <loc>https://evaluator.severski.net/reference/load_data-deprecated.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/mappings.html</loc>
@@ -95,6 +98,9 @@
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/quantitative_scenarios.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/read_qualitative_inputs.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/read_quantitative_inputs.html</loc>

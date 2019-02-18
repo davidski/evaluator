@@ -16,11 +16,11 @@ A dataset of qualified information security risk scenarios.
 \item{scenario_id}{id of the scenario, primary key}
 \item{scenario}{full text description of the risk scenario}
 \item{tcomm}{full text name of threat community}
-\item{tef}{qualitative label of the frequency of threat events}
-\item{tc}{qualitative label of the threat capability}
-\item{lm}{qualitative label of the single loss magnitude}
-\item{domain_id}{domain id to which the scenario applies}
-\item{controls}{comma separate string of the controls for the scenario}
+\item{tef}{qualitative label of threat frequency}
+\item{tc}{qualitative label of threat capability}
+\item{lm}{qualitative label of loss magnitude}
+\item{domain_id}{domain id}
+\item{controls}{comma delimited list of controls ids}
 }
 }
 \keyword{datasets}

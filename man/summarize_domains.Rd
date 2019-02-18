@@ -28,7 +28,6 @@ Summary stats created include:
 \item Mean percentage of threat capability exceeding difficulty on successful threat events
 \item Mean percentage of difficulty exceeding threat capability on defended events
 \item Vulnerability percentage
-\item Z-score of ALE (outliers flagged as 2 >= z-score)
 }
 }
 \examples{

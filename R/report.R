@@ -76,7 +76,7 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
 #' @param styles Optional full path to CSS file to override default styles.
 #' @param intermediates_dir Location for intermediate knit files.
 #' @param quiet TRUE to suppress printing of pandoc output.
-#' @param ... Any other parameters to pass straight to \code{rmarkdown::run}.
+#' @param ... Any other parameters to pass to \code{rmarkdown::run}.
 #' @import dplyr
 #' @import ggplot2
 #' @return Invisible NULL.
@@ -160,7 +160,7 @@ openfair_example <- function(intermediates_dir = tempdir(),
 #' @param output_file Full path to the desired output file.
 #' @param intermediates_dir Location for intermediate knit files.
 #' @param quiet TRUE to suppress printing of pandoc output.
-#' @param ... Any other parameters to pass straight to \code{rmarkdown::render}
+#' @param ... Any other parameters to pass to \code{rmarkdown::render}
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
 #' @examples

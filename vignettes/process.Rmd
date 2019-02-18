@@ -49,7 +49,7 @@ qualitative scenarios and input data files, while `results` stores the
 simulation results, including the summarized data files. Both directories 
 together represent an analysis snapshot.
 
-## Experimental Quick Start Script
+## Quick Start Script
 
 When using `create_templates()` an `run_analysis.R` file will be placed at the base 
 of the `evaluator` directory. A sample ultra-quick workflow looks like:
