@@ -151,7 +151,7 @@ take some time to run.
 ```{r simulate, eval = FALSE}
 simulation_results <- run_simulations(quantitative_scenarios, 
                                       simulation_count = 100L)
-save(simulation_results, file = "~/evaluator/results/simulation_results.rda")
+saveRDS(simulation_results, file = "~/evaluator/results/simulation_results.rds")
 ```
 
 ## Summarize Results
@@ -162,8 +162,8 @@ per scenario and per domain level are in addition to the previously generated
 full results. An analyst can always access the full simulation results if 
 desired.
 
-In the following code block, Evaluator produces `scenario_summary.rda` and 
-`domain_summary.rda` files for the reporting in the final section.
+In the following code block, Evaluator produces `scenario_summary.rds` and 
+`domain_summary.rds` files for the reporting in the final section.
 
 ```{r summarize, eval=FALSE}
 summarize_to_disk(simulation_results = simulation_results, 
@@ -192,9 +192,9 @@ intelligence program such as Tableau:
 ```{r data_files, eval = TRUE, echo=FALSE}
 tibble::tribble(
     ~"Data File", ~Purpose,
-    "simulation_results.rda", "Full details of each simulated scenario",
-    "scenario_summary.rda", "Simulation results, summarized at the scenario level",
-    "domain_summary.rda", "Simulation results, summarized at the domain level"
+    "simulation_results.rds", "Full details of each simulated scenario",
+    "scenario_summary.rds", "Simulation results, summarized at the scenario level",
+    "domain_summary.rds", "Simulation results, summarized at the domain level"
 ) %>% pander::pander(., justify = "left")
 ```
 

@@ -76,12 +76,9 @@ NULL
 load_data <- function(input_directory = "~/evaluator/inputs", results_directory = "~/evaluator/results") {
   .Deprecated("read_quantitative_inputs()")
   # load simulation results and default summary objects
-  simulation_results <- NULL # detailed sumulation results
-  load(file.path(results_directory, "simulation_results.rda"))
-  scenario_summary <- NULL   # scenario level summary
-  load(file.path(results_directory, "scenario_summary.rda"))
-  domain_summary <- NULL     # domain level summary
-  load(file.path(results_directory, "domain_summary.rda"))
+  simulation_results <- readRDS(file.path(results_directory, "simulation_results.rds"))
+  scenario_summary <- readRDS(file.path(results_directory, "scenario_summary.rds"))
+  domain_summary <- readRDS(file.path(results_directory, "domain_summary.rds"))
 
   # all input files
   domains <- readr::read_csv(file.path(input_directory, "domains.csv"),
@@ -261,7 +258,7 @@ read_quantitative_inputs <- function(input_directory = "~/evaluator/inputs") {
                                        amount = readr::col_integer()
                                      ))  # i.e. risk tolerances
 
-  quantitative_scenarios <- readRDS(file.path(input_directory, "quantitative_scenarios.Rds"))
+  quantitative_scenarios <- readRDS(file.path(input_directory, "quantitative_scenarios.rds"))
 
   list(domains = domains,
        risk_tolerances = risk_tolerances,

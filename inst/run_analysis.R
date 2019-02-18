@@ -51,7 +51,7 @@ quantitative_scenarios <- encode_scenarios(qualitative_scenarios, capabilities,
 message("Running simulations...")
 simulation_results <- run_simulations(quantitative_scenarios,
                                       simulation_count = 10000L)
-save(simulation_results, file = file.path(results_dir, "simulation_results.rda"))
+saveRDS(simulation_results, file = file.path(results_dir, "simulation_results.rds"))
 
 # Summarize ---------------------------------------------------------------
 message("Summarizing results...")

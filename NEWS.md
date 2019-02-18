@@ -13,12 +13,14 @@ contain their initial quantitative inputs. These users may also use
   - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
 
 ## Improvements
-* Scenario Explorer application reworked to operate with quantitative data only.
+* Scenario Explorer application reworked to operate when starting directly from quantitative data.
+* Risk Report reworked to operate when starting directly from quantitative data.
+* Update default Risk Report and sample mapping files to reference the new maximum OCR fine (SLE) from the Anthem breach.
+* All save and load functions now consistently use rds formatted files instead of a mix of rda/rds.
 * Removed all remaining uses to SE forms of dplyr verbs.
 * Removed use of soft deprecated ggplot `aes_()` functions.
 * Clean up CSS for HTML reports, improving style consistency, particularly around font family consistency.
 * Increase test coverage, including moving more shinytest tests to run on CI instances and package spelling tests.
-* Update default Risk Report and sample mapping files to reference the new maximum OCR fine (SLE) from the Anthem breach.
 
 ## Other Changes
 * `load_data()` deprecated. Use `read_qualitative_inputs()` or `read_quantitative_inputs()` as appropriate.

@@ -6,11 +6,11 @@ tmpinputs <- file.path(tmpdir, "inputs")
 dir.create(tmpinputs, showWarnings = FALSE)
 
 data("simulation_results", package = "evaluator", envir = environment())
-saveRDS(simulation_results, file = file.path(tmpdata, "simulation_results.Rds"))
+saveRDS(simulation_results, file = file.path(tmpdata, "simulation_results.rds"))
 data("scenario_summary", package = "evaluator", envir = environment())
-save(scenario_summary, file = file.path(tmpdata, "scenario_summary.rda"))
+saveRDS(scenario_summary, file = file.path(tmpdata, "scenario_summary.rds"))
 data("domain_summary", package = "evaluator", envir = environment())
-save(domain_summary, file = file.path(tmpdata, "domain_summary.rda"))
+saveRDS(domain_summary, file = file.path(tmpdata, "domain_summary.rds"))
 
 res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
   purrr::map(~ file.copy(system.file("extdata", .x, package = "evaluator"),

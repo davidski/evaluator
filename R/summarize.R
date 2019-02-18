@@ -198,12 +198,12 @@ summarize_to_disk <- function(simulation_results, results_dir = "~/results") {
   if (!dir.exists(results_dir)) dir.create(results_dir)
 
   scenario_summary <- summarize_scenarios(simulation_results)
-  save(scenario_summary, file = file.path(results_dir, "scenario_summary.rda"))
+  saveRDS(scenario_summary, file = file.path(results_dir, "scenario_summary.rds"))
 
   domain_summary <- summarize_domains(simulation_results)
-  save(domain_summary, file = file.path(results_dir, "domain_summary.rda"))
+  saveRDS(domain_summary, file = file.path(results_dir, "domain_summary.rds"))
 
-  file.info(c(file.path(results_dir, "scenario_summary.rda"),
-              file.path(results_dir, "domain_summary.rda"))) %>%
+  file.info(c(file.path(results_dir, "scenario_summary.rds"),
+              file.path(results_dir, "domain_summary.rds"))) %>%
     tibble::rownames_to_column("filename") %>% tibble::as_tibble()
 }
