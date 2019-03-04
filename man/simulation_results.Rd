@@ -4,7 +4,7 @@
 \name{simulation_results}
 \alias{simulation_results}
 \title{Information security risk simulation results}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 3 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 4 columns.}
 \usage{
 simulation_results
 }

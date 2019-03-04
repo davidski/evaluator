@@ -71,7 +71,7 @@ Value Boxes
 ### Aggregate Risk
 
 ````{r var_valuebox}
-overall <- simulation_results %>% group_by(simulation) %>% 
+overall <- simulation_results %>% group_by(iteration) %>% 
                      summarize(ale = sum(ale)) %>% select(ale) %>%
                      ungroup
 agg_risk <- quantile(overall$ale, 0.95)
@@ -96,7 +96,7 @@ flexdashboard::valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warn
 ### Expected Loss Events Per Year
 
 ```{r median_aggregate_loss_events}
-loss_events <- group_by(simulation_results, simulation) %>% 
+loss_events <- group_by(simulation_results, iteration) %>% 
   summarise(n = sum(loss_events)) %>% summarize(loss = median(n)) %>% 
   unlist %>% unname
 flexdashboard::valueBox(scales::comma(loss_events), icon = "glyphicon-flag",
@@ -141,7 +141,7 @@ sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
   # sum up the outliers
   others <- filter(keep_nokeep, keep == FALSE) %>% 
     left_join(dat, by = "full_label") %>% 
-    group_by(simulation) %>% summarize(ale = max(ale), scenario_count = n()) %>% 
+    group_by(iteration) %>% summarize(ale = max(ale), scenario_count = n()) %>% 
     mutate(full_label = paste0("others (", scenario_count, ")")) %>% 
     mutate(cluster_id = cluster_hack)
   

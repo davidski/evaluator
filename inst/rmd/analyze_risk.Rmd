@@ -138,8 +138,8 @@ scenario_summary <-
 
 # Summary
 
-> This report is based on `r sum(map_dbl(simulation_results$results, ~attr(.x, "simulation_count")))`
-simulations performed over `r scales::comma(length(unique(simulation_results$scenario_id)))` 
+> This report is based on `r sum(map_dbl(simulation_results$results, ~attr(.x, "iterations")))`
+iterations performed over `r scales::comma(length(unique(simulation_results$scenario_id)))` 
 risk scenarios and `r nrow(capabilities)` capabilities on 
 `r format(map(simulation_results$results, ~attr(.x, "generated_on")) %>% purrr::reduce(max), "%F %H:%M:%S%z")`.
 
@@ -154,7 +154,7 @@ loss_exceedance <- summarize_simulations(simulation_results$results) %>%
 
 Total yearly losses are estimated to exceed the organization's major risk 
 threshold of `r dollar(risk_tolerance["high"])` 
-`r percent(ifelse (nrow(filter(loss_exceedance, tolerance == "High")) == 0, 0, loss_exceedance[loss_exceedance$tolerance == "High", ]$n / max(simulation_results$simulation)))` of the time.
+`r percent(ifelse (nrow(filter(loss_exceedance, tolerance == "High")) == 0, 0, loss_exceedance[loss_exceedance$tolerance == "High", ]$n / max(simulation_results$iteration)))` of the time.
 
 The following table shows the maximum, 95th percentile Value at Risk (VaR), 
 mean, and minimum annual losses.
@@ -424,7 +424,7 @@ ratings to each of these frequency, strength, and loss elements.
 
 Each of the qualitative labels is mapped to a set of parameters describing a 
 beta pert distribution. These distributions are used to run 
-simulations over each risk scenario. Within a given simulation, a scenario is
+simulations over each risk scenario. Within a given iteration, a scenario is
 evaluated for potential losses using:
 
 1. The number of times the threat community acts against the organization.
@@ -443,7 +443,7 @@ This process generates several outputs:
 * Annual Loss Expected (ALE): The annualized sum of all individual losses.
 
 Total risk is the sum of annual expected losses across all `r nrow(scenarios)` 
-scenarios within a simulation.
+scenarios within an iteration.
 
 ## Assumptions
 
@@ -642,12 +642,12 @@ scenario level.
 
 The number of loss events associated with a domain is the sum of the loss 
 that occur for each scenario within the domain. To calculate domain-level loss 
-frequency, events are summed across a single simulation/scenario pairing, 
+frequency, events are summed across a single iteration/scenario pairing, 
 then re-summarized at the domain level.
 
 ```{r prepare_skewness_and_kurtosis}
 domain_loss_frequency <- simulation_results %>% unnest(results) %>% 
-  group_by(domain_id, simulation) %>% 
+  group_by(domain_id, iteration) %>% 
   summarize(loss_events = sum(loss_events)) %>% 
   summarize(stats = list(psych::describe(loss_events))) %>% unnest(stats) %>% 
   select(-vars)
@@ -775,7 +775,7 @@ where losses occur.
 # previous iterations only excluded scenarios with zero losses across all sims
 #gg <- results %>% group_by(scenario_id) %>% filter(sum(ale) > 0) %>% 
 
-gg <- simulation_results %>% unnest() %>% 
+gg <- simulation_results %>% unnest(results) %>% 
   filter(ale > 0) %>% 
   ggplot(., aes(x = as.character(scenario_id), y = ale))
 gg <- gg + facet_wrap(vars(domain_id), ncol = 4, scales = "free", 
@@ -864,7 +864,7 @@ outlier_domains <- scenario_summary %>% unnest(summary, .drop = TRUE) %>%
 
 #test_position <- tail(outlier_domains, n = 1) %>% select(domain_id) %>% unlist %>% unname
 #test_position <- outlier_domains$domain_id
-dat <- unnest(simulation_results) %>% filter(domain_id %in% outlier_domains$domain_id) %>% 
+dat <- unnest(simulation_results, results) %>% filter(domain_id %in% outlier_domains$domain_id) %>% 
   mutate(full_label = str_glue("{domain_id} - {scenario_id}")) %>% 
   arrange(full_label)
 test_position <- tail(dat, n = 1) %>% select(full_label) %>% unlist %>% unname
@@ -908,7 +908,7 @@ Repeating the above plot across all the scenarios with the outliers removed
 allows examination of the remaining scenarios without distortion. 
 
 ```{r annual_loss_no_outliers, fig.cap="Annual Loss Excluding Outliers"}
-gg <- unnest(simulation_results) %>% filter(!scenario_id %in% scenario_outliers) %>% 
+gg <- unnest(simulation_results, results) %>% filter(!scenario_id %in% scenario_outliers) %>% 
   mutate(scenario_id = factor(as.character(scenario_id), 
                               levels = as.character(scenario_order$scenario_id))) %>% 
   arrange(domain_id, scenario_id) %>% ggplot(., aes(x = scenario_id, y = ale))
@@ -940,7 +940,7 @@ median ALE measure as an alternative.
 
 ```{r var_vs_median_plot, fig.cap="VaR vs. Median"}
 # prepare data and init graph
-simulation_results %>% unnest() %>% group_by(scenario_id, simulation) %>% 
+simulation_results %>% unnest(results) %>% group_by(scenario_id, iteration) %>% 
   summarize(ale = sum(ale)) %>% 
   filter(ale > 0) %>% 
   summarize(var = quantile(ale, 0.95), median = median(ale)) %>% 

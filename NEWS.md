@@ -25,6 +25,8 @@ contain their initial quantitative inputs. These users may also use
 ## Other Changes
 * `load_data()` deprecated. Use `read_qualitative_inputs()` or `read_quantitative_inputs()` as appropriate.
 * Re-export the pipe operator `%>%`
+* Rename `simulation` collumn to `iteration` to be more consistent with general MC uses.
+* Move from soft-deprecated `purrr::invoke()` to `rlang::eval()`.
 
 # evaluator 0.3.2
 

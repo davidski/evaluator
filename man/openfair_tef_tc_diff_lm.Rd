@@ -12,7 +12,7 @@ openfair_tef_tc_diff_plm_slm(scenario, n = 10^4, verbose = FALSE)
 \arguments{
 \item{scenario}{A \code{evaluator_scen} object}
 
-\item{n}{Number of simulations to run.}
+\item{n}{Number of iterations to run.}
 
 \item{verbose}{Whether to print progress indicators.}
 }
@@ -24,7 +24,7 @@ mean TC and DIFF exceedance, and ALE samples.
 Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, and
 LM sampling. If there are multiple controls provided for a scenarios, the
 arithmetic mean (average) is taken across samples for all controls to get
-the effective control strength for a given simulation.
+the effective control strength for a given iteration.
 }
 \examples{
 data(quantitative_scenarios)

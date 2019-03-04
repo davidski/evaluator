@@ -214,6 +214,13 @@ test_that("Full wrapped scenario works as expected", {
   expect_equal(sum(results$result$loss_events), 772)
 })
 
+test_that("Simulation fails when given a simulation_count", {
+  data("quantitative_scenarios")
+  bad_scen <- quantitative_scenarios[[1, "scenario"]]
+  class(bad_scen) <- "list"
+  expect_error(run_simulations(bad_scen, simulation_count = 10L), regexp = "iteration")
+})
+
 test_that("Simulation fails when not given a scenario object", {
   data("quantitative_scenarios")
   bad_scen <- quantitative_scenarios[[1, "scenario"]]
@@ -221,7 +228,7 @@ test_that("Simulation fails when not given a scenario object", {
   expect_error(run_simulations(bad_scen, 10L), regexp = "object")
 })
 
-test_that("Simulation respsect maximum ALE", {
+test_that("Simulation respects maximum ALE", {
   data("quantitative_scenarios")
   good_scen <- quantitative_scenarios[[1, "scenario"]]
   results <- run_simulations(good_scen, 10L, ale_maximum = 100)

@@ -10,7 +10,8 @@
 #' @importFrom tidyr nest
 #' @importFrom rlang .data
 #' @param scenario An \link{evaluator_scen} object.
-#' @param simulation_count Number of simulations to perform.
+#' @param iterations Number of iterations to run on each scenario.
+#' @param simulation_count **DEPRECTATED** Number of simulations to perform.
 #' @param ale_maximum Maximum practical annual losses.
 #' @param verbose Whether verbose console output is requested.
 #' @export
@@ -19,10 +20,11 @@
 #' data(quantitative_scenarios)
 #' # run a single scenario through a trivial number (10) of trials
 #' run_simulations(quantitative_scenarios[[1, "scenario"]], 10)
-run_simulations <- function(scenario, simulation_count = 10000L,
+run_simulations <- function(scenario, iterations = 10000L,
                             ale_maximum = NULL,
-                            verbose = FALSE) {
+                            verbose = FALSE, simulation_count = NULL) {
 
+  if (!is.null(simulation_count)) stop("simulation_count is deprecated. use `iterations` instead.", call. = FALSE)
   if (!class(scenario) %in% "evaluator_scen") {
     stop("Scenario must be an evaluator_scen object", call. = FALSE)
   }
@@ -35,8 +37,8 @@ run_simulations <- function(scenario, simulation_count = 10000L,
     func <- x$model
     safe_calculate <- purrr::safely(eval(rlang::parse_expr(func)))
     safe_calculate(scenario = x,
-                  n = simulation_count,
-                  verbose = verbose)
+                   n = iterations,
+                   verbose = verbose)
   }
 
   #pb <- dplyr::progress_estimated(length(scenarios))
@@ -54,7 +56,8 @@ run_simulations <- function(scenario, simulation_count = 10000L,
 
   #if (sum(is_ok) != length(scenarios)) {
   if (!is.null(simulation_results$error)) {
-    stop("Errors encountered with one or more scenarios:\n",
+    stop("Errors encountered with scenarios:\n",
+         scenario,
          paste0("Error: ", simulation_results$error,
                collapse = "\n"))
          # paste(scenario[!is_ok,]$scenario_id, errors, sep = " - Error: ",
@@ -79,8 +82,8 @@ run_simulations <- function(scenario, simulation_count = 10000L,
 
   # store the date on which this simulation was generated
   attr(simulation_results, "generated_on") <- Sys.time()
-  # store the simulation count
-  attr(simulation_results, "simulation_count") <- simulation_count
+  # store the number of iterations performed
+  attr(simulation_results, "iterations") <- iterations
 
   simulation_results
 

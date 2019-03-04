@@ -4,17 +4,19 @@
 \alias{run_simulations}
 \title{Run simulations for a scenario}
 \usage{
-run_simulations(scenario, simulation_count = 10000L,
-  ale_maximum = NULL, verbose = FALSE)
+run_simulations(scenario, iterations = 10000L, ale_maximum = NULL,
+  verbose = FALSE, simulation_count = NULL)
 }
 \arguments{
 \item{scenario}{An \link{evaluator_scen} object.}
 
-\item{simulation_count}{Number of simulations to perform.}
+\item{iterations}{Number of iterations to run on each scenario.}
 
 \item{ale_maximum}{Maximum practical annual losses.}
 
 \item{verbose}{Whether verbose console output is requested.}
+
+\item{simulation_count}{\strong{DEPRECTATED} Number of simulations to perform.}
 }
 \value{
 Dataframe of raw results.

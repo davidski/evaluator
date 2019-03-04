@@ -4,21 +4,21 @@
 \alias{summarize_simulations}
 \title{Create a summary of outcomes across scenarios}
 \usage{
-summarize_simulations(simulation_results, ..., .key = "simulation")
+summarize_simulations(simulation_results, ..., .key = "iteration")
 }
 \arguments{
 \item{simulation_results}{Simulation results dataframe.}
 
 \item{...}{Additional simulation results to summarize.}
 
-\item{.key}{Simulation ID field}
+\item{.key}{Iteration ID field}
 }
 \value{
 Dataframe.
 }
 \description{
 Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
-the individual results at a per-simulation level.
+the individual results at a per-iteration level.
 }
 \details{
 Summary stats created include:

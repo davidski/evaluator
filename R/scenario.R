@@ -1,10 +1,10 @@
 #' Construct a quantitative scenario object
 #'
-#' @param tef_params foo
-#' @param tc_params foo
-#' @param diff_params foo
-#' @param lm_params foo
-#' @param model foo
+#' @param tef_params List of threat frequency parameters
+#' @param tc_params List of threat capability parameters
+#' @param diff_params List of difficulty parameters
+#' @param lm_params List of loss magnitude parameters
+#' @param model Name of model to run
 #' @export
 new_evaluator_scen <- function(tef_params = list(),
                                tc_params = list(),

@@ -150,7 +150,7 @@ take some time to run.
 
 ```{r simulate, eval = FALSE}
 simulation_results <- run_simulations(quantitative_scenarios, 
-                                      simulation_count = 100L)
+                                      iterations = 100L)
 saveRDS(simulation_results, file = "~/evaluator/results/simulation_results.rds")
 ```
 

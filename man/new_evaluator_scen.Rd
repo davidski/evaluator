@@ -14,15 +14,15 @@ evaluator_scen(tef_params = list(), tc_params = list(),
   model = "openfair_tef_tc_diff_lm")
 }
 \arguments{
-\item{tef_params}{foo}
+\item{tef_params}{List of threat frequency parameters}
 
-\item{tc_params}{foo}
+\item{tc_params}{List of threat capability parameters}
 
-\item{diff_params}{foo}
+\item{diff_params}{List of difficulty parameters}
 
-\item{lm_params}{foo}
+\item{lm_params}{List of loss magnitude parameters}
 
-\item{model}{foo}
+\item{model}{Name of model to run}
 }
 \description{
 Construct a quantitative scenario object

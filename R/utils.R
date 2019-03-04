@@ -85,7 +85,7 @@ identify_outliers <- function(results) {
 calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
   max_loss <- tidyr::unnest(simulation_results, .data$results) %>%
     dplyr::filter(!.data$scenario_id %in% scenario_outliers) %>%
-    dplyr::group_by(.data$simulation) %>%
+    dplyr::group_by(.data$iteration) %>%
     dplyr::summarize(biggest_single_scenario_loss = max(.data$ale),
                       min_loss = min(.data$ale), max_loss = sum(.data$ale),
                       outliers = FALSE) %>%
@@ -93,8 +93,8 @@ calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
   # if we're not passed any outliers, don't bother calculating outliers
   if (is.null(scenario_outliers)) return(max_loss)
 
-  max_loss_w_outliers <- tidyr::unnest(simulation_results) %>%
-    dplyr::group_by(.data$simulation) %>%
+  max_loss_w_outliers <- tidyr::unnest(simulation_results, .data$results) %>%
+    dplyr::group_by(.data$iteration) %>%
     dplyr::summarize(biggest_single_scenario_loss = max(.data$ale),
                       min_loss = min(.data$ale),
                       max_loss = sum(.data$ale), outliers = TRUE) %>%

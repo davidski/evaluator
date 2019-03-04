@@ -68,7 +68,7 @@ summarize_scenarios <- function(simulation_results) {
 #' Create a summary of outcomes across scenarios
 #'
 #' Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
-#'   the individual results at a per-simulation level.
+#'   the individual results at a per-iteration level.
 #'
 #'   Summary stats created include:
 #'     * Mean/Min/Max/Median are calculated for loss events
@@ -85,13 +85,13 @@ summarize_scenarios <- function(simulation_results) {
 #' @importFrom stats median
 #' @param simulation_results Simulation results dataframe.
 #' @param ... Additional simulation results to summarize.
-#' @param .key Simulation ID field
+#' @param .key Iteration ID field
 #' @export
 #' @return Dataframe.
 #' @examples
 #' data(simulation_results)
 #' summarize_simulations(simulation_results$results)
-summarize_simulations <- function(simulation_results, ..., .key = "simulation") {
+summarize_simulations <- function(simulation_results, ..., .key = "iteration") {
 
   key <- rlang::ensym(.key)
 
