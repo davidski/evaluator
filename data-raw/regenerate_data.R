@@ -40,9 +40,9 @@ usethis::use_data(quantitative_scenarios, overwrite = TRUE)
 
 # run simulations and save results
 simulation_results <- quantitative_scenarios %>%
-  mutate(results = furrr::future_map(scenario, run_simulations, simulation_count = 1000)) %>%
-  select(-c(scenario, controls, tcomm, scenario_description), scenario_id, domain_id, results)
-  #unnest(results)
+  mutate(results = furrr::future_map(scenario, run_simulations, iterations = 1000, .progress = TRUE)) %>%
+  select(-c(scenario, tcomm, scenario_description), scenario_id, domain_id, results)
+
 #simulation_results <- run_simulations(quantitative_scenarios, 1000L)
 usethis::use_data(simulation_results, overwrite = TRUE)
 
