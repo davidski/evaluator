@@ -10,7 +10,7 @@ openfair_tef_tc_diff_lm(scenario, n = 10^4, verbose = FALSE)
 openfair_tef_tc_diff_plm_slm(scenario, n = 10^4, verbose = FALSE)
 }
 \arguments{
-\item{scenario}{A \code{evaluator_scen} object}
+\item{scenario}{A \code{tidyrisk_scenario} object}
 
 \item{n}{Number of iterations to run.}
 

@@ -270,7 +270,7 @@ select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
 #' @importFrom tibble tibble as_tibble
 #' @importFrom rlang .data
 #' @importFrom dplyr %>%
-#' @param scenario A `evaluator_scen` object
+#' @param scenario A `tidyrisk_scenario` object
 #' @param n Number of iterations to run.
 #' @param verbose Whether to print progress indicators.
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
@@ -289,8 +289,8 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
     stop("Missing one or more required elements.", call. = FALSE)
   }
 
-  if (!class(scenario) %in% ("evaluator_scen")) {
-    stop("Scenario must be an evaluator_scen object.", call. = FALSE)
+  if (!class(scenario) %in% ("tidyrisk_scenario")) {
+    stop("Scenario must be an tidyrisk_scenario object.", call. = FALSE)
   }
 
   # make samples repeatable (and l33t)
@@ -389,8 +389,8 @@ openfair_tef_tc_diff_plm_slm <- function(scenario, n = 10^4, verbose = FALSE) {
     stop("Missing one or more required elements.", call. = FALSE)
   }
 
-  if (!class(scenario) %in% ("evaluator_scen")) {
-    stop("Scenario must be an evaluator_scen object.", call. = FALSE)
+  if (!class(scenario) %in% ("tidyrisk_scenario")) {
+    stop("Scenario must be an tidyrisk_scenario object.", call. = FALSE)
   }
 
   # make samples repeatable (and l33t)

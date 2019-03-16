@@ -8,7 +8,7 @@ run_simulations(scenario, iterations = 10000L, ale_maximum = NULL,
   verbose = FALSE, simulation_count = NULL)
 }
 \arguments{
-\item{scenario}{An \link{evaluator_scen} object.}
+\item{scenario}{A \link{tidyrisk_scenario} object.}
 
 \item{iterations}{Number of iterations to run on each scenario.}
 

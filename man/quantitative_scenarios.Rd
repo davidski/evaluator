@@ -19,7 +19,7 @@ describing the distribution of each input.
 \item{tcomm}{description of the threat community}
 \item{domain_id}{domain id}
 \item{control_descriptons}{named list of the text description of controls involved}
-\item{scenario}{\code{\link{evaluator_scen}} objects}
+\item{scenario}{\code{\link{tidyrisk_scenario}} objects}
 }
 }
 \keyword{datasets}

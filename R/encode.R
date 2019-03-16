@@ -65,7 +65,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   scenarios <- dplyr::rename(scenarios, scenario_description = .data$scenario)
 
   scenarios <- dplyr::mutate(scenarios, scenario = purrr::pmap(
-    list(.data$tef_params, .data$tc_params, .data$diff_params, .data$lm_params), evaluator_scen)) %>%
+    list(.data$tef_params, .data$tc_params, .data$diff_params, .data$lm_params), tidyrisk_scenario)) %>%
     select(-c(.data$diff_params, .data$tef_params, .data$tc_params, .data$lm_params))
   scenarios
 }

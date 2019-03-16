@@ -1,6 +1,6 @@
 context("Classes")
 test_that("Scenario object can be created", {
-  evaluator_scen(
+  tidyrisk_scenario(
     diff_params = list(list(
       "2"  = list(min = 70L, mode = 85, max = 98L, shape = 4L, func = "mc2d::rpert"),
       "5"  = list(min = 50L, mode = 70, max = 84L, shape = 4L, func = "mc2d::rpert"),
@@ -15,7 +15,7 @@ test_that("Scenario object can be created", {
     lm_params = list(list(min = 10000L, mode = 20000, max = 500000L, shape = 4L,
                           func = "mc2d::rpert"))
   ) -> scenario
-  expect_s3_class(scenario, "evaluator_scen")
+  expect_s3_class(scenario, "tidyrisk_scenario")
 })
 
 

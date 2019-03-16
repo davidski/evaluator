@@ -173,7 +173,7 @@ test_that("Sample LEF works with composition function", {
 
 context("Standard simulation model")
 test_that("Default simulation model returns expected results", {
-  scen <- evaluator_scen(
+  scen <- tidyrisk_scenario(
     tef_params = list(func = "mc2d::rpert", min = 1, mode = 10, max = 100, shape = 4),
     tc_params = list(func = "mc2d::rpert", min = 1, mode = 10, max = 75, shape = 100),
     lm_params = list(func = "mc2d::rpert", min = 1, mode = 100, max = 10000, shape = 54),
@@ -204,7 +204,7 @@ test_that("Full wrapped scenario works as expected", {
                             lm_params = list(list(func = "mc2d::rpert", min = 10000L, mode = 20000, max = 500000L, shape = 4L)),
                             model = "openfair_tef_tc_diff_lm"), row.names = c(NA, -1L),
                        class = c("tbl_df", "tbl", "data.frame"))
-  scenario <- scenario %>% mutate(scenario = pmap(list(tef_params, tc_params, diff_params, lm_params, model), evaluator_scen))
+  scenario <- scenario %>% mutate(scenario = pmap(list(tef_params, tc_params, diff_params, lm_params, model), tidyrisk_scenario))
   results <- evaluate_promise(run_simulations(scenario[[1, "scenario"]], 100L))
   expect_s3_class(results$result, "tbl_df")
   expect_equal(nrow(results$result), 100)

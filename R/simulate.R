@@ -9,7 +9,7 @@
 #' @importFrom purrr safely is_null map_lgl transpose simplify keep
 #' @importFrom tidyr nest
 #' @importFrom rlang .data
-#' @param scenario An \link{evaluator_scen} object.
+#' @param scenario A \link{tidyrisk_scenario} object.
 #' @param iterations Number of iterations to run on each scenario.
 #' @param simulation_count **DEPRECATED** Number of simulations to perform.
 #' @param ale_maximum Maximum practical annual losses.
@@ -25,8 +25,8 @@ run_simulations <- function(scenario, iterations = 10000L,
                             verbose = FALSE, simulation_count = NULL) {
 
   if (!is.null(simulation_count)) stop("simulation_count is deprecated. use `iterations` instead.", call. = FALSE)
-  if (!class(scenario) %in% "evaluator_scen") {
-    stop("Scenario must be an evaluator_scen object", call. = FALSE)
+  if (!class(scenario) %in% "tidyrisk_scenario") {
+    stop("Scenario must be a tidyrisk_scenario object", call. = FALSE)
   }
 
   #model <- rlang::sym(model) # convert characters to symbol

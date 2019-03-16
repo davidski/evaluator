@@ -2,13 +2,13 @@
 
 This release includes a greatly improved flow when starting directly from 
 quantitative inputs. While the spreadsheet import is still supported, users 
-that have increased their maturity can create `evaluator_scen` objects that 
+that have increased their maturity can create `tidyrisk_scenario` objects that 
 contain their initial quantitative inputs. These users may also use 
 [collector](https://collector.severski.net) to work with quantitative data.
 
 ## New Feature
 * New `read_qualitative_inputs()` function
-* New `evaluator_scen` object for containing the elements of a risk scenario for simulation.
+* New `tidyrisk_scenario` object for containing the elements of a risk scenario for simulation.
 * New `summarize_scenario()` function creates summary for a single scenario's results. 
   - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
 
