@@ -65,7 +65,7 @@ summarize_scenarios <- function(simulation_results) {
   dplyr::mutate(simulation_results, summary = purrr::map(.data$results, summarize_scenario))
 }
 
-#' Create a summary of outcomes across scenarios
+#' Create a summary of outcomes across all scenarios
 #'
 #' Given a dataframe of raw results from \code{\link{run_simulations}}, summarize
 #'   the individual results at a per-iteration level.
@@ -90,8 +90,8 @@ summarize_scenarios <- function(simulation_results) {
 #' @return Dataframe.
 #' @examples
 #' data(simulation_results)
-#' summarize_simulations(simulation_results$results)
-summarize_simulations <- function(simulation_results, ..., .key = "iteration") {
+#' summarize_iterations(simulation_results$results)
+summarize_iterations <- function(simulation_results, ..., .key = "iteration") {
 
   key <- rlang::ensym(.key)
 
@@ -148,7 +148,7 @@ summarize_domains <- function(simulation_results, domain_variable = "domain_id")
   domain_variable <- rlang::ensym(domain_variable)
   simulation_domain_sum <- simulation_results %>%
     dplyr::group_by(!!domain_variable) %>%
-    dplyr::summarize(simulation_summary = list(summarize_simulations(.data$results)))
+    dplyr::summarize(simulation_summary = list(summarize_iterations(.data$results)))
   simulation_domain_sum <- dplyr::mutate(
     simulation_domain_sum, summary = purrr::map(.data$simulation_summary, ~ {
       .x %>%

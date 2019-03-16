@@ -25,7 +25,7 @@ test_that("Simulation summary handles NAs for tc/diff exceedance", {
 
 test_that("Iteration-level summary", {
   data("simulation_results")
-  summarized_iterations <- summarize_simulations(simulation_results$results)
+  summarized_iterations <- summarize_iterations(simulation_results$results)
   expect_lte(max(summarized_iterations$mean_tc_exceedance), 1)
   expect_gte(min(summarized_iterations$mean_tc_exceedance), 0)
   expect_lte(max(summarized_iterations$mean_diff_exceedance), 1)

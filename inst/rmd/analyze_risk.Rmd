@@ -144,7 +144,7 @@ risk scenarios and `r nrow(capabilities)` capabilities on
 `r format(map(simulation_results$results, ~attr(.x, "generated_on")) %>% purrr::reduce(max), "%F %H:%M:%S%z")`.
 
 ```{r risk_tolerance_exceedance}
-loss_exceedance <- summarize_simulations(simulation_results$results) %>% 
+loss_exceedance <- summarize_iterations(simulation_results$results) %>% 
   mutate(tolerance = case_when(
     ale_sum >= risk_tolerance["high"] ~ "High", 
     ale_sum >= risk_tolerance["medium"] ~ "Medium",
@@ -160,7 +160,7 @@ The following table shows the maximum, 95th percentile Value at Risk (VaR),
 mean, and minimum annual losses.
 
 ```{r overall_exposure, echo=FALSE}
-overall <- summarize_simulations(simulation_results$results)
+overall <- summarize_iterations(simulation_results$results)
 tibble::tibble(
   "Value at Risk" = dollar(quantile(overall$ale_sum, c(0.95))),
   "Maximum Loss" = dollar(max(overall$ale_sum)),
@@ -679,7 +679,7 @@ at a domain level. `r narrative`
 
 ```{r lef_by_domain, fig.cap="Loss Frequency by Domain"}
 simulations_per_domain <- simulation_results %>% group_by(domain_id) %>% 
-  mutate(summary = map(results, summarize_simulations)) %>% 
+  mutate(summary = map(results, summarize_iterations)) %>% 
   unnest(summary, .drop = TRUE)
 gg <- ggplot(simulations_per_domain, aes(x = loss_events))
 gg <- gg + facet_grid(domain_id ~ ., scales = "free_y", switch = "y")
