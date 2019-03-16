@@ -107,13 +107,13 @@ summarize_simulations <- function(simulation_results, ..., .key = "iteration") {
                      max_loss = sum(.data$ale),
                      outliers = TRUE,
                      ale_sum = sum(.data$ale),
-                     loss_events = sum(.data$loss_events, na.rm = TRUE),
-                     threat_events = sum(.data$threat_events, na.rm = TRUE),
-                     avoided_events = .data$threat_events - .data$loss_events,
                      mean_tc_exceedance = (sum(.data$mean_tc_exceedance * .data$loss_events, na.rm = TRUE) /
                                              sum(.data$loss_events, na.rm = TRUE)) %>% ifelse(is.finite(.), ., 0),
                      mean_diff_exceedance = (sum(.data$mean_diff_exceedance * (.data$threat_events - .data$loss_events), na.rm = TRUE) /
-                                               sum(.data$threat_events - .data$loss_events, na.rm = TRUE)) %>% ifelse(is.finite(.), ., 0))
+                                               sum(.data$threat_events - .data$loss_events, na.rm = TRUE)) %>% ifelse(is.finite(.), ., 0),
+                     loss_events = sum(.data$loss_events, na.rm = TRUE),
+                     threat_events = sum(.data$threat_events, na.rm = TRUE),
+                     avoided_events = .data$threat_events - .data$loss_events)
 
 }
 
