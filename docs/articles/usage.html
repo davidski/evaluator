@@ -172,14 +172,14 @@
 <a href="#run-the-simulations" class="anchor"></a>Run the Simulations</h2>
 <p>Once the quantitative scenarios are ready for simulation, run <code><a href="../reference/run_simulations.html">run_simulations(quantitative_scenarios)</a></code>. By default, Evaluator puts each scenario through 10,000 individual simulated years, modeling how often the threat actors come into contact with your assets, the strength of the threat actors, the strength of your controls, and the losses involved in any situation where the threat strength exceeds your control strength. This simulation process is computationally intense and can take some time to run.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">simulation_results &lt;-<span class="st"> </span><span class="kw"><a href="../reference/run_simulations.html">run_simulations</a></span>(quantitative_scenarios, </a>
-<a class="sourceLine" id="cb5-2" title="2">                                      <span class="dt">simulation_count =</span> 100L)</a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save</a></span>(simulation_results, <span class="dt">file =</span> <span class="st">"~/evaluator/results/simulation_results.rda"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb5-2" title="2">                                      <span class="dt">iterations =</span> 100L)</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">saveRDS</a></span>(simulation_results, <span class="dt">file =</span> <span class="st">"~/evaluator/results/simulation_results.rds"</span>)</a></code></pre></div>
 </div>
 <div id="summarize-results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summarize-results" class="anchor"></a>Summarize Results</h2>
 <p>The raw simulation results typically require summarization for the default reporting functions. These summarized data files, performed at both the per scenario and per domain level are in addition to the previously generated full results. An analyst can always access the full simulation results if desired.</p>
-<p>In the following code block, Evaluator produces <code>scenario_summary.rda</code> and <code>domain_summary.rda</code> files for the reporting in the final section.</p>
+<p>In the following code block, Evaluator produces <code>scenario_summary.rds</code> and <code>domain_summary.rds</code> files for the reporting in the final section.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="../reference/summarize_to_disk.html">summarize_to_disk</a></span>(<span class="dt">simulation_results =</span> simulation_results, </a>
 <a class="sourceLine" id="cb6-2" title="2">                  <span class="dt">results_dir =</span> <span class="st">"~/evaluator/results"</span>)</a></code></pre></div>
 </div>
@@ -201,15 +201,15 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">simulation_results.rda</td>
+<td align="left">simulation_results.rds</td>
 <td align="left">Full details of each simulated scenario</td>
 </tr>
 <tr class="even">
-<td align="left">scenario_summary.rda</td>
+<td align="left">scenario_summary.rds</td>
 <td align="left">Simulation results, summarized at the scenario level</td>
 </tr>
 <tr class="odd">
-<td align="left">domain_summary.rda</td>
+<td align="left">domain_summary.rds</td>
 <td align="left">Simulation results, summarized at the domain level</td>
 </tr>
 </tbody>

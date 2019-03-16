@@ -11,7 +11,7 @@
 #' @importFrom rlang .data
 #' @param scenario An \link{evaluator_scen} object.
 #' @param iterations Number of iterations to run on each scenario.
-#' @param simulation_count **DEPRECTATED** Number of simulations to perform.
+#' @param simulation_count **DEPRECATED** Number of simulations to perform.
 #' @param ale_maximum Maximum practical annual losses.
 #' @param verbose Whether verbose console output is requested.
 #' @export

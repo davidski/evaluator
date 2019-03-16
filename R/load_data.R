@@ -189,9 +189,9 @@ read_qualitative_inputs <- function(input_directory = "~/evaluator/inputs") {
                               col_types = readr::cols(
                                 type = readr::col_character(),
                                 label = readr::col_character(),
-                                l = readr::col_integer(),
+                                l = readr::col_double(),
                                 ml = readr::col_double(),
-                                h = readr::col_integer(),
+                                h = readr::col_double(),
                                 conf = readr::col_integer()
                               ))  # qualitative translations
   capabilities <- readr::read_csv(file.path(input_directory,

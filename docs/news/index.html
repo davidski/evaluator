@@ -144,7 +144,7 @@
 <h1 class="page-header">
 <a href="#evaluator-032900-unreleased" class="anchor"></a>evaluator 0.3.2.900 (unreleased)<small> Unreleased </small>
 </h1>
-<p>This release includes a greatly improved flow for starting directly from quantitative inputs. While the spreadsheet import is still supported, users that have increased their maturity can create <code>evaluator_scen</code> objects that contain their initial quantitative inputs. These users may also use <a href="https://collector.severski.net">collector</a> to work with quantitative data.</p>
+<p>This release includes a greatly improved flow when starting directly from quantitative inputs. While the spreadsheet import is still supported, users that have increased their maturity can create <code>evaluator_scen</code> objects that contain their initial quantitative inputs. These users may also use <a href="https://collector.severski.net">collector</a> to work with quantitative data.</p>
 <div id="new-feature" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-feature" class="anchor"></a>New Feature</h2>
@@ -164,22 +164,30 @@
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
-<li>Scenario Explorer application reworked to operate with quantitative data only.</li>
+<li>All percentages are consistently imported, stored, and processed as decimal values (from 0 - 1). This makes the TC and DIFF parameters use the same scale as VULN.
+<ul>
+<li>As a side benefit, the restrictions on the format of the mappings CSV are relaxed. Doubles (decimals) are now permitted in the low, most likely, and high columns.</li>
+</ul>
+</li>
+<li>Scenario Explorer application now can be used when skipping qualitative data and starting directly from quantitative data.</li>
+<li>Risk Report can now be used when skipping qualitative data and starting directly from quantitative data.</li>
+<li>Updated the default Risk Report and sample mapping files to reference the current maximum OCR fine (SLE), from the 2015 Anthem breach.</li>
+<li>All save and load functions consistently use rds formatted files instead of a mix of rda/rds.</li>
 <li>Removed all remaining uses to SE forms of dplyr verbs.</li>
 <li>Removed use of soft deprecated ggplot <code>aes_()</code> functions.</li>
-<li>Clean up CSS for HTML reports, improving style consistency, particularly around font family consistency.</li>
+<li>Clean up CSS for HTML reports, improving style consistency, particularly around font families.</li>
 <li>Increase test coverage, including moving more shinytest tests to run on CI instances and package spelling tests.</li>
-<li>Update default Risk Report and sample mapping files to reference the new maximum OCR fine (SLE) from the Anthem breach.</li>
 </ul>
 </div>
 <div id="other-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-changes" class="anchor"></a>Other Changes</h2>
 <ul>
-<li>
-<code><a href="../reference/evaluator-deprecated.html">load_data()</a></code> deprecated. Use <code><a href="../reference/read_qualitative_inputs.html">read_qualitative_inputs()</a></code> or <code><a href="../reference/read_quantitative_inputs.html">read_quantitative_inputs()</a></code> as appropriate.</li>
+<li>Deprecated <code><a href="../reference/evaluator-deprecated.html">load_data()</a></code>. Use <code><a href="../reference/read_qualitative_inputs.html">read_qualitative_inputs()</a></code> or <code><a href="../reference/read_quantitative_inputs.html">read_quantitative_inputs()</a></code> as appropriate.</li>
 <li>Re-export the pipe operator <code>%&gt;%</code>
 </li>
+<li>Rename <code>simulation</code> column to <code>iteration</code> to be more consistent with general MC uses.</li>
+<li>Move from soft-deprecated <code><a href="https://purrr.tidyverse.org/reference/invoke.html">purrr::invoke()</a></code> to <code>rlang::eval()</code>.</li>
 </ul>
 </div>
 </div>

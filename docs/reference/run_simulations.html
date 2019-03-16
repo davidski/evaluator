@@ -152,8 +152,8 @@ returning a dataframe of results.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>run_simulations</span>(<span class='no'>scenario</span>, <span class='kw'>simulation_count</span> <span class='kw'>=</span> <span class='fl'>10000L</span>,
-  <span class='kw'>ale_maximum</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>run_simulations</span>(<span class='no'>scenario</span>, <span class='kw'>iterations</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='kw'>ale_maximum</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>simulation_count</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,8 +163,8 @@ returning a dataframe of results.</p>
       <td><p>An <a href='new_evaluator_scen.html'>evaluator_scen</a> object.</p></td>
     </tr>
     <tr>
-      <th>simulation_count</th>
-      <td><p>Number of simulations to perform.</p></td>
+      <th>iterations</th>
+      <td><p>Number of iterations to run on each scenario.</p></td>
     </tr>
     <tr>
       <th>ale_maximum</th>
@@ -173,6 +173,10 @@ returning a dataframe of results.</p>
     <tr>
       <th>verbose</th>
       <td><p>Whether verbose console output is requested.</p></td>
+    </tr>
+    <tr>
+      <th>simulation_count</th>
+      <td><p><strong>DEPRECATED</strong> Number of simulations to perform.</p></td>
     </tr>
     </table>
     
@@ -185,18 +189,18 @@ returning a dataframe of results.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>quantitative_scenarios</span>)
 <span class='co'># run a single scenario through a trivial number (10) of trials</span>
 <span class='fu'>run_simulations</span>(<span class='no'>quantitative_scenarios</span><span class='kw'>[[</span><span class='fl'>1</span>, <span class='st'>"scenario"</span>]], <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 11</span><span>
-#&gt;    simulation threat_events loss_events  vuln mean_tc_exceeda… mean_diff_excee…
-#&gt;         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>          1            30           9 0.3               3.78             7.86
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>          2            30          11 0.367             3.48             6.51
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>          3            23           6 0.261             4.16             8.22
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>          4            19           8 0.421             2.48             6.48
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>          5            24           4 0.167             3.07             7.06
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>          6            36           7 0.194             4.20             4.98
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>          7            32           6 0.188             1.90             4.93
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>          8            31           8 0.258             1.52             6.83
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>          9            41           8 0.195             3.86             7.13
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>         10            20           4 0.2               4.00             8.72
+#&gt;    iteration threat_events loss_events  vuln mean_tc_exceeda… mean_diff_excee…
+#&gt;        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>         1            30           9 0.3             0.037</span><span style='text-decoration: underline;'>8</span><span>           0.078</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         2            30          11 0.367           0.034</span><span style='text-decoration: underline;'>8</span><span>           0.065</span><span style='text-decoration: underline;'>1</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         3            23           6 0.261           0.041</span><span style='text-decoration: underline;'>6</span><span>           0.082</span><span style='text-decoration: underline;'>2</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         4            19           8 0.421           0.024</span><span style='text-decoration: underline;'>8</span><span>           0.064</span><span style='text-decoration: underline;'>8</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         5            24           4 0.167           0.030</span><span style='text-decoration: underline;'>7</span><span>           0.070</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         6            36           7 0.194           0.042</span><span style='text-decoration: underline;'>0</span><span>           0.049</span><span style='text-decoration: underline;'>8</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         7            32           6 0.188           0.019</span><span style='text-decoration: underline;'>0</span><span>           0.049</span><span style='text-decoration: underline;'>3</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         8            31           8 0.258           0.015</span><span style='text-decoration: underline;'>2</span><span>           0.068</span><span style='text-decoration: underline;'>3</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         9            41           8 0.195           0.038</span><span style='text-decoration: underline;'>6</span><span>           0.071</span><span style='text-decoration: underline;'>3</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        10            20           4 0.2             0.040</span><span style='text-decoration: underline;'>0</span><span>           0.087</span><span style='text-decoration: underline;'>2</span><span>
 #&gt; </span><span style='color: #949494;'># … with 5 more variables: ale </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_min </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
 #&gt; #   sle_mean </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sle_median </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
   </div>

@@ -16,7 +16,7 @@ run_simulations(scenario, iterations = 10000L, ale_maximum = NULL,
 
 \item{verbose}{Whether verbose console output is requested.}
 
-\item{simulation_count}{\strong{DEPRECTATED} Number of simulations to perform.}
+\item{simulation_count}{\strong{DEPRECATED} Number of simulations to perform.}
 }
 \value{
 Dataframe of raw results.

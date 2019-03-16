@@ -215,7 +215,7 @@ gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss",
 gg
 ```
 
-## Risk By Domain
+## Risk Exposure By Domain
 
 ```{r top_domains, echo = FALSE}
 top_domains_by_var <- domain_summary %>% unnest() %>% 
@@ -309,7 +309,7 @@ display_scenario_table <- function(scenario_summary, id) {
   summarise(
     "Value at Risk" = dollar(ale_var),
     "Vulnerability (% of events resulting in loss)" = percent(mean_vuln),
-    "Mean Control Gap" = percent(mean_tc_exceedance / 100),
+    "Mean Control Gap" = percent(mean_tc_exceedance),
     "Maximum Annual Loss" = dollar(ale_max),
     "Median Annual Loss" = dollar(round(ale_median)),
     "Maximum Single Loss" = dollar(sle_max),
@@ -458,11 +458,11 @@ create_table <- function(label, id) {
     rowwise() %>% 
     mutate(label = stringi::stri_trans_totitle(label)) %>% 
     mutate(l = ifelse(id == "lm", dollar(l), 
-                      ifelse(id == "tef", comma(l), percent(l / 100)))) %>% 
+                      ifelse(id == "tef", comma(l), percent(l)))) %>% 
     mutate(ml = ifelse(id == "lm", dollar(ml), 
-                       ifelse(id == "tef", comma(ml), percent(ml / 100)))) %>% 
+                       ifelse(id == "tef", comma(ml), percent(ml)))) %>% 
     mutate(h = ifelse(id == "lm", dollar(h), 
-                      ifelse(id == "tef", comma(h), percent(h / 100)))) %>% 
+                      ifelse(id == "tef", comma(h), percent(h)))) %>% 
     rename("Category" = label, "Low" = l, "Most Likely" = ml, "High" = h, 
            "Confidence" = conf) %>% 
     pander(justify = c("left", rep("right", 4)), caption = label)

@@ -59,13 +59,6 @@ scenarios       <- dat$quantitative_scenarios
 # determine the correct base font family to use
 basefont <- get_base_fontfamily()
 
-# for values stored as full precentages, divide by 100 and pretty format 
-# with scales::percent()
-custom_percent <- function(x) {
-    x <- as.integer(x)
-    return(percent(x/100 %>% round(digits = 2)))
-}
-
 # given a scenario id, create a loss table
 get_loss_table <- function(sid) {
   scenario_data <- simulation_results[simulation_results$scenario_id == sid, ][[1, "results"]]
@@ -107,7 +100,7 @@ get_summary_table <- function(sid) {
   summary_data <- mutate_at(summary_data, .funs = funs(dollar), 
                             .vars = vars(ale_median, ale_max, ale_var, sle_mean, 
                             sle_median, sle_max, sle_min)) %>% 
-     mutate(mean_tc_exceedance = ifelse(is.nan(mean_tc_exceedance), NA, custom_percent(mean_tc_exceedance))) %>% 
+     mutate(mean_tc_exceedance = ifelse(is.nan(mean_tc_exceedance), NA, percent(mean_tc_exceedance)) %>% 
      mutate(mean_vuln = percent(mean_vuln))
   
   names(summary_data) <- stringi::stri_trans_totitle(gsub("_", " ", names(summary_data)))
@@ -126,7 +119,7 @@ get_threat_table <- reactive({
   threat_data <- bind_rows(tef_data, tc_data) %>% 
     tidyr::gather(param, value, c(min:shape)) %>% 
     mutate(value = ifelse(type == "tef" | param == "shape", 
-                          as.integer(value), custom_percent(value))) %>% 
+                          as.integer(value), percent(value)) %>% 
     tidyr::spread(param, value) %>% 
     mutate(type = ifelse(type == "tc", "Capability", "Frequency"))
   
@@ -145,7 +138,7 @@ get_control_table <- reactive({
                          type = "diff")
                          
   # format percentages
-  control_data <- mutate_at(control_data, vars(min, mode, max), list(custom_percent))
+  control_data <- mutate_at(control_data, vars(min, mode, max), list(percent))
   
   # add control description
   control_list <- left_join(control_data, capabilities, by = "capability_id")
@@ -203,7 +196,7 @@ DT::renderDataTable({
   dat <- mutate_at(summary_data, .funs = funs(dollar), 
                    .vars = vars(starts_with("ale"), starts_with("sle"))) %>% 
     mutate(loss_events_mean = comma(loss_events_mean)) %>% 
-    mutate(mean_tc_exceedance = custom_percent(mean_tc_exceedance)) %>% 
+    mutate(mean_tc_exceedance = percent(mean_tc_exceedance)) %>% 
     mutate(mean_vuln = percent(mean_vuln))
   names(dat) <- stringi::stri_trans_totitle(names(dat))
   DT::datatable(dat, rownames = FALSE,

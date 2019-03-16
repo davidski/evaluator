@@ -1,6 +1,6 @@
 # evaluator 0.3.2.900 (unreleased)
 
-This release includes a greatly improved flow for starting directly from 
+This release includes a greatly improved flow when starting directly from 
 quantitative inputs. While the spreadsheet import is still supported, users 
 that have increased their maturity can create `evaluator_scen` objects that 
 contain their initial quantitative inputs. These users may also use 
@@ -13,19 +13,32 @@ contain their initial quantitative inputs. These users may also use
   - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
 
 ## Improvements
-* Scenario Explorer application reworked to operate when starting directly from quantitative data.
-* Risk Report reworked to operate when starting directly from quantitative data.
-* Update default Risk Report and sample mapping files to reference the new maximum OCR fine (SLE) from the Anthem breach.
-* All save and load functions now consistently use rds formatted files instead of a mix of rda/rds.
+* All percentages are consistently imported, stored, and processed as 
+  decimal values (from 0 - 1). This makes the TC and DIFF parameters use the 
+  same scale as VULN.
+  * As a side benefit, the restrictions on the format of the mappings CSV are 
+  relaxed. Doubles (decimals) are now permitted in the low, most likely, and 
+  high columns.
+* Scenario Explorer application now can be used when skipping qualitative 
+  data and starting directly from quantitative data.
+* Risk Report can now be used when skipping qualitative data and starting 
+  directly from quantitative data.
+* Updated the default Risk Report and sample mapping files to reference the 
+  current maximum OCR fine (SLE), from the 2015 Anthem breach.
+* All save and load functions consistently use rds formatted files instead 
+  of a mix of rda/rds.
 * Removed all remaining uses to SE forms of dplyr verbs.
 * Removed use of soft deprecated ggplot `aes_()` functions.
-* Clean up CSS for HTML reports, improving style consistency, particularly around font family consistency.
-* Increase test coverage, including moving more shinytest tests to run on CI instances and package spelling tests.
+* Clean up CSS for HTML reports, improving style consistency, particularly 
+  around font families.
+* Increase test coverage, including moving more shinytest tests to run on CI 
+  instances and package spelling tests.
 
 ## Other Changes
-* `load_data()` deprecated. Use `read_qualitative_inputs()` or `read_quantitative_inputs()` as appropriate.
+* Deprecated `load_data()`. Use `read_qualitative_inputs()` or 
+  `read_quantitative_inputs()` as appropriate.
 * Re-export the pipe operator `%>%`
-* Rename `simulation` collumn to `iteration` to be more consistent with general MC uses.
+* Rename `simulation` column to `iteration` to be more consistent with general MC uses.
 * Move from soft-deprecated `purrr::invoke()` to `rlang::eval()`.
 
 # evaluator 0.3.2
