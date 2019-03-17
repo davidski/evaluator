@@ -33,7 +33,12 @@ contain their initial quantitative inputs. These users may also use
   around font families.
 * Increase test coverage, including moving more shinytest tests to run on CI 
   instances and package spelling tests.
-
+* The internal contract between `run_simulation()` and modelling functions 
+  such as `openfair_tef_tc_diff_lm()` is established. `run_simulation()` 
+  will always confirm a scenario object has the OpenFAIR components 
+  expected by the modelling function. This enables easier extension of 
+  Evaluator to new models.
+  
 ## Other Changes
 * Deprecated `load_data()`. Use `read_qualitative_inputs()` or 
   `read_quantitative_inputs()` as appropriate.

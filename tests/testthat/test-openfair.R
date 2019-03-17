@@ -178,12 +178,12 @@ test_that("Default simulation model returns expected results", {
     tc_params = list(func = "mc2d::rpert", min = 1, mode = 10, max = 75, shape = 100),
     lm_params = list(func = "mc2d::rpert", min = 1, mode = 100, max = 10000, shape = 54),
     diff_params = list(list(func = "mc2d::rpert", min = 1, mode = 10, max = 50, shape = 4)))
-  sim <- openfair_tef_tc_diff_lm(scen, n = 100)
-  expect_s3_class(sim, "tbl_df")
-  expect_equal(nrow(sim), 100)
-  expect_equal(length(sim), 11)
-  expect_equal(sum(sim$threat_events), 2287)
-  expect_equal(sum(sim$loss_events), 786)
+  results <- run_simulation(scen, iterations = 100)
+  expect_s3_class(results, "tbl_df")
+  expect_equal(nrow(results), 100)
+  expect_equal(length(results), 11)
+  expect_equal(sum(results$threat_events), 2287)
+  expect_equal(sum(results$loss_events), 786)
 })
 
 context("Main simulation")
@@ -205,32 +205,41 @@ test_that("Full wrapped scenario works as expected", {
                             model = "openfair_tef_tc_diff_lm"), row.names = c(NA, -1L),
                        class = c("tbl_df", "tbl", "data.frame"))
   scenario <- scenario %>% mutate(scenario = pmap(list(tef_params, tc_params, diff_params, lm_params, model), tidyrisk_scenario))
-  results <- evaluate_promise(run_simulations(scenario[[1, "scenario"]], 100L))
-  expect_s3_class(results$result, "tbl_df")
-  expect_equal(nrow(results$result), 100)
-  expect_equal(length(results$result), 11)
-  expect_equal(sum(results$result$threat_events), 2686)
+  #updated_scenario <- evaluate_promise(run_simulations(scenario[[1, "scenario"]], 100L))
+  results <- run_simulation(scenario[[1, "scenario"]], 100L)
+  #results <- updated_scenario$results
+  expect_s3_class(results, "tbl_df")
+  expect_equal(nrow(results), 100)
+  expect_equal(length(results), 11)
+  expect_equal(sum(results$threat_events), 2686)
   #$expect_equal(sum(results$result$loss_events), 764)
-  expect_equal(sum(results$result$loss_events), 772)
+  expect_equal(sum(results$loss_events), 772)
 })
 
 test_that("Simulation fails when given a simulation_count", {
   data("quantitative_scenarios")
   bad_scen <- quantitative_scenarios[[1, "scenario"]]
   class(bad_scen) <- "list"
-  expect_error(run_simulations(bad_scen, simulation_count = 10L), regexp = "iteration")
+  expect_error(run_simulation(bad_scen, simulation_count = 10L), regexp = "iteration")
 })
 
 test_that("Simulation fails when not given a scenario object", {
   data("quantitative_scenarios")
   bad_scen <- quantitative_scenarios[[1, "scenario"]]
   class(bad_scen) <- "list"
-  expect_error(run_simulations(bad_scen, 10L), regexp = "object")
+  expect_error(run_simulation(bad_scen, 10L), regexp = "object")
 })
 
 test_that("Simulation respects maximum ALE", {
   data("quantitative_scenarios")
   good_scen <- quantitative_scenarios[[1, "scenario"]]
-  results <- run_simulations(good_scen, 10L, ale_maximum = 100)
+  results <- run_simulation(good_scen, 10L, ale_maximum = 100)
   expect_lte(max(results$ale), 100)
+})
+
+test_that("Simulating multiple scenarios succeeds", {
+  data("quantitative_scenarios")
+  scenarios <- quantitative_scenarios[1:3, ]$scenario
+  results <- run_simulations(scenarios[1], scenarios[2], scenarios[3], iterations = 10L)
+  expect_is(results, "list")
 })

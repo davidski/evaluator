@@ -144,13 +144,13 @@
 <h1 class="page-header">
 <a href="#evaluator-032900-unreleased" class="anchor"></a>evaluator 0.3.2.900 (unreleased)<small> Unreleased </small>
 </h1>
-<p>This release includes a greatly improved flow when starting directly from quantitative inputs. While the spreadsheet import is still supported, users that have increased their maturity can create <code>evaluator_scen</code> objects that contain their initial quantitative inputs. These users may also use <a href="https://collector.severski.net">collector</a> to work with quantitative data.</p>
+<p>This release includes a greatly improved flow when starting directly from quantitative inputs. While the spreadsheet import is still supported, users that have increased their maturity can create <code>tidyrisk_scenario</code> objects that contain their initial quantitative inputs. These users may also use <a href="https://collector.severski.net">collector</a> to work with quantitative data.</p>
 <div id="new-feature" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-feature" class="anchor"></a>New Feature</h2>
 <ul>
 <li>New <code><a href="../reference/read_qualitative_inputs.html">read_qualitative_inputs()</a></code> function</li>
-<li>New <code>evaluator_scen</code> object for containing the elements of a risk scenario for simulation.</li>
+<li>New <code>tidyrisk_scenario</code> object for containing the elements of a risk scenario for simulation.</li>
 <li>New <code><a href="../reference/summarize_scenario.html">summarize_scenario()</a></code> function creates summary for a single scenario’s results.
 <ul>
 <li>
@@ -177,6 +177,7 @@
 <li>Removed use of soft deprecated ggplot <code>aes_()</code> functions.</li>
 <li>Clean up CSS for HTML reports, improving style consistency, particularly around font families.</li>
 <li>Increase test coverage, including moving more shinytest tests to run on CI instances and package spelling tests.</li>
+<li>The internal contract between <code><a href="../reference/run_simulation.html">run_simulation()</a></code> and modelling functions such as <code><a href="../reference/openfair_tef_tc_diff_lm.html">openfair_tef_tc_diff_lm()</a></code> is established. <code><a href="../reference/run_simulation.html">run_simulation()</a></code> will always confirm a scenario object has the OpenFAIR components expected by the modelling function. This enables easier extension of Evaluator to new models.</li>
 </ul>
 </div>
 <div id="other-changes" class="section level2">
@@ -355,7 +356,7 @@
 <li>RMarkdown 1.8.2 or greater (currently GitHub only) required to work around the temporary file deletion issue specified in <a href="https://github.com/rstudio/rmarkdown/issues/1184" class="uri">https://github.com/rstudio/rmarkdown/issues/1184</a>. Use <code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">devtools::install_github("rstudio/rmarkdown", "b84f706")</a></code> or greater.</li>
 </ul>
 </li>
-<li>Expose OpenFAIR model selection in <code>run_simulation()</code> call
+<li>Expose OpenFAIR model selection in <code><a href="../reference/run_simulation.html">run_simulation()</a></code> call
 <ul>
 <li>Provide default TEF/TC/DIFF/LM OpenFAIR model</li>
 </ul>

@@ -2,13 +2,15 @@
 % Please edit documentation in R/simulate.R
 \name{run_simulations}
 \alias{run_simulations}
-\title{Run simulations for a scenario}
+\title{Run simulations for a list of scenarios}
 \usage{
-run_simulations(scenario, iterations = 10000L, ale_maximum = NULL,
+run_simulations(scenario, ..., iterations = 10000L, ale_maximum = NULL,
   verbose = FALSE, simulation_count = NULL)
 }
 \arguments{
 \item{scenario}{A \link{tidyrisk_scenario} object.}
+
+\item{...}{Additional \code{tidyrisk_scenario} objects to simulate}
 
 \item{iterations}{Number of iterations to run on each scenario.}
 
@@ -19,14 +21,15 @@ run_simulations(scenario, iterations = 10000L, ale_maximum = NULL,
 \item{simulation_count}{\strong{DEPRECATED} Number of simulations to perform.}
 }
 \value{
-Dataframe of raw results.
+A list of one dataframe of results for each scenario
 }
 \description{
-Given a quantitative scenario object, run an OpenFAIR Monte Carlo simulation
-returning a dataframe of results.
+Given a list of quantitative scenario objects of type \code{tidyrisk_scenario},
+run a OpenFAIR Monte Carlo simulation for each scenario.
 }
 \examples{
+# fetch three scenarios for this example
 data(quantitative_scenarios)
-# run a single scenario through a trivial number (10) of trials
-run_simulations(quantitative_scenarios[[1, "scenario"]], 10)
+scenarios <- quantitative_scenarios[1:3, ]$scenario
+run_simulations(scenarios, iterations = 10)
 }

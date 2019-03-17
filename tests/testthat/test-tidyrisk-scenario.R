@@ -1,4 +1,4 @@
-context("Classes")
+context("Tidyrisk Scenario Class")
 test_that("Scenario object can be created", {
   tidyrisk_scenario(
     diff_params = list(list(

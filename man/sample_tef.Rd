@@ -20,12 +20,6 @@ List containing type ("tef"), samples (as a vector), and details (as a list).
 Calculate the number of simulated threat event frequencies (TEF)
 }
 \seealso{
-Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
-  \code{\link{get_mean_control_strength}},
-  \code{\link{openfair_tef_tc_diff_lm}},
-  \code{\link{sample_diff}}, \code{\link{sample_lef}},
-  \code{\link{sample_lm}}, \code{\link{sample_tc}},
-  \code{\link{sample_vuln}},
-  \code{\link{select_loss_opportunities}}
+Other OpenFAIR models: \code{\link{openfair_tef_tc_diff_plm_slm}}
 }
-\concept{OpenFAIR helpers}
+\concept{OpenFAIR models}

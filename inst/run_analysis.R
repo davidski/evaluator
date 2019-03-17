@@ -13,6 +13,10 @@
 
 # Setup -------------------------------------------------------------------
 library(evaluator)
+library(readr)
+library(purrr)
+library(dplyr)
+
 if (!exists("base_dir") || !dir.exists(base_dir)) {
   stop("Set base_dir to your evaluator working directory before running this script.")
 }
@@ -49,8 +53,9 @@ quantitative_scenarios <- encode_scenarios(qualitative_scenarios, capabilities,
 
 # Simulate ----------------------------------------------------------------
 message("Running simulations...")
-simulation_results <- run_simulations(quantitative_scenarios,
-                                      iterations = 10000L)
+simulation_results <- quantitative_scenarios %>%
+  mutate(results = map(scenario, run_simulation, iterations = 10000L)) %>%
+  select(-scenario)
 saveRDS(simulation_results, file = file.path(results_dir, "simulation_results.rds"))
 
 # Summarize ---------------------------------------------------------------

@@ -76,13 +76,19 @@
     <loc>https://evaluator.severski.net/reference/import_spreadsheet.html</loc>
   </url>
   <url>
+    <loc>https://evaluator.severski.net/reference/is.tidyrisk_scenario.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/is_tidyrisk_scenario.html</loc>
+  </url>
+  <url>
     <loc>https://evaluator.severski.net/reference/load_data-deprecated.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/mappings.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/new_evaluator_scen.html</loc>
+    <loc>https://evaluator.severski.net/reference/new_tidyrisk_scenario.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/openfair_example.html</loc>
@@ -91,7 +97,13 @@
     <loc>https://evaluator.severski.net/reference/openfair_tef_tc_diff_lm.html</loc>
   </url>
   <url>
+    <loc>https://evaluator.severski.net/reference/openfair_tef_tc_diff_plm_slm.html</loc>
+  </url>
+  <url>
     <loc>https://evaluator.severski.net/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/print.tidyrisk_scenario.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/qualitative_scenarios.html</loc>
@@ -110,6 +122,9 @@
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/risk_factory.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/run_simulation.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/run_simulations.html</loc>
@@ -148,10 +163,10 @@
     <loc>https://evaluator.severski.net/reference/summarize_domains.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/summarize_scenario.html</loc>
+    <loc>https://evaluator.severski.net/reference/summarize_iterations.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/summarize_simulations.html</loc>
+    <loc>https://evaluator.severski.net/reference/summarize_scenario.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/summarize_to_disk.html</loc>

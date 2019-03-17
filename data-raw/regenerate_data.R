@@ -1,5 +1,5 @@
 ## Regenerate sample data sets
-library(evaluator)
+#library(evaluator)
 library(purrr)
 library(dplyr)
 library(future)
@@ -40,10 +40,9 @@ usethis::use_data(quantitative_scenarios, overwrite = TRUE)
 
 # run simulations and save results
 simulation_results <- quantitative_scenarios %>%
-  mutate(results = furrr::future_map(scenario, run_simulations, iterations = 1000, .progress = TRUE)) %>%
+  mutate(results = furrr::future_map(scenario, run_simulation, iterations = 1000, .progress = TRUE)) %>%
   select(-c(scenario, tcomm, scenario_description), scenario_id, domain_id, results)
 
-#simulation_results <- run_simulations(quantitative_scenarios, 1000L)
 usethis::use_data(simulation_results, overwrite = TRUE)
 
 # calculate and save domain summary

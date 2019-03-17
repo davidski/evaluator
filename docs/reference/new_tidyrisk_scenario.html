@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate difficulty strength across multiple controls by taking the mean — get_mean_control_strength • evaluator</title>
+<title>Construct a quantitative scenario object — new_tidyrisk_scenario • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,10 +32,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Calculate difficulty strength across multiple controls by taking the mean — get_mean_control_strength" />
+<meta property="og:title" content="Construct a quantitative scenario object — new_tidyrisk_scenario" />
 
-<meta property="og:description" content="Given a set of estimation parameters, calculate control strength as the
-arithmetic mean of sampled control effectiveness." />
+<meta property="og:description" content="Supply one or more named lists in the format of foo_params,
+where each foo is an OpenFAIR element name (e.g. tef, tc, diff, lm)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,45 +140,50 @@ arithmetic mean of sampled control effectiveness." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate difficulty strength across multiple controls by taking the mean</h1>
+    <h1>Construct a quantitative scenario object</h1>
     
-    <div class="hidden name"><code>get_mean_control_strength.Rd</code></div>
+    <div class="hidden name"><code>new_tidyrisk_scenario.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Given a set of estimation parameters, calculate control strength as the
-arithmetic mean of sampled control effectiveness.</p>
+    <p>Supply one or more named lists in the format of <code>foo_params</code>,
+where each <code>foo</code> is an OpenFAIR element name (e.g. tef, tc, diff, lm).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_mean_control_strength</span>(<span class='no'>n</span>, <span class='no'>diff_parameters</span>)</pre>
+    <pre class="usage"><span class='fu'>new_tidyrisk_scenario</span>(<span class='kw'>tef_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>tc_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+  <span class='kw'>diff_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>lm_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"openfair_tef_tc_diff_lm"</span>)
+
+<span class='fu'>tidyrisk_scenario</span>(<span class='kw'>tef_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>tc_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+  <span class='kw'>diff_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>lm_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"openfair_tef_tc_diff_lm"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>Number of threat events to sample controls across.</p></td>
+      <th>tef_params</th>
+      <td><p>List of threat frequency parameters</p></td>
     </tr>
     <tr>
-      <th>diff_parameters</th>
-      <td><p>Parameters to pass to <code><a href='sample_diff.html'>sample_diff</a></code>.</p></td>
+      <th>tc_params</th>
+      <td><p>List of threat capability parameters</p></td>
+    </tr>
+    <tr>
+      <th>diff_params</th>
+      <td><p>List of difficulty parameters</p></td>
+    </tr>
+    <tr>
+      <th>lm_params</th>
+      <td><p>List of loss magnitude parameters</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p>Name of model to run</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Vector of control effectiveness.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other OpenFAIR helpers: <code><a href='compare_tef_vuln.html'>compare_tef_vuln</a></code>,
-  <code><a href='openfair_tef_tc_diff_lm.html'>openfair_tef_tc_diff_lm</a></code>,
-  <code><a href='sample_diff.html'>sample_diff</a></code>, <code><a href='sample_lef.html'>sample_lef</a></code>,
-  <code><a href='sample_lm.html'>sample_lm</a></code>, <code><a href='sample_tc.html'>sample_tc</a></code>,
-  <code><a href='sample_vuln.html'>sample_vuln</a></code>,
-  <code><a href='select_loss_opportunities.html'>select_loss_opportunities</a></code></p></div>
     
 
   </div>
@@ -186,11 +191,7 @@ arithmetic mean of sampled control effectiveness.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

@@ -9,7 +9,7 @@
 #' @param params Optional parameters to pass to `.func`.
 #' @param .func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
 #' @return List containing type ("tef"), samples (as a vector), and details (as a list).
-#' @family OpenFAIR helpers
+#' @family OpenFAIR models
 #' @export
 sample_tef <- function(n, params = NULL, .func = NULL) {
   .func <- if (is.null(.func)) get("rpert", asNamespace("mc2d")) else {
@@ -261,16 +261,19 @@ select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
 #' Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels
 #'
 #' Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, and
-#'   LM sampling. If there are multiple controls provided for a scenarios, the
+#'   LM sampling. If there are multiple controls provided for the scenario, the
 #'   arithmetic mean (average) is taken across samples for all controls to get
-#'   the effective control strength for a given iteration.
+#'   the effective control strength for each threat event.
 #'
 #' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int flatten
 #' @importFrom tidyr nest
 #' @importFrom tibble tibble as_tibble
 #' @importFrom rlang .data
 #' @importFrom dplyr %>%
-#' @param scenario A `tidyrisk_scenario` object
+#' @param tef Parameters for TEF simulation
+#' @param tc Parameters for TC simulation
+#' @param diff Parameters for DIFF simulation
+#' @param lm Parameters for LM simulation
 #' @param n Number of iterations to run.
 #' @param verbose Whether to print progress indicators.
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
@@ -279,19 +282,9 @@ select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
 #' @export
 #' @examples
 #' data(quantitative_scenarios)
-#' scenario <- quantitative_scenarios[[1, "scenario"]]
-#' openfair_tef_tc_diff_lm(scenario, 10)
-openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
-
-  # check for required elements
-  required_elements <- c("tef", "tc", "diff", "lm") %>% paste0("_params")
-  if (purrr::some(scenario[required_elements], is.null)) {
-    stop("Missing one or more required elements.", call. = FALSE)
-  }
-
-  if (!class(scenario) %in% ("tidyrisk_scenario")) {
-    stop("Scenario must be an tidyrisk_scenario object.", call. = FALSE)
-  }
+#' params <- quantitative_scenarios[[1, "scenario"]]$parameters
+#' openfair_tef_tc_diff_lm(params$tef, params$tc, params$diff, params$lm, 10)
+openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE) {
 
   # make samples repeatable (and l33t)
   set.seed(31337)
@@ -299,12 +292,16 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
   if (verbose) {
     message("Working on scenario ")
 
-    message(paste("Scenario is: ", scenario[-which(names(scenario) %in% "diff_samples")], "\n"))
-    # message(paste('Names are ', names(scenario)))
+    message(paste("Scenario is: ",
+                  "             ", tef,
+                  "             ", tc,
+                  "             ", diff,
+                  "             ", lm,
+                  "\n"))
   }
 
   # TEF - how many contacts do we have in each simulated period
-  TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
+  TEFestimate <- tef %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
   params <- TEFestimate$params %>% unlist()
   TEFsamples <- sample_tef(n = n, .func = TEFestimate$func, params = params)
@@ -312,7 +309,7 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
 
   # TC - what is the strength of each threat event
   #    - get the threat capability parameters for this scenario
-  TCestimate <- scenario$tc_params %>% purrr::flatten() %>%
+  TCestimate <- tc %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
   #    - sample threat capability for each TEF event in each sample period
   TCsamples <- purrr::map(1:n, function(x) {
@@ -327,7 +324,7 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
   # get the difficulty for each threat event across all the simulated periods
   DIFFsamples <- purrr::map(1:n, function(x) {
     if (is.numeric(TEFsamples[[x]]) && TEFsamples[[x]] > 0) {
-      get_mean_control_strength(TEFsamples[[x]], scenario$diff_params)
+      get_mean_control_strength(TEFsamples[[x]], diff)
     } else {NA}
   })
   # DIFFsamples is now a list of vectors of the control strength for
@@ -346,7 +343,7 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
   LEFsamples <- purrr::map(LEFsamples, c("samples")) %>% purrr::map_int(sum)
 
   # LM - determine the size of losses for each iteration
-  LMestimate <- scenario$lm_params %>% purrr::flatten() %>%
+  LMestimate <- lm %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
   loss_samples <- purrr::map(LEFsamples, function(x) {
     params <- LMestimate$params %>% unlist()
@@ -379,31 +376,45 @@ openfair_tef_tc_diff_lm <- function(scenario, n = 10^4, verbose = FALSE) {
   )
 }
 
+#' Run an OpenFAIR simulation at the TEF/TC/DIFF/PLM/SLM levels
+#'
+#' Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, PLM, and
+#'   SLM sampling. If there are multiple controls provided for the scenario, the
+#'   arithmetic mean (average) is taken across samples for all controls to get
+#'   the effective control strength for each threat event.
+#'
+#' @importFrom purrr pmap map pluck simplify_all transpose map_dbl map_int flatten
+#' @importFrom tidyr nest
+#' @importFrom tibble tibble as_tibble
+#' @importFrom rlang .data
+#' @importFrom dplyr %>%
+#' @param tef Parameters for TEF simulation
+#' @param tc Parameters for TC simulation
+#' @param diff Parameters for DIFF simulation
+#' @param plm Parameters for PLM simulation
+#' @param slm Parameters for SLM simulation
+#' @param n Number of iterations to run.
+#' @param verbose Whether to print progress indicators.
+#' @return Dataframe of scenario name, threat_event count, loss_event count,
+#'   mean TC and DIFF exceedance, and ALE samples.
+#' @family OpenFAIR models
 #' @export
-#' @rdname openfair_tef_tc_diff_lm
-openfair_tef_tc_diff_plm_slm <- function(scenario, n = 10^4, verbose = FALSE) {
-
-  # check for required elements
-  required_elements <- c("tef", "tc", "diff", "plm", "slm") %>% paste0("_params")
-  if (purrr::some(scenario[required_elements], is.null)) {
-    stop("Missing one or more required elements.", call. = FALSE)
-  }
-
-  if (!class(scenario) %in% ("tidyrisk_scenario")) {
-    stop("Scenario must be an tidyrisk_scenario object.", call. = FALSE)
-  }
-
-  # make samples repeatable (and l33t)
-  set.seed(31337)
+openfair_tef_tc_diff_plm_slm <- function(tef, tc, diff, plm, slm, n = 10^4, verbose = FALSE) {
 
   if (verbose) {
     message("Working on scenario ")
-    message(paste("Scenario is: ", scenario[-which(names(scenario) %in% "diff_samples")], "\n"))
-    # message(paste('Names are ', names(scenario)))
+
+    message(paste("Scenario is: ",
+                  "             ", tef,
+                  "             ", tc,
+                  "             ", diff,
+                  "             ", plm,
+                  "             ", slm,
+                  "\n"))
   }
 
   # TEF - how many contacts do we have in each simulated period
-  TEFestimate <- scenario$tef_params %>% purrr::flatten() %>%
+  TEFestimate <- tef %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
   params <- TEFestimate$params %>% unlist()
   TEFsamples <- sample_tef(n = n, .func = TEFestimate$func, params = params)
@@ -411,7 +422,7 @@ openfair_tef_tc_diff_plm_slm <- function(scenario, n = 10^4, verbose = FALSE) {
 
   # TC - what is the strength of each threat event
   #    - get the threat capability parameters for this scenario
-  TCestimate <- scenario$tc_params %>% purrr::flatten() %>%
+  TCestimate <- tc %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
   #    - sample threat capability for each TEF event in each sample period
   TCsamples <- purrr::map(1:n, function(x) {
@@ -423,7 +434,7 @@ openfair_tef_tc_diff_plm_slm <- function(scenario, n = 10^4, verbose = FALSE) {
   # get the difficulty for each threat event across all the simulated periods
   DIFFsamples <- purrr::map(1:n, function(x) {
     if (is.numeric(TEFsamples[[x]]) && TEFsamples[[x]] > 0) {
-      get_mean_control_strength(TEFsamples[[x]], scenario$diff_params)
+      get_mean_control_strength(TEFsamples[[x]], diff)
     } else {NA}
   })
   # DIFFsamples is now a list of vectors of the control strength for
@@ -442,9 +453,9 @@ openfair_tef_tc_diff_plm_slm <- function(scenario, n = 10^4, verbose = FALSE) {
   LEFsamples <- purrr::map(LEFsamples, c("samples")) %>% purrr::map_int(sum)
 
   # LM - determine the size of losses for each iteration
-  PLMestimate <- scenario$plm_params %>% purrr::flatten() %>%
+  PLMestimate <- plm %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
-  SLMestimate <- scenario$slm_params %>% purrr::flatten() %>%
+  SLMestimate <- slm %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
   loss_samples$samples <- purrr::map(LEFsamples, function(x) {
     dat_p <- sample_lm(n = x, .func = PLMestimate$func, params = params)

@@ -34,6 +34,6 @@ Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
   \code{\link{openfair_tef_tc_diff_lm}},
   \code{\link{sample_diff}}, \code{\link{sample_lef}},
   \code{\link{sample_lm}}, \code{\link{sample_tc}},
-  \code{\link{sample_tef}}, \code{\link{sample_vuln}}
+  \code{\link{sample_vuln}}
 }
 \concept{OpenFAIR helpers}

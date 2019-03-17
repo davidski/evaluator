@@ -150,6 +150,20 @@
     <tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-evaluator" class="hasAnchor"><a href="#section-evaluator" class="anchor"></a>Evaluator</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="evaluator.html">evaluator</a></code> </p>
+        </td>
+        <td><p><code>evaluator</code> package</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-data-import-and-cleansing-functions" class="hasAnchor"><a href="#section-data-import-and-cleansing-functions" class="anchor"></a>Data Import and Cleansing Functions</h2>
           <p class="section-desc"></p>
         </th>
@@ -255,15 +269,27 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="openfair_tef_tc_diff_lm.html">openfair_tef_tc_diff_lm()</a></code> <code><a href="openfair_tef_tc_diff_lm.html">openfair_tef_tc_diff_plm_slm()</a></code> </p>
+          <p><code><a href="openfair_tef_tc_diff_lm.html">openfair_tef_tc_diff_lm()</a></code> </p>
         </td>
         <td><p>Run an OpenFAIR simulation at the TEF/TC/DIFF/LM levels</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="run_simulations.html">run_simulations()</a></code> </p>
+          <p><code><a href="openfair_tef_tc_diff_plm_slm.html">openfair_tef_tc_diff_plm_slm()</a></code> </p>
+        </td>
+        <td><p>Run an OpenFAIR simulation at the TEF/TC/DIFF/PLM/SLM levels</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="run_simulation.html">run_simulation()</a></code> </p>
         </td>
         <td><p>Run simulations for a scenario</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="run_simulations.html">run_simulations()</a></code> </p>
+        </td>
+        <td><p>Run simulations for a list of scenarios</p></td>
       </tr><tr>
         
         <td>
@@ -324,6 +350,12 @@ parameters for that function</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="derive_control_key.html">derive_control_key()</a></code> </p>
+        </td>
+        <td><p>Derive control ID to control description mappings</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="explore_scenarios.html">explore_scenarios()</a></code> </p>
         </td>
         <td><p>Launch the Scenario Explorer web application</p></td>
@@ -381,7 +413,7 @@ all domains</p></td>
       <tr>
         <th colspan="2">
           <h2 id="section-sample-data-sets" class="hasAnchor"><a href="#section-sample-data-sets" class="anchor"></a>Sample Data Sets</h2>
-          <p class="section-desc"><p>Default demonstration data sets</p></p>
+          <p class="section-desc"><p>Demonstration data sets</p></p>
         </th>
       </tr>
       <tr>
@@ -449,21 +481,53 @@ all domains</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="summarize_iterations.html">summarize_iterations()</a></code> </p>
+        </td>
+        <td><p>Create a summary of outcomes across all scenarios</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="summarize_scenario.html">summarize_scenario()</a></code> <code><a href="summarize_scenario.html">summarize_scenarios()</a></code> </p>
         </td>
         <td><p>Create a summary of the simulation results for a single scenario</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="summarize_simulations.html">summarize_simulations()</a></code> </p>
-        </td>
-        <td><p>Create a summary of outcomes across scenarios</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="summarize_to_disk.html">summarize_to_disk()</a></code> </p>
         </td>
         <td><p>Create all summary files and write to disk</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-tidyrisk-scenario-class-functions" class="hasAnchor"><a href="#section-tidyrisk-scenario-class-functions" class="anchor"></a>Tidyrisk Scenario Class Functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="is.tidyrisk_scenario.html">is.tidyrisk_scenario()</a></code> </p>
+        </td>
+        <td><p>Alias test for tidyrisk scenario</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_tidyrisk_scenario.html">is_tidyrisk_scenario()</a></code> </p>
+        </td>
+        <td><p>Test if the object is a tidyrisk_scenario</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="new_tidyrisk_scenario.html">new_tidyrisk_scenario()</a></code> <code><a href="new_tidyrisk_scenario.html">tidyrisk_scenario()</a></code> </p>
+        </td>
+        <td><p>Construct a quantitative scenario object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.tidyrisk_scenario.html">print(<i>&lt;tidyrisk_scenario&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Default printing of a tidyrisk_scenario</p></td>
       </tr>
     </tbody>
     </table>
@@ -472,11 +536,13 @@ all domains</p></td>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#section-evaluator">Evaluator</a></li>
       <li><a href="#section-data-import-and-cleansing-functions">Data Import and Cleansing Functions</a></li>
       <li><a href="#section-modelling-functions">Modelling Functions</a></li>
       <li><a href="#section-reporting-functions">Reporting Functions</a></li>
       <li><a href="#section-sample-data-sets">Sample Data Sets</a></li>
       <li><a href="#section-summarization-functions">Summarization Functions</a></li>
+      <li><a href="#section-tidyrisk-scenario-class-functions">Tidyrisk Scenario Class Functions</a></li>
     </ul>
   </div>
 </div>

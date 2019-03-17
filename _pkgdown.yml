@@ -27,6 +27,9 @@ navbar:
       href: news/index.html
 
 reference:
+  - title: Evaluator
+    contents:
+      - evaluator
   - title: Data Import and Cleansing Functions
     contents:
       - create_templates
@@ -46,12 +49,15 @@ reference:
       - get_mean_control_strength
       - identify_outliers
       - openfair_tef_tc_diff_lm
+      - openfair_tef_tc_diff_plm_slm
+      - run_simulation
       - run_simulations
       - starts_with("sample")
       - select_loss_opportunities
   - title: Reporting Functions
     contents:
       - starts_with("calculate")
+      - derive_control_key
       - explore_scenarios
       - dollar_millions
       - starts_with("generate")
@@ -59,7 +65,7 @@ reference:
       - risk_dashboard
       - theme_evaluator
   - title: Sample Data Sets
-    desc: Default demonstration data sets
+    desc: Demonstration data sets
     contents:
       - capabilities
       - domains
@@ -72,3 +78,9 @@ reference:
   - title: Summarization Functions
     contents:
       - starts_with("summarize")
+  - title: Tidyrisk Scenario Class Functions
+    contents:
+      - is.tidyrisk_scenario
+      - is_tidyrisk_scenario
+      - new_tidyrisk_scenario
+      - print.tidyrisk_scenario
