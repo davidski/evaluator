@@ -1,4 +1,4 @@
-context("Tidyrisk Scenario Class")
+context("Tidyrisk Scenario class")
 test_that("Scenario object can be created", {
   tidyrisk_scenario(
     diff_params = list(list(
@@ -18,25 +18,3 @@ test_that("Scenario object can be created", {
   expect_s3_class(scenario, "tidyrisk_scenario")
 })
 
-
-test_that("Element object can be created", {
-  element <- evaluator_elem(NA, factor_label = "TF")
-  expect_s3_class(element, "evaluator_elem")
-
-})
-test_that("Element object does not accept invalid OpenFAIR types", {
-  expect_error(evaluator_elem(NA, factor_label = "ZZGO"))
-})
-
-test_that("Element object summary functions without samples", {
-  element <- evaluator_elem(NA, factor_label = "LM")
-  expect_is(summary(element), "list")
-})
-test_that("Element object summary functions with samples", {
-  element <- evaluator_elem(c(1, 100), factor_label = "LM")
-  expect_is(summary(element), "list")
-})
-test_that("Element object summary functions on non LM types", {
-  element <- evaluator_elem(c(1, 100), factor_label = "TC")
-  expect_is(summary(element), "list")
-})

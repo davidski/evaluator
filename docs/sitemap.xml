@@ -40,9 +40,6 @@
     <loc>https://evaluator.severski.net/reference/evaluator.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/evaluator_elem.html</loc>
-  </url>
-  <url>
     <loc>https://evaluator.severski.net/reference/explore_scenarios.html</loc>
   </url>
   <url>
@@ -173,6 +170,9 @@
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/theme_evaluator.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/tidyrisk_factor.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/validate_scenarios.html</loc>

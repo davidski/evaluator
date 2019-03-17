@@ -5,7 +5,6 @@
 #'
 #' @import dplyr
 #' @importFrom dplyr progress_estimated bind_rows %>% mutate row_number
-#' @importFrom furrr future_map
 #' @importFrom purrr safely is_null map_lgl transpose simplify keep some
 #' @importFrom tidyr nest
 #' @importFrom rlang .data exec
@@ -37,7 +36,6 @@ run_simulation <- function(scenario, iterations = 10000L,
   }
 
   #model <- rlang::sym(model) # convert characters to symbol
-  ## ----run_simulations-----------------------------------------------------
   func <- scenario$model
   params <- c(scenario$parameters, list(n = iterations, verbose = verbose))
   wrapped_calc <- function(x, .pb = NULL) {
@@ -47,27 +45,13 @@ run_simulation <- function(scenario, iterations = 10000L,
     rlang::exec(safe_calculate, !!!params)
   }
 
-  #pb <- dplyr::progress_estimated(length(scenarios))
-  # dat <- scenario %>% dplyr::mutate(id = row_number()) %>% tidyr::nest(-id)
-  #pb$print()
-  #simulation_results <- scenarios %>% furrr::future_map(~ {library(evaluator); wrapped_calc(.x, .pb = pb)}, .progress = TRUE)
   simulation_results <- wrapped_calc(scenario)
-  #simulation_results <- safe_calculate(scenario = scenario,
-  #                                     n = simulation_count,
-  #                                     verbose = verbose)
 
-  #y <- simulation_results %>% purrr::transpose() %>% purrr::simplify()
-  #is_ok <- y$error %>% purrr::map_lgl(purrr::is_null)
-  #errors <- y$error %>% purrr::keep(!is_ok)
-
-  #if (sum(is_ok) != length(scenarios)) {
   if (!is.null(simulation_results$error)) {
     stop("Errors encountered with scenarios:\n",
          scenario,
          paste0("Error: ", simulation_results$error,
                collapse = "\n"))
-         # paste(scenario[!is_ok,]$scenario_id, errors, sep = " - Error: ",
-         #       collapse = "\n"))
   }
 
   simulation_results <- simulation_results$result

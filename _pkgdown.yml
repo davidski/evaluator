@@ -84,3 +84,7 @@ reference:
       - is_tidyrisk_scenario
       - new_tidyrisk_scenario
       - print.tidyrisk_scenario
+  - title: Tidyrisk Factor Class Functions
+    contents:
+      - tidyrisk_factor
+      - new_tidyrisk_factor

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a tidyrisk_factor sample function — risk_factory • evaluator</title>
+<title>Construct a tidyrisk_factor object — tidyrisk_factor • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,9 +32,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Create a tidyrisk_factor sample function — risk_factory" />
+<meta property="og:title" content="Construct a tidyrisk_factor object — tidyrisk_factor" />
 
-<meta property="og:description" content="Create a tidyrisk_factor sample function" />
+<meta property="og:description" content="Construct a tidyrisk_factor object" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -139,25 +139,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a tidyrisk_factor sample function</h1>
+    <h1>Construct a tidyrisk_factor object</h1>
     
-    <div class="hidden name"><code>risk_factory.Rd</code></div>
+    <div class="hidden name"><code>tidyrisk_factor.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Create a tidyrisk_factor sample function</p>
+    <p>Construct a tidyrisk_factor object</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>risk_factory</span>(<span class='kw'>factor_label</span> <span class='kw'>=</span> <span class='st'>"TC"</span>)</pre>
+    <pre class="usage"><span class='fu'>new_tidyrisk_factor</span>(<span class='kw'>samples</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/vector'>vector</a></span>(), <span class='kw'>factor_label</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(),
+  <span class='kw'>details</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())
+
+<span class='fu'>tidyrisk_factor</span>(<span class='no'>samples</span>, <span class='no'>factor_label</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>samples</th>
+      <td><p>samples</p></td>
+    </tr>
+    <tr>
       <th>factor_label</th>
-      <td><p>abbreviation of the OpenFAIR element</p></td>
+      <td><p>fl</p></td>
+    </tr>
+    <tr>
+      <th>details</th>
+      <td><p>details</p></td>
     </tr>
     </table>
     

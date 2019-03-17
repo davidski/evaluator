@@ -29,10 +29,16 @@ new_tidyrisk_scenario <- function(tef_params = list(),
 }
 
 #' @export
+#' @importFrom vctrs vec_cast
 #' @rdname new_tidyrisk_scenario
 tidyrisk_scenario <- function(tef_params = list(), tc_params = list(),
                           diff_params = list(), lm_params = list(),
                           model = "openfair_tef_tc_diff_lm") {
+  tef_params <- vctrs::vec_cast(tef_params, list())
+  tc_params <- vctrs::vec_cast(tc_params, list())
+  diff_params <- vctrs::vec_cast(diff_params, list())
+  lm_params <- vctrs::vec_cast(lm_params, list())
+  model <- vctrs::vec_cast(model, character())
   new_tidyrisk_scenario(tef_params, tc_params, diff_params, lm_params, model)
 }
 

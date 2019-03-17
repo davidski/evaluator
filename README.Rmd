@@ -38,16 +38,16 @@ Three sample outputs of this toolkit are available:
 ## Installation
 
 Install Evaluator via the standard CRAN mechanisms. If you wish to use the 
-optional, but recommended, reporting functions, use the 
-`dependencies = TRUE` option to install the needed additional packages are 
-available.
+optional, but recommended, reporting functions, also install the 
+suggested dependencies. These additional packages are not needed for 
+modelling, but are used in the generation of reports.
 
 ```{r install_cran, eval=FALSE}
 install.packages("evaluator", dependencies = TRUE)
 ```
 
 If you wish to run the development (and potentially bleeding edge) version of 
-Evaluator, you can install directly from GitHub via the following `devtools` 
+Evaluator, you can install directly from GitHub with the following `devtools` 
 command.
 
 ```{r github_install, eval=FALSE}

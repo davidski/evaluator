@@ -1,4 +1,4 @@
-context("openfair-example")
+context("OpenFAIR Example Shiny app")
 
 library(shinytest)
 

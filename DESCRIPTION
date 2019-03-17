@@ -17,7 +17,6 @@ Imports:
     extrafont,
     ggplot2,
     mc2d,
-    furrr,
     purrr,
     readr,
     readxl,
@@ -26,6 +25,7 @@ Imports:
     stringi,
     tibble,
     tidyr,
+    vctrs,
     viridis,
     magrittr
 Roxygen: list(markdown = TRUE)
@@ -38,6 +38,7 @@ Suggests:
     ggalt (>= 0.4.0),
     flexdashboard (>= 0.4),
     forcats,
+    furrr,
     statip,
     knitr,
     rmarkdown (>= 1.9),
