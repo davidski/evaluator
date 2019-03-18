@@ -15,7 +15,7 @@ Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)]
 ## Overview
 
 Evaluator is an open source quantitative risk analysis toolkit. Based on
-the OpenFAIR [taxonomy](https://www2.opengroup.org/ogsys/catalog/C13K)
+the OpenFAIR [ontology](https://www2.opengroup.org/ogsys/catalog/C13K)
 and risk assessment
 [standard](https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator
 empowers an organization to perform a quantifiable, repeatable, and
@@ -33,16 +33,16 @@ Three sample outputs of this toolkit are available:
 ## Installation
 
 Install Evaluator via the standard CRAN mechanisms. If you wish to use
-the optional, but recommended, reporting functions, use the
-`dependencies = TRUE` option to install the needed additional packages
-are available.
+the optional, but recommended, reporting functions, also install the
+suggested dependencies. These additional packages are not needed for
+modelling, but are used in the generation of reports.
 
 ``` r
 install.packages("evaluator", dependencies = TRUE)
 ```
 
 If you wish to run the development (and potentially bleeding edge)
-version of Evaluator, you can install directly from GitHub via the
+version of Evaluator, you can install directly from GitHub with the
 following `devtools` command.
 
 ``` r
@@ -73,8 +73,7 @@ From Evaluator:
 
 A detailed guide is available in the vignette accessed via
 `vignette("usage", package="evaluator")`. A short screencast showing the
-basic workflow (not including generation of reports) is available
-below:
+basic workflow (not including generation of reports) is available below:
 
 [![demo](https://asciinema.org/a/qIBU3lhPkWHGMYD9O2GU1YgcU.png)](https://asciinema.org/a/qIBU3lhPkWHGMYD9O2GU1YgcU?s=2&autoplay=1)
 

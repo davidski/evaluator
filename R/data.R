@@ -16,7 +16,7 @@
 #'   distribution parameters.
 #'
 #' \describe{
-#'   \item{type}{OpenFAIR taxonomy to which this mapping applies}
+#'   \item{type}{The element in the OpenFAIR ontology to which this mapping applies}
 #'   \item{label}{Qualitative label}
 #'   \item{l}{BetaPERT low value}
 #'   \item{ml}{BetaPERT most likely value}

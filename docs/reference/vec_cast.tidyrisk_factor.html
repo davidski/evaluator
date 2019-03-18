@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Qualitative to quantitative mappings — mappings • evaluator</title>
+<title>Cast a <code>tidyrisk_factor</code> vector to a specified type — vec_cast.tidyrisk_factor • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,10 +32,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Qualitative to quantitative mappings — mappings" />
+<meta property="og:title" content="Cast a <code>tidyrisk_factor</code> vector to a specified type — vec_cast.tidyrisk_factor" />
 
-<meta property="og:description" content="A dataset of sample mappings from qualitative labels to quantitative
-distribution parameters." />
+<meta property="og:description" content="Cast a tidyrisk_factor vector to a specified type" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,45 +139,40 @@ distribution parameters." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Qualitative to quantitative mappings</h1>
+    <h1>Cast a <code>tidyrisk_factor</code> vector to a specified type</h1>
     
-    <div class="hidden name"><code>mappings.Rd</code></div>
+    <div class="hidden name"><code>vec_cast.tidyrisk_factor.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A dataset of sample mappings from qualitative labels to quantitative
-distribution parameters.</p>
+    <p>Cast a <code>tidyrisk_factor</code> vector to a specified type</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>mappings</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>An object of class <code>spec_tbl_df</code> (inherits from <code>tbl_df</code>, <code>tbl</code>, <code>data.frame</code>) with 14 rows and 6 columns.</p>
+    <pre class="usage"><span class='co'># S3 method for tidyrisk_factor</span>
+<span class='fu'>vec_cast</span>(<span class='no'>x</span>, <span class='no'>to</span>)</pre>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <dl class='dl-horizontal'>
-<dt>type</dt><dd><p>The element in the OpenFAIR ontology to which this mapping applies</p></dd>
-<dt>label</dt><dd><p>Qualitative label</p></dd>
-<dt>l</dt><dd><p>BetaPERT low value</p></dd>
-<dt>ml</dt><dd><p>BetaPERT most likely value</p></dd>
-<dt>h</dt><dd><p>BetaPERT high value</p></dd>
-<dt>conf</dt><dd><p>BetaPERT confidence value</p></dd>
-</dl>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>Vectors to cast.</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p>Type to cast to. If <code>NULL</code>, <code>x</code> will be returned as is.</p></td>
+    </tr>
+    </table>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#details">Details</a></li>
-          </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>

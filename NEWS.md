@@ -19,6 +19,8 @@ contain their initial quantitative inputs. These users may also use
   * As a side benefit, the restrictions on the format of the mappings CSV are 
   relaxed. Doubles (decimals) are now permitted in the low, most likely, and 
   high columns.
+  * The custom percent format function in the default Risk Report is removed 
+  and functionality is now provided natively via `scales::percent()`.
 * Scenario Explorer application now can be used when skipping qualitative 
   data and starting directly from quantitative data.
 * Risk Report can now be used when skipping qualitative data and starting 
