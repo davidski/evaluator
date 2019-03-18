@@ -1,3 +1,5 @@
+# Constructors ------------------------------------------------------------
+
 #' Construct a quantitative scenario object
 #'
 #' Supply one or more named lists in the format of `foo_params`,
@@ -42,6 +44,26 @@ tidyrisk_scenario <- function(tef_params = list(), tc_params = list(),
   new_tidyrisk_scenario(tef_params, tc_params, diff_params, lm_params, model)
 }
 
+#' Test if the object is a tidyrisk_scenario
+#'
+#' This function returns `TRUE` for tidyrisk_scenario (or subclasses)
+#' and `FALSE` for all other objects.
+#'
+#' @param x An object
+#' @return `TRUE` if the object inherits from the `tidyrisk_scenario` class.
+#' @export
+is_tidyrisk_scenario <- function(x) {
+  inherits(x, "tidyrisk_scenario")
+}
+
+#' @export
+vec_ptype_abbr.tidyrisk_scenario <- function(x) {
+  "r_scen"
+}
+
+# Formatters --------------------------------------------------------------
+
+
 #' Default printing of a tidyrisk_scenario
 #'
 #' Basic printing of a tidyrisk scenario
@@ -58,23 +80,3 @@ print.tidyrisk_scenario <- function(x, ...) {
   invisible(x)
 }
 
-#' Test if the object is a tidyrisk_scenario
-#'
-#' This function returns `TRUE` for tidyrisk_scenario (or subclasses)
-#' and `FALSE` for all other objects.
-#'
-#' @param x An object
-#' @return `TRUE` if the object inherits from the `tidyrisk_scenario` class.
-#' @export
-is_tidyrisk_scenario <- function(x) {
-  inherits(x, "tidyrisk_scenario")
-}
-
-#' Alias test for tidyrisk scenario
-#'
-#' Please use `is_tidyrisk_scenario()` instead.
-#' @param x An object
-#' @export
-is.tidyrisk_scenario <- function(x) {
-  is_tidyrisk_scenario(x)
-}

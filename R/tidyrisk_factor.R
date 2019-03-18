@@ -1,3 +1,5 @@
+# Constructors ------------------------------------------------------------
+
 #' Construct a tidyrisk_factor object
 #'
 #' @param samples samples
@@ -33,12 +35,29 @@ tidyrisk_factor <- function(samples, factor_label, details = list()) {
 factor_label <- function(x) attr(x, "factor_label")
 details <- function(x) attr(x, "details")
 
+#' @export
+vec_ptype_abbr.tidyrisk_factor <- function(x) {
+  "r_fctr"
+}
+
+#' @export
+is_tidyrisk_factor <- function(x) {
+  inherits(x, "tidyrisk_factor")
+}
+
+#' @export
+as_tidyrisk_factor <- function(x, factor_label) {
+  vec_cast(x, new_tidyrisk_factor(x, factor_label))
+}
+
+# Formatters --------------------------------------------------------------
+
 #' @importFrom cli cat_line cat_bullet cat_rule cat_print
 #' @importFrom vctrs vec_data
 #' @importFrom crayon bold
 #' @importFrom purrr walk2
 #' @export
-print.tidyrisk_factor <- function(x, ...) {
+format.tidyrisk_factor <- function(x, ...) {
   cli::cat_line("# Factor samples: ", length(vctrs::vec_data(x)))
   cli::cat_line("# Factor label: ", factor_label(x))
   if (length(details(x)) == 0) {
@@ -75,12 +94,65 @@ summary.tidyrisk_factor <- function(object, ...) {
   )
 }
 
+# Casts -------------------------------------------------------------------
+
+#' Cast a `tidyrisk_factor` vector to a specified type
+#'
+#' @inheritParams vctrs::vec_cast
+#'
+#' @export
+#' @method vec_cast tidyrisk_factor
+#' @export vec_cast.tidyrisk_factor
+#' @importFrom vctrs vec_cast
+vec_cast.tidyrisk_factor <- function(x, to) UseMethod("vec_cast.tidyrisk_factor")
+
+#' @method vec_cast.tidyrisk_factor default
+#' @export
+#' @importFrom vctrs stop_incompatible_cast
+vec_cast.tidyrisk_factor.default <- function(x, to) {
+  stop_incompatible_cast(x, to)
+}
+
+#' @method vec_cast.tidyrisk_factor logical
+#' @export
+#' @importFrom vctrs vec_unspecified_cast
+vec_cast.tidyrisk_factor.logical <- function(x, to) {
+  vec_unspecified_cast(x, to)
+}
+
+#' @method vec_cast.tidyrisk_factor class_pred
+#' @export
+vec_cast.tidyrisk_factor.class_pred <- function(x, to) {
+
+  # first go tidyrisk_factor -> factor
+  # then recast as tidyrisk_factor with correct attributes
+
+  tidyrisk_factor(
+    samples = factorish_to_factor(x, to),
+    factor_label = "TF"
+  )
+
+}
+
+# Arithmetic and Comparisons ----------------------------------------------
+
+#' @importFrom vctrs vec_proxy_equal vec_data
+#' @export
+#' @keywords internal
+vec_proxy_compare.tidyrisk_factor <- function(x) {
+  # allows you to compare two class_pred objects robustly
+  # converting to character would confuse NA with equivocal
+  vctrs::vec_data(x)
+}
+
+# Misc --------------------------------------------------------------------
+
 #' Create a tidyrisk_factor sample function
 #'
 #' @param factor_label abbreviation of the OpenFAIR element
 #' @importFrom rlang as_function
 #' @export
-risk_factory <- function(factor_label = "TC"){
+risk_factory <- function(factor_label = "TC") {
 
   function(.n = 1, ..., .func) {
     my_func <- rlang::as_function(.func)

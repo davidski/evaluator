@@ -22,3 +22,8 @@ test_that("Element object summary functions on non LM types", {
   element <- tidyrisk_factor(c(1, 100), factor_label = "TC")
   expect_is(summary(element), "list")
 })
+
+test_that("Factors can be logicall compared", {
+  tc_element <- tidyrisk_factor(c(10, 40, 100), factor_label = "TC")
+  diff_element <- tidyrisk_factor(c(10, 30, 100), factor_label = "DIFF")
+})

@@ -80,7 +80,6 @@ reference:
       - starts_with("summarize")
   - title: Tidyrisk Scenario Class Functions
     contents:
-      - is.tidyrisk_scenario
       - is_tidyrisk_scenario
       - new_tidyrisk_scenario
       - print.tidyrisk_scenario
