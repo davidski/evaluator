@@ -56,13 +56,15 @@ summarize_scenario <- function(simulation_results) {
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
+#' @importFrom tidyr unnest
 #' @rdname summarize_scenario
 #' @examples
 #' # summarize all scenarios in a data frame
 #' data(simulation_results)
 #' summarize_scenarios(simulation_results)
 summarize_scenarios <- function(simulation_results) {
-  dplyr::mutate(simulation_results, summary = purrr::map(.data$results, summarize_scenario))
+  dplyr::mutate(simulation_results, summary = purrr::map(.data$results, summarize_scenario)) %>%
+    tidyr::unnest(summary)
 }
 
 #' Create a summary of outcomes across all scenarios
@@ -135,6 +137,7 @@ summarize_iterations <- function(simulation_results, ..., .key = "iteration") {
 #' @importFrom purrr map
 #' @importFrom rlang .data ensym
 #' @importFrom stats sd quantile
+#' @importFrom tidyr unnest
 #' @param simulation_results Simulation results dataframe.
 #' @param domain_variable Variable by which individual simulations should be grouped.
 #' @export
@@ -173,7 +176,8 @@ summarize_domains <- function(simulation_results, domain_variable = "domain_id")
           mean_vuln = (.data$mean_loss_events / .data$mean_threat_events)
         )
     }))
-  dplyr::select(simulation_domain_sum, -.data$simulation_summary)
+  dplyr::select(simulation_domain_sum, -.data$simulation_summary) %>%
+    tidyr::unnest(summary)
 }
 
 #' Create all summary files and write to disk

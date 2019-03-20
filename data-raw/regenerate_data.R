@@ -50,5 +50,6 @@ domain_summary <- summarize_domains(simulation_results)
 usethis::use_data(domain_summary, overwrite = TRUE)
 
 # calculate and save scenario summary
-scenario_summary <- mutate(simulation_results, summary = map(results, summarize_scenario))
+#scenario_summary <- mutate(simulation_results, summary = map(results, summarize_scenario))
+scenario_summary <- summarize_scenarios(simulation_results)
 usethis::use_data(scenario_summary, overwrite = TRUE)

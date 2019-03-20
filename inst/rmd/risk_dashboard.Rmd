@@ -34,20 +34,18 @@ results_directory <- params$results_directory
 ```{r load_data, echo = FALSE, message = FALSE}
 dat <- read_quantitative_inputs(input_directory)
 
-simulation_results_new <- readRDS(file.path(results_directory, "simulation_results.Rds"))
-simulation_results <- simulation_results_new
+simulation_results <- readRDS(file.path(results_directory, "simulation_results.Rds"))
 
-scenario_summary_new <- mutate(simulation_results_new, summary = map(results, summarize_scenario)) 
-scenario_summary <- unnest(scenario_summary_new, summary, .drop = TRUE)
+scenario_summary <- mutate(simulation_results, summary = map(results, summarize_scenario)) 
+scenario_summary <- unnest(scenario_summary, summary, .drop = TRUE)
 
-scenario_outliers <- identify_outliers(scenario_summary_new) %>% 
+scenario_outliers <- identify_outliers(scenario_summary) %>% 
   filter(outlier == TRUE) %>% pull(scenario_id)
 
 domains <- dat$domains
-domain_summary_new <- summarize_domains(simulation_results_new)
-domain_summary <- domain_summary_new %>% unnest() %>% 
-  left_join(domains, by = "domain_id")
-simulation_results <- unnest(simulation_results_new, results) %>% 
+domain_summary <- summarize_domains(simulation_results)
+domain_summary <- domain_summary %>% left_join(domains, by = "domain_id")
+simulation_results_unnested <- unnest(simulation_results, results) %>% 
   mutate(outlier = scenario_id %in% scenario_outliers)
 
 risk_tolerances <- dat$risk_tolerances
@@ -59,7 +57,7 @@ basefont <- get_base_fontfamily()
 ```
 
 ```{r calculate_max_losses}
-max_loss <- calculate_max_losses(simulation_results_new, scenario_outliers)
+max_loss <- calculate_max_losses(simulation_results, scenario_outliers)
 ```
 
 Risk Dashboard
@@ -71,7 +69,7 @@ Value Boxes
 ### Aggregate Risk
 
 ````{r var_valuebox}
-overall <- simulation_results %>% group_by(iteration) %>% 
+overall <- simulation_results %>% unnest(results) %>% group_by(iteration) %>% 
                      summarize(ale = sum(ale)) %>% select(ale) %>%
                      ungroup
 agg_risk <- quantile(overall$ale, 0.95)
@@ -96,13 +94,13 @@ flexdashboard::valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warn
 ### Expected Loss Events Per Year
 
 ```{r median_aggregate_loss_events}
-loss_events <- group_by(simulation_results, iteration) %>% 
+loss_events <- simulation_results %>% unnest(results) %>% 
+  group_by(iteration) %>% 
   summarise(n = sum(loss_events)) %>% summarize(loss = median(n)) %>% 
   unlist %>% unname
 flexdashboard::valueBox(scales::comma(loss_events), icon = "glyphicon-flag",
          caption = "Expected Annual Loss Events",
          color = "info")
-
 ```
 
 Domain Summary {data-height=150}
@@ -111,7 +109,7 @@ Domain Summary {data-height=150}
 ### Domain Heatmap {.no-padding}
 
 ```{r display, fig.width=15, fig.height=1}
-gg <- generate_heatmap(domain_summary_new)
+gg <- generate_heatmap(domain_summary)
 # modify the base plot for displaying on the dashboard
 gg <- gg + labs(title = NULL, caption = NULL)
 gg <- gg + theme(legend.position = "right")
@@ -151,7 +149,8 @@ sum_bottom_n <- function(dat, top_n=10, sortby="max_ale") {
 }
 
 # assign the text label to scenarios and order
-simulation_results %>% mutate(full_label = paste0(domain_id, " - ", scenario_id)) %>% 
+simulation_results %>% unnest(results) %>% 
+  mutate(full_label = paste0(domain_id, " - ", scenario_id)) %>% 
   arrange(domain_id, scenario_id) -> dat 
 
 # identify the top 10 scenarios by VaR

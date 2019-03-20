@@ -54,7 +54,6 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #' generate_heatmap(domain_summary)
 generate_heatmap <- function(domain_summary) {
   dat <- domain_summary %>% dplyr::arrange(.data$domain_id) %>%
-    unnest(.data$summary) %>%
     dplyr::mutate(full_label = paste0(.data$domain_id, "\n",
                                       "$", round(.data$ale_var/10^6), "M"),
                    aux = seq(1, 2 * nrow(.), by = 2))
@@ -128,7 +127,7 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' generate_event_outcomes_plot(domain_summary)
 generate_event_outcomes_plot <- function(domain_summary, domain_id = domain_id) {
   domain_id <- rlang::ensym(domain_id)
-  all_domains <- unnest(domain_summary, summary)
+  all_domains <- domain_summary
   dat <- all_domains %>%
     dplyr::arrange(dplyr::desc(.data$mean_loss_events),
                    dplyr::desc(.data$mean_threat_events)) %>%

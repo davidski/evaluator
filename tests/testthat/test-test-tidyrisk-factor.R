@@ -1,6 +1,5 @@
 context("Tidyrisk Factor class")
 
-
 test_that("Element object can be created", {
   element <- tidyrisk_factor(NA, factor_label = "TF")
   expect_s3_class(element, "tidyrisk_factor")
@@ -23,7 +22,7 @@ test_that("Element object summary functions on non LM types", {
   expect_is(summary(element), "list")
 })
 
-test_that("Factors can be logicall compared", {
+test_that("Factors can be logically compared", {
   tc_element <- tidyrisk_factor(c(10, 40, 100), factor_label = "TC")
   diff_element <- tidyrisk_factor(c(10, 30, 100), factor_label = "DIFF")
 })

@@ -56,6 +56,9 @@ is_tidyrisk_scenario <- function(x) {
   inherits(x, "tidyrisk_scenario")
 }
 
+#' Set an abbreviation when displaying an S3 column in a tibble
+#'
+#' @param x An object
 #' @export
 vec_ptype_abbr.tidyrisk_scenario <- function(x) {
   "r_scen"

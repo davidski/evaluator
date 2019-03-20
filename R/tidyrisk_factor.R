@@ -10,7 +10,6 @@ NULL
 
 #' @rdname tidyrisk_factor
 #' @importFrom vctrs vec_assert new_vctr
-#' @export
 new_tidyrisk_factor <- function(samples = double(), factor_label = character(),
                                details = list()) {
   vctrs::vec_assert(samples, double())
@@ -24,7 +23,6 @@ new_tidyrisk_factor <- function(samples = double(), factor_label = character(),
 }
 
 #' @rdname tidyrisk_factor
-#' @export
 tidyrisk_factor <- function(samples, factor_label, details = list()) {
   samples <- vctrs::vec_cast(samples, double())
   factor_label <- vctrs::vec_cast(factor_label, character())
@@ -35,17 +33,14 @@ tidyrisk_factor <- function(samples, factor_label, details = list()) {
 factor_label <- function(x) attr(x, "factor_label")
 details <- function(x) attr(x, "details")
 
-#' @export
 vec_ptype_abbr.tidyrisk_factor <- function(x) {
   "r_fctr"
 }
 
-#' @export
 is_tidyrisk_factor <- function(x) {
   inherits(x, "tidyrisk_factor")
 }
 
-#' @export
 as_tidyrisk_factor <- function(x, factor_label) {
   vec_cast(x, new_tidyrisk_factor(x, factor_label))
 }
@@ -56,7 +51,6 @@ as_tidyrisk_factor <- function(x, factor_label) {
 #' @importFrom vctrs vec_data
 #' @importFrom crayon bold
 #' @importFrom purrr walk2
-#' @export
 format.tidyrisk_factor <- function(x, ...) {
   cli::cat_line("# Factor samples: ", length(vctrs::vec_data(x)))
   cli::cat_line("# Factor label: ", factor_label(x))
@@ -73,7 +67,6 @@ format.tidyrisk_factor <- function(x, ...) {
   invisible(x)
 }
 
-#' @export
 #' @importFrom vctrs vec_data
 summary.tidyrisk_factor <- function(object, ...) {
   samples <- vctrs::vec_data(object)
@@ -100,35 +93,30 @@ summary.tidyrisk_factor <- function(object, ...) {
 #'
 #' @inheritParams vctrs::vec_cast
 #'
-#' @export
 #' @method vec_cast tidyrisk_factor
-#' @export vec_cast.tidyrisk_factor
 #' @importFrom vctrs vec_cast
 vec_cast.tidyrisk_factor <- function(x, to) UseMethod("vec_cast.tidyrisk_factor")
 
 #' @method vec_cast.tidyrisk_factor default
-#' @export
 #' @importFrom vctrs stop_incompatible_cast
 vec_cast.tidyrisk_factor.default <- function(x, to) {
   stop_incompatible_cast(x, to)
 }
 
 #' @method vec_cast.tidyrisk_factor logical
-#' @export
 #' @importFrom vctrs vec_unspecified_cast
 vec_cast.tidyrisk_factor.logical <- function(x, to) {
   vec_unspecified_cast(x, to)
 }
 
 #' @method vec_cast.tidyrisk_factor class_pred
-#' @export
 vec_cast.tidyrisk_factor.class_pred <- function(x, to) {
 
   # first go tidyrisk_factor -> factor
   # then recast as tidyrisk_factor with correct attributes
 
   tidyrisk_factor(
-    samples = factorish_to_factor(x, to),
+    samples = x,
     factor_label = "TF"
   )
 
@@ -137,7 +125,6 @@ vec_cast.tidyrisk_factor.class_pred <- function(x, to) {
 # Arithmetic and Comparisons ----------------------------------------------
 
 #' @importFrom vctrs vec_proxy_equal vec_data
-#' @export
 #' @keywords internal
 vec_proxy_compare.tidyrisk_factor <- function(x) {
   # allows you to compare two class_pred objects robustly
@@ -151,7 +138,6 @@ vec_proxy_compare.tidyrisk_factor <- function(x) {
 #'
 #' @param factor_label abbreviation of the OpenFAIR element
 #' @importFrom rlang as_function
-#' @export
 risk_factory <- function(factor_label = "TC") {
 
   function(.n = 1, ..., .func) {

@@ -2,8 +2,7 @@ context("Summarization")
 test_that("Simulation summary", {
   data("simulation_results")
   data("scenario_summary")
-  summarized_scenarios <- mutate(simulation_results,
-                                 result_summary = map(results, summarize_scenario))
+  summarized_scenarios <- summarize_scenarios(simulation_results)
   expect_equivalent(as.data.frame(summarized_scenarios),
                     as.data.frame(scenario_summary),
                     tolerance = .01)

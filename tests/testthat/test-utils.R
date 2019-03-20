@@ -24,3 +24,9 @@ test_that("calculate_max_losses handles NULL outliers", {
   expect_s3_class(dat, "data.frame")
   expect_equal(nrow(dat), 1000)
 })
+
+test_that("identify_outliers() identifies the expected number of outliers", {
+  data("scenario_summary")
+  dat <- identify_outliers(scenario_summary)
+  expect_equal(sum(dat$outlier), 4)
+})
