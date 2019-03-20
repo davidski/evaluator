@@ -91,7 +91,7 @@ run_simulations <- function(scenario, ..., iterations = 10000L,
                             ale_maximum = NULL,
                             verbose = FALSE, simulation_count = NULL) {
 
-  scenarios <- c(scenario, ...)
+  scenarios <- list(scenario, ...)
   if (!purrr::every(scenarios, is_tidyrisk_scenario)) {
     stop("All scenarios must be tidyrisk_scenario objects", call. = FALSE)
   }

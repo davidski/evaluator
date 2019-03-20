@@ -177,8 +177,7 @@ test_that("Sample LEF works with composition function", {
 
 # Model Tests -------------------------------------------------------------
 
-
-context("Standard simulation model")
+context("LM simulation model")
 test_that("Default simulation model returns expected results", {
   scen <- tidyrisk_scenario(
     tef_params = list(func = "mc2d::rpert", min = 1, mode = 10, max = 100, shape = 4),
@@ -193,40 +192,7 @@ test_that("Default simulation model returns expected results", {
   expect_equal(sum(results$loss_events), 786)
 })
 
-context("Main simulation")
-test_that("Full wrapped scenario works as expected", {
-  scenario <- structure(list(scenario_id = "1",
-                            scenario = "Inadequate human resources are available to execute the informaton security strategic security plan.",
-                            tcomm = "Organizational Leadership", domain_id = "ORG",
-                            controls = "1, 5, 7, 32, 14, 15, 16",
-                            diff_params = list(list(list(func = "mc2d::rpert", min = 70L, mode = 85L, max = 98L, shape = 4L),
-                                                    list(func = "mc2d::rpert", min = 50L, mode = 70L, max = 84L, shape = 4L),
-                                                    list(func = "mc2d::rpert", min = 0L,  mode = 10L, max = 30L, shape = 4L),
-                                                    list(func = "mc2d::rpert", min = 50L, mode = 70L, max = 84L, shape = 4L),
-                                                    list(func = "mc2d::rpert", min = 20L, mode = 30L, max = 50L, shape = 4L),
-                                                    list(func = "mc2d::rpert", min = 20L, mode = 30L, max = 50L, shape = 4L),
-                                                    list(func = "mc2d::rpert", min = 50L, mode = 70L, max = 84L, shape = 4L))),
-                            tef_params = list(list(func = "mc2d::rpert", min  = 10L, mode = 24, max = 52L, shape = 4L)),
-                            tc_params = list(list(func = "mc2d::rpert", min = 33L, mode = 50, max = 60L, shape = 3L)),
-                            lm_params = list(list(func = "mc2d::rpert", min = 10000L, mode = 20000, max = 500000L, shape = 4L)),
-                            model = "openfair_tef_tc_diff_lm"), row.names = c(NA, -1L),
-                       class = c("tbl_df", "tbl", "data.frame"))
-  scenario <- scenario %>%
-    mutate(scenario = pmap(list(tef_params = tef_params, tc_params = tc_params,
-                                diff_params = diff_params, lm_params = lm_params,
-                                model = model), tidyrisk_scenario))
-  #updated_scenario <- evaluate_promise(run_simulations(scenario[[1, "scenario"]], 100L))
-  results <- run_simulation(scenario[[1, "scenario"]], 100L)
-  #results <- updated_scenario$results
-  expect_s3_class(results, "tbl_df")
-  expect_equal(nrow(results), 100)
-  expect_equal(length(results), 11)
-  expect_equal(sum(results$threat_events), 2686)
-  #$expect_equal(sum(results$result$loss_events), 764)
-  expect_equal(sum(results$loss_events), 772)
-})
-
-
+context("PLM-SLM simulation model")
 test_that("SLM model works as expected", {
   scenario <- structure(list(scenario_id = "1",
                              scenario = "Inadequate human resources are available to execute the informaton security strategic security plan.",
@@ -258,34 +224,3 @@ test_that("SLM model works as expected", {
   expect_equal(sum(results$loss_events), 772)
 })
 
-
-# Simulation-Model Interface ----------------------------------------------
-
-
-test_that("Simulation fails when given a simulation_count", {
-  data("quantitative_scenarios")
-  bad_scen <- quantitative_scenarios[[1, "scenario"]]
-  class(bad_scen) <- "list"
-  expect_error(run_simulation(bad_scen, simulation_count = 10L), regexp = "iteration")
-})
-
-test_that("Simulation fails when not given a scenario object", {
-  data("quantitative_scenarios")
-  bad_scen <- quantitative_scenarios[[1, "scenario"]]
-  class(bad_scen) <- "list"
-  expect_error(run_simulation(bad_scen, 10L), regexp = "object")
-})
-
-test_that("Simulation respects maximum ALE", {
-  data("quantitative_scenarios")
-  good_scen <- quantitative_scenarios[[1, "scenario"]]
-  results <- run_simulation(good_scen, 10L, ale_maximum = 100)
-  expect_lte(max(results$ale), 100)
-})
-
-test_that("Simulating multiple scenarios succeeds", {
-  data("quantitative_scenarios")
-  scenarios <- quantitative_scenarios[1:3, ]$scenario
-  results <- run_simulations(scenarios[1], scenarios[2], scenarios[3], iterations = 10L)
-  expect_is(results, "list")
-})
