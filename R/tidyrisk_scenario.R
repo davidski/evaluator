@@ -3,45 +3,56 @@
 #' Construct a quantitative scenario object
 #'
 #' Supply one or more named lists in the format of `foo_params`,
-#' where each `foo` is an OpenFAIR element name (e.g. tef, tc, diff, lm).
+#' where each `foo` is an OpenFAIR factor name (e.g. tef, tc, diff, lm).
+#' Each factor should include a function name (`func`) to which the
+#' other named elements in the list are passed as parameters when
+#' sampling.
 #'
-#' @param tef_params List of threat frequency parameters
-#' @param tc_params List of threat capability parameters
-#' @param diff_params List of difficulty parameters
-#' @param lm_params List of loss magnitude parameters
+#'
+#' @param ... One or more named OpenFAIR factor with parameters for sampling
 #' @param model Name of model to run
+#' @importFrom rlang list2
+#' @importFrom purrr every
 #' @export
-new_tidyrisk_scenario <- function(tef_params = list(),
-                               tc_params = list(),
-                               diff_params = list(),
-                               lm_params = list(),
-                               model = "openfair_tef_tc_diff_lm") {
-  stopifnot(is.list(tef_params), is.list(tc_params),
-            is.list(diff_params), is.list(lm_params),
-            is.character(model))
+new_tidyrisk_scenario <- function(..., model = "openfair_tef_tc_diff_lm") {
+  dots <- rlang::list2(...)
+  stopifnot(purrr::every(dots, is.list), is.character(model))
+  names(dots) <- gsub( "_params", "", names(dots))
   scenario <- list(
-    parameters = list(
-      tef = tef_params,
-      tc = tc_params,
-      diff = diff_params,
-      lm = lm_params),
+    parameters = dots,
     model = model)
   class(scenario) <- c("tidyrisk_scenario")
   scenario
 }
 
 #' @export
+#' @importFrom purrr modify
+#' @importFrom rlang list2
 #' @importFrom vctrs vec_cast
 #' @rdname new_tidyrisk_scenario
-tidyrisk_scenario <- function(tef_params = list(), tc_params = list(),
-                          diff_params = list(), lm_params = list(),
-                          model = "openfair_tef_tc_diff_lm") {
-  tef_params <- vctrs::vec_cast(tef_params, list())
-  tc_params <- vctrs::vec_cast(tc_params, list())
-  diff_params <- vctrs::vec_cast(diff_params, list())
-  lm_params <- vctrs::vec_cast(lm_params, list())
+tidyrisk_scenario <- function(..., model = "openfair_tef_tc_diff_lm") {
+  dots <- rlang::list2(...)
+  purrr::modify(dots, vctrs::vec_cast, list())
   model <- vctrs::vec_cast(model, character())
-  new_tidyrisk_scenario(tef_params, tc_params, diff_params, lm_params, model)
+  validate_tidyrisk_scenario(new_tidyrisk_scenario(!!!dots, model = model))
+}
+
+#' Validates that a scenario object is well formed
+#'
+#' @param x An object
+#' @export
+#' @importFrom purrr every pluck
+validate_tidyrisk_scenario <- function(x) {
+  # iterating a ragged list is currently not working as expected
+  #if (!purrr::every(x$parameters, purrr::pluck, "func", .default = FALSE)) {
+  #  stop(
+  #    "All parameters must have a `func` element, specifing the sampling function",
+  #    call. = FALSE
+  #  )
+  #}
+
+  x
+
 }
 
 #' Test if the object is a tidyrisk_scenario

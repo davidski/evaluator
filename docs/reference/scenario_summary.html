@@ -156,15 +156,29 @@ scenario level.</p>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 56 rows and 5 columns.</p>
+    <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 56 rows and 18 columns.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <dl class='dl-horizontal'>
 <dt>scenario_id</dt><dd><p>ID of the scenario</p></dd>
 <dt>domain_id</dt><dd><p>domain id</p></dd>
+<dt>control_description</dt><dd><p>control description</p></dd>
 <dt>results</dt><dd><p>nested data frame of simulation results for the scenario</p></dd>
-<dt>summary</dt><dd><p>nested data frame of summary statistics for the scenario</p></dd>
+<dt>loss_events_mean</dt><dd><p>mean number of loss events</p></dd>
+<dt>loss_events_median</dt><dd><p>median number of loss events</p></dd>
+<dt>loss_events_min</dt><dd><p>minimum number of loss events</p></dd>
+<dt>loss_events_max</dt><dd><p>maximum number of loss events</p></dd>
+<dt>ale_median</dt><dd><p>median annual loss expected</p></dd>
+<dt>ale_max</dt><dd><p>maximum annual loss expected</p></dd>
+<dt>ale_var</dt><dd><p>value at risk, ale</p></dd>
+<dt>sle_min</dt><dd><p>minimum single loss expectancy</p></dd>
+<dt>sle_max</dt><dd><p>maximum single loss expectancy</p></dd>
+<dt>sle_mean</dt><dd><p>mean single loss expectancy</p></dd>
+<dt>sle_median</dt><dd><p>median single loss expectancy</p></dd>
+<dt>mean_tc_exceedance</dt><dd><p>mean threat capability exceedance</p></dd>
+<dt>mean_diff_exceedance</dt><dd><p>mean difficulty exceedance</p></dd>
+<dt>mean_vuln</dt><dd><p>mean vulnerability of the scenario</p></dd>
 </dl>
     
 

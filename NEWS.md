@@ -11,6 +11,8 @@ contain their initial quantitative inputs. These users may also use
 * New `tidyrisk_scenario` object for containing the elements of a risk scenario for simulation.
 * New `summarize_scenario()` function creates summary for a single scenario's results. 
   - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
+* New alternative model `openfair_tef_tc_diff_plm_slm()` available for 
+  simulating scenarios with secondary losses.
 
 ## Improvements
 * All percentages are consistently imported, stored, and processed as 
@@ -37,8 +39,8 @@ contain their initial quantitative inputs. These users may also use
   instances and package spelling tests.
 * The internal contract between `run_simulation()` and modelling functions 
   such as `openfair_tef_tc_diff_lm()` is established. `run_simulation()` 
-  will always confirm a scenario object has the OpenFAIR components 
-  expected by the modelling function. This enables easier extension of 
+  will always confirm a scenario object has all of the OpenFAIR components 
+  needed by the specified modelling function. This enables easier extension of 
   Evaluator to new models.
   
 ## Other Changes

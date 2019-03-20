@@ -5,26 +5,19 @@
 \alias{tidyrisk_scenario}
 \title{Construct a quantitative scenario object}
 \usage{
-new_tidyrisk_scenario(tef_params = list(), tc_params = list(),
-  diff_params = list(), lm_params = list(),
-  model = "openfair_tef_tc_diff_lm")
+new_tidyrisk_scenario(..., model = "openfair_tef_tc_diff_lm")
 
-tidyrisk_scenario(tef_params = list(), tc_params = list(),
-  diff_params = list(), lm_params = list(),
-  model = "openfair_tef_tc_diff_lm")
+tidyrisk_scenario(..., model = "openfair_tef_tc_diff_lm")
 }
 \arguments{
-\item{tef_params}{List of threat frequency parameters}
-
-\item{tc_params}{List of threat capability parameters}
-
-\item{diff_params}{List of difficulty parameters}
-
-\item{lm_params}{List of loss magnitude parameters}
+\item{...}{One or more named OpenFAIR factor with parameters for sampling}
 
 \item{model}{Name of model to run}
 }
 \description{
 Supply one or more named lists in the format of \code{foo_params},
-where each \code{foo} is an OpenFAIR element name (e.g. tef, tc, diff, lm).
+where each \code{foo} is an OpenFAIR factor name (e.g. tef, tc, diff, lm).
+Each factor should include a function name (\code{func}) to which the
+other named elements in the list are passed as parameters when
+sampling.
 }

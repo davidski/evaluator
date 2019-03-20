@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Construct a quantitative scenario object — new_tidyrisk_scenario • evaluator</title>
+<title>Validates that a scenario object is well formed — validate_tidyrisk_scenario • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,13 +32,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Construct a quantitative scenario object — new_tidyrisk_scenario" />
+<meta property="og:title" content="Validates that a scenario object is well formed — validate_tidyrisk_scenario" />
 
-<meta property="og:description" content="Supply one or more named lists in the format of foo_params,
-where each foo is an OpenFAIR factor name (e.g. tef, tc, diff, lm).
-Each factor should include a function name (func) to which the
-other named elements in the list are passed as parameters when
-sampling." />
+<meta property="og:description" content="Validates that a scenario object is well formed" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -143,35 +139,25 @@ sampling." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Construct a quantitative scenario object</h1>
+    <h1>Validates that a scenario object is well formed</h1>
     
-    <div class="hidden name"><code>new_tidyrisk_scenario.Rd</code></div>
+    <div class="hidden name"><code>validate_tidyrisk_scenario.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Supply one or more named lists in the format of <code>foo_params</code>,
-where each <code>foo</code> is an OpenFAIR factor name (e.g. tef, tc, diff, lm).
-Each factor should include a function name (<code>func</code>) to which the
-other named elements in the list are passed as parameters when
-sampling.</p>
+    <p>Validates that a scenario object is well formed</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>new_tidyrisk_scenario</span>(<span class='no'>...</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"openfair_tef_tc_diff_lm"</span>)
-
-<span class='fu'>tidyrisk_scenario</span>(<span class='no'>...</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"openfair_tef_tc_diff_lm"</span>)</pre>
+    <pre class="usage"><span class='fu'>validate_tidyrisk_scenario</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>One or more named OpenFAIR factor with parameters for sampling</p></td>
-    </tr>
-    <tr>
-      <th>model</th>
-      <td><p>Name of model to run</p></td>
+      <th>x</th>
+      <td><p>An object</p></td>
     </tr>
     </table>
     

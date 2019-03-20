@@ -401,6 +401,9 @@ openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE
 #' @export
 openfair_tef_tc_diff_plm_slm <- function(tef, tc, diff, plm, slm, n = 10^4, verbose = FALSE) {
 
+  # make samples repeatable (and l33t)
+  set.seed(31337)
+
   if (verbose) {
     message("Working on scenario ")
 
@@ -457,10 +460,27 @@ openfair_tef_tc_diff_plm_slm <- function(tef, tc, diff, plm, slm, n = 10^4, verb
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
   SLMestimate <- slm %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
-  loss_samples$samples <- purrr::map(LEFsamples, function(x) {
+  loss_samples <- purrr::map(LEFsamples, function(x) {
+    params <- PLMestimate$params %>% unlist()
     dat_p <- sample_lm(n = x, .func = PLMestimate$func, params = params)
+    params <- SLMestimate$params %>% unlist()
     dat_s <- sample_lm(n = x, .func = SLMestimate$func, params = params)
-    sum(dat_p$samples + dat_s$samples)
+    samples <- sum(dat_p$samples + dat_s$samples)
+    # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
+    details <- if (length(samples) == 0 | sum(samples) == 0) {
+      list(ale = 0, sle_max = 0, sle_min = 0, sle_mean = 0, sle_median = 0)
+    } else {
+      list(ale = sum(samples),
+           sle_max = max(samples),
+           sle_min = min(samples[samples > 0]),
+           sle_mean = mean(samples[samples > 0]),
+           sle_median = stats::median(samples[samples > 0])
+      )
+    }
+    dat <- list(type = "lm",
+                samples = sum(samples),
+                details = details)
+    dat
   })
 
   # summary stats for ALE

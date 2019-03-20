@@ -1,3 +1,7 @@
+
+# Factor Sampling ---------------------------------------------------------
+
+
 test_that("Sample TEF", {
   set.seed(1234)
   tef <- sample_tef(n = 10, params = list(1, 10, 100))
@@ -171,6 +175,9 @@ test_that("Sample LEF works with composition function", {
   expect_equal(dat$samples, c(5, 11, 15, 2, 12, 0, 8, 0, 0, 6))
 })
 
+# Model Tests -------------------------------------------------------------
+
+
 context("Standard simulation model")
 test_that("Default simulation model returns expected results", {
   scen <- tidyrisk_scenario(
@@ -204,7 +211,10 @@ test_that("Full wrapped scenario works as expected", {
                             lm_params = list(list(func = "mc2d::rpert", min = 10000L, mode = 20000, max = 500000L, shape = 4L)),
                             model = "openfair_tef_tc_diff_lm"), row.names = c(NA, -1L),
                        class = c("tbl_df", "tbl", "data.frame"))
-  scenario <- scenario %>% mutate(scenario = pmap(list(tef_params, tc_params, diff_params, lm_params, model), tidyrisk_scenario))
+  scenario <- scenario %>%
+    mutate(scenario = pmap(list(tef_params = tef_params, tc_params = tc_params,
+                                diff_params = diff_params, lm_params = lm_params,
+                                model = model), tidyrisk_scenario))
   #updated_scenario <- evaluate_promise(run_simulations(scenario[[1, "scenario"]], 100L))
   results <- run_simulation(scenario[[1, "scenario"]], 100L)
   #results <- updated_scenario$results
@@ -215,6 +225,42 @@ test_that("Full wrapped scenario works as expected", {
   #$expect_equal(sum(results$result$loss_events), 764)
   expect_equal(sum(results$loss_events), 772)
 })
+
+
+test_that("SLM model works as expected", {
+  scenario <- structure(list(scenario_id = "1",
+                             scenario = "Inadequate human resources are available to execute the informaton security strategic security plan.",
+                             tcomm = "Organizational Leadership", domain_id = "ORG",
+                             controls = "1, 5, 7, 32, 14, 15, 16",
+                             diff_params = list(list(list(func = "mc2d::rpert", min = 70L, mode = 85L, max = 98L, shape = 4L),
+                                                     list(func = "mc2d::rpert", min = 50L, mode = 70L, max = 84L, shape = 4L),
+                                                     list(func = "mc2d::rpert", min = 0L,  mode = 10L, max = 30L, shape = 4L),
+                                                     list(func = "mc2d::rpert", min = 50L, mode = 70L, max = 84L, shape = 4L),
+                                                     list(func = "mc2d::rpert", min = 20L, mode = 30L, max = 50L, shape = 4L),
+                                                     list(func = "mc2d::rpert", min = 20L, mode = 30L, max = 50L, shape = 4L),
+                                                     list(func = "mc2d::rpert", min = 50L, mode = 70L, max = 84L, shape = 4L))),
+                             tef_params = list(list(func = "mc2d::rpert", min  = 10L, mode = 24, max = 52L, shape = 4L)),
+                             tc_params = list(list(func = "mc2d::rpert", min = 33L, mode = 50, max = 60L, shape = 3L)),
+                             plm_params = list(list(func = "mc2d::rpert", min = 10000L, mode = 20000, max = 500000L, shape = 4L)),
+                             slm_params = list(list(func = "mc2d::rpert", min = 10000L, mode = 20000, max = 500000L, shape = 4L)),
+                             model = "openfair_tef_tc_diff_plm_slm"), row.names = c(NA, -1L),
+                        class = c("tbl_df", "tbl", "data.frame"))
+  scenario <- scenario %>%
+    mutate(scenario = pmap(list(tef_params = tef_params, tc_params = tc_params,
+                                diff_params = diff_params, plm_params = plm_params,
+                                slm_params = slm_params, model = model), tidyrisk_scenario))
+  results <- run_simulation(scenario[[1, "scenario"]], 100L)
+  expect_s3_class(results, "tbl_df")
+  expect_equal(nrow(results), 100)
+  expect_equal(length(results), 11)
+  expect_equal(sum(results$threat_events), 2686)
+  expect_equivalent(stats::quantile(results$ale, 0.95), 2792183, tolerance = 0.1)
+  expect_equal(sum(results$loss_events), 772)
+})
+
+
+# Simulation-Model Interface ----------------------------------------------
+
 
 test_that("Simulation fails when given a simulation_count", {
   data("quantitative_scenarios")
