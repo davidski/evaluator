@@ -18,7 +18,7 @@ res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
 data("qualitative_scenarios", envir = environment())
 readr::write_csv(qualitative_scenarios, file.path(tmpinputs, "qualitative_scenarios.csv"))
 data("quantitative_scenarios", envir = environment())
-saveRDS(quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.Rds"))
+saveRDS(quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.rds"))
 
 
 test_that("Analyze report renders", {
