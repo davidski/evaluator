@@ -34,7 +34,7 @@ results_directory <- params$results_directory
 ```{r load_data, echo = FALSE, message = FALSE}
 dat <- read_quantitative_inputs(input_directory)
 
-simulation_results <- readRDS(file.path(results_directory, "simulation_results.Rds"))
+simulation_results <- readRDS(file.path(results_directory, "simulation_results.rds"))
 
 scenario_summary <- mutate(simulation_results, summary = map(results, summarize_scenario)) 
 scenario_summary <- unnest(scenario_summary, summary, .drop = TRUE)

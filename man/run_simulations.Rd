@@ -27,3 +27,12 @@ A list of one dataframe of results for each scenario
 Given a list of quantitative scenario objects of type \code{tidyrisk_scenario},
 run a OpenFAIR Monte Carlo simulation for each scenario.
 }
+\examples{
+# fetch three scenarios for this example
+data(quantitative_scenarios)
+scenario_a <- quantitative_scenarios[[1, "scenario"]]
+scenario_b <- quantitative_scenarios[[2, "scenario"]]
+scenario_c <- quantitative_scenarios[[3, "scenario"]]
+run_simulations(scenario_a, scenario_b, scenario_c, iterations = 10)
+
+}

@@ -19,14 +19,14 @@ test_that("explore_scenarios() works", {
   dir.create(tmpinputs, showWarnings = FALSE)
 
   data("simulation_results", package = "evaluator", envir = environment())
-  saveRDS(simulation_results, file = file.path(tmpdata, "simulation_results.Rds"))
+  saveRDS(simulation_results, file = file.path(tmpdata, "simulation_results.rds"))
 
   res <- c("risk_tolerances.csv") %>%
     purrr::map(~ file.copy(system.file("extdata", .x, package = "evaluator"),
                            tmpinputs))
 
   data("quantitative_scenarios", envir = environment())
-  saveRDS(quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.Rds"))
+  saveRDS(quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.rds"))
 
   # Use compareImages=FALSE because the expected image screenshots were created
   # on a Mac, and they will differ from screenshots taken on the CI platform,
