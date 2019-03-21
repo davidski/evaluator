@@ -35,7 +35,7 @@ Three sample outputs of this toolkit are available:
 Install Evaluator via the standard CRAN mechanisms. If you wish to use
 the optional, but recommended, reporting functions, also install the
 suggested dependencies. These additional packages are not needed for
-modelling, but are used in the generation of reports.
+modeling, but are used in the generation of reports.
 
 ``` r
 install.packages("evaluator", dependencies = TRUE)

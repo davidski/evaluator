@@ -22,7 +22,7 @@ contain their initial quantitative inputs. These users may also use
   relaxed. Doubles (decimals) are now permitted in the low, most likely, and 
   high columns.
   * The custom percent format function in the default Risk Report is removed 
-  and functionality is now provided natively via `scales::percent()`.
+  and functionality is now provided via `scales::percent()`.
 * Scenario Explorer application now can be used when skipping qualitative 
   data and starting directly from quantitative data.
 * Risk Report can now be used when skipping qualitative data and starting 
@@ -37,10 +37,10 @@ contain their initial quantitative inputs. These users may also use
   around font families.
 * Increase test coverage, including moving more shinytest tests to run on CI 
   instances and package spelling tests.
-* The internal contract between `run_simulation()` and modelling functions 
+* The internal contract between `run_simulation()` and modeling functions 
   such as `openfair_tef_tc_diff_lm()` is established. `run_simulation()` 
   will always confirm a scenario object has all of the OpenFAIR components 
-  needed by the specified modelling function. This enables easier extension of 
+  needed by the specified modeling function. This enables easier extension of 
   Evaluator to new models.
   
 ## Other Changes

@@ -85,8 +85,11 @@ run_simulation <- function(scenario, iterations = 10000L,
 #' @examples
 #' # fetch three scenarios for this example
 #' data(quantitative_scenarios)
-#' scenarios <- quantitative_scenarios[1:3, ]$scenario
-#' run_simulations(scenarios, iterations = 10)
+#' scenario_a <- quantitative_scenarios[[1, "scenario"]]
+#' scenario_b <- quantitative_scenarios[[2, "scenario"]]
+#' scenario_c <- quantitative_scenarios[[3, "scenario"]}
+#' run_simulations(scenario_a, scenario_b, scenario_c, iterations = 10)
+#'
 run_simulations <- function(scenario, ..., iterations = 10000L,
                             ale_maximum = NULL,
                             verbose = FALSE, simulation_count = NULL) {
