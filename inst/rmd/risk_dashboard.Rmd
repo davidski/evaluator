@@ -4,8 +4,8 @@ author: "Evaluator toolkit"
 output:
   flexdashboard::flex_dashboard:
     css: "html-styles.css"
-    favicon: "img/evaluator_logo_48px.png"
-    logo: "img/evaluator_logo_48px.png"
+    favicon: "img/evaluator_hex_48px.png"
+    logo: "img/evaluator_hex_48px.png"
     navbar:
     - align: right
       href: https://evaluator.severski.net

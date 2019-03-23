@@ -98,7 +98,7 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
   if (is.null(styles)) {
     styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
   }
-  icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
+  icon <- system.file("rmd", "img", "evaluator_hex_48px.png", package = "evaluator")
 
   rmarkdown::run(system.file("explore_scenarios", "explore_scenarios.Rmd", package = "evaluator"),
                  #dir = file.path(basename(system.file("rmd", "explore_scenarios.Rmd", package = "evaluator")), ".."),
@@ -134,7 +134,7 @@ openfair_example <- function(intermediates_dir = tempdir(),
                      func = "openfair_example")
 
   styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
-  icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
+  icon <- system.file("rmd", "img", "evaluator_hex_48px.png", package = "evaluator")
 
   rmarkdown::run(system.file("openfair_example", "openfair_example.Rmd",
                              package = "evaluator"),
@@ -177,7 +177,7 @@ risk_dashboard <- function(input_directory = "~/evaluator/inputs",
                      func = "risk_dashboard")
 
   styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
-  icon <- system.file("rmd", "img", "evaluator_logo_48px.png", package = "evaluator")
+  icon <- system.file("rmd", "img", "evaluator_hex_48px.png", package = "evaluator")
 
   rmarkdown::render(system.file("rmd", "risk_dashboard.Rmd", package = "evaluator"),
                     output_options =  list(css = styles, favicon = icon, logo = icon),

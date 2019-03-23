@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Evaluator <img alt="Evaluator Logo" title="Evaluator" align="right" src="inst/rmd/img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
+# evaluator <img alt="evaluator Logo" title="evaluator" align="right" src="man/figures/evaluator_hex.png" height="139"/>
 
 [![Build
 Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator)
@@ -14,10 +14,10 @@ Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)]
 
 ## Overview
 
-Evaluator is an open source quantitative risk analysis toolkit. Based on
+evaluator is an open source quantitative risk analysis toolkit. Based on
 the OpenFAIR [ontology](https://www2.opengroup.org/ogsys/catalog/C13K)
 and risk assessment
-[standard](https://www2.opengroup.org/ogsys/catalog/C13G), Evaluator
+[standard](https://www2.opengroup.org/ogsys/catalog/C13G), evaluator
 empowers an organization to perform a quantifiable, repeatable, and
 data-driven risk review.
 
@@ -32,7 +32,7 @@ Three sample outputs of this toolkit are available:
 
 ## Installation
 
-Install Evaluator via the standard CRAN mechanisms. If you wish to use
+Install evaluator via the standard CRAN mechanisms. If you wish to use
 the optional, but recommended, reporting functions, also install the
 suggested dependencies. These additional packages are not needed for
 modeling, but are used in the generation of reports.
@@ -42,7 +42,7 @@ install.packages("evaluator", dependencies = TRUE)
 ```
 
 If you wish to run the development (and potentially bleeding edge)
-version of Evaluator, you can install directly from GitHub with the
+version of evaluator, you can install directly from GitHub with the
 following `devtools` command.
 
 ``` r
@@ -56,12 +56,12 @@ Hub](https://hub.docker.com/r/davidski/evaluator-docker/).
 
 ## Usage
 
-The primary workflow for Evaluator involves gathering data in Excel then
+The primary workflow for evaluator involves gathering data in Excel then
 running the analysis from within the R and Evaluator environment:
 
 From Excel:
 
-1.  Populate the Evaluator-supplied data acquisition spreadsheet
+1.  Populate the evaluator-supplied data acquisition spreadsheet
 
 From Evaluator:
 
@@ -79,7 +79,7 @@ basic workflow (not including generation of reports) is available below:
 
 ## Where to Go from Here
 
-While Evaluator is a powerful tool, it does not attempt to address
+While evaluator is a powerful tool, it does not attempt to address
 interactions between risk scenarios, rolling up multiple levels of risk
 into aggregations, or other advanced topics. As you become more
 comfortable with quantitative risk analysis, you may wish to dive deeper

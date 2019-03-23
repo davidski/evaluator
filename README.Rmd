@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Evaluator <img alt="Evaluator Logo" title="Evaluator" align="right" src="inst/rmd/img/evaluator_logo.jpg" width="100" style="float:right;width:100px;"/>
+# evaluator <img alt="evaluator Logo" title="evaluator" align="right" src="man/figures/evaluator_hex.png" height="139"/>
 
 [![Build Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator)
@@ -23,10 +23,10 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-Evaluator is an open source quantitative risk analysis toolkit. Based on the OpenFAIR 
+evaluator is an open source quantitative risk analysis toolkit. Based on the OpenFAIR 
 [ontology](https://www2.opengroup.org/ogsys/catalog/C13K) and 
 risk assessment [standard](https://www2.opengroup.org/ogsys/catalog/C13G), 
-Evaluator empowers an organization to perform a quantifiable, repeatable, and 
+evaluator empowers an organization to perform a quantifiable, repeatable, and 
 data-driven risk review.
 
 Three sample outputs of this toolkit are available:
@@ -37,7 +37,7 @@ Three sample outputs of this toolkit are available:
 
 ## Installation
 
-Install Evaluator via the standard CRAN mechanisms. If you wish to use the 
+Install evaluator via the standard CRAN mechanisms. If you wish to use the 
 optional, but recommended, reporting functions, also install the 
 suggested dependencies. These additional packages are not needed for 
 modeling, but are used in the generation of reports.
@@ -47,7 +47,7 @@ install.packages("evaluator", dependencies = TRUE)
 ```
 
 If you wish to run the development (and potentially bleeding edge) version of 
-Evaluator, you can install directly from GitHub with the following `devtools` 
+evaluator, you can install directly from GitHub with the following `devtools` 
 command.
 
 ```{r github_install, eval=FALSE}
@@ -60,12 +60,12 @@ available on the [Docker Hub](https://hub.docker.com/r/davidski/evaluator-docker
 
 ## Usage
 
-The primary workflow for Evaluator involves gathering data in Excel then 
+The primary workflow for evaluator involves gathering data in Excel then 
 running the analysis from within the R and Evaluator environment:
 
 From Excel:
 
-1. Populate the Evaluator-supplied data acquisition spreadsheet
+1. Populate the evaluator-supplied data acquisition spreadsheet
 
 From Evaluator:
 
@@ -83,7 +83,7 @@ the basic workflow (not including generation of reports) is available below:
 
 ## Where to Go from Here
 
-While Evaluator is a powerful tool, it does not attempt to address interactions 
+While evaluator is a powerful tool, it does not attempt to address interactions 
 between risk scenarios, rolling up multiple levels of risk into aggregations, or 
 other advanced topics. As you become more comfortable with quantitative risk 
 analysis, you may wish to dive deeper into these areas (and I hope you do!). 

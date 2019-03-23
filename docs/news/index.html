@@ -168,7 +168,7 @@
 <li>All percentages are consistently imported, stored, and processed as decimal values (from 0 - 1). This makes the TC and DIFF parameters use the same scale as VULN.
 <ul>
 <li>As a side benefit, the restrictions on the format of the mappings CSV are relaxed. Doubles (decimals) are now permitted in the low, most likely, and high columns.</li>
-<li>The custom percent format function in the default Risk Report is removed and functionality is now provided natively via <code><a href="https://www.rdocumentation.org/packages/scales/topics/number_format">scales::percent()</a></code>.</li>
+<li>The custom percent format function in the default Risk Report is removed and functionality is now provided via <code><a href="https://www.rdocumentation.org/packages/scales/topics/number_format">scales::percent()</a></code>.</li>
 </ul>
 </li>
 <li>Scenario Explorer application now can be used when skipping qualitative data and starting directly from quantitative data.</li>
@@ -179,7 +179,7 @@
 <li>Removed use of soft deprecated ggplot <code>aes_()</code> functions.</li>
 <li>Clean up CSS for HTML reports, improving style consistency, particularly around font families.</li>
 <li>Increase test coverage, including moving more shinytest tests to run on CI instances and package spelling tests.</li>
-<li>The internal contract between <code><a href="../reference/run_simulation.html">run_simulation()</a></code> and modelling functions such as <code><a href="../reference/openfair_tef_tc_diff_lm.html">openfair_tef_tc_diff_lm()</a></code> is established. <code><a href="../reference/run_simulation.html">run_simulation()</a></code> will always confirm a scenario object has all of the OpenFAIR components needed by the specified modelling function. This enables easier extension of Evaluator to new models.</li>
+<li>The internal contract between <code><a href="../reference/run_simulation.html">run_simulation()</a></code> and modeling functions such as <code><a href="../reference/openfair_tef_tc_diff_lm.html">openfair_tef_tc_diff_lm()</a></code> is established. <code><a href="../reference/run_simulation.html">run_simulation()</a></code> will always confirm a scenario object has all of the OpenFAIR components needed by the specified modeling function. This enables easier extension of Evaluator to new models.</li>
 </ul>
 </div>
 <div id="other-changes" class="section level2">
