@@ -4,17 +4,14 @@
 \name{domains}
 \alias{domains}
 \title{Domain mappings}
-\format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 14 rows and 2 columns.}
+\format{\describe{
+\item{domain_id}{abbreviated name of the domain}
+\item{domain}{full title of the domain}
+}}
 \usage{
 domains
 }
 \description{
 A dataset of domains and domain IDs.
-}
-\details{
-\describe{
-\item{domain_id}{abbreviated name of the domain}
-\item{domain}{full title of the domain}
-}
 }
 \keyword{datasets}

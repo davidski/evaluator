@@ -4,22 +4,19 @@
 \name{mappings}
 \alias{mappings}
 \title{Qualitative to quantitative mappings}
-\format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 14 rows and 6 columns.}
-\usage{
-mappings
-}
-\description{
-A dataset of sample mappings from qualitative labels to quantitative
-distribution parameters.
-}
-\details{
-\describe{
+\format{\describe{
 \item{type}{The element in the OpenFAIR ontology to which this mapping applies}
 \item{label}{Qualitative label}
 \item{l}{BetaPERT low value}
 \item{ml}{BetaPERT most likely value}
 \item{h}{BetaPERT high value}
 \item{conf}{BetaPERT confidence value}
+}}
+\usage{
+mappings
 }
+\description{
+A dataset of sample mappings from qualitative labels to quantitative
+distribution parameters.
 }
 \keyword{datasets}

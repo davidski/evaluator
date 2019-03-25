@@ -4,19 +4,16 @@
 \name{simulation_results}
 \alias{simulation_results}
 \title{Information security risk simulation results}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 4 columns.}
+\format{\describe{
+\item{scenario_id}{id of the scenario}
+\item{domain_id}{domain id}
+\item{results}{nested data frame of simulation results for the scenario}
+}}
 \usage{
 simulation_results
 }
 \description{
 A dataset containing the full results of sample Monte Carlo
 simulations of information security risk scenarios.
-}
-\details{
-\describe{
-\item{scenario_id}{id of the scenario}
-\item{domain_id}{domain id}
-\item{results}{nested data frame of simulation results for the scenario}
-}
 }
 \keyword{datasets}

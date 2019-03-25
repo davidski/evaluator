@@ -2,6 +2,7 @@
 #'
 #' A qualitative dataset of sample capabilities and qualitative level of effectiveness.
 #'
+#' @format
 #' \describe{
 #'   \item{capability_id}{unique id of the capability}
 #'   \item{domain_id}{domain id to which the capability applies}
@@ -15,6 +16,7 @@
 #' A dataset of sample mappings from qualitative labels to quantitative
 #'   distribution parameters.
 #'
+#' @format
 #' \describe{
 #'   \item{type}{The element in the OpenFAIR ontology to which this mapping applies}
 #'   \item{label}{Qualitative label}
@@ -29,6 +31,7 @@
 #'
 #' A dataset of domains and domain IDs.
 #'
+#' @format
 #' \describe{
 #'   \item{domain_id}{abbreviated name of the domain}
 #'   \item{domain}{full title of the domain}
@@ -40,6 +43,7 @@
 #' A dataset of quantified information security risk, summarized at the
 #'   domain level.
 #'
+#' @format
 #' \describe{
 #'   \item{domain_id}{abbreviated name of the domain}
 #'   \item{loss_events_mean}{mean number of loss events}
@@ -65,6 +69,7 @@
 #' A dataset of quantified information security risk, summarized at the
 #'   scenario level.
 #'
+#' @format
 #' \describe{
 #'   \item{scenario_id}{ID of the scenario}
 #'   \item{domain_id}{domain id}
@@ -89,6 +94,7 @@
 
 #' Quantified information risk scenarios
 #'
+#' @format
 #' A dataset of quantified risk scenarios, with parameters
 #'   describing the distribution of each input.
 #'
@@ -105,8 +111,9 @@
 
 #' Qualitative information security risk scenarios
 #'
-#' A dataset of qualified information security risk scenarios.
+#' A dataset of qualitative information security risk scenarios.
 #'
+#' @format
 #' \describe{
 #'   \item{scenario_id}{id of the scenario, primary key}
 #'   \item{scenario}{full text description of the risk scenario}
@@ -124,6 +131,7 @@
 #' A dataset containing the full results of sample Monte Carlo
 #'   simulations of information security risk scenarios.
 #'
+#' @format
 #' \describe{
 #'   \item{scenario_id}{id of the scenario}
 #'   \item{domain_id}{domain id}

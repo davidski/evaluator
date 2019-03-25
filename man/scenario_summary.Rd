@@ -4,16 +4,7 @@
 \name{scenario_summary}
 \alias{scenario_summary}
 \title{Scenario-level risk summary}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 18 columns.}
-\usage{
-scenario_summary
-}
-\description{
-A dataset of quantified information security risk, summarized at the
-scenario level.
-}
-\details{
-\describe{
+\format{\describe{
 \item{scenario_id}{ID of the scenario}
 \item{domain_id}{domain id}
 \item{control_description}{control description}
@@ -32,6 +23,12 @@ scenario level.
 \item{mean_tc_exceedance}{mean threat capability exceedance}
 \item{mean_diff_exceedance}{mean difficulty exceedance}
 \item{mean_vuln}{mean vulnerability of the scenario}
+}}
+\usage{
+scenario_summary
 }
+\description{
+A dataset of quantified information security risk, summarized at the
+scenario level.
 }
 \keyword{datasets}

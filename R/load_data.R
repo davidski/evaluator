@@ -1,10 +1,10 @@
-#' Create initial template files
+#' Create a directory structure for risk analysis, prepopulate with templates
 #'
-#' Given a base directory, copy the provided sample files into an `inputs`
-#'   subdirectory. This makes the starter files available for customizing and
-#'   data collection. The `inputs` directory will be created if not already present.
-#'   Preexisting files, if present, will not be overwritten. Also creates an
-#'  empty `results` subdirectory as a default location for evaluator output.
+#' Copy the sample files into an `inputs` subdirectory. This makes the starter
+#'   files available for customizing and data collection. The `inputs`
+#'   directory will be created if not already present. Preexisting files, if
+#'   present, will not be overwritten. Also creates an empty `results`
+#'   subdirectory as a default location for evaluator output.
 #'
 #' @importFrom purrr map_dfr
 #' @importFrom tibble add_row tibble
@@ -223,11 +223,9 @@ read_qualitative_inputs <- function(input_directory = "~/evaluator/inputs") {
        qualitative_scenarios = qualitative_scenarios)
 }
 
-
-
 #' Load quantitative inputs
 #'
-#' Given an input directory, load the key quantitative objects into memory.
+#' Given an input directory, load the quantitative objects into memory.
 #'   The key quantitative inputs for Evaluator processing include:
 #'     * domains - domains and domain_ids
 #'     * risk_tolerances - the risk tolerances of the organization

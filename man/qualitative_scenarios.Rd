@@ -4,15 +4,7 @@
 \name{qualitative_scenarios}
 \alias{qualitative_scenarios}
 \title{Qualitative information security risk scenarios}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 8 columns.}
-\usage{
-qualitative_scenarios
-}
-\description{
-A dataset of qualified information security risk scenarios.
-}
-\details{
-\describe{
+\format{\describe{
 \item{scenario_id}{id of the scenario, primary key}
 \item{scenario}{full text description of the risk scenario}
 \item{tcomm}{full text name of threat community}
@@ -21,6 +13,11 @@ A dataset of qualified information security risk scenarios.
 \item{lm}{qualitative label of loss magnitude}
 \item{domain_id}{domain id}
 \item{controls}{comma delimited list of controls ids}
+}}
+\usage{
+qualitative_scenarios
 }
+\description{
+A dataset of qualitative information security risk scenarios.
 }
 \keyword{datasets}

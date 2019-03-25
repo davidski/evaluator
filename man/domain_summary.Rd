@@ -4,16 +4,7 @@
 \name{domain_summary}
 \alias{domain_summary}
 \title{Domain-level risk summary}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 14 rows and 13 columns.}
-\usage{
-domain_summary
-}
-\description{
-A dataset of quantified information security risk, summarized at the
-domain level.
-}
-\details{
-\describe{
+\format{\describe{
 \item{domain_id}{abbreviated name of the domain}
 \item{loss_events_mean}{mean number of loss events}
 \item{loss_events_min}{minimum number of loss events}
@@ -30,6 +21,12 @@ domain level.
 \item{mean_tc_exceedance}{mean threat capability exceedance}
 \item{mean_diff_exceedance}{mean difficulty exceedance}
 \item{mean_vuln}{mean vulnerability of the scenario}
+}}
+\usage{
+domain_summary
 }
+\description{
+A dataset of quantified information security risk, summarized at the
+domain level.
 }
 \keyword{datasets}

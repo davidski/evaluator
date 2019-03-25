@@ -4,15 +4,9 @@
 \name{quantitative_scenarios}
 \alias{quantitative_scenarios}
 \title{Quantified information risk scenarios}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 56 rows and 6 columns.}
-\usage{
-quantitative_scenarios
-}
-\description{
-A dataset of quantified risk scenarios, with parameters
+\format{A dataset of quantified risk scenarios, with parameters
 describing the distribution of each input.
-}
-\details{
+
 \describe{
 \item{scenario_id}{id of the scenario, primary key}
 \item{scenario_description}{full text description of the risk scenario}
@@ -20,6 +14,11 @@ describing the distribution of each input.
 \item{domain_id}{domain id}
 \item{control_descriptons}{named list of the text description of controls involved}
 \item{scenario}{\code{\link{tidyrisk_scenario}} objects}
+}}
+\usage{
+quantitative_scenarios
 }
+\description{
+Quantified information risk scenarios
 }
 \keyword{datasets}
