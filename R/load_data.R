@@ -172,7 +172,7 @@ load_data <- function(input_directory = "~/evaluator/inputs", results_directory 
 #' @importFrom rlang .data
 #' @importFrom readr read_csv cols col_character col_integer col_double
 #' @param input_directory Location of input files.
-#' @return List of domains, quantitative_scenarios, and risk_tolerances
+#' @return List of domains, mappings, capabilities, and qualitative_scenarios
 #' @export
 #' @examples
 #' \dontrun{

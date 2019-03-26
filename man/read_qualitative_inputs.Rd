@@ -10,7 +10,7 @@ read_qualitative_inputs(input_directory = "~/evaluator/inputs")
 \item{input_directory}{Location of input files.}
 }
 \value{
-List of domains, quantitative_scenarios, and risk_tolerances
+List of domains, mappings, capabilities, and qualitative_scenarios
 }
 \description{
 Given an input directory, load the key qualitative objects into memory.
