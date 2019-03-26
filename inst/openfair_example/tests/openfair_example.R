@@ -1,19 +1,8 @@
-app <- ShinyDriver$new("../openfair_example.Rmd", seed = 96255, loadTimeout = 10000)
-# for local testing
-#app <- ShinyDriver$new("here::here("inst/openfair_example/openfair_example.Rmd", seed = 96255, loadTimeout = 10000)
-Sys.sleep(2) # let the app warm up
-
+app <- ShinyDriver$new("../openfair_example.Rmd", seed = 95592)
 app$snapshotInit("openfair_example")
 
-Sys.sleep(0.5) # slow down input speed
+app$setInputs(tefml = character(0))
 app$setInputs(tefml = 30)
-
-Sys.sleep(0.5) # slow down input speed
 app$setInputs(iterations = 100)
-
-Sys.sleep(0.5) # slow down input speed
-app$setInputs(tefl = 9)
-
-Sys.sleep(0.5) # slow down input speed
 app$setInputs(runmodel = "click")
 app$snapshot()
