@@ -1,5 +1,4 @@
 language: r
-r_binary_packages: littler
 branches:
   only:
   - heroku
@@ -52,7 +51,7 @@ addons:
 after_success:
 - Rscript -e 'covr::codecov()'
 before_deploy:
-- ./scripts/generate_sample_reports.R
+- Rscript ./scripts/generate_sample_reports.R
 deploy:
   - provider: heroku
     app: scenario-explorer
