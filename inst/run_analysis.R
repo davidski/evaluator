@@ -30,8 +30,8 @@ message("Beginning analysis run with input directory (", inputs_dir, ")",
 # Load and Validate -------------------------------------------------------
 message("Loading and validating inputs...")
 
-domains <- readr::read_csv(file.path(inputs_dir, "domains.csv"),
-                           col_types = readr::cols(.default = readr::col_character()))
+domains <- read_csv(file.path(inputs_dir, "domains.csv"),
+                    col_types = cols(.default = col_character()))
 import_spreadsheet(file.path(inputs_dir, "survey.xlsx"), domains, inputs_dir)
 
 qual_inputs <- read_qualitative_inputs(inputs_dir)
