@@ -1,5 +1,5 @@
 language: r
-
+r_binary_packages: littler
 branches:
   only:
   - heroku
@@ -8,60 +8,70 @@ branches:
 cache:
   packages: true
   directories:
-    - travis_phantomjs
-
-# install PhantomJS (if not cached)
+  - travis_phantomjs
 before_install:
-  - "export PHANTOMJS_VERSION=2.1.1"
-  - "phantomjs --version"
-  - "export PATH=$PWD/travis_phantomjs/phtantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH"
-  - "hash -r"
-  - "phantomjs --version"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then hash -r; fi"
-  - "phantomjs --version"
-
+- export PHANTOMJS_VERSION=2.1.1
+- phantomjs --version
+- export PATH=$PWD/travis_phantomjs/phtantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH
+- hash -r
+- phantomjs --version
+- if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then rm -rf $PWD/travis_phantomjs;
+  mkdir -p $PWD/travis_phantomjs; fi
+- if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2
+  -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi
+- if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2
+  -C $PWD/travis_phantomjs; fi
+- if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then hash -r; fi
+- phantomjs --version
 matrix:
   include:
-    - os: osx
-      osx_image: xcode9.4
-      before_install:
-        - brew update
-          #- brew outdated gdal || brew upgrade gdal
-    - os: linux
-      dist: xenial
-      pandoc: true
-      r: release
-    - os: linux
-      dist: xenial
-      pandoc: true
-      r: devel
-    - os: linux
-      dist: xenial
-      pandoc: false
-      r: release
-    - os: linux
-      dist: xenial
-      pandoc: false
-      r: devel
-
+  - os: osx
+    osx_image: xcode9.4
+    before_install:
+    - brew update
+  - os: linux
+    dist: xenial
+    pandoc: true
+    r: release
+  - os: linux
+    dist: xenial
+    pandoc: true
+    r: devel
+  - os: linux
+    dist: xenial
+    pandoc: false
+    r: release
+  - os: linux
+    dist: xenial
+    pandoc: false
+    r: devel
 addons:
   apt:
     packages:
     - libproj-dev
-
 after_success:
-  - Rscript -e 'covr::codecov()'
-
+- Rscript -e 'covr::codecov()'
+before_deploy:
+- scripts/generate_sample_reports.R
 deploy:
-  provider: heroku
-  app: scenario-explorer
-  buildpack: http://github.com/virtualstaticvoid/heroku-buildpack-r.git#cedar-14-chroot
-  on: heroku
-  api_key:
-    secure: wwqMHa5zjcISqEQ7YC+ZYrQCFYMhJn4EjD34gMWQ+DDawMaEWAqUwcatHkA+gnCAL2iRFAdpnIk2yvWJf5Q9ogg/tr5sTIK0fTeN//f1rJPcwLgBOvPB6hr3uF0d4EfxZC0v/8zPp9Yhh6Mh9K6SqlQAZ95zIvZfg8K8uzuP2+irIZEPRaqEWV54bY6Nh0wJjProBiA3uumsp9MKMqHy7zOTQTaT9qXd1M7Aa6YFVfelUNmH0Dpj9vEj99FqGSafq3PNTuDzyzJxRCaiK8BFPd7q6anejfvrVqPcPo+Iu9QOrg7xi1sPVQABix3NhOJ6q+n20j+osb5vU1KmeHLTiP/U+yC8H4KUxdYOoHVy9Bs9qV0FD0NYLhIFa4d51q9vNlOwqcV+z8alAwfhhRItJDkpZBLfyHpPBKP4QwcD8JCR2AbHalLMZ5DGuqcCCrVjZglt37a/IgnYcWbG2KHXHtEtIvsJe8G1HB46HhDChFaJu6AA/bnuiFjjaYIpZUAGjwi/U1mugbDSlFPWuwuhv4VIpZsc0T+7OyUPIb9NjFLmj1hw7Mzzr10tm+IeWzk+z5QdmBVuQ4YU/qoIS8GU/D3vtuLfGoQSqccZrS20OBX/NdV3669eSsEFqs/kokQ24X0YpteamEcQkmNJm2NZbSjme1ks0NM1nAqcleQVUuc=
+  - provider: heroku
+    app: scenario-explorer
+    buildpack: http://github.com/virtualstaticvoid/heroku-buildpack-r.git#cedar-14-chroot
+    on: heroku
+    api_key:
+      secure: wwqMHa5zjcISqEQ7YC+ZYrQCFYMhJn4EjD34gMWQ+DDawMaEWAqUwcatHkA+gnCAL2iRFAdpnIk2yvWJf5Q9ogg/tr5sTIK0fTeN//f1rJPcwLgBOvPB6hr3uF0d4EfxZC0v/8zPp9Yhh6Mh9K6SqlQAZ95zIvZfg8K8uzuP2+irIZEPRaqEWV54bY6Nh0wJjProBiA3uumsp9MKMqHy7zOTQTaT9qXd1M7Aa6YFVfelUNmH0Dpj9vEj99FqGSafq3PNTuDzyzJxRCaiK8BFPd7q6anejfvrVqPcPo+Iu9QOrg7xi1sPVQABix3NhOJ6q+n20j+osb5vU1KmeHLTiP/U+yC8H4KUxdYOoHVy9Bs9qV0FD0NYLhIFa4d51q9vNlOwqcV+z8alAwfhhRItJDkpZBLfyHpPBKP4QwcD8JCR2AbHalLMZ5DGuqcCCrVjZglt37a/IgnYcWbG2KHXHtEtIvsJe8G1HB46HhDChFaJu6AA/bnuiFjjaYIpZUAGjwi/U1mugbDSlFPWuwuhv4VIpZsc0T+7OyUPIb9NjFLmj1hw7Mzzr10tm+IeWzk+z5QdmBVuQ4YU/qoIS8GU/D3vtuLfGoQSqccZrS20OBX/NdV3669eSsEFqs/kokQ24X0YpteamEcQkmNJm2NZbSjme1ks0NM1nAqcleQVUuc=
+  - provider: s3
+    on: master
+    local-dir: reports
+    region: us-west-2
+    skip_cleanup: true
+    server_side_encryption: true
+    access_key_id:
+      secure: RY4KiATYZAqsa8jMwJz6Y445isYW5mOOpuzTmPuVylBQ5FrefJWuUK4XxNvn0eVOim/d65FWiSy/+tkq29oI1nDtOm8sEbbBjCI5BnjLkWhCIscrTprBF20FmVSFR9jBLARBzCKJiP931KUYFDgYsVfC/npjKPiMGa+ID79BclmDtCrnlJgBD2gIqIKfg3BlhmUpx5+P6Pxhi+fhqInOFBaVql3g6T82mDiDLm6CiFFftYJ5tMBjT1f9+nwGxK8t4+7kMQj8KdiRWcCSiWLfxiZTHekGr/ZkrNb4A+NaLlTJNiYfusnV6rcf9HT6XGFdtr68HcEsHrGuXXGBKjp3hy8GuFnTZ/GneDXvGCP8vXHlIlewHRn3bYmoGZR156GSKRMUMRr8+y7sOhNn/+kjT5hVE/uZ1E/wGSi1rRdSTa3wVpooe8AlAeC06sOcVYXBvefAk1GDAL8lTSa5mOtWxJOtCF6xtj5H4YEi5ZBE5qHWX1a6bkf2Go1TNL3H8lI5kUZaNno3KclWRU7qbqs6KRw/1ZBfYeaHWzvN65Q9d8Fy10++2ZJDJFG9wFlJ+dVftCDNcbFRv0AhytIAwTdzOFXp1gok+D4VL1+vl7GrRMnLkH9dyJsr520/10PVwL8Orc+HXBUi2K2eFGbO3JQbj+Swq5pYPx2FQhcQ5sPYWbA=
+    secret_access_key:
+      secure: Ot4JagoK4wT/CFkpCaTlnTWItBtPmmRcJortEfsVWb7SczFMAbEx0Hrsq+JV8Qk3E2vALeG4FzdXbgByUP7HHWYubZN5WcOJkOHc5HDzGAfl+XJYGtOSS54HsqP+MrrDJpDqIRBfFVPhkmORBNNevf79YILJIH3zNfu3Jrwc66ErD3tgJRJR4G3Ia5+lVnVdUDnFsWJZ9vr0ywCTK+QwufJ6wGOPD0LBKotUYE/E7pRObTctbF9fF07XdSufh1bn8gaZcQzmHP4vId1wP65J0GmWc3OeSI05hk/TLTT/HiUP6wkCsWWfaTtC6/dFOGWZHN9rIW6L2HmXYSoHbCjKy3Syy/Vb5N4t9tUkUy4LHZ7q5L73HYfHzXNtyrrL76nizylusumIPd+Gas3tGNaS/b7F1xUrj+4lwlWqGQg90iV2Q4UV1jsWduL2/ObUokaaellcXH6K9OTmirfodw5HCT95S9knNSsZ2rw9ecuMr5f/eI3NvCpOI5y2fSP7/h43A5nAIzHnozq1ZoHfvaKZn1aN3SPdNstT/KXs87ve3X4QGCWC/AbyJ48BTdHgEm7m4kMAQejfHn7gNI4uKYGYQydg1WUy+hpjQWxBTVgOMZPFg9ncJWe3uaHM9GbGfZWsFFJY+GWPs9p9z4BF6SEHGxw8q2RvFaXVzmo2EvRTE3Y=
+    bucket:
+      secure: Eo+dCwM6sWrJq8tPaVF+9QN8gXtvluzQLVlb8MwDdiTnYpi0vKoerC1OCNjhCZPInrfVMb1wlE4UBLTJOQTzWZ5xS+UaGkB5VPqQK+G8f+44JmlpLJIuvtQWwEOf4SG7xBP9k8UU0S7IbjwC6uC0+bd71TqizCY/EnF5piTSdz35jcOvB9fGdQzvWDs81xKuN5K4nyYV64AUYxoa7WXYh1FTvsnpcNKCaM9KMQzJ5+hM/c2FiUCZSWhziFfXGPEQeeoVIArHED83Pj0r5rqxxG9M3BgTh6jjetVeXcXz11WZkT1+r7PXlOb6qipFheYQXA/EZ5HWG/Y+IMGVKrmK4IgmoSNaDlZtJVBPT4/6pVZr4NUJy+QegfaHisFqYJfKVlEgl/HINWvKpuISTkQm/CS84ZNisq77/EtFxuyCT5saks2OeS8xRUkcQCJKNZvomXbp57P9gx3gYfmtJgLtNd2XPUP83D9lqlYli5pv5RZlJOZ3SyTAq6htgKqYaB9hQUCenJGP+qCJjbWSGKFMhCebXS7W8jk5zX3J7GG6VTJLdHClVYzCsIqjDewVGzill1tLSOSXU0zFB0uuRcwc8NIn4qM6tRWJixvFHS9puHm7QNsVkTJU89DUtNhd9YWmWBIroix6X8Oh3TPjWLs/YxLL7u/138X+q19d9+QGLZg=
 notifications:
   slack:
     secure: m0r3pgrBKrxBAiEuuzLJvq1hazBjXTM8AB5yraLzVU+Hg3f/MWVgc40c0MZqCQxbU0BqIBqF/IyPwKSXHPlCzQZAqw8/+EAZ5pYI/mb1SREO/rIt9SsmzYTjo0VMUmcfQlIR4CYX5Mnadp1u6nCD0dR9A/cLfX3+wzCGGKD+ets0U1j1qomu797pb2Y/3ozDOHR31cL7X0G2Em6bxVDt2ltleLZdvjpzuuREhsr+j3dAWWSzBpHMoSiU3dXfQgmQgXa72eWIZPwmXgDjGjeXQP+c60pqv/PSChG/1Du89K5q5Nwm32zN7R/R6+LYlXa8Xoglpmyin1K5llaWrImuHCuZwzD5GA5bxcChoJQuTelMZIzUykBwIygWTM7+u8igcV+n9iX3+TNqb3jpewEWto2ufKoA5UuCTNP1Is/qL4ju7HldgCxPQavANUMZi9ErPEb2tlOAdTVuPUVZcoekyh6VdcSa6LiQeuWz1wDwG1AP6m06Tyu1Bnaz73OoHRRlBGnwQTvzfTywYnYpe9iSpy2s6TJRZHxWdblePw0Z8G1ZzvQXxibBlu3gczCxZ8GsugBE1IY288brsAev/derQOICmKGEA8Tk5Jz6OSQDowy2tjVoOHIBV9KPGlviwPJrBfkoEjdxcypXhZzA1bxxDzix9W8sG4cy/iAlq+TD9kg=

@@ -1,3 +1,6 @@
+#!/usr/bin/env r
+
+# Regenerate sample reports
 devtools::load_all()
 
 tmpdir <- tempdir()
