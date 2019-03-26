@@ -1,5 +1,4 @@
 language: r
-sudo: false
 
 branches:
   only:
@@ -32,19 +31,19 @@ matrix:
         - brew update
           #- brew outdated gdal || brew upgrade gdal
     - os: linux
-      dist: trusty
+      dist: xenial
       pandoc: true
       r: release
     - os: linux
-      dist: trusty
+      dist: xenial
       pandoc: true
       r: devel
     - os: linux
-      dist: trusty
+      dist: xenial
       pandoc: false
       r: release
     - os: linux
-      dist: trusty
+      dist: xenial
       pandoc: false
       r: devel
 
