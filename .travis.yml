@@ -1,7 +1,6 @@
 language: r
 branches:
   only:
-  - heroku
   - dev
   - master
 cache:
@@ -32,6 +31,7 @@ matrix:
     dist: xenial
     pandoc: true
     r: release
+    env: REPORTS_DEPLOY="true"
   - os: linux
     dist: xenial
     pandoc: true
@@ -51,16 +51,22 @@ addons:
 after_success:
 - Rscript -e 'covr::codecov()'
 before_deploy:
-- Rscript ./scripts/generate_sample_reports.R
+  - if [[ $REPORTS_DEPLOY = "true"]]; then
+      Rscript ./scripts/generate_sample_reports.R
+    fi
 deploy:
   - provider: heroku
     app: scenario-explorer
     buildpack: https://github.com/virtualstaticvoid/heroku-buildpack-r.git#heroku-16
-    on: heroku
+    on: 
+      condition: $REPORTS_DEPLOY = "true"
+      branch: master
     api_key:
       secure: wwqMHa5zjcISqEQ7YC+ZYrQCFYMhJn4EjD34gMWQ+DDawMaEWAqUwcatHkA+gnCAL2iRFAdpnIk2yvWJf5Q9ogg/tr5sTIK0fTeN//f1rJPcwLgBOvPB6hr3uF0d4EfxZC0v/8zPp9Yhh6Mh9K6SqlQAZ95zIvZfg8K8uzuP2+irIZEPRaqEWV54bY6Nh0wJjProBiA3uumsp9MKMqHy7zOTQTaT9qXd1M7Aa6YFVfelUNmH0Dpj9vEj99FqGSafq3PNTuDzyzJxRCaiK8BFPd7q6anejfvrVqPcPo+Iu9QOrg7xi1sPVQABix3NhOJ6q+n20j+osb5vU1KmeHLTiP/U+yC8H4KUxdYOoHVy9Bs9qV0FD0NYLhIFa4d51q9vNlOwqcV+z8alAwfhhRItJDkpZBLfyHpPBKP4QwcD8JCR2AbHalLMZ5DGuqcCCrVjZglt37a/IgnYcWbG2KHXHtEtIvsJe8G1HB46HhDChFaJu6AA/bnuiFjjaYIpZUAGjwi/U1mugbDSlFPWuwuhv4VIpZsc0T+7OyUPIb9NjFLmj1hw7Mzzr10tm+IeWzk+z5QdmBVuQ4YU/qoIS8GU/D3vtuLfGoQSqccZrS20OBX/NdV3669eSsEFqs/kokQ24X0YpteamEcQkmNJm2NZbSjme1ks0NM1nAqcleQVUuc=
   - provider: s3
-    on: master
+    on: 
+      condition: $REPORTS_DEPLOY = "true"
+      branch: master
     local-dir: reports
     region: us-west-2
     skip_cleanup: true
