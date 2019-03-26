@@ -12,7 +12,7 @@ test_that("Minimum Viable Analysis script works", {
 
   create_templates(tmpwork)
   base_dir <- tmpwork
-  expect_success(source(system.file("run_analysis.R", package = "evaluator")))
-})
+  source(system.file("run_analysis.R", package = "evaluator"))
+  expect_success(TRUE)
 
 unlink(tmpwork, recursive = TRUE)

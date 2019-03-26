@@ -16,6 +16,9 @@
 #' @export
 new_tidyrisk_scenario <- function(..., model = "openfair_tef_tc_diff_lm") {
   dots <- rlang::list2(...)
+  if (any(names(dots) == "")) {
+    stop("One or more parameters is unnamed.", call. = FALSE)
+  }
   stopifnot(purrr::every(dots, is.list), is.character(model))
   names(dots) <- gsub( "_params", "", names(dots))
   scenario <- list(
