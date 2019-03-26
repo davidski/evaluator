@@ -9,9 +9,9 @@ test_that("openfairExample() works", {
   skip_if_not(rmarkdown::pandoc_available(),
               message = "Cannot run shinytest without pandoc available.")
 
-  # Not quite ready to turn this on in CI
-  #skip_on_appveyor()
-  #skip_on_travis()
+  # Don't run on r-devel, which behaves badly on TravisCI
+  skip_if(grepl("unstable", R.version.string),
+          message = "Shinytest gives unpredictable results on R-devel")
 
   # Use compareImages=FALSE because the expected image screenshots were created
   # on a Mac, and they will differ from screenshots taken on the CI platform,
