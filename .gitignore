@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 input_files
-*.bak
 inst/doc
 docs/CNAME
+reports

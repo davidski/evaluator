@@ -16,3 +16,5 @@ cran-comments.md
 meta_tags.html
 ^\.github$
 pkgdown
+^reports$
+^scripts$
