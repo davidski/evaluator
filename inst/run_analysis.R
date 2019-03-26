@@ -34,16 +34,10 @@ domains <- readr::read_csv(file.path(inputs_dir, "domains.csv"),
                            col_types = readr::cols(.default = readr::col_character()))
 import_spreadsheet(file.path(inputs_dir, "survey.xlsx"), domains, inputs_dir)
 
-qualitative_scenarios <- readr::read_csv(file.path(inputs_dir,
-                                                   "qualitative_scenarios.csv"),
-                                         col_types = readr::cols(.default = readr::col_character()))
-mappings <- readr::read_csv(file.path(inputs_dir, "qualitative_mappings.csv"),
-                            col_types = readr::cols(.default = readr::col_integer(),
-                                             type = readr::col_character(),
-                                             label = readr::col_character(),
-                                             ml = readr::col_double()))
-capabilities <- readr::read_csv(file.path(inputs_dir, "capabilities.csv"),
-                                col_types = readr::cols(.default = readr::col_character()))
+qual_inputs <- read_qualitative_inputs(inputs_dir)
+qualitative_scenarios <- qual_inputs$qualitative_scenarios
+mappings <- qual_inputs$mappings
+capabilities <- qual_inputs$capabilities
 validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
 
 # Encode ------------------------------------------------------------------
