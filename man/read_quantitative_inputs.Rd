@@ -13,7 +13,7 @@ read_quantitative_inputs(input_directory = "~/evaluator/inputs")
 List of domains, quantitative_scenarios, and risk_tolerances
 }
 \description{
-Given an input directory, load the key quantitative objects into memory.
+Given an input directory, load the quantitative objects into memory.
 The key quantitative inputs for Evaluator processing include:
 * domains - domains and domain_ids
 * risk_tolerances - the risk tolerances of the organization

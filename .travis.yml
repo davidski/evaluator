@@ -52,7 +52,7 @@ addons:
 after_success:
 - Rscript -e 'covr::codecov()'
 before_deploy:
-- scripts/generate_sample_reports.R
+- ./scripts/generate_sample_reports.R
 deploy:
   - provider: heroku
     app: scenario-explorer

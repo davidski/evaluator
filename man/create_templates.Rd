@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_data.R
 \name{create_templates}
 \alias{create_templates}
-\title{Create initial template files}
+\title{Create a directory structure for risk analysis, prepopulate with templates}
 \usage{
 create_templates(base_directory = "~/evaluator")
 }
@@ -13,11 +13,11 @@ create_templates(base_directory = "~/evaluator")
 A dataframe of the starter filenames, along with a flag on whether a file was copied.
 }
 \description{
-Given a base directory, copy the provided sample files into an \code{inputs}
-subdirectory. This makes the starter files available for customizing and
-data collection. The \code{inputs} directory will be created if not already present.
-Preexisting files, if present, will not be overwritten. Also creates an
-empty \code{results} subdirectory as a default location for evaluator output.
+Copy the sample files into an \code{inputs} subdirectory. This makes the starter
+files available for customizing and data collection. The \code{inputs}
+directory will be created if not already present. Preexisting files, if
+present, will not be overwritten. Also creates an empty \code{results}
+subdirectory as a default location for evaluator output.
 }
 \examples{
 \dontrun{
