@@ -107,13 +107,13 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="evaluator" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#evaluator" class="anchor"></a>Evaluator <img alt="Evaluator Logo" title="Evaluator" align="right" src="reference/figures/evaluator_hex.png" height="139">
+<a href="#evaluator" class="anchor"></a>evaluator <img alt="evaluator Logo" title="evaluator" align="right" src="reference/figures/evaluator_hex.png" height="139">
 </h1></div>
 <p><a href="https://travis-ci.org/davidski/evaluator"><img src="https://travis-ci.org/davidski/evaluator.svg?branch=master" alt="Build Status"></a> <a href="https://ci.appveyor.com/project/davidski/evaluator"><img src="https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://codecov.io/github/davidski/evaluator?branch=master"><img src="https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg" alt="Coverage Status"></a> <a href="https://cran.r-project.org/package=evaluator"><img src="https://www.r-pkg.org/badges/version/evaluator" alt="CRAN_Status_Badge"></a> <img src="https://cranlogs.r-pkg.org/badges/grand-total/evaluator" alt="downloads"></p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>Evaluator is an open source quantitative risk analysis toolkit. Based on the OpenFAIR <a href="https://www2.opengroup.org/ogsys/catalog/C13K">ontology</a> and risk assessment <a href="https://www2.opengroup.org/ogsys/catalog/C13G">standard</a>, Evaluator empowers an organization to perform a quantifiable, repeatable, and data-driven risk review.</p>
+<p>evaluator is an open source quantitative risk analysis toolkit. Based on the OpenFAIR <a href="https://www2.opengroup.org/ogsys/catalog/C13K">ontology</a> and risk assessment <a href="https://www2.opengroup.org/ogsys/catalog/C13G">standard</a>, evaluator empowers an organization to perform a quantifiable, repeatable, and data-driven risk review.</p>
 <p>Three sample outputs of this toolkit are available:</p>
 <ol style="list-style-type: decimal">
 <li>A detailed risk analysis template, located at <a href="https://rpubs.com/davidski/evaluator_risk_analysis">RPubs</a>
@@ -127,9 +127,9 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install Evaluator via the standard CRAN mechanisms. If you wish to use the optional, but recommended, reporting functions, also install the suggested dependencies. These additional packages are not needed for modeling, but are used in the generation of reports.</p>
+<p>Install evaluator via the standard CRAN mechanisms. If you wish to use the optional, but recommended, reporting functions, also install the suggested dependencies. These additional packages are not needed for modeling, but are used in the generation of reports.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"evaluator"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p>If you wish to run the development (and potentially bleeding edge) version of Evaluator, you can install directly from GitHub with the following <code>devtools</code> command.</p>
+<p>If you wish to run the development (and potentially bleeding edge) version of evaluator, you can install directly from GitHub with the following <code>devtools</code> command.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># install.pacakges("devtools")</span></a>
 <a class="sourceLine" id="cb2-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"davidski/evaluator"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>Optionally, a prototype Docker image with all dependencies pre-installed is available on the <a href="https://hub.docker.com/r/davidski/evaluator-docker/">Docker Hub</a>.</p>
@@ -137,10 +137,10 @@
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>The primary workflow for Evaluator involves gathering data in Excel then running the analysis from within the R and Evaluator environment:</p>
+<p>The primary workflow for evaluator involves gathering data in Excel then running the analysis from within the R and Evaluator environment:</p>
 <p>From Excel:</p>
 <ol style="list-style-type: decimal">
-<li>Populate the Evaluator-supplied data acquisition spreadsheet</li>
+<li>Populate the evaluator-supplied data acquisition spreadsheet</li>
 </ol>
 <p>From Evaluator:</p>
 <ol start="2" style="list-style-type: decimal">
@@ -156,7 +156,7 @@
 <div id="where-to-go-from-here" class="section level2">
 <h2 class="hasAnchor">
 <a href="#where-to-go-from-here" class="anchor"></a>Where to Go from Here</h2>
-<p>While Evaluator is a powerful tool, it does not attempt to address interactions between risk scenarios, rolling up multiple levels of risk into aggregations, or other advanced topics. As you become more comfortable with quantitative risk analysis, you may wish to dive deeper into these areas (and I hope you do!). The following resources may help you explore these and other topics in risk management.</p>
+<p>While evaluator is a powerful tool, it does not attempt to address interactions between risk scenarios, rolling up multiple levels of risk into aggregations, or other advanced topics. As you become more comfortable with quantitative risk analysis, you may wish to dive deeper into these areas (and I hope you do!). The following resources may help you explore these and other topics in risk management.</p>
 <div id="alternative-software" class="section level3">
 <h3 class="hasAnchor">
 <a href="#alternative-software" class="anchor"></a>Alternative Software</h3>

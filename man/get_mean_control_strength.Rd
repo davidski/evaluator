@@ -7,7 +7,7 @@
 get_mean_control_strength(n, diff_parameters)
 }
 \arguments{
-\item{n}{Number of threat events to sample controls across.}
+\item{n}{Number of threat events to generate control effectiveness samples.}
 
 \item{diff_parameters}{Parameters to pass to \code{\link{sample_diff}}.}
 }
