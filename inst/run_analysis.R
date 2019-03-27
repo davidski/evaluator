@@ -16,6 +16,8 @@ library(evaluator)
 library(readr)
 library(purrr)
 library(dplyr)
+library(furrr)
+plan(multiprocess)
 
 if (!exists("base_dir") || !dir.exists(base_dir)) {
   stop("Set base_dir to your evaluator working directory before running this script.")
@@ -44,12 +46,15 @@ validate_scenarios(qualitative_scenarios, capabilities, domains, mappings)
 message("Encoding qualitative scenarios...")
 quantitative_scenarios <- encode_scenarios(qualitative_scenarios, capabilities,
                                            mappings)
+saveRDS(quantitative_scenarios,
+        file = file.path(inputs_dir, "quantitative_scenarios.rds"))
 
 # Simulate ----------------------------------------------------------------
 message("Running simulations...")
 simulation_results <- quantitative_scenarios %>%
-  mutate(results = map(scenario, run_simulation, iterations = 10000L)) %>%
-  select(-scenario)
+  mutate(results = furrr::future_map(scenario, run_simulation,
+                                     iterations = 10000L, .progress = TRUE)) %>%
+  select(-c(scenario, tcomm, scenario_description), scenario_id, domain_id, results)
 saveRDS(simulation_results, file = file.path(results_dir, "simulation_results.rds"))
 
 # Summarize ---------------------------------------------------------------
