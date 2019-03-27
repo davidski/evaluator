@@ -3,13 +3,15 @@
 # Regenerate sample reports
 devtools::load_all()
 
+devtools::install_packages("here")
+
 tmpdir <- tempdir()
 tmpdata <- file.path(tmpdir, "data")
 dir.create(tmpdata)
 tmpinputs <- file.path(tmpdir, "inputs")
 dir.create(tmpinputs, showWarnings = FALSE)
 
-output_dir <- "reports"
+output_dir <- here::here("reports")
 dir.create(output_dir, showWarnings = FALSE)
 
 data("simulation_results", package = "evaluator", envir = environment())
