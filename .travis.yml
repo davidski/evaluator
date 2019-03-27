@@ -51,9 +51,7 @@ addons:
 after_success:
 - Rscript -e 'covr::codecov()'
 before_deploy:
-  - if [[ $REPORTS_DEPLOY = "true"]]; then
-      Rscript ./scripts/generate_sample_reports.R
-    fi
+  - if [[ $REPORTS_DEPLOY = "true" ]]; then Rscript ./scripts/generate_sample_reports.R; fi
 deploy:
   - provider: heroku
     app: scenario-explorer
