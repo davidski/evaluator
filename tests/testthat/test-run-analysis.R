@@ -5,10 +5,9 @@ tmpwork <- file.path(tmpdir, "analysis")
 
 test_that("Minimum Viable Analysis script works", {
 
-  # this is expensive to run, don't run it on CRAN or CI
-  skip_on_cran()
-  skip_on_travis()
-  skip_on_appveyor()
+  # this is expensive to run, skip if the EVALUATOR_TEST_MVA envvar is not set
+  skip_if_not(Sys.getenv("EVALUATOR_TEST_MVA") == TRUE,
+              "Not running MVA test - EVALUATOR_TEST_MVA not set")
 
   create_templates(tmpwork)
   base_dir <- tmpwork
