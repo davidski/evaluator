@@ -9,7 +9,7 @@ dir.create(tmpdata)
 tmpinputs <- file.path(tmpdir, "inputs")
 dir.create(tmpinputs, showWarnings = FALSE)
 
-output_dir <- here::here("reports")
+output_dir <- "reports"
 dir.create(output_dir, showWarnings = FALSE)
 
 data("simulation_results", package = "evaluator", envir = environment())
