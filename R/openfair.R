@@ -159,10 +159,9 @@ sample_lef <- function(n, .func = NULL, params = NULL) {
 #'
 #' @importFrom dplyr %>% bind_rows
 #' @importFrom purrr pmap map transpose simplify_all map_dbl
-#' @importFrom tidyr nest
 #' @importFrom stringi stri_split_fixed
 #' @importFrom rlang .data
-#' @param n Number of threat events to sample controls across.
+#' @param n Number of threat events to generate control effectiveness samples.
 #' @param diff_parameters Parameters to pass to \code{\link{sample_diff}}.
 #' @return Vector of control effectiveness.
 #' @family OpenFAIR helpers
@@ -175,14 +174,15 @@ get_mean_control_strength <- function(n, diff_parameters)  {
 
   # iterate over the control parameters list
   # getting a number of samples for each control
+
   cs <- purrr::map(control_list, function(x) {
-    # create a nested tibble (func, params)
-    diff_tbl <- x %>% dplyr::bind_rows() %>%
-      tidyr::nest(-.data$func, .key = "params")
-    # extract the parameters list from the tibble
-    params <- diff_tbl$params %>% unlist()
+
+    # get the names of all non-func parameters, then extract them
+    param_names <- setdiff(names(x), "func")
+    params <- x[param_names]
+
     #generate the samples
-    sample_diff(.func = diff_tbl$func, n = n, params = params)
+    sample_diff(.func = x$func, n = n, params = params)
     }) %>% purrr::map("samples")
 
   # pivot the results so each list has 1 sample for each control
