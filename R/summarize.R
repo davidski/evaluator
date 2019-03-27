@@ -40,12 +40,12 @@ summarize_scenario <- function(simulation_results) {
       sle_min = min(.data$sle_min, na.rm = TRUE),
       sle_max = max(.data$sle_max, na.rm = TRUE),
       mean_tc_exceedance =
-        sum(.data$mean_tc_exceedance * .data$loss_events, na.rm = TRUE) /
-        sum(.data$loss_events, na.rm = TRUE) %>%
+        (sum(.data$mean_tc_exceedance * .data$loss_events, na.rm = TRUE) /
+        sum(.data$loss_events, na.rm = TRUE)) %>%
         ifelse(is.finite(.), ., 0),
       mean_diff_exceedance =
-        sum(.data$mean_diff_exceedance * (.data$threat_events - .data$loss_events), na.rm = TRUE) /
-        sum(.data$threat_events - .data$loss_events, na.rm = TRUE) %>%
+        (sum(.data$mean_diff_exceedance * (.data$threat_events - .data$loss_events), na.rm = TRUE) /
+        sum(.data$threat_events - .data$loss_events, na.rm = TRUE)) %>%
         ifelse(is.finite(.), ., 0),
       mean_vuln = mean(.data$vuln, na.rm = TRUE)) %>%
     dplyr::mutate(sle_median = ifelse(is.nan(.data$sle_median), NA, .data$sle_median))
