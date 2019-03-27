@@ -97,3 +97,20 @@ print.tidyrisk_scenario <- function(x, ...) {
   invisible(x)
 }
 
+#' Coerce the parameters of a tidyrisk_scenario to a tibble
+#'
+#' @param x A tidyrisk_scenario
+#' @param ... Currently not used
+#' @export
+#' @importFrom cli cat_line
+#' @importFrom purrr map_depth
+#' @importFrom dplyr bind_rows
+as_tibble.tidyrisk_scenario <- function(x, ...) {
+  cli::cat_line("# Scenario model: ", x$model)
+  purrr::map_depth(x$parameters, .depth = 1, dplyr::bind_rows, .id = "id") %>%
+    dplyr::bind_rows(.id = "openfair_factor")
+}
+
+#' @rdname as_tibble.tidyrisk_scenario
+#' @export
+as.data.frame.tidyrisk_scenario <- as_tibble.tidyrisk_scenario
