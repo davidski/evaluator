@@ -48,37 +48,37 @@ test_that("Duplicate capabilities detected", {
 
 
 test_that("Invalid TEF labels are handled", {
-  data(capabilities, qualitative_scenarios)
-  bad_scenarios <- qualitative_scenarios
+  data(mc_capabilities, mc_qualitative_scenarios)
+  bad_scenarios <- mc_qualitative_scenarios
   bad_scenarios[1, "tef"] <- "invalid"
-  expect_warning(validate_scenarios(bad_scenarios, capabilities, domains, mappings),
+  expect_warning(validate_scenarios(bad_scenarios, mc_capabilities, domains, mappings),
                regexp = "qualitative TEF")
 
 })
 
 test_that("Invalid TC labels are handled", {
-  data(capabilities, qualitative_scenarios)
-  bad_scenarios <- qualitative_scenarios
+  data(mc_capabilities, mc_qualitative_scenarios)
+  bad_scenarios <- mc_qualitative_scenarios
   bad_scenarios[1, "tc"] <- "invalid"
-  expect_warning(validate_scenarios(bad_scenarios, capabilities, domains, mappings),
+  expect_warning(validate_scenarios(bad_scenarios, mc_capabilities, domains, mappings),
                regexp = "qualitative TC")
 
 })
 
 test_that("Invalid DIFF labels are handled", {
-  data(capabilities, qualitative_scenarios)
-  bad_capabilities <- capabilities
+  data(mc_capabilities, mc_qualitative_scenarios)
+  bad_capabilities <- mc_capabilities
   bad_capabilities[1, "diff"] <- "invalid"
-  expect_warning(validate_scenarios(qualitative_scenarios, bad_capabilities, domains, mappings),
+  expect_warning(validate_scenarios(mc_qualitative_scenarios, bad_capabilities, domains, mappings),
                regexp = "qualitative DIFF")
 
 })
 
 test_that("Invalid LMs labels are handled", {
-  data(capabilities, qualitative_scenarios)
-  bad_scenarios <- qualitative_scenarios
+  data(mc_capabilities, mc_qualitative_scenarios)
+  bad_scenarios <- mc_qualitative_scenarios
   bad_scenarios[1, "lm"] <- "invalid"
-  expect_warning(validate_scenarios(bad_scenarios, capabilities, domains, mappings),
+  expect_warning(validate_scenarios(bad_scenarios, mc_capabilities, domains, mappings),
                regexp = "qualitative LM")
 
 })

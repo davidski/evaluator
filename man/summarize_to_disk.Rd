@@ -21,8 +21,7 @@ dataframes to a location on disk.
 }
 \examples{
 \dontrun{
-data(simulation_results)
-data(domains)
-summarize_to_disk(simulation_results)
+data(mc_simulation_results)
+summarize_to_disk(mc_simulation_results)
 }
 }

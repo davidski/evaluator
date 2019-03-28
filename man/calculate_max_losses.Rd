@@ -27,6 +27,6 @@ the minimum and maximum ALE across all simulations. Calculations both
 with and without outliers (if passed) are returned.
 }
 \examples{
-data(simulation_results)
-calculate_max_losses(simulation_results)
+data(mc_simulation_results)
+calculate_max_losses(mc_simulation_results)
 }

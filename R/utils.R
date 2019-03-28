@@ -52,8 +52,8 @@ dollar_millions <- function(x) {
 #' @importFrom tidyr unnest
 #' @export
 #' @examples
-#' data(scenario_summary)
-#' identify_outliers(scenario_summary)
+#' data(mc_scenario_summary)
+#' identify_outliers(mc_scenario_summary)
 identify_outliers <- function(results) {
  results %>% #tidyr::unnest(summary) %>%
     dplyr::mutate(ale_var_zscore = as.vector(scale(.data$ale_var)),
@@ -80,8 +80,8 @@ identify_outliers <- function(results) {
 #'   - `outliers` - logical of whether or not outliers are included
 #' @export
 #' @examples
-#' data(simulation_results)
-#' calculate_max_losses(simulation_results)
+#' data(mc_simulation_results)
+#' calculate_max_losses(mc_simulation_results)
 calculate_max_losses <- function(simulation_results, scenario_outliers = NULL) {
   max_loss <- tidyr::unnest(simulation_results, .data$results) %>%
     dplyr::filter(!.data$scenario_id %in% scenario_outliers) %>%

@@ -20,9 +20,9 @@
 #' @export
 #' @return Dataframe of summary statistics.
 #' @examples
-#' data(simulation_results)
+#' data(mc_simulation_results)
 #' # summarize a single scenario
-#' summarize_scenario(simulation_results[[1, "results"]])
+#' summarize_scenario(mc_simulation_results[[1, "results"]])
 #'
 summarize_scenario <- function(simulation_results) {
   scenario_summary <- simulation_results %>%
@@ -60,8 +60,8 @@ summarize_scenario <- function(simulation_results) {
 #' @rdname summarize_scenario
 #' @examples
 #' # summarize all scenarios in a data frame
-#' data(simulation_results)
-#' summarize_scenarios(simulation_results)
+#' data(mc_simulation_results)
+#' summarize_scenarios(mc_simulation_results)
 summarize_scenarios <- function(simulation_results) {
   dplyr::mutate(simulation_results, summary = purrr::map(.data$results, summarize_scenario)) %>%
     tidyr::unnest(summary)
@@ -91,8 +91,8 @@ summarize_scenarios <- function(simulation_results) {
 #' @export
 #' @return Dataframe.
 #' @examples
-#' data(simulation_results)
-#' summarize_iterations(simulation_results$results)
+#' data(mc_simulation_results)
+#' summarize_iterations(mc_simulation_results$results)
 summarize_iterations <- function(simulation_results, ..., .key = "iteration") {
 
   key <- rlang::ensym(.key)
@@ -144,8 +144,8 @@ summarize_iterations <- function(simulation_results, ..., .key = "iteration") {
 #' @return Simulation results summarized across domains.
 #' @examples
 #' \dontrun{
-#' data(simulation_results)
-#' summarize_domains(simulation_results)
+#' data(mc_simulation_results)
+#' summarize_domains(mc_simulation_results)
 #' }
 summarize_domains <- function(simulation_results, domain_variable = "domain_id") {
   domain_variable <- rlang::ensym(domain_variable)
@@ -194,9 +194,8 @@ summarize_domains <- function(simulation_results, domain_variable = "domain_id")
 #' @return Tibble with paths to the created data files.
 #' @examples
 #' \dontrun{
-#' data(simulation_results)
-#' data(domains)
-#' summarize_to_disk(simulation_results)
+#' data(mc_simulation_results)
+#' summarize_to_disk(mc_simulation_results)
 #' }
 summarize_to_disk <- function(simulation_results, results_dir = "~/results") {
   if (!dir.exists(results_dir)) dir.create(results_dir)

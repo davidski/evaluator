@@ -21,6 +21,6 @@ contained (not resulting in loss) vs the number and percentage of
 loss events (threat events resulting in losses).
 }
 \examples{
-data(domain_summary)
-generate_event_outcomes_plot(domain_summary)
+data(mc_domain_summary)
+generate_event_outcomes_plot(mc_domain_summary)
 }

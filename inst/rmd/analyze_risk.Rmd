@@ -91,8 +91,8 @@ scenarios       <- dat$quantitative_scenarios
 
 ```{r useful_values}
 # unique controls
-capabilities <- purrr::map2_dfr(quantitative_scenarios$control_descriptions,
-                                quantitative_scenarios$domain_id, 
+capabilities <- purrr::map2_dfr(scenarios$control_descriptions,
+                                scenarios$domain_id, 
                                 ~tibble(capability = as_vector(.x), 
                                         capability_id = names(.x), 
                                         domain_id = .y)) %>% 
@@ -443,75 +443,6 @@ This process generates several outputs:
 
 Total risk is the sum of annual expected losses across all `r nrow(scenarios)` 
 scenarios within an iteration.
-
-## Assumptions
-
-The mappings from qualitative labels to quantitative parameters is displayed 
-below.
-
-```{r, table_helper, echo=FALSE}
-create_table <- function(label, id) {
-  # pandoc.header(label, level = 3)
-  filter(mappings, type == id) %>% 
-    select(label, l, ml, h, conf) %>% 
-    rowwise() %>% 
-    mutate(label = stringi::stri_trans_totitle(label)) %>% 
-    mutate(l = ifelse(id == "lm", dollar(l), 
-                      ifelse(id == "tef", comma(l), percent(l)))) %>% 
-    mutate(ml = ifelse(id == "lm", dollar(ml), 
-                       ifelse(id == "tef", comma(ml), percent(ml)))) %>% 
-    mutate(h = ifelse(id == "lm", dollar(h), 
-                      ifelse(id == "tef", comma(h), percent(h)))) %>% 
-    rename("Category" = label, "Low" = l, "Most Likely" = ml, "High" = h, 
-           "Confidence" = conf) %>% 
-    pander(justify = c("left", rep("right", 4)), caption = label)
-}
-```
-
-### Threat Frequencies
-
-Each threat community is assigned a frequency label. This describes how 
-often the threat community is expected to act against the organization over the 
-course of the year.
-
-```{r threat_frequencies_table}
-create_table("Threat Frequencies", "tef")
-```
-
-### Threat Capabilities
-
-The strength the threat community brings to bear against the organization within 
-a given scenario is described from a 1 to 100 scale with the following 
-qualitative labels.
-
-```{r threat_capabilities_table}
-create_table("Threat Capabilities", "tc")
-```
-
-### Control Difficulties
-
-The difficulty the organization's capabilities present against a given 
-loss scenario are converted to a common 1 to 100 scale with the following 
-qualitative labels.
-
-```{r control_difficulties_table}
-create_table("Control Difficulties", "diff")
-```
-
-### Loss Magnitudes
-
-Loss Magnitudes represent the economic impact when a loss event occurs. Types 
-of losses include fines, response costs (notification & ID theft monitoring), 
-increased audit scrutiny, restoration costs, etc. Instead of modeling different 
-loss types (formally defined as primary and secondary losses), this 
-analysis takes a simplified approach. An absolute upper bound of $16 
-million for any single loss event is derived from the largest known HIPAA fine[^1].
-
-```{r loss_magnitudes_table}
-create_table("Loss Magnitudes", "lm")
-```
-
-[^1]: https://www.hhs.gov/hipaa/for-professionals/compliance-enforcement/agreements/anthem/index.html
 
 \newpage
 # Recommendations
@@ -1000,7 +931,7 @@ Supplemental details are included as appendices.
 ## Appendix A {#scenario_list}
 
 ```{r scenario_table}
-arrange(quantitative_scenarios, domain_id, scenario_id) %>% 
+arrange(scenarios, domain_id, scenario_id) %>% 
   mutate(scenario_id = stringr::str_glue("{domain_id} - {scenario_id}")) %>%  
   select("Scenario ID" = scenario_id, "Scenario" = scenario_description) %>% 
          #"Threat Community" = tcomm, "Action Frequency" = tef, "Impact" = lm) %>% 
@@ -1012,7 +943,7 @@ arrange(quantitative_scenarios, domain_id, scenario_id) %>%
 ## Appendix B {#scenario_results}
 
 ```{r risk_list, echo=FALSE}
-left_join(quantitative_scenarios, scenario_summary,
+left_join(scenarios, scenario_summary,
           by = c("scenario_id" = "scenario_id", "domain_id" = "domain_id")) %>% 
   arrange(desc(ale_median), desc(ale_var)) %>% 
   mutate_at(vars("ale_median", "ale_var"), funs(dollar)) %>% 

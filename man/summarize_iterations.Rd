@@ -31,6 +31,6 @@ Summary stats created include:
 * Z-score of ALE (outliers flagged as 2 >= z-score)
 }
 \examples{
-data(simulation_results)
-summarize_iterations(simulation_results$results)
+data(mc_simulation_results)
+summarize_iterations(mc_simulation_results$results)
 }

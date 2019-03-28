@@ -11,22 +11,22 @@ test_that("Dollar Millions formats as expected", {
 })
 
 test_that("Calculate max losses", {
-  data("simulation_results")
-  dat <- calculate_max_losses(simulation_results, c(1, 10))
+  data("mc_simulation_results")
+  dat <- calculate_max_losses(mc_simulation_results, c(1, 10))
   expect_s3_class(dat, "data.frame")
   expect_equal(nrow(dat[dat$outliers == TRUE, ]), 1000)
   expect_equal(nrow(dat), 2000)
 })
 
 test_that("calculate_max_losses handles NULL outliers", {
-  data("simulation_results")
-  dat <- calculate_max_losses(simulation_results)
+  data("mc_simulation_results")
+  dat <- calculate_max_losses(mc_simulation_results)
   expect_s3_class(dat, "data.frame")
   expect_equal(nrow(dat), 1000)
 })
 
 test_that("identify_outliers() identifies the expected number of outliers", {
-  data("scenario_summary")
-  dat <- identify_outliers(scenario_summary)
+  data("mc_scenario_summary")
+  dat <- identify_outliers(mc_scenario_summary)
   expect_equal(sum(dat$outlier), 4)
 })

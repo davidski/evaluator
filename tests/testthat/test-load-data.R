@@ -5,25 +5,25 @@ dir.create(tmpdata)
 tmpinputs <- file.path(tmpdir, "inputs")
 dir.create(tmpinputs, showWarnings = FALSE)
 
-data("simulation_results", package = "evaluator", envir = environment())
-saveRDS(simulation_results, file = file.path(tmpdata, "simulation_results.rds"))
-data("scenario_summary", package = "evaluator", envir = environment())
-saveRDS(scenario_summary, file = file.path(tmpdata, "scenario_summary.rds"))
-data("domain_summary", package = "evaluator", envir = environment())
-saveRDS(domain_summary, file = file.path(tmpdata, "domain_summary.rds"))
+data("mc_simulation_results", package = "evaluator", envir = environment())
+saveRDS(mc_simulation_results, file = file.path(tmpdata, "simulation_results.rds"))
+data("mc_scenario_summary", package = "evaluator", envir = environment())
+saveRDS(mc_scenario_summary, file = file.path(tmpdata, "scenario_summary.rds"))
+data("mc_domain_summary", package = "evaluator", envir = environment())
+saveRDS(mc_domain_summary, file = file.path(tmpdata, "domain_summary.rds"))
 
-data("capabilities", package = "evaluator", envir = environment())
-readr::write_csv(capabilities, file.path(tmpinputs, "capabilities.csv"))
+data("mc_capabilities", package = "evaluator", envir = environment())
+readr::write_csv(mc_capabilities, file.path(tmpinputs, "capabilities.csv"))
 
 
 res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
   purrr::map(~ file.copy(system.file("extdata", .x, package = "evaluator"),
                          tmpinputs))
-data("qualitative_scenarios", envir = environment())
-saveRDS(qualitative_scenarios, file = file.path(tmpinputs, "qualitative_scenarios.rds"))
-readr::write_csv(qualitative_scenarios, file.path(tmpinputs, "qualitative_scenarios.csv"))
-data("quantitative_scenarios", envir = environment())
-saveRDS(quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.rds"))
+data("mc_qualitative_scenarios", envir = environment())
+saveRDS(mc_qualitative_scenarios, file = file.path(tmpinputs, "qualitative_scenarios.rds"))
+readr::write_csv(mc_qualitative_scenarios, file.path(tmpinputs, "qualitative_scenarios.csv"))
+data("mc_quantitative_scenarios", envir = environment())
+saveRDS(mc_quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.rds"))
 
 test_that("Template files can be copied", {
   tmpdata <- file.path(tempdir(check = TRUE), "templates")
@@ -47,4 +47,3 @@ test_that("Quantitative inputs can be loaded", {
 })
 
 unlink(c(tmpdata, tmpinputs), recursive = TRUE)
-

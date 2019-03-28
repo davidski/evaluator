@@ -21,6 +21,6 @@ expected annual loss expected for each simulation. This provides a
 detailed view on the results for a particular scenario.
 }
 \examples{
-data(simulation_results)
-generate_scatterplot(simulation_results, scenario_id = "50")
+data(mc_simulation_results)
+generate_scatterplot(mc_simulation_results, scenario_id = "50")
 }

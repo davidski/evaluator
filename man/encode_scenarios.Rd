@@ -28,6 +28,6 @@ Given an input of:
 Create a unified dataframe of quantitative scenarios ready for simulation.
 }
 \examples{
-data(qualitative_scenarios, capabilities, mappings)
-encode_scenarios(qualitative_scenarios, capabilities, mappings)
+data(mc_qualitative_scenarios, mc_capabilities, mc_mappings)
+encode_scenarios(mc_qualitative_scenarios, mc_capabilities, mc_mappings)
 }

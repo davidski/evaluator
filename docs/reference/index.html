@@ -173,7 +173,7 @@
         <td>
           <p><code><a href="create_templates.html">create_templates()</a></code> </p>
         </td>
-        <td><p>Create a directory structure for risk analysis, prepopulate with templates</p></td>
+        <td><p>Create a directory structure for risk analysis, pre-populated with templates</p></td>
       </tr><tr>
         
         <td>
@@ -412,58 +412,58 @@ all domains</p></td>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-sample-data-sets" class="hasAnchor"><a href="#section-sample-data-sets" class="anchor"></a>Sample Data Sets</h2>
-          <p class="section-desc"><p>Demonstration data sets</p></p>
+          <h2 id="section-sample-data-set" class="hasAnchor"><a href="#section-sample-data-set" class="anchor"></a>Sample Data Set</h2>
+          <p class="section-desc"><p>Demonstration data set for the hypothetical MetroCare Hospital</p></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="capabilities.html">capabilities</a></code> </p>
+          <p><code><a href="mc_capabilities.html">mc_capabilities</a></code> </p>
         </td>
         <td><p>Capabilities</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="domains.html">domains</a></code> </p>
-        </td>
-        <td><p>Domain mappings</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="domain_summary.html">domain_summary</a></code> </p>
+          <p><code><a href="mc_domain_summary.html">mc_domain_summary</a></code> </p>
         </td>
         <td><p>Domain-level risk summary</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="mappings.html">mappings</a></code> </p>
+          <p><code><a href="mc_domains.html">mc_domains</a></code> </p>
+        </td>
+        <td><p>Domain mappings</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="mc_mappings.html">mc_mappings</a></code> </p>
         </td>
         <td><p>Qualitative to quantitative mappings</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="qualitative_scenarios.html">qualitative_scenarios</a></code> </p>
+          <p><code><a href="mc_qualitative_scenarios.html">mc_qualitative_scenarios</a></code> </p>
         </td>
         <td><p>Qualitative information security risk scenarios</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="quantitative_scenarios.html">quantitative_scenarios</a></code> </p>
+          <p><code><a href="mc_quantitative_scenarios.html">mc_quantitative_scenarios</a></code> </p>
         </td>
         <td><p>Quantified information risk scenarios</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="scenario_summary.html">scenario_summary</a></code> </p>
+          <p><code><a href="mc_scenario_summary.html">mc_scenario_summary</a></code> </p>
         </td>
         <td><p>Scenario-level risk summary</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="simulation_results.html">simulation_results</a></code> </p>
+          <p><code><a href="mc_simulation_results.html">mc_simulation_results</a></code> </p>
         </td>
-        <td><p>Information security risk simulation results</p></td>
+        <td><p>Simulation results</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -507,6 +507,12 @@ all domains</p></td>
       <tr>
         
         <td>
+          <p><code><a href="as_tibble.tidyrisk_scenario.html">as_tibble(<i>&lt;tidyrisk_scenario&gt;</i>)</a></code> <code><a href="as_tibble.tidyrisk_scenario.html">as.data.frame(<i>&lt;tidyrisk_scenario&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Coerce the parameters of a tidyrisk_scenario to a tibble</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="is_tidyrisk_scenario.html">is_tidyrisk_scenario()</a></code> </p>
         </td>
         <td><p>Test if the object is a tidyrisk_scenario</p></td>
@@ -522,6 +528,18 @@ all domains</p></td>
           <p><code><a href="print.tidyrisk_scenario.html">print(<i>&lt;tidyrisk_scenario&gt;</i>)</a></code> </p>
         </td>
         <td><p>Default printing of a tidyrisk_scenario</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="validate_tidyrisk_scenario.html">validate_tidyrisk_scenario()</a></code> </p>
+        </td>
+        <td><p>Validates that a scenario object is well formed</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vec_ptype_abbr.tidyrisk_scenario.html">vec_ptype_abbr.tidyrisk_scenario()</a></code> </p>
+        </td>
+        <td><p>Set an abbreviation when displaying an S3 column in a tibble</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -536,6 +554,12 @@ all domains</p></td>
           <p><code><a href="tidyrisk_factor.html">new_tidyrisk_factor()</a></code> <code><a href="tidyrisk_factor.html">tidyrisk_factor()</a></code> </p>
         </td>
         <td><p>Construct a tidyrisk_factor object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vec_cast.tidyrisk_factor.html">vec_cast(<i>&lt;tidyrisk_factor&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Cast a <code>tidyrisk_factor</code> vector to a specified type</p></td>
       </tr>
     </tbody>
     </table>
@@ -548,7 +572,7 @@ all domains</p></td>
       <li><a href="#section-data-import-and-cleansing-functions">Data Import and Cleansing Functions</a></li>
       <li><a href="#section-modelling-functions">Modelling Functions</a></li>
       <li><a href="#section-reporting-functions">Reporting Functions</a></li>
-      <li><a href="#section-sample-data-sets">Sample Data Sets</a></li>
+      <li><a href="#section-sample-data-set">Sample Data Set</a></li>
       <li><a href="#section-summarization-functions">Summarization Functions</a></li>
       <li><a href="#section-tidyrisk-scenario-class-functions">Tidyrisk Scenario Class Functions</a></li>
       <li><a href="#section-tidyrisk-factor-class-functions">Tidyrisk Factor Class Functions</a></li>

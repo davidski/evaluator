@@ -15,6 +15,6 @@ column and use the value at risk (VaR) column to identify all the
 elements that are outliers (having a VaR >= two standard deviations)
 }
 \examples{
-data(scenario_summary)
-identify_outliers(scenario_summary)
+data(mc_scenario_summary)
+identify_outliers(mc_scenario_summary)
 }

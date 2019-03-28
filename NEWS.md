@@ -50,6 +50,9 @@ contain their initial quantitative inputs. These users may also use
   Evaluator to new models.
   
 ## Other Changes
+* Renamed the default sample dataset to the hypothetical MetroCare Hospital. 
+  The default sets now all consistently use the `mc_` prefix to distinguish 
+  them from parameter names.
 * Deprecated `load_data()`. Use `read_qualitative_inputs()` or 
   `read_quantitative_inputs()` as appropriate.
 * Re-export the pipe operator `%>%`

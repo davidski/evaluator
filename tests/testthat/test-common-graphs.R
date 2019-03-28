@@ -21,19 +21,19 @@ test_that("Theme functions", {
 })
 
 test_that("Domain VaR heatmap", {
-  data(domain_summary)
-  gg <- generate_heatmap(domain_summary)
+  data(mc_domain_summary)
+  gg <- generate_heatmap(mc_domain_summary)
   expect_s3_class(gg, "gg")
 })
 
 test_that("Scatterplot", {
-  data(simulation_results)
-  gg <- generate_scatterplot(simulation_results, scenario_id = 50)
+  data(mc_simulation_results)
+  gg <- generate_scatterplot(mc_simulation_results, scenario_id = 50)
   expect_s3_class(gg, "gg")
 })
 
 test_that("Domain-level outcomes", {
-  data(domain_summary)
-  gg <- generate_event_outcomes_plot(domain_summary)
+  data(mc_domain_summary)
+  gg <- generate_event_outcomes_plot(mc_domain_summary)
   expect_s3_class(gg, "gg")
 })

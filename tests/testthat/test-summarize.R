@@ -1,19 +1,19 @@
 context("Summarization")
 test_that("Simulation summary", {
-  data("simulation_results")
-  data("scenario_summary")
-  summarized_scenarios <- summarize_scenarios(simulation_results)
+  data("mc_simulation_results")
+  data("mc_scenario_summary")
+  summarized_scenarios <- summarize_scenarios(mc_simulation_results)
   expect_equivalent(as.data.frame(summarized_scenarios),
-                    as.data.frame(scenario_summary),
+                    as.data.frame(mc_scenario_summary),
                     tolerance = .01)
 })
 
 test_that("Simulation summary handles NAs for tc/diff exceedance", {
-  data("simulation_results")
-  simulation_results[[1, "results"]][[1, "mean_tc_exceedance"]] <- NA
+  data("mc_simulation_results")
+  mc_simulation_results[[1, "results"]][[1, "mean_tc_exceedance"]] <- NA
   #simulation_results[1, "mean_tc_exceedance"] <- NA
-  simulation_results[[10, "results"]][[1, "mean_diff_exceedance"]] <- NA
-  dat <- mutate(simulation_results,
+  mc_simulation_results[[10, "results"]][[1, "mean_diff_exceedance"]] <- NA
+  dat <- mutate(mc_simulation_results,
                 result_summary = map(results, summarize_scenario)) %>%
     select(-results)
   summarized_tc_exceedance <- dplyr::filter(dat, scenario_id == "18") %>%
@@ -23,8 +23,8 @@ test_that("Simulation summary handles NAs for tc/diff exceedance", {
 })
 
 test_that("Iteration-level summary", {
-  data("simulation_results")
-  summarized_iterations <- summarize_iterations(simulation_results$results)
+  data("mc_simulation_results")
+  summarized_iterations <- summarize_iterations(mc_simulation_results$results)
   expect_lte(max(summarized_iterations$mean_tc_exceedance), 1)
   expect_gte(min(summarized_iterations$mean_tc_exceedance), 0)
   expect_lte(max(summarized_iterations$mean_diff_exceedance), 1)
@@ -32,20 +32,20 @@ test_that("Iteration-level summary", {
 })
 
 test_that("Domain summary", {
-  data("simulation_results")
-  data("domain_summary")
+  data("mc_simulation_results")
+  data("mc_domain_summary")
 
-  summarized_domains <- summarize_domains(simulation_results)
+  summarized_domains <- summarize_domains(mc_simulation_results)
 
   expect_equivalent(as.data.frame(summarized_domains),
-                    as.data.frame(domain_summary), tolerance = 0.01)
+                    as.data.frame(mc_domain_summary), tolerance = 0.01)
 })
 
 test_that("Summarize to disk", {
   tmpdata <- file.path(tempdir(), "data")
   dir.create(tmpdata)
 
-  result <- summarize_to_disk(evaluator::simulation_results,
+  result <- summarize_to_disk(evaluator::mc_simulation_results,
                               results_dir = tmpdata)
   expect_equal(nrow(result), 2)
   unlink(tmpdata, recursive = TRUE)

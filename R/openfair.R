@@ -281,8 +281,8 @@ select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
 #' @family OpenFAIR helpers
 #' @export
 #' @examples
-#' data(quantitative_scenarios)
-#' params <- quantitative_scenarios[[1, "scenario"]]$parameters
+#' data(mc_quantitative_scenarios)
+#' params <- mc_quantitative_scenarios[[1, "scenario"]]$parameters
 #' openfair_tef_tc_diff_lm(params$tef, params$tc, params$diff, params$lm, 10)
 openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE) {
 

@@ -54,8 +54,8 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 #' @export
 #' @return Extracted qualitative scenarios as a dataframe.
 #' @examples
-#' data(domains)
-#' import_scenarios(domains = domains)
+#' data(mc_domains)
+#' import_scenarios(domains = mc_domains)
 import_scenarios <- function(survey_file = NULL, domains = NULL) {
 
   survey_file <- if (is.null(survey_file)) {
@@ -68,8 +68,9 @@ import_scenarios <- function(survey_file = NULL, domains = NULL) {
 
   # use default domains if none supplied
   domains <- if (is.null(domains)) {
-    utils::data(domains, package = "evaluator", envir = environment())
-    domains
+    env <- new.env()
+    utils::data("mc_domains", package = "evaluator", envir = env)
+    get("mc_domains", envir = env)
   } else {domains}
 
   # scenarios begin with the list of domains
@@ -111,8 +112,8 @@ import_scenarios <- function(survey_file = NULL, domains = NULL) {
 #' @return Extracted capabilities as a dataframe.
 #' @inheritParams import_scenarios
 #' @examples
-#' data(domains)
-#' import_capabilities(domains = domains)
+#' data(mc_domains)
+#' import_capabilities(domains = mc_domains)
 import_capabilities <- function(survey_file = NULL, domains = NULL){
 
   survey_file <- if (is.null(survey_file)) {
@@ -125,8 +126,9 @@ import_capabilities <- function(survey_file = NULL, domains = NULL){
 
   # use default domains if none supplied
   domains <- if (is.null(domains)) {
-    utils::data(domains, package = "evaluator", envir = environment())
-    domains
+    env <- new.env()
+    utils::data("mc_domains", package = "evaluator", envir = env)
+    get("mc_domains", env)
   } else {domains}
 
   raw_domains <- domains %>%

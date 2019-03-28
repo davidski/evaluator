@@ -64,26 +64,16 @@ reference:
       - get_base_fontfamily
       - risk_dashboard
       - theme_evaluator
-  - title: Sample Data Sets
-    desc: Demonstration data sets
+  - title: Sample Data Set
+    desc: Demonstration data set for the hypothetical MetroCare Hospital
     contents:
-      - capabilities
-      - domains
-      - domain_summary
-      - mappings
-      - qualitative_scenarios
-      - quantitative_scenarios
-      - scenario_summary
-      - simulation_results
+      - starts_with("mc_")
   - title: Summarization Functions
     contents:
       - starts_with("summarize")
   - title: Tidyrisk Scenario Class Functions
     contents:
-      - is_tidyrisk_scenario
-      - new_tidyrisk_scenario
-      - print.tidyrisk_scenario
+      - contains("tidyrisk_scenario")
   - title: Tidyrisk Factor Class Functions
     contents:
-      - tidyrisk_factor
-      - new_tidyrisk_factor
+      - contains("tidyrisk_factor")

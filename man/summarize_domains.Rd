@@ -32,7 +32,7 @@ Summary stats created include:
 }
 \examples{
 \dontrun{
-data(simulation_results)
-summarize_domains(simulation_results)
+data(mc_simulation_results)
+summarize_domains(mc_simulation_results)
 }
 }

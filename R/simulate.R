@@ -16,8 +16,8 @@
 #' @export
 #' @return Dataframe of results.
 #' @examples
-#' data(quantitative_scenarios)
-#' run_simulation(quantitative_scenarios[[1, "scenario"]], 10)
+#' data(mc_quantitative_scenarios)
+#' run_simulation(mc_quantitative_scenarios[[1, "scenario"]], 10)
 run_simulation <- function(scenario, iterations = 10000L,
                             ale_maximum = NULL,
                             verbose = FALSE, simulation_count = NULL) {
@@ -84,10 +84,10 @@ run_simulation <- function(scenario, iterations = 10000L,
 #' @export
 #' @examples
 #' # fetch three scenarios for this example
-#' data(quantitative_scenarios)
-#' scenario_a <- quantitative_scenarios[[1, "scenario"]]
-#' scenario_b <- quantitative_scenarios[[2, "scenario"]]
-#' scenario_c <- quantitative_scenarios[[3, "scenario"]]
+#' data(mc_quantitative_scenarios)
+#' scenario_a <- mc_quantitative_scenarios[[1, "scenario"]]
+#' scenario_b <- mc_quantitative_scenarios[[2, "scenario"]]
+#' scenario_c <- mc_quantitative_scenarios[[3, "scenario"]]
 #' run_simulations(scenario_a, scenario_b, scenario_c, iterations = 10)
 #'
 run_simulations <- function(scenario, ..., iterations = 10000L,

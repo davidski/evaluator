@@ -30,8 +30,8 @@ arithmetic mean (average) is taken across samples for all controls to get
 the effective control strength for each threat event.
 }
 \examples{
-data(quantitative_scenarios)
-params <- quantitative_scenarios[[1, "scenario"]]$parameters
+data(mc_quantitative_scenarios)
+params <- mc_quantitative_scenarios[[1, "scenario"]]$parameters
 openfair_tef_tc_diff_lm(params$tef, params$tc, params$diff, params$lm, 10)
 }
 \seealso{

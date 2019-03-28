@@ -50,8 +50,8 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #' @return A ggplot object.
 #' @export
 #' @examples
-#' data(domain_summary)
-#' generate_heatmap(domain_summary)
+#' data(mc_domain_summary)
+#' generate_heatmap(mc_domain_summary)
 generate_heatmap <- function(domain_summary) {
   dat <- domain_summary %>% dplyr::arrange(.data$domain_id) %>%
     dplyr::mutate(full_label = paste0(.data$domain_id, "\n",
@@ -86,8 +86,8 @@ generate_heatmap <- function(domain_summary) {
 #' @return A ggplot object.
 #' @export
 #' @examples
-#' data(simulation_results)
-#' generate_scatterplot(simulation_results, scenario_id = "50")
+#' data(mc_simulation_results)
+#' generate_scatterplot(mc_simulation_results, scenario_id = "50")
 generate_scatterplot <- function(simulation_results, scenario_id){
   all_results <- unnest(simulation_results, .data$results)
   dat <- all_results[all_results$scenario_id == scenario_id, ]
@@ -123,8 +123,8 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' @return ggplot object.
 #' @export
 #' @examples
-#' data(domain_summary)
-#' generate_event_outcomes_plot(domain_summary)
+#' data(mc_domain_summary)
+#' generate_event_outcomes_plot(mc_domain_summary)
 generate_event_outcomes_plot <- function(domain_summary, domain_id = domain_id) {
   domain_id <- rlang::ensym(domain_id)
   all_domains <- domain_summary

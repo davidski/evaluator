@@ -1,4 +1,4 @@
-#' Create a directory structure for risk analysis, prepopulate with templates
+#' Create a directory structure for risk analysis, pre-populated with templates
 #'
 #' Copy the sample files into an `inputs` subdirectory. This makes the starter
 #'   files available for customizing and data collection. The `inputs`

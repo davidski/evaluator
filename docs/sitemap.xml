@@ -10,9 +10,6 @@
     <loc>https://evaluator.severski.net/reference/calculate_max_losses.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/capabilities.html</loc>
-  </url>
-  <url>
     <loc>https://evaluator.severski.net/reference/compare_tef_vuln.html</loc>
   </url>
   <url>
@@ -26,12 +23,6 @@
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/dollar_millions.html</loc>
-  </url>
-  <url>
-    <loc>https://evaluator.severski.net/reference/domain_summary.html</loc>
-  </url>
-  <url>
-    <loc>https://evaluator.severski.net/reference/domains.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/encode_scenarios.html</loc>
@@ -82,7 +73,28 @@
     <loc>https://evaluator.severski.net/reference/load_data-deprecated.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mappings.html</loc>
+    <loc>https://evaluator.severski.net/reference/mc_capabilities.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/mc_domain_summary.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/mc_domains.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/mc_mappings.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/mc_qualitative_scenarios.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/mc_quantitative_scenarios.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/mc_scenario_summary.html</loc>
+  </url>
+  <url>
+    <loc>https://evaluator.severski.net/reference/mc_simulation_results.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/new_tidyrisk_scenario.html</loc>
@@ -101,12 +113,6 @@
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/print.tidyrisk_scenario.html</loc>
-  </url>
-  <url>
-    <loc>https://evaluator.severski.net/reference/qualitative_scenarios.html</loc>
-  </url>
-  <url>
-    <loc>https://evaluator.severski.net/reference/quantitative_scenarios.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/read_qualitative_inputs.html</loc>
@@ -145,13 +151,7 @@
     <loc>https://evaluator.severski.net/reference/sample_vuln.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/scenario_summary.html</loc>
-  </url>
-  <url>
     <loc>https://evaluator.severski.net/reference/select_loss_opportunities.html</loc>
-  </url>
-  <url>
-    <loc>https://evaluator.severski.net/reference/simulation_results.html</loc>
   </url>
   <url>
     <loc>https://evaluator.severski.net/reference/split_sheet.html</loc>

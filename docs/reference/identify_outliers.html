@@ -167,8 +167,8 @@ elements that are outliers (having a VaR &gt;= two standard deviations)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>scenario_summary</span>)
-<span class='fu'>identify_outliers</span>(<span class='no'>scenario_summary</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 56 x 20</span><span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>mc_scenario_summary</span>)
+<span class='fu'>identify_outliers</span>(<span class='no'>mc_scenario_summary</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 56 x 20</span><span>
 #&gt;    scenario_id domain_id control_descrip… results loss_events_mean
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1           ORG       </span><span style='color: #949494;'>&lt;list [7]&gt;</span><span>       </span><span style='color: #949494;'>&lt;tibbl</span><span>…           7.52  

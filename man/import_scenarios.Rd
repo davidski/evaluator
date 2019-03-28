@@ -18,6 +18,6 @@ Extracted qualitative scenarios as a dataframe.
 Import scenarios from survey spreadsheet
 }
 \examples{
-data(domains)
-import_scenarios(domains = domains)
+data(mc_domains)
+import_scenarios(domains = mc_domains)
 }

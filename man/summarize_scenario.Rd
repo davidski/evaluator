@@ -31,11 +31,11 @@ Summary stats created include:
 * Vulnerability percentage
 }
 \examples{
-data(simulation_results)
+data(mc_simulation_results)
 # summarize a single scenario
-summarize_scenario(simulation_results[[1, "results"]])
+summarize_scenario(mc_simulation_results[[1, "results"]])
 
 # summarize all scenarios in a data frame
-data(simulation_results)
-summarize_scenarios(simulation_results)
+data(mc_simulation_results)
+summarize_scenarios(mc_simulation_results)
 }

@@ -16,8 +16,8 @@
 #' @export
 #' @return A dataframe of capabilities for the scenario and parameters for quantified simulation.
 #' @examples
-#' data(qualitative_scenarios, capabilities, mappings)
-#' encode_scenarios(qualitative_scenarios, capabilities, mappings)
+#' data(mc_qualitative_scenarios, mc_capabilities, mc_mappings)
+#' encode_scenarios(mc_qualitative_scenarios, mc_capabilities, mc_mappings)
 encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch DIFF params
   scenarios$diff_params <- purrr::map(scenarios$controls,
@@ -85,9 +85,9 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' @return A named list of control IDs and descriptions.
 #' @export
 #' @examples
-#' data(capabilities)
+#' data(mc_capabilities)
 #' capability_ids <- c("1, 3")
-#' derive_control_key(capability_ids, capabilities)
+#' derive_control_key(capability_ids, mc_capabilities)
 derive_control_key <- function(capability_ids, capabilities) {
   control_list <- stringi::stri_split_fixed(capability_ids, ", ") %>% unlist()
 
@@ -118,11 +118,11 @@ derive_control_key <- function(capability_ids, capabilities) {
 #'   applicable to a given scenario.
 #' @export
 #' @examples
-#' data(capabilities)
+#' data(mc_capabilities)
 #' capability_ids <- c("1, 3")
 #' mappings <- data.frame(type = "diff", label = "1 - Immature", l = 0, ml = 2, h = 10,
 #'                        conf = 3, stringsAsFactors = FALSE)
-#' derive_controls(capability_ids, capabilities, mappings)
+#' derive_controls(capability_ids, mc_capabilities, mappings)
 derive_controls <- function(capability_ids, capabilities, mappings) {
   control_list <- stringi::stri_split_fixed(capability_ids, ", ") %>% unlist()
 

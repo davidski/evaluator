@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_data.R
 \name{create_templates}
 \alias{create_templates}
-\title{Create a directory structure for risk analysis, prepopulate with templates}
+\title{Create a directory structure for risk analysis, pre-populated with templates}
 \usage{
 create_templates(base_directory = "~/evaluator")
 }

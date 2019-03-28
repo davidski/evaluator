@@ -165,6 +165,8 @@
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
+<li>Massive speed fix that has been present since the v0.2.x series. Limited testing shows improvements of up to 700% when running simulations!</li>
+<li>Summary statistics for mean TC and DIFF exceedance now properly handle extreme situations where 100% of threat events are either resisted or become loss events.</li>
 <li>All percentages are consistently imported, stored, and processed as decimal values (from 0 - 1). This makes the TC and DIFF parameters use the same scale as VULN.
 <ul>
 <li>As a side benefit, the restrictions on the format of the mappings CSV are relaxed. Doubles (decimals) are now permitted in the low, most likely, and high columns.</li>
@@ -186,6 +188,7 @@
 <h2 class="hasAnchor">
 <a href="#other-changes" class="anchor"></a>Other Changes</h2>
 <ul>
+<li>Renamed the default sample dataset to the hypothetical MetroCare Hospital. The default sets now all consistently use the <code>mc_</code> prefix to distinguish them from parameter names.</li>
 <li>Deprecated <code><a href="../reference/evaluator-deprecated.html">load_data()</a></code>. Use <code><a href="../reference/read_qualitative_inputs.html">read_qualitative_inputs()</a></code> or <code><a href="../reference/read_quantitative_inputs.html">read_quantitative_inputs()</a></code> as appropriate.</li>
 <li>Re-export the pipe operator <code>%&gt;%</code>
 </li>

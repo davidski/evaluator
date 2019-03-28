@@ -26,6 +26,6 @@ Given a quantitative scenario object of type \code{tidyrisk_scenario}, run an
 OpenFAIR Monte Carlo simulation.
 }
 \examples{
-data(quantitative_scenarios)
-run_simulation(quantitative_scenarios[[1, "scenario"]], 10)
+data(mc_quantitative_scenarios)
+run_simulation(mc_quantitative_scenarios[[1, "scenario"]], 10)
 }

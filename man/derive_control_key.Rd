@@ -20,7 +20,7 @@ of descriptions for each control with the names set to the control
 IDs.
 }
 \examples{
-data(capabilities)
+data(mc_capabilities)
 capability_ids <- c("1, 3")
-derive_control_key(capability_ids, capabilities)
+derive_control_key(capability_ids, mc_capabilities)
 }
