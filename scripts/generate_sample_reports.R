@@ -3,7 +3,7 @@
 # Regenerate sample reports
 devtools::load_all()
 
-devtools::install_packages("here")
+devtools::install_cran("here")
 
 tmpdir <- tempdir()
 tmpdata <- file.path(tmpdir, "data")
