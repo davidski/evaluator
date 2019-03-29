@@ -15,6 +15,7 @@
 #' @param results_directory Location of simulation results.
 #' @param output_file Full path to output file.
 #' @param styles Optional full path to CSS file to override default styles.
+#' @param include_header Optional full path to HTML to include in the HEAD section (HTML formats only).
 #' @param focus_scenario_ids IDs of scenarios of special interest.
 #' @param format Format to generate (html, pdf, word).
 #' @param intermediates_dir Location for intermediate knit files.
@@ -30,6 +31,7 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
                             results_directory = "~/evaluator/results",
                             output_file,
                             styles = NULL,
+                            include_header = NULL,
                             focus_scenario_ids = c(51, 12),
                             format = "html",
                             intermediates_dir = tempdir(),
@@ -43,8 +45,16 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
     if (format == "html") system.file("rmd", "styles", "html-styles.css", package = "evaluator")
   } else {styles}
 
+  # build header includes, if needed
+  includes_content <- if (is.null(include_header)) {
+    if (format == "html") {
+      includes_file <- system.file("rmd", "styles", "open-sans-import.html", package = "evaluator")
+      rmarkdown::includes(in_header = includes_file)
+    }
+  } else {rmarkdown::includes(in_header = include_header)}
+
   # select the appropriate renderer
-  out_format <- rmarkdown::html_document(css = styles)
+  out_format <- rmarkdown::html_document(css = styles, includes = include_header)
   out_format <- if (format == "pdf") {
     rmarkdown::pdf_document()} else {
       if (format == "word") {

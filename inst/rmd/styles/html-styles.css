@@ -1,21 +1,23 @@
 p {
-	font-family: Open Sans Condensed, sans-serif;
+	font-family: Open Sans, sans-serif;
 }
 
 ul li {
-	font-family: Open Sans Condensed, sans-serif;
+	font-family: Open Sans, sans-serif;
 }
 
 ol li {
-	font-family: Open Sans Condensed, sans-serif;
+	font-family: Open Sans, sans-serif;
 }
 
 
 h1 {
+	font-family: Open Sans Condensed, sans-serif;
 	color: #430098;
 }
 
 h2, h3, h4, h5, h6 {
+	font-family: Open Sans Condensed, sans-serif;
 	color: #7C858C;
 }
 
@@ -28,7 +30,7 @@ p {
 }
 
 body {
-	font-family: Open Sans Condensed, sans-serif;
+	font-family: Open Sans, sans-serif;
   color: #333D47;
 }
 

@@ -175,7 +175,10 @@
 </li>
 <li>Scenario Explorer application now can be used when skipping qualitative data and starting directly from quantitative data.</li>
 <li>Risk Report can now be used when skipping qualitative data and starting directly from quantitative data.</li>
-<li>Updated the default Risk Report and sample mapping files to reference the current maximum OCR fine (SLE), from the 2015 Anthem breach.</li>
+<li>The risk report and risk dashboard now use the same metric for minimum expected losses. The previous value reported on the dashboard was incorrect.</li>
+<li>
+<code>select_loss_events()</code> now returns zeros when there are zero threat events in a given period. Previously this function returned NA which could potentially cause issues in reporting.</li>
+<li>Updated the default sample mapping files to reference the current maximum OCR fine (SLE), from the 2015 Anthem breach.</li>
 <li>All save and load functions consistently use rds formatted files instead of a mix of rda/rds.</li>
 <li>Removed all remaining uses to SE forms of dplyr verbs.</li>
 <li>Removed use of soft deprecated ggplot <code>aes_()</code> functions.</li>

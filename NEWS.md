@@ -33,8 +33,13 @@ contain their initial quantitative inputs. These users may also use
   data and starting directly from quantitative data.
 * Risk Report can now be used when skipping qualitative data and starting 
   directly from quantitative data.
-* Updated the default Risk Report and sample mapping files to reference the 
-  current maximum OCR fine (SLE), from the 2015 Anthem breach.
+* The risk report and risk dashboard now use the same metric for minimum 
+  expected losses. The previous value reported on the dashboard was incorrect.
+* `select_loss_events()` now returns zeros when there are zero threat events in 
+  a given period. Previously this function returned NA which could potentially 
+  cause issues in reporting.
+* Updated the default sample mapping files to reference the current maximum 
+  OCR fine (SLE), from the 2015 Anthem breach.
 * All save and load functions consistently use rds formatted files instead 
   of a mix of rda/rds.
 * Removed all remaining uses to SE forms of dplyr verbs.
@@ -50,6 +55,8 @@ contain their initial quantitative inputs. These users may also use
   Evaluator to new models.
   
 ## Other Changes
+* Switched the base font for the Risk Report to Open Sans, retaining the 
+  Condensed version for headers.
 * Renamed the default sample dataset to the hypothetical MetroCare Hospital. 
   The default sets now all consistently use the `mc_` prefix to distinguish 
   them from parameter names.

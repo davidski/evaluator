@@ -6,8 +6,9 @@
 \usage{
 generate_report(input_directory = "~/evaluator/inputs",
   results_directory = "~/evaluator/results", output_file,
-  styles = NULL, focus_scenario_ids = c(51, 12), format = "html",
-  intermediates_dir = tempdir(), quiet = TRUE, ...)
+  styles = NULL, include_header = NULL, focus_scenario_ids = c(51,
+  12), format = "html", intermediates_dir = tempdir(), quiet = TRUE,
+  ...)
 }
 \arguments{
 \item{input_directory}{Location of input files.}
@@ -17,6 +18,8 @@ generate_report(input_directory = "~/evaluator/inputs",
 \item{output_file}{Full path to output file.}
 
 \item{styles}{Optional full path to CSS file to override default styles.}
+
+\item{include_header}{Optional full path to HTML to include in the HEAD section (HTML formats only).}
 
 \item{focus_scenario_ids}{IDs of scenarios of special interest.}
 

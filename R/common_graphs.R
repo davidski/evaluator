@@ -145,13 +145,16 @@ generate_event_outcomes_plot <- function(domain_summary, domain_id = domain_id) 
   # convert data into tidy-er format
   dat <- tidyr::gather(dat, "type", "events", c("mean_loss_events", "contained_events")) %>%
     dplyr::mutate(actual_events = .data$events,
-                   events = .data$events + 25000,
+                   events = .data$events,
+                   #events = .data$events + 25000,
                    events = ifelse(.data$type == "mean_loss_events", -1 * .data$events, .data$events)) %>%
     dplyr::mutate(nudge = ifelse(.data$type == "mean_loss_events", label_nudge[1], label_nudge[2])) %>%
     dplyr::mutate(hjust = ifelse(.data$type == "mean_loss_events", "right", "left")) %>%
-    dplyr::mutate(full_lab = ifelse(.data$type == "mean_loss_events",
-                                         sprintf("%s (%s)", scales::comma(.data$actual_events), .data$mean_tc_exceedance),
-                                         sprintf("%s (%s)", scales::comma(.data$actual_events), .data$mean_diff_exceedance)))
+    dplyr::mutate(full_lab = ifelse(
+      .data$type == "mean_loss_events",
+      sprintf("%s (%s)", scales::comma(.data$actual_events), scales::percent(.data$mean_tc_exceedance)),
+      sprintf("%s (%s)", scales::comma(.data$actual_events), scales::percent(.data$mean_diff_exceedance)))
+      )
 
   # auto-calculate the limits of the plot
   event_range <- range(dat$events) * c(1.4, 1.5)

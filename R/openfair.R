@@ -248,12 +248,18 @@ select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
   diff_exceedance <- if (
     all(is.na(samples))) {NA} else # if there are no threat events, then NA
       if (
-        #sum(samples, na.rm = TRUE) > 0 &
+        #sum(samples, na.rm = TRUE) > 0
           sum(samples, na.rm = TRUE) != length(tc)) {
         mean(diff[!samples] - tc[!samples], na.rm = TRUE)
-        } else {0}
-  list(samples = samples, details = list(mean_tc_exceedance = tc_exceedance,
-                                         mean_diff_exceedance = diff_exceedance))
+      } else {0}
+
+  details <- list(mean_tc_exceedance = tc_exceedance,
+                  mean_diff_exceedance = diff_exceedance)
+
+  # samples == 0 if there are no loss events
+  if (all(is.na(samples))) samples <- rep(FALSE, length(samples))
+
+  list(samples = samples, details = details)
 }
 
 # Top Level Analysis ------------------------------------------------------

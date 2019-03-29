@@ -64,7 +64,7 @@ identify_outliers <- function(results) {
 #' Calculate maximum losses
 #'
 #' Calculate the biggest single annual loss for each scenario, as well as
-#'   the minimum and maximum ALE across all simulations. Calculations both
+#'   the minimum and maximum ALE across all iterations. Calculations both
 #'   with and without outliers (if passed) are returned.
 #'
 #' @importFrom dplyr filter group_by summarize ungroup union
@@ -73,10 +73,10 @@ identify_outliers <- function(results) {
 #' @param simulation_results Simulation results dataframe.
 #' @param scenario_outliers Optional vector of IDs of outlier scenarios.
 #' @return A dataframe with the following columns:
-#'   - `scenario_id` - index of the simulation
-#'   - `biggest_single_scenario_loss` - the biggest annual loss in that simulation,
-#'   - `min_loss` - the smallest annual loss in that simulation,
-#'   - `max_loss` - the total annual losses in that simulation
+#'   - `scenario_id` - index of the scenario
+#'   - `biggest_single_scenario_loss` - the biggest annual loss in that iteration,
+#'   - `min_loss` - the smallest annual loss in that iteration,
+#'   - `max_loss` - the total annual losses in that iteration
 #'   - `outliers` - logical of whether or not outliers are included
 #' @export
 #' @examples

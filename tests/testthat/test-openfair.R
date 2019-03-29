@@ -76,11 +76,13 @@ test_that("Sample TC", {
 })
 
 context("Select Loss Opportunities")
-test_that("Mean Difficulty Exceedance works when there are zero losses", {
+test_that("Select loss opportunites handles iterations with zero loss events", {
   threat_strengths <- c(0.2, 0.3, 0.4)
   diff_strengths   <- c(0.3, 0.4, 0.5)
   dat <- select_loss_opportunities(threat_strengths, diff_strengths)
   expect_equal(dat$details$mean_diff_exceedance, 0.1)
+  expect_equal(all(is.logical(dat$samples)), TRUE)
+  expect_equal(sum(dat$samples), 0)
 })
 
 context("Sample VULN")

@@ -1,19 +1,23 @@
 ---
 title: "Strategic Information Risk Analysis"
-author: "Evaluator toolkit (https://evaluator.severski.net)"
+author: "Evaluator toolkit (https://tidyrisk.org)"
 output:
   html_document:
     css: "html-styles.css"
-    fig_caption: yes
+    fig_caption: FALSE
     toc: yes
     toc_depth: 3
     toc_float: yes
+    includes:
+      in_header: "open-sans-import.html"
   html_notebook:
     code_folding: hide
     css: "html-styles.css"
     toc: yes
     toc_depth: 3
     toc_float: yes
+    includes:
+      in_header: "open-sans-import.html"
   pdf_document:
     fig_caption: yes
     latex_engine: xelatex
@@ -137,7 +141,8 @@ scenario_summary <-
 
 # Summary
 
-> This report is based on `r sum(map_dbl(simulation_results$results, ~attr(.x, "iterations")))`
+> This report is based on 
+`r sum(map_dbl(simulation_results$results, ~attr(.x, "iterations"))) %>% scales::comma()` 
 iterations performed over `r scales::comma(length(unique(simulation_results$scenario_id)))` 
 risk scenarios and `r nrow(capabilities)` capabilities on 
 `r format(map(simulation_results$results, ~attr(.x, "generated_on")) %>% purrr::reduce(max), "%F %H:%M:%S%z")`.
@@ -194,7 +199,7 @@ gg <- gg + geom_path()
 # set 80% threshold line
 gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1) 
 gg <- gg + annotate("text", x = 0.8, y = max(max_loss$max_loss), 
-                    label = percent(.8), hjust = "right")
+                    label = percent(.8, accuracy = 1), hjust = "right")
 
 #gg <- gg + scale_color_viridis(discrete = TRUE, 
 #                               labels = c("Excluded", "Included"), 
@@ -286,6 +291,7 @@ losses, in the domains of `r domain_summary[[1, "domain"]]`,
 ```{r domain_weakness, echo = FALSE}
 domain_summary %>% 
   select(domain, mean_vuln, mean_tc_exceedance, mean_diff_exceedance) %>% 
+  mutate_at(vars(starts_with("mean_")), scales::percent_format()) %>% 
   rename("Domain" = domain, 
          "Succesful Threat Events" = mean_vuln,
          "Control Gap" = mean_tc_exceedance,
@@ -912,7 +918,7 @@ scenarios should be reviewed to see if additional controls are warranted.
 
 ```{r fragile_scenarios}
 scenarios %>% left_join(domains, by = c("domain_id" = "domain_id")) %>%  
-  mutate(n_controls  = map_dbl(scenario, ~length(.x$diff_params))) %>% 
+  mutate(n_controls  = map_dbl(scenario, ~length(.x$parameters$diff))) %>% 
   filter(n_controls == 1) %>% 
   arrange(domain_id, scenario_id) %>% 
   mutate("Domain" = str_glue("{domain} ({domain_id})")) %>% 

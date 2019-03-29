@@ -35,7 +35,7 @@
 <meta property="og:title" content="Calculate maximum losses — calculate_max_losses" />
 
 <meta property="og:description" content="Calculate the biggest single annual loss for each scenario, as well as
-the minimum and maximum ALE across all simulations. Calculations both
+the minimum and maximum ALE across all iterations. Calculations both
 with and without outliers (if passed) are returned." />
 <meta name="twitter:card" content="summary" />
 
@@ -149,7 +149,7 @@ with and without outliers (if passed) are returned." />
     <div class="ref-description">
     
     <p>Calculate the biggest single annual loss for each scenario, as well as
-the minimum and maximum ALE across all simulations. Calculations both
+the minimum and maximum ALE across all iterations. Calculations both
 with and without outliers (if passed) are returned.</p>
     
     </div>
@@ -172,10 +172,10 @@ with and without outliers (if passed) are returned.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A dataframe with the following columns:</p><ul>
-<li><p><code>scenario_id</code> - index of the simulation</p></li>
-<li><p><code>biggest_single_scenario_loss</code> - the biggest annual loss in that simulation,</p></li>
-<li><p><code>min_loss</code> - the smallest annual loss in that simulation,</p></li>
-<li><p><code>max_loss</code> - the total annual losses in that simulation</p></li>
+<li><p><code>scenario_id</code> - index of the scenario</p></li>
+<li><p><code>biggest_single_scenario_loss</code> - the biggest annual loss in that iteration,</p></li>
+<li><p><code>min_loss</code> - the smallest annual loss in that iteration,</p></li>
+<li><p><code>max_loss</code> - the total annual losses in that iteration</p></li>
 <li><p><code>outliers</code> - logical of whether or not outliers are included</p></li>
 </ul>
 

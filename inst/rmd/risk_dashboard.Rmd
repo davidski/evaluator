@@ -8,7 +8,7 @@ output:
     logo: "img/evaluator_hex_48px.png"
     navbar:
     - align: right
-      href: https://evaluator.severski.net
+      href: https://tidyrisk.org
       title: About
     orientation: row
     source_code: embed
@@ -42,6 +42,8 @@ scenario_summary <- unnest(scenario_summary, summary, .drop = TRUE)
 scenario_outliers <- identify_outliers(scenario_summary) %>% 
   filter(outlier == TRUE) %>% pull(scenario_id)
 
+iteration_summary <- summarize_iterations(simulation_results$results)
+
 domains <- dat$domains
 domain_summary <- summarize_domains(simulation_results)
 domain_summary <- domain_summary %>% left_join(domains, by = "domain_id")
@@ -69,10 +71,7 @@ Value Boxes
 ### Aggregate Risk
 
 ````{r var_valuebox}
-overall <- simulation_results %>% unnest(results) %>% group_by(iteration) %>% 
-                     summarize(ale = sum(ale)) %>% select(ale) %>%
-                     ungroup
-agg_risk <- quantile(overall$ale, 0.95)
+agg_risk <- quantile(iteration_summary$ale_sum, 0.95)
 flexdashboard::valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
          caption = "Aggregate 95% Value at Risk",
          color = ifelse(agg_risk > risk_tolerances[risk_tolerances$level == "high", "amount"], "danger", ifelse(
@@ -82,7 +81,7 @@ flexdashboard::valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
 ### Minimum Expected Annual Losses
 
 ```{r ale_exceedance_valuebox}
-loss_exceedance <- quantile(filter(max_loss, outliers == FALSE)$max_loss, .2)
+loss_exceedance <- min(iteration_summary$ale_sum)
 flexdashboard::valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warning-sign",
          caption = "Minimum Expected Annual Losses",
          color = ifelse(
@@ -94,10 +93,7 @@ flexdashboard::valueBox(dollar_millions(loss_exceedance), icon = "glyphicon-warn
 ### Expected Loss Events Per Year
 
 ```{r median_aggregate_loss_events}
-loss_events <- simulation_results %>% unnest(results) %>% 
-  group_by(iteration) %>% 
-  summarise(n = sum(loss_events)) %>% summarize(loss = median(n)) %>% 
-  unlist %>% unname
+loss_events <- median(iteration_summary$loss_events)
 flexdashboard::valueBox(scales::comma(loss_events), icon = "glyphicon-flag",
          caption = "Expected Annual Loss Events",
          color = "info")
@@ -222,6 +218,7 @@ Details
 ```{r control_table}
 select(domain_summary, domain, mean_vuln, mean_tc_exceedance, 
        mean_diff_exceedance) %>% 
+  mutate_at(vars(starts_with("mean_")), scales::percent) %>% 
   rename("Domain" = domain, 
          "Succesful Threat Events" = mean_vuln,
          "Control Gap" = mean_tc_exceedance,
