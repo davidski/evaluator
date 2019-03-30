@@ -50,6 +50,6 @@ Suggests:
     mockery
 SystemRequirements: pandoc
 VignetteBuilder: knitr
-URL: https://evaluator.severski.net
+URL: https://evaluator.tidyrisk.org
 BugReports: https://github.com/davidski/evaluator/issues
 Language: en-US

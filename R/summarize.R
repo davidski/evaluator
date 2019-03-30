@@ -62,6 +62,7 @@ summarize_scenario <- function(simulation_result) {
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
 #' @importFrom tidyr unnest
+#' @param simulation_results Simulation results dataframe.
 #' @rdname summarize_scenario
 #' @examples
 #' # summarize all scenarios in a data frame

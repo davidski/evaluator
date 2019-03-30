@@ -8,7 +8,7 @@ output:
     logo: "img/evaluator_hex_48px.png"
     navbar:
     - align: right
-      href: https://tidyrisk.org
+      href: https://evaluator.tidyrisk.org
       title: About
     orientation: row
     source_code: embed

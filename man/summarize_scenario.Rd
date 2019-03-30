@@ -5,11 +5,13 @@
 \alias{summarize_scenarios}
 \title{Create a summary of the simulation results for a single scenario}
 \usage{
-summarize_scenario(simulation_results)
+summarize_scenario(simulation_result)
 
 summarize_scenarios(simulation_results)
 }
 \arguments{
+\item{simulation_result}{Results object for a single scenario.}
+
 \item{simulation_results}{Simulation results dataframe.}
 }
 \value{

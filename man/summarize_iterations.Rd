@@ -4,12 +4,12 @@
 \alias{summarize_iterations}
 \title{Create a summary of outcomes across all scenarios}
 \usage{
-summarize_iterations(simulation_results, ..., .key = "iteration")
+summarize_iterations(simulation_result, ..., .key = "iteration")
 }
 \arguments{
-\item{simulation_results}{Simulation results dataframe.}
+\item{simulation_result}{Results object for a single scenario.}
 
-\item{...}{Additional simulation results to summarize.}
+\item{...}{Additional simulation result objects to summarize.}
 
 \item{.key}{Iteration ID field}
 }

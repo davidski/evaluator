@@ -1,6 +1,6 @@
 ---
 title: "Strategic Information Risk Analysis"
-author: "Evaluator toolkit (https://tidyrisk.org)"
+author: "Evaluator toolkit (https://evaluator.tidyrisk.org)"
 output:
   html_document:
     css: "html-styles.css"

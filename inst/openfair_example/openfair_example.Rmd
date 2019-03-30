@@ -7,7 +7,7 @@ output:
     vertical_layout: fill
     source_code: embed
     navbar:
-      - { title: "About", href: "https://evaluator.severski.net", align: right }
+      - { title: "About", href: "https://evaluator.tidyrisk.org", align: right }
 ---
 
 ```{r setup, include=FALSE}
