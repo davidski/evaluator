@@ -16,7 +16,7 @@
 #' @importFrom dplyr mutate summarize
 #' @importFrom rlang .data
 #' @importFrom stats median quantile
-#' @param simulation_results Simulation results dataframe.
+#' @param simulation_result Results object for a single scenario.
 #' @export
 #' @return Dataframe of summary statistics.
 #' @examples
@@ -24,8 +24,13 @@
 #' # summarize a single scenario
 #' summarize_scenario(mc_simulation_results[[1, "results"]])
 #'
-summarize_scenario <- function(simulation_results) {
-  scenario_summary <- simulation_results %>%
+summarize_scenario <- function(simulation_result) {
+  if (!is.data.frame(simulation_result) ||
+      length(grepl("iteration", names(simulation_result))) == 0) {
+    stop("simluation_result must be a bare result dataframe. Have you supplied a multi-scenario results object?",
+         call. = FALSE)
+  }
+  scenario_summary <- simulation_result %>%
     dplyr::mutate(avoided_events = .data$threat_events - .data$loss_events) %>%
     dplyr::summarize(
       loss_events_mean = mean(.data$loss_events, na.rm = TRUE),
@@ -85,22 +90,22 @@ summarize_scenarios <- function(simulation_results) {
 #' @importFrom purrr every
 #' @importFrom rlang .data ensym
 #' @importFrom stats median
-#' @param simulation_results Simulation results dataframe.
-#' @param ... Additional simulation results to summarize.
+#' @param simulation_result Results object for a single scenario.
+#' @param ... Additional simulation result objects to summarize.
 #' @param .key Iteration ID field
 #' @export
 #' @return Dataframe.
 #' @examples
 #' data(mc_simulation_results)
 #' summarize_iterations(mc_simulation_results$results)
-summarize_iterations <- function(simulation_results, ..., .key = "iteration") {
+summarize_iterations <- function(simulation_result, ..., .key = "iteration") {
 
   key <- rlang::ensym(.key)
 
   dots <- list(...)
   if (!purrr::every(dots, is.data.frame)) stop("All inputs must be data frames.")
 
-  result_list <- dplyr::bind_rows(simulation_results, ...)
+  result_list <- dplyr::bind_rows(simulation_result, ...)
 
   result_list %>%
     dplyr::group_by(!!key) %>%
@@ -149,6 +154,11 @@ summarize_iterations <- function(simulation_results, ..., .key = "iteration") {
 #' }
 summarize_domains <- function(simulation_results, domain_variable = "domain_id") {
   domain_variable <- rlang::ensym(domain_variable)
+  if (!is.data.frame(simulation_results) ||
+      length(grepl("results", names(simulation_results))) == 0) {
+    stop("simluation_results must be a dataframe containing a results column.",
+         call. = FALSE)
+  }
   simulation_domain_sum <- simulation_results %>%
     dplyr::group_by(!!domain_variable) %>%
     dplyr::summarize(simulation_summary = list(summarize_iterations(.data$results)))

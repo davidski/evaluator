@@ -7,6 +7,10 @@ test_that("Simulation summary", {
                     as.data.frame(mc_scenario_summary),
                     tolerance = .01)
 })
+test_that("Scenario summary rejects non dataframe inputs", {
+  data("mc_simulation_results")
+  expect_error(summarize_scenario(mc_simulation_results$results), regexp = "dataframe")
+})
 
 test_that("Simulation summary handles NAs for tc/diff exceedance", {
   data("mc_simulation_results")
@@ -39,6 +43,10 @@ test_that("Domain summary", {
 
   expect_equivalent(as.data.frame(summarized_domains),
                     as.data.frame(mc_domain_summary), tolerance = 0.01)
+})
+test_that("Domain summary rejects non dataframe inputs", {
+  data("mc_simulation_results")
+  expect_error(summarize_domains(mc_simulation_results$results), regexp = "dataframe")
 })
 
 test_that("Summarize to disk", {
