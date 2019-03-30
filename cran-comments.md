@@ -1,18 +1,17 @@
 ## Update
 
-This is a re-submission, removing a dependency on `purrr` (providing 
-compatability with `dplyr` 0.8.0) and correcting a test failure on systems 
-without long-double support.
+This is a major release with both bug fixes and new features. The focus is on 
+stabilizing interfaces and preparing for a semver 1.0 milestone.
 
 ## Test environments
 
-* local Windows 10 64 install, R 3.5.2
-* local OS X, R 3.5.2
-* Windows Server 2012 R2 x64 (on appveyor), R 3.5.2
-* Ubuntu 14.04 LTS (on travis-ci)
+* local Windows 10 64 install, R 3.5.3
+* local OS X, R 3.5.3
+* Windows Server 2016 (on appveyor), R 3.5
+* Ubuntu 16.04 LTS (on travis-ci)
   * R-release (both with and without pandoc)
   * R-devel  (both with and without pandoc)
-* OS X 10.13 (on travis-ci), R-release
+* OS X 10.14 (on travis-ci), R-release
 * win-builder (devel and release)
 * local R-devel --enable-long-double=no via docker
 
@@ -22,4 +21,4 @@ without long-double support.
 
 ## Downstream dependencies
 
-There are no downstream dependencies on this package.
+There are no downstream CRAN dependencies on this package.
