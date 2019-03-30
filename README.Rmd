@@ -31,8 +31,8 @@ data-driven risk review.
 
 Three sample outputs of this toolkit are available:
 
-1) A detailed risk analysis template, located at [RPubs](https://rpubs.com/davidski/evaluator_risk_analysis)
-2) A one page risk dashboard, also located at [RPubs](https://rpubs.com/davidski/evaluator_risk_dashboard)
+1) A [sample risk analysis](https://evaluator.tidyrisk.org/reports/evaluator_risk_analysis.html) report
+2) A one page [risk dashboard](https://evaluator.tidyrisk.org/reports/evaluator_risk_dashboard.html)
 3) A demonstration copy of [Scenario Explorer](https://davidski.shinyapps.io/scenario_explorer) 
 
 ## Installation
