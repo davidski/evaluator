@@ -7,7 +7,7 @@
 split_sheet(dat, table_type = "capabilities")
 }
 \arguments{
-\item{dat}{Raw sheet input from \code{\link[readxl]{readxl}}.}
+\item{dat}{Raw sheet input from \code{\link[readxl]{read_excel}}.}
 
 \item{table_type}{Either \code{capabilities} or \code{threats}}
 }
@@ -17,7 +17,7 @@ Extracted table as a dataframe
 \description{
 The default data collection Excel spreadsheet solicits threat
 scenarios and applicable controls for each domain. This function
-takes a single sheet from the spreadsheet, as read by \code{\link[readxl]{readxl}}
+takes a single sheet from the spreadsheet, as read by \code{\link[readxl]{read_excel}}
 and pulls out either the capabilities or threats, as directed by the
 user.
 }

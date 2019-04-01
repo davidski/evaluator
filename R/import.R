@@ -154,12 +154,12 @@ import_capabilities <- function(survey_file = NULL, domains = NULL){
 #'
 #' The default data collection Excel spreadsheet solicits threat
 #'   scenarios and applicable controls for each domain. This function
-#'   takes a single sheet from the spreadsheet, as read by \code{\link[readxl]{readxl}}
+#'   takes a single sheet from the spreadsheet, as read by \code{\link[readxl]{read_excel}}
 #'   and pulls out either the capabilities or threats, as directed by the
 #'   user.
 #'
 #' @importFrom dplyr %>% select
-#' @param dat Raw sheet input from \code{\link[readxl]{readxl}}.
+#' @param dat Raw sheet input from \code{\link[readxl]{read_excel}}.
 #' @param table_type Either \code{capabilities} or \code{threats}
 #' @return Extracted table as a dataframe
 split_sheet <- function(dat, table_type = "capabilities") {
