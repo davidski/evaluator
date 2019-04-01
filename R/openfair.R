@@ -382,10 +382,10 @@ openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE
   )
 }
 
-#' Run an OpenFAIR simulation at the TEF/TC/DIFF/PLM/SLM levels
+#' Run an OpenFAIR simulation at the TEF/TC/DIFF/PLM/SR levels
 #'
 #' Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, PLM, and
-#'   SLM sampling. If there are multiple controls provided for the scenario, the
+#'   SR sampling. If there are multiple controls provided for the scenario, the
 #'   arithmetic mean (average) is taken across samples for all controls to get
 #'   the effective control strength for each threat event.
 #'
@@ -398,14 +398,14 @@ openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE
 #' @param tc Parameters for TC simulation
 #' @param diff Parameters for DIFF simulation
 #' @param plm Parameters for PLM simulation
-#' @param slm Parameters for SLM simulation
+#' @param sr Parameters for SR simulation
 #' @param n Number of iterations to run.
 #' @param verbose Whether to print progress indicators.
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
 #'   mean TC and DIFF exceedance, and ALE samples.
 #' @family OpenFAIR models
 #' @export
-openfair_tef_tc_diff_plm_slm <- function(tef, tc, diff, plm, slm, n = 10^4, verbose = FALSE) {
+openfair_tef_tc_diff_plm_sr <- function(tef, tc, diff, plm, sr, n = 10^4, verbose = FALSE) {
 
   # make samples repeatable (and l33t)
   set.seed(31337)
@@ -418,7 +418,7 @@ openfair_tef_tc_diff_plm_slm <- function(tef, tc, diff, plm, slm, n = 10^4, verb
                   "             ", tc,
                   "             ", diff,
                   "             ", plm,
-                  "             ", slm,
+                  "             ", sr,
                   "\n"))
   }
 
@@ -464,13 +464,13 @@ openfair_tef_tc_diff_plm_slm <- function(tef, tc, diff, plm, slm, n = 10^4, verb
   # LM - determine the size of losses for each iteration
   PLMestimate <- plm %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
-  SLMestimate <- slm %>% purrr::flatten() %>%
+  SRestimate <- sr %>% purrr::flatten() %>%
     tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
   loss_samples <- purrr::map(LEFsamples, function(x) {
     params <- PLMestimate$params %>% unlist()
     dat_p <- sample_lm(n = x, .func = PLMestimate$func, params = params)
-    params <- SLMestimate$params %>% unlist()
-    dat_s <- sample_lm(n = x, .func = SLMestimate$func, params = params)
+    params <- SRestimate$params %>% unlist()
+    dat_s <- sample_lm(n = x, .func = SRestimate$func, params = params)
     samples <- sum(dat_p$samples + dat_s$samples)
     # We have to calculate ALE/SLE differently (ALE: 0, SLE: NA) if there are no losses
     details <- if (length(samples) == 0 | sum(samples) == 0) {

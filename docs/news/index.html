@@ -144,7 +144,7 @@
 <h1 class="page-header">
 <a href="#evaluator-032900-unreleased" class="anchor"></a>evaluator 0.3.2.900 (unreleased)<small> Unreleased </small>
 </h1>
-<p>This release includes a greatly improved flow when starting directly from quantitative inputs. While the spreadsheet import is still supported, users that have increased their maturity can create <code>tidyrisk_scenario</code> objects that contain their initial quantitative inputs. These users may also use <a href="https://collector.severski.net">collector</a> to work with quantitative data.</p>
+<p>This release includes a greatly improved flow when starting directly from quantitative inputs. In addition to the spreadsheet importing flow, users have the option to start with quantitative inputs and leverage the new <code>tidyrisk_scenario</code> objects to move directly to simulation. Users with quantitative flows may also use <a href="https://collector.tidyrisk.org">collector</a> to work with their quantitative data.</p>
 <div id="new-feature" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-feature" class="anchor"></a>New Feature</h2>
@@ -158,14 +158,14 @@
 </li>
 </ul>
 </li>
-<li>New alternative model <code><a href="../reference/openfair_tef_tc_diff_plm_slm.html">openfair_tef_tc_diff_plm_slm()</a></code> available for simulating scenarios with secondary losses.</li>
+<li>New alternative model <code><a href="../reference/openfair_tef_tc_diff_plm_sr.html">openfair_tef_tc_diff_plm_sr()</a></code> available for simulating scenarios with secondary loss risk.</li>
 </ul>
 </div>
 <div id="improvements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
-<li>Massive speed fix that has been present since the v0.2.x series. Limited testing shows improvements of up to 700% when running simulations!</li>
+<li>Massive speed fix for a slow down that has been present since the v0.2.x series. Initial testing shows improvements of up to 700% when running simulations!</li>
 <li>Summary statistics for mean TC and DIFF exceedance now properly handle extreme situations where 100% of threat events are either resisted or become loss events.</li>
 <li>All percentages are consistently imported, stored, and processed as decimal values (from 0 - 1). This makes the TC and DIFF parameters use the same scale as VULN.
 <ul>

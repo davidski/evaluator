@@ -51,9 +51,8 @@ following `devtools` command.
 devtools::install_github("davidski/evaluator", dependencies = TRUE)
 ```
 
-Optionally, a prototype Docker image with all dependencies pre-installed
-is available on the [Docker
-Hub](https://hub.docker.com/r/davidski/evaluator-docker/).
+Optionally, Docker images with all dependencies pre-installed are
+available on the [Docker Hub](https://hub.docker.com/r/tidyrisk).
 
 ## Usage
 
@@ -74,7 +73,8 @@ From Evaluator:
 
 A detailed guide is available in the vignette accessed via
 `vignette("usage", package="evaluator")`. A short screencast showing the
-basic workflow (not including generation of reports) is available below:
+basic workflow (not including generation of reports) is available
+below:
 
 [![demo](https://asciinema.org/a/qIBU3lhPkWHGMYD9O2GU1YgcU.png)](https://asciinema.org/a/qIBU3lhPkWHGMYD9O2GU1YgcU?s=2&autoplay=1)
 

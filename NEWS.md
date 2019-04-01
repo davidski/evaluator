@@ -1,10 +1,11 @@
 # evaluator 0.3.2.900 (unreleased)
 
 This release includes a greatly improved flow when starting directly from 
-quantitative inputs. While the spreadsheet import is still supported, users 
-that have increased their maturity can create `tidyrisk_scenario` objects that 
-contain their initial quantitative inputs. These users may also use 
-[collector](https://collector.severski.net) to work with quantitative data.
+quantitative inputs. In addition to the spreadsheet importing flow, 
+users have the option to start with quantitative inputs and leverage the new 
+`tidyrisk_scenario` objects to move directly to simulation. Users with 
+quantitative flows may also use [collector](https://collector.tidyrisk.org) to 
+work with their quantitative data.
 
 ## New Feature
 * New `read_qualitative_inputs()` function
@@ -12,12 +13,13 @@ contain their initial quantitative inputs. These users may also use
   for simulation.
 * New `summarize_scenario()` function creates summary for a single scenario's results. 
   - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
-* New alternative model `openfair_tef_tc_diff_plm_slm()` available for 
-  simulating scenarios with secondary losses.
+* New alternative model `openfair_tef_tc_diff_plm_sr()` available for 
+  simulating scenarios with secondary loss risk.
 
 ## Improvements
-* Massive speed fix that has been present since the v0.2.x series. Limited 
-  testing shows improvements of up to 700% when running simulations!
+* Massive speed fix for a slow down that has been present since the v0.2.x 
+  series. Initial testing shows improvements of up to 700% when running 
+  simulations!
 * Summary statistics for mean TC and DIFF exceedance now properly handle 
   extreme situations where 100% of threat events are either resisted or 
   become loss events.
@@ -63,7 +65,8 @@ contain their initial quantitative inputs. These users may also use
 * Deprecated `load_data()`. Use `read_qualitative_inputs()` or 
   `read_quantitative_inputs()` as appropriate.
 * Re-export the pipe operator `%>%`
-* Rename `simulation` column to `iteration` to be more consistent with general MC uses.
+* Rename `simulation` column to `iteration` to be more consistent with general 
+  MC uses.
 * Move from soft-deprecated `purrr::invoke()` to `rlang::eval()`.
 
 # evaluator 0.3.2

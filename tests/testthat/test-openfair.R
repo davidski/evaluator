@@ -194,8 +194,8 @@ test_that("Default simulation model returns expected results", {
   expect_equal(sum(results$loss_events), 786)
 })
 
-context("PLM-SLM simulation model")
-test_that("SLM model works as expected", {
+context("PLM-SR simulation model")
+test_that("SR model works as expected", {
   scenario <- structure(list(scenario_id = "1",
                              scenario = "Inadequate human resources are available to execute the informaton security strategic security plan.",
                              tcomm = "Organizational Leadership", domain_id = "ORG",
@@ -210,13 +210,13 @@ test_that("SLM model works as expected", {
                              tef_params = list(list(func = "mc2d::rpert", min  = 10L, mode = 24, max = 52L, shape = 4L)),
                              tc_params = list(list(func = "mc2d::rpert", min = 33L, mode = 50, max = 60L, shape = 3L)),
                              plm_params = list(list(func = "mc2d::rpert", min = 10000L, mode = 20000, max = 500000L, shape = 4L)),
-                             slm_params = list(list(func = "mc2d::rpert", min = 10000L, mode = 20000, max = 500000L, shape = 4L)),
-                             model = "openfair_tef_tc_diff_plm_slm"), row.names = c(NA, -1L),
+                             sr_params = list(list(func = "mc2d::rpert", min = 10000L, mode = 20000, max = 500000L, shape = 4L)),
+                             model = "openfair_tef_tc_diff_plm_sr"), row.names = c(NA, -1L),
                         class = c("tbl_df", "tbl", "data.frame"))
   scenario <- scenario %>%
     mutate(scenario = pmap(list(tef_params = tef_params, tc_params = tc_params,
                                 diff_params = diff_params, plm_params = plm_params,
-                                slm_params = slm_params, model = model), tidyrisk_scenario))
+                                sr_params = sr_params, model = model), tidyrisk_scenario))
   results <- run_simulation(scenario[[1, "scenario"]], 100L)
   expect_s3_class(results, "tbl_df")
   expect_equal(nrow(results), 100)

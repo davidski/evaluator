@@ -48,8 +48,7 @@ reference:
       - compare_tef_vuln
       - get_mean_control_strength
       - identify_outliers
-      - openfair_tef_tc_diff_lm
-      - openfair_tef_tc_diff_plm_slm
+      - starts_with("openfair_")
       - run_simulation
       - run_simulations
       - starts_with("sample")

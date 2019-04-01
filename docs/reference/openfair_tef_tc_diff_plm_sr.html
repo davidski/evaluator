@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate the number of simulated threat event frequencies (TEF) — sample_tef • evaluator</title>
+<title>Run an OpenFAIR simulation at the TEF/TC/DIFF/PLM/SR levels — openfair_tef_tc_diff_plm_sr • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,9 +32,12 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Calculate the number of simulated threat event frequencies (TEF) — sample_tef" />
+<meta property="og:title" content="Run an OpenFAIR simulation at the TEF/TC/DIFF/PLM/SR levels — openfair_tef_tc_diff_plm_sr" />
 
-<meta property="og:description" content="Calculate the number of simulated threat event frequencies (TEF)" />
+<meta property="og:description" content="Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, PLM, and
+SR sampling. If there are multiple controls provided for the scenario, the
+arithmetic mean (average) is taken across samples for all controls to get
+the effective control strength for each threat event." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -139,43 +142,64 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate the number of simulated threat event frequencies (TEF)</h1>
+    <h1>Run an OpenFAIR simulation at the TEF/TC/DIFF/PLM/SR levels</h1>
     
-    <div class="hidden name"><code>sample_tef.Rd</code></div>
+    <div class="hidden name"><code>openfair_tef_tc_diff_plm_sr.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Calculate the number of simulated threat event frequencies (TEF)</p>
+    <p>Run an OpenFAIR model with parameters provided for TEF, TC, DIFF, PLM, and
+SR sampling. If there are multiple controls provided for the scenario, the
+arithmetic mean (average) is taken across samples for all controls to get
+the effective control strength for each threat event.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>sample_tef</span>(<span class='no'>n</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.func</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>openfair_tef_tc_diff_plm_sr</span>(<span class='no'>tef</span>, <span class='no'>tc</span>, <span class='no'>diff</span>, <span class='no'>plm</span>, <span class='no'>sr</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>4</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>tef</th>
+      <td><p>Parameters for TEF simulation</p></td>
+    </tr>
+    <tr>
+      <th>tc</th>
+      <td><p>Parameters for TC simulation</p></td>
+    </tr>
+    <tr>
+      <th>diff</th>
+      <td><p>Parameters for DIFF simulation</p></td>
+    </tr>
+    <tr>
+      <th>plm</th>
+      <td><p>Parameters for PLM simulation</p></td>
+    </tr>
+    <tr>
+      <th>sr</th>
+      <td><p>Parameters for SR simulation</p></td>
+    </tr>
+    <tr>
       <th>n</th>
-      <td><p>Number of samples to generate.</p></td>
+      <td><p>Number of iterations to run.</p></td>
     </tr>
     <tr>
-      <th>params</th>
-      <td><p>Optional parameters to pass to <code>.func</code>.</p></td>
-    </tr>
-    <tr>
-      <th>.func</th>
-      <td><p>Function to use to simulate TEF, defaults to <code><a href='https://www.rdocumentation.org/packages/mc2d/topics/pert'>rpert</a></code>.</p></td>
+      <th>verbose</th>
+      <td><p>Whether to print progress indicators.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List containing type ("tef"), samples (as a vector), and details (as a list).</p>
+    <p>Dataframe of scenario name, threat_event count, loss_event count,
+mean TC and DIFF exceedance, and ALE samples.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other OpenFAIR models: <code><a href='openfair_tef_tc_diff_plm_sr.html'>openfair_tef_tc_diff_plm_sr</a></code></p></div>
+    <div class='dont-index'><p>Other OpenFAIR models: <code><a href='sample_tef.html'>sample_tef</a></code></p></div>
     
 
   </div>
