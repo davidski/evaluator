@@ -1,4 +1,4 @@
-pandoc: '2.6'
+pandoc: 2.7.1
 pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
@@ -6,6 +6,6 @@ articles:
   process: process.html
   usage: usage.html
 urls:
-  reference: https://evaluator.severski.net/reference
-  article: https://evaluator.severski.net/articles
+  reference: https://evaluator.tidyrisk.org/reference
+  article: https://evaluator.tidyrisk.org/articles
 

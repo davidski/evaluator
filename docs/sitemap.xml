@@ -1,198 +1,202 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://evaluator.severski.net/index.html</loc>
+    <loc>https://evaluator.tidyrisk.org/index.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/as_tibble.tidyrisk_scenario.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/as_tibble.tidyrisk_scenario.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/calculate_max_losses.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/calculate_max_losses.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/compare_tef_vuln.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/compare_tef_vuln.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/create_templates.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/create_templates.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/derive_controls.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/derive_control_key.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/derive_control_key.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/derive_controls.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/dollar_millions.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/dollar_millions.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/encode_scenarios.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/encode_scenarios.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/evaluator-deprecated.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/evaluator-deprecated.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/evaluator.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/evaluator.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/explore_scenarios.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/explore_scenarios.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/generate_event_outcomes_plot.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/generate_event_outcomes_plot.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/generate_heatmap.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/generate_heatmap.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/generate_report.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/generate_report.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/generate_scatterplot.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/generate_scatterplot.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/get_base_fontfamily.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/get_base_fontfamily.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/get_mean_control_strength.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/get_mean_control_strength.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/identify_outliers.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/identify_outliers.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/import_capabilities.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/import_capabilities.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/import_scenarios.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/import_scenarios.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/import_spreadsheet.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/import_spreadsheet.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/is_tidyrisk_scenario.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/is_tidyrisk_scenario.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/load_data-deprecated.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/load_data-deprecated.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mc_capabilities.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/mc_capabilities.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mc_domains.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/mc_domain_summary.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mc_domain_summary.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/mc_domains.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mc_mappings.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/mc_mappings.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mc_qualitative_scenarios.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/mc_qualitative_scenarios.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mc_quantitative_scenarios.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/mc_quantitative_scenarios.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mc_scenario_summary.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/mc_scenario_summary.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/mc_simulation_results.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/mc_simulation_results.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/new_tidyrisk_scenario.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/new_tidyrisk_scenario.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/openfair_example.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/openfair_example.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/openfair_tef_tc_diff_lm.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/openfair_tef_tc_diff_lm.html</loc>
   </url>
   <url>
+<<<<<<< HEAD
     <loc>https://evaluator.severski.net/reference/openfair_tef_tc_diff_plm_sr.html</loc>
+=======
+    <loc>https://evaluator.tidyrisk.org/reference/openfair_tef_tc_diff_plm_slm.html</loc>
+>>>>>>> Regenerate docs to use tidyrisk.org
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/pipe.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/print.tidyrisk_scenario.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/print.tidyrisk_scenario.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/read_qualitative_inputs.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/read_qualitative_inputs.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/read_quantitative_inputs.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/read_quantitative_inputs.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/risk_dashboard.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/risk_dashboard.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/risk_factory.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/risk_factory.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/run_simulation.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/run_simulation.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/run_simulations.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/run_simulations.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/sample_diff.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/sample_diff.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/sample_lef.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/sample_lef.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/sample_lm.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/sample_lm.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/sample_tc.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/sample_tc.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/sample_tef.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/sample_tef.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/sample_vuln.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/sample_vuln.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/select_loss_opportunities.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/select_loss_opportunities.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/split_sheet.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/split_sheet.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/summarize_domains.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/summarize_domains.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/summarize_iterations.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/summarize_iterations.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/summarize_scenario.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/summarize_scenario.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/summarize_to_disk.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/summarize_to_disk.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/theme_evaluator.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/theme_evaluator.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/tidyrisk_factor.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/tidyrisk_factor.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/validate_scenarios.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/validate_scenarios.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/validate_tidyrisk_scenario.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/validate_tidyrisk_scenario.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/vec_cast.tidyrisk_factor.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/vec_cast.tidyrisk_factor.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/reference/vec_ptype_abbr.tidyrisk_scenario.html</loc>
+    <loc>https://evaluator.tidyrisk.org/reference/vec_ptype_abbr.tidyrisk_scenario.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/articles/customization.html</loc>
+    <loc>https://evaluator.tidyrisk.org/articles/customization.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/articles/process.html</loc>
+    <loc>https://evaluator.tidyrisk.org/articles/process.html</loc>
   </url>
   <url>
-    <loc>https://evaluator.severski.net/articles/usage.html</loc>
+    <loc>https://evaluator.tidyrisk.org/articles/usage.html</loc>
   </url>
 </urlset>
