@@ -106,11 +106,7 @@
     <loc>https://evaluator.tidyrisk.org/reference/openfair_tef_tc_diff_lm.html</loc>
   </url>
   <url>
-<<<<<<< HEAD
-    <loc>https://evaluator.severski.net/reference/openfair_tef_tc_diff_plm_sr.html</loc>
-=======
-    <loc>https://evaluator.tidyrisk.org/reference/openfair_tef_tc_diff_plm_slm.html</loc>
->>>>>>> Regenerate docs to use tidyrisk.org
+    <loc>https://evaluator.tidyrisk.org/reference/openfair_tef_tc_diff_plm_sr.html</loc>
   </url>
   <url>
     <loc>https://evaluator.tidyrisk.org/reference/pipe.html</loc>
