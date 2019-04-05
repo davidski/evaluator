@@ -22,5 +22,5 @@ detailed view on the results for a particular scenario.
 }
 \examples{
 data(mc_simulation_results)
-generate_scatterplot(mc_simulation_results, scenario_id = "50")
+generate_scatterplot(mc_simulation_results, scenario_id = "RS-50")
 }

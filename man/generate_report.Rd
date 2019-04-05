@@ -6,9 +6,9 @@
 \usage{
 generate_report(input_directory = "~/evaluator/inputs",
   results_directory = "~/evaluator/results", output_file,
-  styles = NULL, include_header = NULL, focus_scenario_ids = c(51,
-  12), format = "html", intermediates_dir = tempdir(), quiet = TRUE,
-  ...)
+  styles = NULL, include_header = NULL,
+  focus_scenario_ids = c("RS-51", "RS-12"), format = "html",
+  intermediates_dir = tempdir(), quiet = TRUE, ...)
 }
 \arguments{
 \item{input_directory}{Location of input files.}

@@ -87,7 +87,7 @@ generate_heatmap <- function(domain_summary) {
 #' @export
 #' @examples
 #' data(mc_simulation_results)
-#' generate_scatterplot(mc_simulation_results, scenario_id = "50")
+#' generate_scatterplot(mc_simulation_results, scenario_id = "RS-50")
 generate_scatterplot <- function(simulation_results, scenario_id){
   all_results <- unnest(simulation_results, .data$results)
   dat <- all_results[all_results$scenario_id == scenario_id, ]

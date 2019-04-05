@@ -20,7 +20,7 @@ test_that("Simulation summary handles NAs for tc/diff exceedance", {
   dat <- mutate(mc_simulation_results,
                 result_summary = map(results, summarize_scenario)) %>%
     select(-results)
-  summarized_tc_exceedance <- dplyr::filter(dat, scenario_id == "18") %>%
+  summarized_tc_exceedance <- dplyr::filter(dat, scenario_id == "RS-18") %>%
     tidyr::unnest(result_summary) %>%
     dplyr::pull(mean_tc_exceedance)
   expect_gt(summarized_tc_exceedance, 0)

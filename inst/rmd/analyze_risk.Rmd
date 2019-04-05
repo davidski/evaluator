@@ -37,7 +37,7 @@ header-includes:
 params:
   input_directory: "~/evaluator/inputs"
   results_directory: "~/evaluator/results"
-  focus_scenario_ids: !r c(51, 12)
+  focus_scenario_ids: !r c("RS-51", "RS-12")
 ---
 
 ```{r setup, include=FALSE}
