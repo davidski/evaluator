@@ -16,7 +16,7 @@ validate_scenarios(scenarios, capabilities, domains, mappings)
 \item{mappings}{Dataframe of qualitative to quantitative mappings.}
 }
 \value{
-A invisible boolean as to success/failure of validation steps.
+An invisible boolean as to success/failure of validation steps.
 }
 \description{
 Run a set of basic consistency checks on the key qualitative data inputs

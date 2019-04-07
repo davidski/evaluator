@@ -25,6 +25,10 @@ navbar:
           href: https://www.slideshare.net/davidski1/evaluator-siracon-2018-presentation
     - text: "News"
       href: news/index.html
+  right:
+    - icon: fa-github fa-lg
+      text: "github"
+      href: https://github.com/davidski/evaluator/
 
 reference:
   - title: Evaluator

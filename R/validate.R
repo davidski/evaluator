@@ -17,7 +17,7 @@
 #' @param domains Dataframe of domain mappings.
 #' @param mappings Dataframe of qualitative to quantitative mappings.
 #' @export
-#' @return A invisible boolean as to success/failure of validation steps.
+#' @return An invisible boolean as to success/failure of validation steps.
 #' @examples
 #' \dontrun{
 #' validate_scenarios(scenarios, capabilities, domains, mappings)
