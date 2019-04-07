@@ -10,5 +10,5 @@ Quantified Information Risk Simulation Toolkit
 }
 \details{
 See the online documentation located at
-\href{https://evaluator.severski.net/}{https://evaluator.severski.net/}
+\href{https://evaluator.tidyrisk.org/}{https://evaluator.tidyrisk.org/}
 }

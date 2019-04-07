@@ -1,5 +1,5 @@
 # Quick Start script for Evaluator workflow
-# Process documented at https://evaluator.severski.net/articles/usage.html
+# Process documented at https://evaluator.tidyrisk.org/articles/usage.html
 
 # This script is intended as a starting point for taking a directory of
 # inputs as created by evaluator::create_templates(), running simulations,
