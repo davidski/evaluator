@@ -55,6 +55,10 @@ work with their quantitative data.
   will always confirm a scenario object has all of the OpenFAIR components 
   needed by the specified modeling function. This enables easier extension of 
   Evaluator to new models.
+* `openfair_example()` uses (at last!) the same simulation engine as 
+  `run_simulation()`. This provides more consistent results, less code to 
+  maintain, and opens this demo app to displaying more metrics that are native 
+  to evaluator. A very initial pass to this last point has implemented.
   
 ## Other Changes
 * Switched the base font for the Risk Report to Open Sans, retaining the 

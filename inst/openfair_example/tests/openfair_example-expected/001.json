@@ -21,7 +21,7 @@
   },
   "output": {
     "__reactivedoc__": {
-      "html": "[html data sha1: b8bacf294166f5af1cb5b63794b730b563e77a42]",
+      "html": "[html data sha1: 2e2a55100dc1ba1f6199c767c68265c3d5309804]",
       "deps": [
         {
           "name": "jquery",
@@ -188,43 +188,8 @@
         }
       ]
     },
-    "out08d4e5a370326d14": {
-      "src": "[image data sha1: a0c9f07e9f8feab50ff608b02512d0d22dde9dbe]",
-      "width": 576,
-      "height": 400,
-      "coordmap": {
-        "panels": [
-          {
-            "domain": {
-              "left": -0.04,
-              "right": 1.04,
-              "bottom": -0.04,
-              "top": 1.04
-            },
-            "range": {
-              "left": 0,
-              "right": 576,
-              "bottom": 399,
-              "top": -1
-            },
-            "log": {
-              "x": null,
-              "y": null
-            },
-            "mapping": {
-
-            }
-          }
-        ],
-        "dims": {
-          "width": 576,
-          "height": 400
-        }
-      }
-    },
-    "out09c165c960ab62dc": "",
-    "out6be8d049c232da61": "",
-    "outa45201a10dfb617c": {
+    "out1bfb09c165c960ab": "",
+    "out617c08d4e5a37032": {
       "x": null,
       "evals": [
 
@@ -280,8 +245,44 @@
         }
       ]
     },
-    "outf78e9f16cfb81bfb": {
-      "src": "[image data sha1: 075463bf5232830c3f13f0f61fd7c6957068530b]",
+    "out62dc6be8d049c232": "",
+    "out6d14f90592b78d79": {
+      "src": "[image data sha1: 4f605c86ffbe82094aceff2d0117d7e01aa64126]",
+      "width": 576,
+      "height": 400,
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": -0.04,
+              "right": 1.04,
+              "bottom": -0.04,
+              "top": 1.04
+            },
+            "range": {
+              "left": 0,
+              "right": 576,
+              "bottom": 399,
+              "top": -1
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 576,
+          "height": 400
+        }
+      }
+    },
+    "outda61a45201a10dfb": null,
+    "outfbe9f78e9f16cfb8": {
+      "src": "[image data sha1: 908959367dd2fb68d94f47516901fcc2a374c7c0]",
       "width": 558,
       "height": 625,
       "coordmap": {

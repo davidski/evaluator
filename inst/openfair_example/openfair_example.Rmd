@@ -30,38 +30,31 @@ basefont <- get_base_fontfamily()
 
 values <- reactiveValues() 
 
-values$iterations <- 10000
+values$iterations <- 1000
 
 observeEvent(input$runmodel, {
 	
 	values$iterations <- input$iterations
 
-	TEFestimate <- data.frame(L = input$tefl, ML = input$tefml, H = input$tefh,
-	                          CONF = input$tefconf)
-	TCestimate <- data.frame(L = input$tcapl, ML = input$tcapml, H = input$tcaph,
-	                         CONF = input$tcapconf)
-	DIFFestimate <- data.frame(L = input$csl, ML = input$csml, H = input$csh, 
-	                           CONF = input$csconf)
-  LMestimate <- data.frame(L = input$lml, ML = input$lmml, H = input$lmh, 
-                           CONF = input$lmconf)
+	TEFestimate <- list(func = "mc2d::rpert", min = input$tefl, 
+	                    mode = input$tefml, max = input$tefh,
+	                    shape = input$tefconf)
+	TCestimate <- list(func = "mc2d::rpert", min = input$tcapl, 
+	                   mode = input$tcapml, max = input$tcaph,
+	                   shape = input$tcapconf)
+	DIFFestimate <- list(list(func = "mc2d::rpert", min = input$csl, 
+	                          mode = input$csml, max = input$csh, 
+	                          shape = input$csconf))
+  LMestimate <- list(func = "mc2d::rpert", min = input$lml, 
+                     mode = input$lmml, max = input$lmh, 
+                     shape = input$lmconf)
+  single_scen <- tidyrisk_scenario(
+    tef_params = TEFestimate, 
+    tc_params = TCestimate, 
+    diff_params = DIFFestimate, 
+    lm_params = LMestimate)
 	
-	LMsamples <- function(x){
-	  return(sum(rpert(x, LMestimate$L, LMestimate$ML, LMestimate$H, 
-	                   shape = LMestimate$CONF) ))
-			}
-	TEFsamples <- rpert(values$iterations, TEFestimate$L, TEFestimate$ML, TEFestimate$H, 
-	                    shape = TEFestimate$CONF)
-	TCsamples <- rpert(values$iterations, TCestimate$L, TCestimate$ML, TCestimate$H, 
-	                   shape = TCestimate$CONF)
-	DIFFsamples <- rpert(values$iterations, DIFFestimate$L, DIFFestimate$ML, 
-	                     DIFFestimate$H, shape = DIFFestimate$CONF)
-	
-	VULNsamples <- TCsamples > DIFFsamples
-	LEF <- TEFsamples[VULNsamples]
-		
-	values$ALEsamples <- sapply(LEF, LMsamples)
-	values$VAR <- quantile(values$ALEsamples, probs = (0.95))
-	values$VULNsamples <- VULNsamples
+  values$simulation_result <- run_simulation(single_scen, iterations = values$iterations)
 			
 })
 ```
@@ -124,7 +117,8 @@ fillRow(height = 50,
 ### Params {.no-title}
 
 ```{r}
-numericInput("iterations", "# Iterations:", 10000, min = 1000, max = 100000, step = 1000)
+numericInput("iterations", "# Iterations:", 100, min = 10, max = 10000, 
+             step = 100)
 actionButton("runmodel", "Run Model")
 ```
 
@@ -136,9 +130,8 @@ Results {.tabset data-width=600}
 ```{r plot_distribution}
 renderPlot({
 	if (input$runmodel != 0) {
-		ALEsamples <- values$ALEsamples 
-		gg <- ggplot(data.frame(ALEsamples), aes(x = ALEsamples))
-		gg <- gg + geom_histogram(binwidth = diff(range(ALEsamples)/50), 
+		gg <- ggplot(values$simulation_result, aes(x = ale))
+		gg <- gg + geom_histogram(binwidth = diff(range(values$simulation_result$ale) / 50), 
 		                          aes(y = ..density..), 
 		                          color = "black", 
 		                          fill = "white")
@@ -158,7 +151,7 @@ renderPlot({
 ```{r detail1}
 renderPrint({
   if (input$runmodel != 0) {
-  	print(summary(values$ALEsamples))
+  	print(summary(values$simulation_result$ale))
 	}
 })
 ```	
@@ -166,20 +159,33 @@ renderPrint({
 #### 95% Value at Risk {.no-title} 
 
 ```{r detail2}
-renderPrint({
+renderText({
   if (input$runmodel != 0) {
+    VAR <- summarize_scenario(values$simulation_result) %>% pull(ale_var)
   	print(paste0("Losses at 95th percentile are $", 
-  	             format(values$VAR, nsmall = 2, big.mark = ",")
+  	             format(VAR, nsmall = 2, big.mark = ",")
   	             ))
 	}
 })
 ```
 
-#### Loss Samples
+#### Scenario Result Summary {.no-title} 
+
 ```{r detail3}
+renderTable({
+  if (input$runmodel != 0) {
+  	summarize_scenario(values$simulation_result)
+	}
+})
+```
+
+#### Loss Samples {data-height=200}
+
+```{r detail4}
 DT::renderDataTable(
   if (input$runmodel != 0) {
-    dat <- data.frame(Losses = values$ALEsamples) %>% arrange(desc(Losses)) %>% 
+    dat <- data.frame(Losses = values$simulation_result$ale) %>% 
+      arrange(desc(Losses)) %>% 
       transmute(Losses = scales::dollar(Losses))
     DT::datatable(dat, rownames = FALSE)
   }
@@ -191,15 +197,15 @@ DT::renderDataTable(
 ```{r loss_events}
 renderPlot({
   if (input$runmodel != 0) {
-    VULNsamples <- as.logical(values$VULNsamples)
-    VULNsamples <- data.frame(losses = (sum(VULNsamples) / length(VULNsamples)),
-                              avoided = (length(VULNsamples) - 
-                                           sum(VULNsamples)) / 
-                                length(VULNsamples))
-    gg <- ggplot(tidyr::gather(VULNsamples), aes(x = key, y = value)) + 
+    VULNsamples <- values$simulation_result %>% 
+       summarize(loss_events = sum(loss_events, na.rm = TRUE),
+                 avoided_events = sum(threat_events, na.rm = TRUE) - loss_events) %>%  
+      tidyr::gather("key", "value", loss_events, avoided_events) %>% 
+      mutate(value = value / sum(value, na.rm = TRUE))
+    gg <- ggplot(VULNsamples, aes(x = key, y = value)) + 
       geom_col(fill = "steelblue") +
       labs(x = "Event Type", y = "Percent") + 
-      scale_y_continuous(labels = scales::percent_format()) +
+      scale_y_continuous(labels = scales::percent) +
       theme_evaluator(base_family = evaluator::get_base_fontfamily())
     print(gg)
   }
