@@ -5,7 +5,7 @@
 #'
 #' @source
 #' This is hypothetical information. Any similarity to any other
-#' entitiy is completely coincidental.
+#' entity is completely coincidental.
 #'
 #' @format
 #' \describe{
@@ -23,7 +23,7 @@
 #'
 #' @source
 #' This is hypothetical information. Any similarity to any other
-#' entitiy is completely coincidental.
+#' entity is completely coincidental.
 #'
 #' @format
 #' \describe{
@@ -43,7 +43,7 @@
 #'
 #' @source
 #' This is hypothetical information. Any similarity to any other
-#' entitiy is completely coincidental.
+#' entity is completely coincidental.
 #'
 #' @format
 #' \describe{
@@ -60,7 +60,7 @@
 #'
 #' @source
 #' This is hypothetical information. Any similarity to any other
-#' entitiy is completely coincidental.
+#' entity is completely coincidental.
 #'
 #' @format
 #' \describe{
@@ -91,7 +91,7 @@
 #'
 #' @source
 #' This is hypothetical information. Any similarity to any other
-#' entitiy is completely coincidental.
+#' entity is completely coincidental.
 #'
 #' @format
 #' \describe{
@@ -123,7 +123,7 @@
 #'
 #' @source
 #' This is hypothetical information. Any similarity to any other
-#' entitiy is completely coincidental.
+#' entity is completely coincidental.
 #'
 #' @format
 #' A dataset of quantified risk scenarios, with parameters
@@ -148,7 +148,7 @@
 #'
 #' @source
 #' This is hypothetical information. Any similarity to any other
-#' entitiy is completely coincidental.
+#' entity is completely coincidental.
 #' @format
 #' \describe{
 #'   \item{scenario_id}{id of the scenario, primary key}
@@ -170,7 +170,7 @@
 #'
 #' @source
 #' This is hypothetical information. Any similarity to any other
-#' entitiy is completely coincidental.
+#' entity is completely coincidental.
 #'
 #' @format
 #' \describe{

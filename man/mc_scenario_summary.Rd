@@ -26,7 +26,7 @@
 }}
 \source{
 This is hypothetical information. Any similarity to any other
-entitiy is completely coincidental.
+entity is completely coincidental.
 }
 \usage{
 mc_scenario_summary
