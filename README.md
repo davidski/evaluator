@@ -1,7 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# evaluator <img alt="evaluator Logo" title="evaluator" align="right" src="man/figures/evaluator_hex.png" height="139"/>
+# evaluator <a href="https://evaluator.tidyrisk.org"><img alt="evaluator Logo" title="evaluator" align="right" src="man/figures/logo.png" height="139"/></a>
+
+<!-- badges: start -->
 
 [![Build
 Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator)
@@ -11,6 +13,7 @@ Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?br
 Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)](https://codecov.io/github/davidski/evaluator?branch=master)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator)
 ![downloads](https://cranlogs.r-pkg.org/badges/grand-total/evaluator)
+<!-- badges: end -->
 
 ## Overview
 
@@ -73,8 +76,7 @@ From Evaluator:
 
 A detailed guide is available in the vignette accessed via
 `vignette("usage", package="evaluator")`. A short screencast showing the
-basic workflow (not including generation of reports) is available
-below:
+basic workflow (not including generation of reports) is available below:
 
 [![demo](https://asciinema.org/a/qIBU3lhPkWHGMYD9O2GU1YgcU.png)](https://asciinema.org/a/qIBU3lhPkWHGMYD9O2GU1YgcU?s=2&autoplay=1)
 
