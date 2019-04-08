@@ -48,11 +48,18 @@ addons:
   apt:
     packages:
     - libproj-dev
+before_cache: Rscript -e 'remote::install_cran("pkgdown")'
 after_success:
 - Rscript -e 'covr::codecov()'
 before_deploy:
   - if [[ $REPORTS_DEPLOY = "true" ]]; then Rscript ./scripts/generate_sample_reports.R; fi
 deploy:
+  - provider: script
+    on:
+      condition: $REPORTS_DEPLOY = "true"
+      branch: master
+    script: Rscript -e 'pkgdown::build_site(preview = FALSE)'
+    skip_cleanup: true
   - provider: s3
     on:
       condition: $REPORTS_DEPLOY = "true"
