@@ -1,0 +1,4 @@
+Name: Create Tidyrisk Scenario
+Description: Insert the skeleton for a tidyrisk scenario in the current document
+Binding: create_tidyrisk_scenario_skeleton
+Interactive: false

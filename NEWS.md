@@ -11,6 +11,8 @@ work with their quantitative data.
 * New `read_qualitative_inputs()` function
 * New `tidyrisk_scenario` object for containing the elements of a risk scenario 
   for simulation.
+  - A RStudio Add-in for creating a skeleton `tidyrisk_scenario` object is 
+  available.
 * New `summarize_scenario()` function creates summary for a single scenario's results. 
   - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
 * New alternative model `openfair_tef_tc_diff_plm_sr()` available for 

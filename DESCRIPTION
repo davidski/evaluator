@@ -17,37 +17,38 @@ Imports:
     extrafont,
     ggplot2,
     mc2d,
+    magrittr,
     purrr,
     readr,
     readxl,
     rlang,
+    rstudioapi,
     scales,
     stringi,
     tibble,
     tidyr,
     vctrs,
-    viridis,
-    magrittr
+    viridis
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests:
-    spelling,
     DT,
-    pander (>= 0.6.1),
-    psych,
+    EnvStats,
+    covr,
     ggalt (>= 0.4.0),
+    knitr,
     flexdashboard (>= 0.4),
     forcats,
     furrr,
-    statip,
-    knitr,
+    mockery,
+    pander (>= 0.6.1),
+    psych,
     rmarkdown (>= 1.9),
     shiny,
-    testthat,
     shinytest,
-    EnvStats,
-    covr,
-    mockery
+    spelling,
+    statip,
+    testthat
 SystemRequirements: pandoc
 VignetteBuilder: knitr
 URL: https://evaluator.tidyrisk.org
