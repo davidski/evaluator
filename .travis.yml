@@ -48,7 +48,7 @@ addons:
   apt:
     packages:
     - libproj-dev
-before_cache: Rscript -e 'remote::install_cran("pkgdown")'
+before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
 after_success:
 - Rscript -e 'covr::codecov()'
 before_deploy:
