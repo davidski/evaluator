@@ -57,10 +57,10 @@ generate_heatmap <- function(domain_summary) {
     dplyr::mutate(full_label = paste0(.data$domain_id, "\n",
                                       "$", round(.data$ale_var/10^6), "M"),
                    aux = seq(1, 2 * nrow(.), by = 2))
-  gg <- ggplot(dat, aes_(x = quote(aux), y = 1))
+  gg <- ggplot(dat, aes(x = .data$aux, y = 1))
   gg <- gg + geom_tile(stat = "identity", color = "white",
-                       aes_(fill = quote(ale_var)), width = 1)
-  gg <- gg + geom_text(aes_(x = quote(aux), y = 1, label = quote(full_label)),
+                       aes(fill = .data$ale_var), width = 1)
+  gg <- gg + geom_text(aes(x = .data$aux, y = 1, label = .data$full_label),
                        color = "white", size = 3)
   gg <- gg + coord_equal()
   gg <- gg + viridis::scale_fill_viridis(guide = FALSE)
@@ -79,16 +79,27 @@ generate_heatmap <- function(domain_summary) {
 #'   expected annual loss expected for each simulation. This provides a
 #'   detailed view on the results for a particular scenario.
 #'
-#' @import ggplot2
-#' @importFrom scales comma
 #' @param simulation_results Simulation results from \code{run_simulations}.
 #' @param scenario_id ID of the scenario to display.
 #' @return A ggplot object.
-#' @export
+#' @keywords internal
 #' @examples
+#' \dontrun{
 #' data(mc_simulation_results)
 #' generate_scatterplot(mc_simulation_results, scenario_id = "RS-50")
+#' }
+#' @seealso \code{\link{evaluator-deprecated}}
+#' @keywords internal
+#' @name generate_scatterplot-deprecated
+NULL
+
+
+#' @rdname evaluator-deprecated
+#' @section \code{generate_scatterplot}:
+#' Instead of \code{generate_scatterplot}, use \code{\link{loss_scatterplot}}.
+#' @export
 generate_scatterplot <- function(simulation_results, scenario_id){
+  .Deprecated("loss_scatterplot()")
   all_results <- unnest(simulation_results, .data$results)
   dat <- all_results[all_results$scenario_id == scenario_id, ]
 
@@ -101,6 +112,65 @@ generate_scatterplot <- function(simulation_results, scenario_id){
                                 limits = c(NA, max(all_results$loss_events,
                                                    na.rm = TRUE)))
   gg <- gg + labs(x = "Loss Frequency (Annualized)", y = "Total Annual Loss Size")
+  gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
+  gg
+}
+
+#' Display a scatterplot of loss events for a scenario
+#'
+#' Given a detailed results dataframe create a scatterplot of the number of
+#'   loss events versus the total amount of expected annual loss for each
+#'   simulation. This provides a detailed view on the results.
+#'
+#' @import ggplot2
+#' @importFrom scales comma
+#' @param simulation_results Simulation results from \code{run_simulation}.
+#' @return A ggplot object.
+#' @keywords internal
+loss_scatterplot <- function(simulation_result) {
+  gg <- ggplot(simulation_result, aes(x = .data$loss_events, y = .data$ale))
+  gg <- gg + geom_point(alpha = 1/4)
+  gg <- gg + scale_y_continuous(labels = dollar_millions,
+                                limits = c(NA, max(simulation_result$ale,
+                                                   na.rm = TRUE)))
+  gg <- gg + scale_x_continuous(labels = scales::comma,
+                                limits = c(NA, max(simulation_result$loss_events,
+                                                   na.rm = TRUE)))
+  gg <- gg + labs(x = "Loss Frequency (Annualized)", y = "Total Annual Loss Size")
+  gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
+  gg
+}
+
+#' Display a histogram of losses for a scenario
+#'
+#' Given a results dataframe for a specific scenario, create a histogram of
+#'   the annualized loss exposure. This provides a detailed view on the results
+#'   for a particular scenario.
+#'
+#' @import ggplot2
+#' @importFrom scales comma
+#'
+#' @param simulation_result Simulation result from \code{run_simulation}.
+#' @param bins Number of bins to use for the histogram.
+#' @param show_var_95 Set to TRUE to show the 95th percentile value at risk line.
+#'
+#' @return A ggplot object.
+#' @export
+#' @examples
+#' data(mc_simulation_results)
+#' result <- mc_simulation_results[[1, "results"]]
+#' exposure_histogram(result)
+exposure_histogram <- function(simulation_result, bins = 30, show_var_95 = FALSE){
+  gg <- ggplot(simulation_result, aes(x = .data$ale))
+  gg <- gg + geom_histogram(color = "white", bins = bins)
+
+  if (show_var_95) {
+    var_95 <- stats::quantile(simulation_result$ale, probs = 0.95)
+    gg <- gg + geom_vline(xintercept = var_95, color = "violetred1", linetype = "dashed")
+  }
+  gg <- gg + scale_y_continuous(labels = scales::comma)
+  gg <- gg + scale_x_continuous(labels = scales::dollar)
+  gg <- gg + labs(x = "Loss Exposure (Annualized)", y = "Number of Occurances")
   gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
   gg
 }
@@ -120,7 +190,7 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' @importFrom rlang .data
 #' @param domain_summary Domain-level summary from \code{domain_summary}.
 #' @param domain_id Variable to group plot by.
-#' @return ggplot object.
+#' @return A ggplot object.
 #' @export
 #' @examples
 #' data(mc_domain_summary)

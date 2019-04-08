@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Deprecated functions in package <span class="pkg">evaluator</span>. — generate_scatterplot • evaluator</title>
+<title>Display a scatterplot for a particular scenario ID — generate_scatterplot-deprecated • evaluator</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,12 +32,12 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Deprecated functions in package <span class="pkg">evaluator</span>. — generate_scatterplot" />
+<meta property="og:title" content="Display a scatterplot for a particular scenario ID — generate_scatterplot-deprecated" />
 
-<meta property="og:description" content="The functions listed below are deprecated and will be defunct in
-the near future. When possible, alternative functions with similar
-functionality are also mentioned. Help pages for deprecated functions are
-available at help(&quot;&amp;lt;function&amp;gt;-deprecated&quot;)." />
+<meta property="og:description" content="Given a detailed results dataframe and a specific scenario identifier,
+create a scatterplot of the number of loss events versus the total amount of
+expected annual loss expected for each simulation. This provides a
+detailed view on the results for a particular scenario." />
 
 <meta property="og:image" content="https://evaluator.tidyrisk.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -150,46 +150,60 @@ available at help(&quot;&amp;lt;function&amp;gt;-deprecated&quot;)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Deprecated functions in package <span class="pkg">evaluator</span>.</h1>
+    <h1>Display a scatterplot for a particular scenario ID</h1>
     
-    <div class="hidden name"><code>evaluator-deprecated.Rd</code></div>
+    <div class="hidden name"><code>generate_scatterplot-deprecated.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The functions listed below are deprecated and will be defunct in
-the near future. When possible, alternative functions with similar
-functionality are also mentioned. Help pages for deprecated functions are
-available at <code><a href='https://www.rdocumentation.org/packages/utils/topics/help'>help("&lt;function&gt;-deprecated")</a></code>.</p>
+    <p>Given a detailed results dataframe and a specific scenario identifier,
+create a scatterplot of the number of loss events versus the total amount of
+expected annual loss expected for each simulation. This provides a
+detailed view on the results for a particular scenario.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>generate_scatterplot</span>(<span class='no'>simulation_results</span>, <span class='no'>scenario_id</span>)
-
-<span class='fu'>load_data</span>(<span class='kw'>input_directory</span> <span class='kw'>=</span> <span class='st'>"~/evaluator/inputs"</span>,
-  <span class='kw'>results_directory</span> <span class='kw'>=</span> <span class='st'>"~/evaluator/results"</span>)</pre>
-        
-    <h2 class="hasAnchor" id="generate-scatterplot"><a class="anchor" href="#generate-scatterplot"></a><code>generate_scatterplot</code></h2>
-
     
-    <p>Instead of <code>generate_scatterplot</code>, use <code><a href='loss_scatterplot.html'>loss_scatterplot</a></code>.</p>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>simulation_results</th>
+      <td><p>Simulation results from <code>run_simulations</code>.</p></td>
+    </tr>
+    <tr>
+      <th>scenario_id</th>
+      <td><p>ID of the scenario to display.</p></td>
+    </tr>
+    </table>
     
-    <h2 class="hasAnchor" id="load-data"><a class="anchor" href="#load-data"></a><code>load_data</code></h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A ggplot object.</p>
     
-    <p>Instead of <code>load_data</code>, use <code><a href='read_quantitative_inputs.html'>read_quantitative_inputs</a></code>
-and <code><a href='read_qualitative_inputs.html'>read_qualitative_inputs</a></code> as appropriate.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='evaluator-deprecated.html'>evaluator-deprecated</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>mc_simulation_results</span>)
+<span class='fu'><a href='evaluator-deprecated.html'>generate_scatterplot</a></span>(<span class='no'>mc_simulation_results</span>, <span class='kw'>scenario_id</span> <span class='kw'>=</span> <span class='st'>"RS-50"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#generate-scatterplot"><code>generate_scatterplot</code></a></li>
+      <li><a href="#value">Value</a></li>
 
-      <li><a href="#load-data"><code>load_data</code></a></li>
-          </ul>
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -17,6 +17,10 @@ work with their quantitative data.
   - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
 * New alternative model `openfair_tef_tc_diff_plm_sr()` available for 
   simulating scenarios with secondary loss risk.
+* New `loss_scatterplot()` function generates a scatterplot of total loss 
+  exposure vs. number of loss events for a single scenario.
+* New `exposure_histogram()` function generates a histogram of losses for 
+  a single scenario, optionally displaying the 95% value at risk level.
 
 ## Improvements
 * Massive speed fix for a slow down that has been present since the v0.2.x 
@@ -63,6 +67,8 @@ work with their quantitative data.
   to evaluator. A very initial pass to this last point has implemented.
   
 ## Other Changes
+* `generate_scatterplot()` is deprecated in favor of the new 
+  `loss_scatterplot()` function.
 * Switched the base font for the Risk Report to Open Sans, retaining the 
   Condensed version for headers.
 * Renamed the default sample dataset to the hypothetical MetroCare Hospital. 

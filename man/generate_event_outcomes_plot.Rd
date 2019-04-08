@@ -13,7 +13,7 @@ generate_event_outcomes_plot(domain_summary, domain_id = domain_id)
 \item{domain_id}{Variable to group plot by.}
 }
 \value{
-ggplot object.
+A ggplot object.
 }
 \description{
 Creates a barbell plot showing the number and percentage of events

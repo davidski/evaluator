@@ -40,7 +40,6 @@ reference:
       - derive_controls
       - encode_scenarios
       - starts_with("import")
-      - load_data
       - read_qualitative_inputs
       - read_quantitative_inputs
       - openfair_example
@@ -64,6 +63,8 @@ reference:
       - explore_scenarios
       - dollar_millions
       - starts_with("generate")
+      - exposure_histogram
+      - loss_scatterplot
       - get_base_fontfamily
       - risk_dashboard
       - theme_evaluator

@@ -276,7 +276,8 @@ shiny::renderPlot({
   scenario_id <- get_scenario_id(input$input_scenario)
   
   # draw the scatterplot for this threat scenario
-  generate_scatterplot(simulation_results, scenario_id)
+  filter(simulation_results, scenario_id == scenario_id) %>% 
+    unnest(results) %>% loss_scatterplot()
 })
 ```
 

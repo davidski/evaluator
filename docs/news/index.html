@@ -172,6 +172,8 @@
 </ul>
 </li>
 <li>New alternative model <code><a href="../reference/openfair_tef_tc_diff_plm_sr.html">openfair_tef_tc_diff_plm_sr()</a></code> available for simulating scenarios with secondary loss risk.</li>
+<li>New <code><a href="../reference/loss_scatterplot.html">loss_scatterplot()</a></code> function generates a scatterplot of total loss exposure vs. number of loss events for a single scenario.</li>
+<li>New <code><a href="../reference/exposure_histogram.html">exposure_histogram()</a></code> function generates a histogram of losses for a single scenario, optionally displaying the 95% value at risk level.</li>
 </ul>
 </div>
 <div id="improvements" class="section level2">
@@ -206,6 +208,8 @@
 <h2 class="hasAnchor">
 <a href="#other-changes" class="anchor"></a>Other Changes</h2>
 <ul>
+<li>
+<code><a href="../reference/evaluator-deprecated.html">generate_scatterplot()</a></code> is deprecated in favor of the new <code><a href="../reference/loss_scatterplot.html">loss_scatterplot()</a></code> function.</li>
 <li>Switched the base font for the Risk Report to Open Sans, retaining the Condensed version for headers.</li>
 <li>Renamed the default sample dataset to the hypothetical MetroCare Hospital. The default sets now all consistently use the <code>mc_</code> prefix to distinguish them from parameter names.</li>
 <li>Deprecated <code><a href="../reference/evaluator-deprecated.html">load_data()</a></code>. Use <code><a href="../reference/read_qualitative_inputs.html">read_qualitative_inputs()</a></code> or <code><a href="../reference/read_quantitative_inputs.html">read_quantitative_inputs()</a></code> as appropriate.</li>
