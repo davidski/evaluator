@@ -234,7 +234,7 @@ program are described in the following table.
 
 ```{r domain_impact, echo = FALSE}
 domain_summary %>% 
-  arrange(desc(ale_var) %>% )
+  arrange(desc(ale_var)) %>% 
   mutate_at(vars(-one_of("domain_id", "domain")), funs(dollar)) %>% 
   select("Domain" = domain, 
          "Value at Risk" = ale_var,
