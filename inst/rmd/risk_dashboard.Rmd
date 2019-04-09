@@ -188,23 +188,16 @@ minimal_dat <- filter(dat, full_label %in% top_n_scenarios, ale != 0) %>%
 
 # plot!
 gg <- ggplot(minimal_dat, aes(x = forcats::fct_reorder(full_label, desc(ale_median)), y = ale + 1))
-#gg <- ggplot(summed_dat, aes(x = fct_reorder(full_label, ale_median), y = ale))
 
 gg <- gg + stat_boxplot(geom = 'errorbar', width = 0.4)
-#gg <- gg + geom_boxplot(aes(fill = keep), alpha = 1/3)
 gg <- gg + geom_boxplot(fill = viridis::viridis(1), coef = 0, alpha = 1/3, outlier.shape = NA)
 gg <- gg + viridis::scale_fill_viridis(discrete = TRUE)
-#gg <- gg + facet_wrap(~ cluster_labels, nrow=1, scales = "free")
-gg <- gg + scale_y_log10(label = scales::dollar) + annotation_logticks()
-#gg <- gg + scale_y_log10(label = scales::dollar, minor_breaks = seq(1, max(gg$data$ale), 100000))
+gg <- gg + scale_y_log10(label = scales::dollar) + annotation_logticks(sides = "l")
 gg <- gg + guides(fill = FALSE)
-#gg <- gg + coord_flip()
 gg <- gg + labs(x = NULL, y = "Annual\nLoss") 
 gg <- gg + theme_evaluator(base_family = basefont)
 gg <- gg + theme(panel.grid.major.x = element_line())
 gg <- gg + theme(panel.grid.minor.x = element_line(color = "grey92"))
-#gg <- gg + theme(panel.grid.major = element_blank())
-#gg <- gg + theme(panel.grid.minor = element_blank())
 gg <- gg + theme(axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 0))
 gg
 ```
