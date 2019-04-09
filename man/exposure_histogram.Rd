@@ -11,7 +11,7 @@ exposure_histogram(simulation_result, bins = 30, show_var_95 = FALSE)
 
 \item{bins}{Number of bins to use for the histogram.}
 
-\item{show_var_95}{Set to TRUE to show the 95th percentile value at risk line.}
+\item{show_var_95}{Set to TRUE to show the 95 percentile value at risk line.}
 }
 \value{
 A ggplot object.
