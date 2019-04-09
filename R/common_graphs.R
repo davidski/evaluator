@@ -152,7 +152,7 @@ loss_scatterplot <- function(simulation_result) {
 #'
 #' @param simulation_result Simulation result from \code{run_simulation}.
 #' @param bins Number of bins to use for the histogram.
-#' @param show_var_95 Set to TRUE to show the 95th percentile value at risk line.
+#' @param show_var_95 Set to TRUE to show the 95 percentile value at risk line.
 #'
 #' @return A ggplot object.
 #' @export
