@@ -35,6 +35,7 @@ matrix:
     env: REPORTS_DEPLOY="true"
     after_success:
     - Rscript -e 'covr::codecov()'
+    - Rscript ./scripts/generate_sample_reports.R
   - os: linux
     dist: xenial
     pandoc: true
@@ -52,8 +53,6 @@ addons:
     packages:
     - libproj-dev
 before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
-before_deploy:
-  - if [[ $REPORTS_DEPLOY = "true" ]]; then Rscript ./scripts/generate_sample_reports.R; fi
 deploy:
   - provider: script
     on:
