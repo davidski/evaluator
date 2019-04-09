@@ -21,6 +21,7 @@ before_install:
   -C $PWD/travis_phantomjs; fi
 - if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then hash -r; fi
 - phantomjs --version
+- Rscript -e "install.packages('remotes')"
 matrix:
   include:
   - os: osx
@@ -32,6 +33,8 @@ matrix:
     pandoc: true
     r: release
     env: REPORTS_DEPLOY="true"
+    after_success:
+    - Rscript -e 'covr::codecov()'
   - os: linux
     dist: xenial
     pandoc: true
@@ -49,8 +52,6 @@ addons:
     packages:
     - libproj-dev
 before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
-after_success:
-- Rscript -e 'covr::codecov()'
 before_deploy:
   - if [[ $REPORTS_DEPLOY = "true" ]]; then Rscript ./scripts/generate_sample_reports.R; fi
 deploy:
