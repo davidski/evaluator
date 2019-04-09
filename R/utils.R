@@ -51,6 +51,9 @@ dollar_millions <- function(x) {
 #' @importFrom dplyr mutate
 #' @importFrom tidyr unnest
 #' @export
+#' @return The supplied dataframe with the following additional columns:
+#'   - `ale_var_zscore` - Annual loss z-score
+#'   - `outlier` - Logical flag when the z-score is greater than or equal to two
 #' @examples
 #' data(mc_scenario_summary)
 #' identify_outliers(mc_scenario_summary)
@@ -73,7 +76,7 @@ identify_outliers <- function(results) {
 #' @param simulation_results Simulation results dataframe.
 #' @param scenario_outliers Optional vector of IDs of outlier scenarios.
 #' @return A dataframe with the following columns:
-#'   - `scenario_id` - index of the scenario
+#'   - `iteration` - index of the iteration
 #'   - `biggest_single_scenario_loss` - the biggest annual loss in that iteration,
 #'   - `min_loss` - the smallest annual loss in that iteration,
 #'   - `max_loss` - the total annual losses in that iteration

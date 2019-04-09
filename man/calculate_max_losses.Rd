@@ -14,7 +14,7 @@ calculate_max_losses(simulation_results, scenario_outliers = NULL)
 \value{
 A dataframe with the following columns:
 \itemize{
-\item \code{scenario_id} - index of the scenario
+\item \code{iteration} - index of the iteration
 \item \code{biggest_single_scenario_loss} - the biggest annual loss in that iteration,
 \item \code{min_loss} - the smallest annual loss in that iteration,
 \item \code{max_loss} - the total annual losses in that iteration

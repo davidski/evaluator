@@ -9,6 +9,13 @@ identify_outliers(results)
 \arguments{
 \item{results}{Scenario summary results}
 }
+\value{
+The supplied dataframe with the following additional columns:
+\itemize{
+\item \code{ale_var_zscore} - Annual loss z-score
+\item \code{outlier} - Logical flag when the z-score is greater than or equal to two
+}
+}
 \description{
 Given a summarized results dataframe, unnest the summary results
 column and use the value at risk (VaR) column to identify all the
