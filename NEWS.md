@@ -1,3 +1,5 @@
+# evaluator 0.4.0
+
 # evaluator 0.3.2.900 (unreleased)
 
 This release includes a greatly improved flow when starting directly from 
