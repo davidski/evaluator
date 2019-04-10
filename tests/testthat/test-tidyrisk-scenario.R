@@ -1,5 +1,5 @@
 context("Tidyrisk Scenario class")
-test_that("Scenario object can be created", {
+test_that("Scenario object can be created and coerced to tibble", {
   tidyrisk_scenario(
     diff_params = list(list(
       "2"  = list(min = 70L, mode = 85, max = 98L, shape = 4L, func = "mc2d::rpert"),
@@ -16,6 +16,7 @@ test_that("Scenario object can be created", {
                           func = "mc2d::rpert"))
   ) -> scenario
   expect_s3_class(scenario, "tidyrisk_scenario")
+  expect_s3_class(as_tibble(scenario), "tbl")
 })
 
 test_that("Unnamed parameters throw errors", {

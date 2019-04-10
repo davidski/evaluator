@@ -32,7 +32,6 @@ import_spreadsheet <- function(survey_file = system.file("survey",
                                       domains = domains)
 
   ## ----write_files---------------------------------------------------------
-  if (!dir.exists(output_dir)) dir.create(output_dir)
   readr::write_csv(capabilities, path = file.path(output_dir, "capabilities.csv"))
   readr::write_csv(qualitative_scenarios, path =
                      file.path(output_dir, "qualitative_scenarios.csv"))
@@ -44,7 +43,7 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 
 #' Import scenarios from survey spreadsheet
 #'
-#' @importFrom dplyr funs select mutate mutate_at arrange
+#' @importFrom dplyr select mutate mutate_at arrange
 #' @importFrom rlang .data
 #' @importFrom utils data
 #' @importFrom purrr map
@@ -97,7 +96,7 @@ import_scenarios <- function(survey_file = NULL, domains = NULL) {
   dplyr::select(scenarios, scenario_id = "ScenarioID", scenario = "Scenario",
          tcomm = "TComm", tef = "TEF", tc = "TC", lm = "LM",
          domain_id = "domain_id", controls = "Capabilities") %>%
-    dplyr::mutate_at(vars("tef", "lm", "tc"), dplyr::funs(tolower)) %>%
+    dplyr::mutate_at(vars("tef", "lm", "tc"), tolower) %>%
     dplyr::arrange(.data$scenario_id)
 
 }

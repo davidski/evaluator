@@ -58,3 +58,13 @@ test_that("Summarize to disk", {
   expect_equal(nrow(result), 2)
   unlink(tmpdata, recursive = TRUE)
 })
+
+test_that("Summarize to disk - non-existant directory", {
+  tmpdata <- file.path(tempdir(), "data")
+
+  result <- summarize_to_disk(evaluator::mc_simulation_results,
+                              results_dir = tmpdata)
+  expect_equal(nrow(result), 2)
+  unlink(tmpdata, recursive = TRUE)
+})
+
