@@ -375,10 +375,10 @@ openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE
                  mean_tc_exceedance = mean_tc_exceedance,
                  mean_diff_exceedance = mean_diff_exceedance,
                  ale = purrr::map_dbl(loss_samples, "samples"),
-                 sle_max = purrr::map_dbl(loss_samples, c("details", "sle_max")),
-                 sle_min = purrr::map_dbl(loss_samples, c("details", "sle_min")),
                  sle_mean = purrr::map_dbl(loss_samples, c("details", "sle_mean")),
-                 sle_median = purrr::map_dbl(loss_samples, c("details", "sle_median"))
+                 sle_median = purrr::map_dbl(loss_samples, c("details", "sle_median")),
+                 sle_max = purrr::map_dbl(loss_samples, c("details", "sle_max")),
+                 sle_min = purrr::map_dbl(loss_samples, c("details", "sle_min"))
   )
 }
 
@@ -506,9 +506,9 @@ openfair_tef_tc_diff_plm_sr <- function(tef, tc, diff, plm, sr, n = 10^4, verbos
                  mean_tc_exceedance = mean_tc_exceedance,
                  mean_diff_exceedance = mean_diff_exceedance,
                  ale = purrr::map_dbl(loss_samples, "samples"),
-                 sle_max = purrr::map_dbl(loss_samples, c("details", "sle_max")),
-                 sle_min = purrr::map_dbl(loss_samples, c("details", "sle_min")),
                  sle_mean = purrr::map_dbl(loss_samples, c("details", "sle_mean")),
-                 sle_median = purrr::map_dbl(loss_samples, c("details", "sle_median"))
+                 sle_median = purrr::map_dbl(loss_samples, c("details", "sle_median")),
+                 sle_min = purrr::map_dbl(loss_samples, c("details", "sle_min")),
+                 sle_max = purrr::map_dbl(loss_samples, c("details", "sle_max"))
   )
 }
