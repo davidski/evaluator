@@ -1,9 +1,12 @@
 #!/usr/bin/env r
 
+# ensure devools is available
+if (!requireNamespace("devtools", quietly = TRUE)) remotes::install_cran("devtools")
+
 # Regenerate sample reports
 devtools::load_all()
 
-if (!requireNamespace("here", quietly = TRUE)) devtools::install_cran("here")
+if (!requireNamespace("here", quietly = TRUE)) remotes::install_cran("here")
 
 tmpdir <- tempdir()
 tmpdata <- file.path(tmpdir, "data")
