@@ -25,5 +25,12 @@ generate_scatterplot(mc_simulation_results, scenario_id = "RS-50")
 }
 \seealso{
 \code{\link{evaluator-deprecated}}
+
+Other result graphs: \code{\link{exposure_histogram}},
+  \code{\link{generate_event_outcomes_plot}},
+  \code{\link{generate_heatmap}},
+  \code{\link{loss_exceedance_curve}},
+  \code{\link{loss_scatterplot}}
 }
+\concept{result graphs}
 \keyword{internal}

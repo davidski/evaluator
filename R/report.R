@@ -19,8 +19,9 @@
 #' @param focus_scenario_ids IDs of scenarios of special interest.
 #' @param format Format to generate (html, pdf, word).
 #' @param intermediates_dir Location for intermediate knit files.
-#' @param quiet TRUE to suppress printing of pandoc output.
+#' @param quiet `TRUE` to suppress printing of pandoc output.
 #' @param ... Any other parameters to pass straight to \code{rmarkdown::render}.
+#'
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
 #' @examples
@@ -85,8 +86,9 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
 #' @param results_directory Location of simulation results.
 #' @param styles Optional full path to CSS file to override default styles.
 #' @param intermediates_dir Location for intermediate knit files.
-#' @param quiet TRUE to suppress printing of pandoc output.
+#' @param quiet `TRUE` to suppress printing of pandoc output.
 #' @param ... Any other parameters to pass to \code{rmarkdown::run}.
+#'
 #' @import dplyr
 #' @import ggplot2
 #' @return Invisible NULL.
@@ -131,7 +133,8 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
 #'   application, only TEF+TC+DIFF+LM parameters may be entered.
 #'
 #' @param intermediates_dir Location for intermediate knit files.
-#' @param quiet TRUE to suppress printing of pandoc output.
+#' @param quiet `TRUE` to suppress printing of pandoc output.
+#'
 #' @return Invisible NULL
 #' @export
 #' @examples
@@ -165,12 +168,13 @@ openfair_example <- function(intermediates_dir = tempdir(),
 #'   Intended as a skeleton showing how the results could be displayed at an
 #'   executive level.
 #'
-#' @param input_directory Location of input files
-#' @param results_directory Location of simulation results
+#' @param input_directory Location of input files.
+#' @param results_directory Location of simulation results.
 #' @param output_file Full path to the desired output file.
 #' @param intermediates_dir Location for intermediate knit files.
-#' @param quiet TRUE to suppress printing of pandoc output.
+#' @param quiet `TRUE` to suppress printing of pandoc output.
 #' @param ... Any other parameters to pass to \code{rmarkdown::render}
+#'
 #' @return Default return values of the \code{rmarkdown::render} function.
 #' @export
 #' @examples

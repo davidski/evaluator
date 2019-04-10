@@ -3,16 +3,17 @@
 #' Given a quantitative scenario object of type `tidyrisk_scenario`, run an
 #' OpenFAIR Monte Carlo simulation.
 #'
-#' @import dplyr
-#' @importFrom dplyr progress_estimated bind_rows %>% mutate row_number
+#' @importFrom dplyr progress_estimated bind_rows mutate row_number
 #' @importFrom purrr safely is_null map_lgl transpose simplify keep some
 #' @importFrom tidyr nest
 #' @importFrom rlang .data exec
+#'
 #' @param scenario A \link{tidyrisk_scenario} object.
 #' @param iterations Number of iterations to run on each scenario.
 #' @param simulation_count **DEPRECATED** Number of simulations to perform.
 #' @param ale_maximum Maximum practical annual losses.
 #' @param verbose Whether verbose console output is requested.
+#'
 #' @export
 #' @return Dataframe of results.
 #' @examples
@@ -76,11 +77,13 @@ run_simulation <- function(scenario, iterations = 10000L,
 #' run a OpenFAIR Monte Carlo simulation for each scenario.
 #'
 #' @inheritParams run_simulation
-#' @param ... Additional `tidyrisk_scenario` objects to simulate
+#' @param ... Additional `tidyrisk_scenario` objects to simulate.
+#'
 #' @importFrom purrr map every
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
-#' @return A list of one dataframe of results for each scenario
+#'
+#' @return A list of one dataframe of results for each scenario.
 #' @export
 #' @examples
 #' # fetch three scenarios for this example

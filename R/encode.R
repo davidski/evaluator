@@ -13,6 +13,7 @@
 #' @param scenarios Qualitative risk scenarios dataframe.
 #' @param capabilities Qualitative program capabilities dataframe.
 #' @param mappings Qualitative to quantitative mapping dataframe.
+#'
 #' @export
 #' @return A dataframe of capabilities for the scenario and parameters for quantified simulation.
 #' @examples
@@ -82,6 +83,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' @importFrom stringi stri_split_fixed
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
 #' @param capabilities Dataframe of master list of all qualitative capabilities.
+#'
 #' @return A named list of control IDs and descriptions.
 #' @export
 #' @examples
@@ -114,6 +116,7 @@ derive_control_key <- function(capability_ids, capabilities) {
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
 #' @param capabilities Dataframe of master list of all qualitative capabilities.
 #' @param mappings Qualitative mappings dataframe.
+#'
 #' @return A named list of quantitative estimate parameters for the capabilities
 #'   applicable to a given scenario.
 #' @export

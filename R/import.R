@@ -12,6 +12,7 @@
 #' @param survey_file Path to survey Excel file. Defaults to an Evaluator-provided sample spreadsheet.
 #' @param domains Dataframe of domains and domain IDs. Defaults to built-in sample \code{domains} dataset.
 #' @param output_dir Output file directory.
+#'
 #' @export
 #' @return Dataframe of file information on the two newly created files.
 import_spreadsheet <- function(survey_file = system.file("survey",
@@ -51,6 +52,7 @@ import_spreadsheet <- function(survey_file = system.file("survey",
 #' @importFrom readxl read_excel
 #' @param survey_file Path to survey Excel file. Defaults to a sample file if not supplied.
 #' @param domains Dataframe of domains and domain IDs.
+#'
 #' @export
 #' @return Extracted qualitative scenarios as a dataframe.
 #' @examples
@@ -106,11 +108,12 @@ import_scenarios <- function(survey_file = NULL, domains = NULL) {
 #' @importFrom readxl read_excel
 #' @importFrom purrr map
 #' @importFrom rlang .data
+#' @inheritParams import_scenarios
 #' @param survey_file Path to survey Excel file. If not supplied, a default sample file is used.
 #' @param domains Dataframe of domains and domain IDs.
+#'
 #' @export
 #' @return Extracted capabilities as a dataframe.
-#' @inheritParams import_scenarios
 #' @examples
 #' data(mc_domains)
 #' import_capabilities(domains = mc_domains)
@@ -158,7 +161,7 @@ import_capabilities <- function(survey_file = NULL, domains = NULL){
 #'   and pulls out either the capabilities or threats, as directed by the
 #'   user.
 #'
-#' @importFrom dplyr %>% select
+#' @importFrom dplyr select
 #' @param dat Raw sheet input from \code{\link[readxl]{read_excel}}.
 #' @param table_type Either \code{capabilities} or \code{threats}
 #' @return Extracted table as a dataframe

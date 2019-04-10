@@ -8,6 +8,7 @@
 #' @param n Number of samples to generate.
 #' @param params Optional parameters to pass to `.func`.
 #' @param .func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
+#'
 #' @return List containing type ("tef"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR models
 #' @export
@@ -30,6 +31,7 @@ sample_tef <- function(n, params = NULL, .func = NULL) {
 #' @importFrom stringi stri_split_fixed
 #' @inheritParams sample_tef
 #' @param .func Function to use to simulate TC, defaults to \code{\link[mc2d]{rpert}}.
+#'
 #' @return List containing type ("tc"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
@@ -52,6 +54,7 @@ sample_tc <- function(n, params = NULL, .func = NULL) {
 #' @importFrom stringi stri_split_fixed
 #' @inheritParams sample_tef
 #' @param .func Function to use to simulate DIFF, defaults to \code{\link[mc2d]{rpert}}.
+#'
 #' @return List containing type ("diff"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
@@ -74,6 +77,7 @@ sample_diff <- function(n, .func = NULL, params = NULL) {
 #' @importFrom stringi stri_split_fixed
 #' @inheritParams sample_tef
 #' @param .func Function to use to simulate VULN, defaults to \code{\link[stats]{rbinom}}.
+#'
 #' @return List containing type ("vuln"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
@@ -98,6 +102,7 @@ sample_vuln <- function(n, .func = NULL, params = NULL) {
 #' @importFrom mc2d rpert
 #' @inheritParams sample_tef
 #' @param .func Function to use to simulate TEF, defaults to \code{\link[mc2d]{rpert}}.
+#'
 #' @return List containing type ("lm"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
@@ -133,6 +138,7 @@ sample_lm <- function(n, .func = NULL, params = NULL) {
 #' @importFrom purrr is_list
 #' @inheritParams sample_tef
 #' @param .func Function to use to simulate LEF, defaults to \code{\link[stats]{rnorm}}.
+#'
 #' @return List containing type ("lef"), samples (as a vector), and details (as a list).
 #' @family OpenFAIR helpers
 #' @export
@@ -163,6 +169,7 @@ sample_lef <- function(n, .func = NULL, params = NULL) {
 #' @importFrom rlang .data
 #' @param n Number of threat events to generate control effectiveness samples.
 #' @param diff_parameters Parameters to pass to \code{\link{sample_diff}}.
+#'
 #' @return Vector of control effectiveness.
 #' @family OpenFAIR helpers
 #' @export
@@ -205,6 +212,7 @@ get_mean_control_strength <- function(n, diff_parameters)  {
 #' @param tef Threat event frequency (n).
 #' @param vuln Vulnerability (percentage).
 #' @param n Number of samples to generate.
+#'
 #' @return List containing samples (as a vector) and details (as a list).
 #' @export
 #' @family OpenFAIR helpers
@@ -227,6 +235,7 @@ compare_tef_vuln <- function(tef, vuln, n = NULL) {
 #' @param diff Difficulty (as a percentage).
 #' @param n Number of samples to generate.
 #' @param ... Optional parameters (currently ignored).
+#'
 #' @return List containing boolean values of length TC (as a vector) and details (as a list).
 #' @export
 #' @family OpenFAIR helpers
@@ -282,6 +291,7 @@ select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
 #' @param lm Parameters for LM simulation
 #' @param n Number of iterations to run.
 #' @param verbose Whether to print progress indicators.
+#'
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
 #'   mean TC and DIFF exceedance, and ALE samples.
 #' @family OpenFAIR helpers
@@ -394,13 +404,14 @@ openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE
 #' @importFrom tibble tibble as_tibble
 #' @importFrom rlang .data
 #' @importFrom dplyr %>%
-#' @param tef Parameters for TEF simulation
-#' @param tc Parameters for TC simulation
-#' @param diff Parameters for DIFF simulation
-#' @param plm Parameters for PLM simulation
-#' @param sr Parameters for SR simulation
+#' @param tef Parameters for TEF simulation.
+#' @param tc Parameters for TC simulation.
+#' @param diff Parameters for DIFF simulation.
+#' @param plm Parameters for PLM simulation.
+#' @param sr Parameters for SR simulation.
 #' @param n Number of iterations to run.
 #' @param verbose Whether to print progress indicators.
+#'
 #' @return Dataframe of scenario name, threat_event count, loss_event count,
 #'   mean TC and DIFF exceedance, and ALE samples.
 #' @family OpenFAIR models

@@ -21,3 +21,11 @@ greater than others.
 data(mc_domain_summary)
 generate_heatmap(mc_domain_summary)
 }
+\seealso{
+Other result graphs: \code{\link{exposure_histogram}},
+  \code{\link{generate_event_outcomes_plot}},
+  \code{\link{generate_scatterplot-deprecated}},
+  \code{\link{loss_exceedance_curve}},
+  \code{\link{loss_scatterplot}}
+}
+\concept{result graphs}

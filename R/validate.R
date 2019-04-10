@@ -8,7 +8,7 @@
 #'   - All controls referenced in scenarios are defined in the controls table
 #'   - All controls are distinct
 #'
-#' @importFrom dplyr tally filter left_join rename_ anti_join
+#' @importFrom dplyr tally filter left_join rename anti_join rowwise ungroup
 #' @importFrom rlang .data
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tidyr separate_rows
@@ -16,6 +16,7 @@
 #' @param capabilities Dataframe of capabilities.
 #' @param domains Dataframe of domain mappings.
 #' @param mappings Dataframe of qualitative to quantitative mappings.
+#'
 #' @export
 #' @return An invisible boolean as to success/failure of validation steps.
 #' @examples

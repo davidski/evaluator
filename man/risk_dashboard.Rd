@@ -9,15 +9,15 @@ risk_dashboard(input_directory = "~/evaluator/inputs",
   intermediates_dir = tempdir(), quiet = TRUE, ...)
 }
 \arguments{
-\item{input_directory}{Location of input files}
+\item{input_directory}{Location of input files.}
 
-\item{results_directory}{Location of simulation results}
+\item{results_directory}{Location of simulation results.}
 
 \item{output_file}{Full path to the desired output file.}
 
 \item{intermediates_dir}{Location for intermediate knit files.}
 
-\item{quiet}{TRUE to suppress printing of pandoc output.}
+\item{quiet}{\code{TRUE} to suppress printing of pandoc output.}
 
 \item{...}{Any other parameters to pass to \code{rmarkdown::render}}
 }

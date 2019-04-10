@@ -9,7 +9,7 @@ openfair_example(intermediates_dir = tempdir(), quiet = TRUE)
 \arguments{
 \item{intermediates_dir}{Location for intermediate knit files.}
 
-\item{quiet}{TRUE to suppress printing of pandoc output.}
+\item{quiet}{\code{TRUE} to suppress printing of pandoc output.}
 }
 \value{
 Invisible NULL

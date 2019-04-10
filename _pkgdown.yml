@@ -64,6 +64,7 @@ reference:
       - dollar_millions
       - starts_with("generate")
       - exposure_histogram
+      - loss_exceedance_curve
       - loss_scatterplot
       - get_base_fontfamily
       - risk_dashboard

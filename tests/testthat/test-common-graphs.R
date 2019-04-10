@@ -57,3 +57,10 @@ test_that("Domain-level outcomes", {
   gg <- generate_event_outcomes_plot(mc_domain_summary)
   expect_s3_class(gg, "gg")
 })
+
+test_that("Loss_exceedance_curve", {
+  data("mc_simulation_results")
+  gg <- summarize_iterations(mc_simulation_results$results) %>%
+    loss_exceedance_curve()
+  expect_s3_class(gg, "gg")
+})

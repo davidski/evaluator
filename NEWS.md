@@ -8,19 +8,21 @@ quantitative flows may also use [collector](https://collector.tidyrisk.org) to
 work with their quantitative data.
 
 ## New Feature
-* New `read_qualitative_inputs()` function
-* New `tidyrisk_scenario` object for containing the elements of a risk scenario 
+* `read_qualitative_inputs()` pulls in all qualitative inputs.
+* `tidyrisk_scenario` object for containing the elements of a risk scenario 
   for simulation.
   - A RStudio Add-in for creating a skeleton `tidyrisk_scenario` object is 
   available.
-* New `summarize_scenario()` function creates summary for a single scenario's results. 
+* `summarize_scenario()` function creates summary for a single scenario's results. 
   - `summarize_scenarios()` is now a wrapper around `summarize_scenario()`
-* New alternative model `openfair_tef_tc_diff_plm_sr()` available for 
+* An alternative model `openfair_tef_tc_diff_plm_sr()` is now available for 
   simulating scenarios with secondary loss risk.
-* New `loss_scatterplot()` function generates a scatterplot of total loss 
-  exposure vs. number of loss events for a single scenario.
-* New `exposure_histogram()` function generates a histogram of losses for 
-  a single scenario, optionally displaying the 95% value at risk level.
+* `loss_scatterplot()` generates a scatterplot of total loss exposure vs. 
+  number of loss events for a single scenario.
+* `exposure_histogram()` generates a histogram of losses for a single scenario, 
+  optionally displaying the 95% value at risk level.
+* `loss_exceedance_curve()` generates a loss exceedance curve for one or 
+  more simulations summarized at the iteration level.
 
 ## Improvements
 * Massive speed fix for a slow down that has been present since the v0.2.x 

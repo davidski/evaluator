@@ -7,7 +7,7 @@
 loss_scatterplot(simulation_result)
 }
 \arguments{
-\item{simulation_results}{Simulation results from \code{run_simulation}.}
+\item{simulation_result}{Simulation results from \code{run_simulation}.}
 }
 \value{
 A ggplot object.
@@ -17,4 +17,15 @@ Given a detailed results dataframe create a scatterplot of the number of
 loss events versus the total amount of expected annual loss for each
 simulation. This provides a detailed view on the results.
 }
-\keyword{internal}
+\examples{
+data(mc_simulation_results)
+loss_scatterplot(mc_simulation_results[[1, "results"]])
+}
+\seealso{
+Other result graphs: \code{\link{exposure_histogram}},
+  \code{\link{generate_event_outcomes_plot}},
+  \code{\link{generate_heatmap}},
+  \code{\link{generate_scatterplot-deprecated}},
+  \code{\link{loss_exceedance_curve}}
+}
+\concept{result graphs}

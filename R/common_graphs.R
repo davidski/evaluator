@@ -42,12 +42,13 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #'   by the 95% VaR. This plot displays the domains in which aggregreate risk is
 #'   greater than others.
 #'
-#' @importFrom dplyr arrange mutate
 #' @import ggplot2
+#' @importFrom dplyr arrange mutate
 #' @importFrom viridis scale_fill_viridis
 #' @importFrom rlang .data
 #' @param domain_summary Simulations summarized at a domain level via \code{summarize_domains}.
 #' @return A ggplot object.
+#' @family result graphs
 #' @export
 #' @examples
 #' data(mc_domain_summary)
@@ -82,6 +83,7 @@ generate_heatmap <- function(domain_summary) {
 #' @param simulation_results Simulation results from \code{run_simulations}.
 #' @param scenario_id ID of the scenario to display.
 #' @return A ggplot object.
+#' @family result graphs
 #' @keywords internal
 #' @examples
 #' \dontrun{
@@ -124,9 +126,15 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #'
 #' @import ggplot2
 #' @importFrom scales comma
-#' @param simulation_results Simulation results from \code{run_simulation}.
+#'
+#' @param simulation_result Simulation results from \code{run_simulation}.
+#'
 #' @return A ggplot object.
-#' @keywords internal
+#' @family result graphs
+#' @export
+#' @examples
+#' data(mc_simulation_results)
+#' loss_scatterplot(mc_simulation_results[[1, "results"]])
 loss_scatterplot <- function(simulation_result) {
   gg <- ggplot(simulation_result, aes(x = .data$loss_events, y = .data$ale))
   gg <- gg + geom_point(alpha = 1/4)
@@ -155,6 +163,7 @@ loss_scatterplot <- function(simulation_result) {
 #' @param show_var_95 Set to TRUE to show the 95 percentile value at risk line.
 #'
 #' @return A ggplot object.
+#' @family result graphs
 #' @export
 #' @examples
 #' data(mc_simulation_results)
@@ -182,15 +191,18 @@ exposure_histogram <- function(simulation_result, bins = 30, show_var_95 = FALSE
 #'   contained (not resulting in loss) vs the number and percentage of
 #'   loss events (threat events resulting in losses).
 #'
-#' @importFrom dplyr arrange mutate desc
 #' @import ggplot2
+#' @importFrom dplyr arrange mutate desc
 #' @importFrom scales comma
 #' @importFrom viridis viridis
 #' @importFrom tidyr gather
 #' @importFrom rlang .data
+#'
 #' @param domain_summary Domain-level summary from \code{domain_summary}.
 #' @param domain_id Variable to group plot by.
+#'
 #' @return A ggplot object.
+#' @family result graphs
 #' @export
 #' @examples
 #' data(mc_domain_summary)
@@ -252,5 +264,42 @@ generate_event_outcomes_plot <- function(domain_summary, domain_id = domain_id) 
   gg <- gg + theme(axis.text.y = element_blank())
   gg <- gg + theme(axis.ticks.x = element_blank())
   gg <- gg + theme(axis.ticks.y = element_blank())
+  gg
+}
+
+#' Display the loss exceedance curve for a group of one or more scenarios
+#'
+#' @import ggplot2
+#' @importFrom dplyr arrange mutate percent_rank
+#' @importFrom scales percent dollar
+#' @importFrom rlang .data
+#'
+#' @param iteration_results Iteration-level summary from \code{summarize_iterations}.
+#'
+#' @return A ggplot object.
+#' @family result graphs
+#' @export
+#' @examples
+#' data(mc_simulation_results)
+#' summarize_iterations(mc_simulation_results$results) %>% loss_exceedance_curve()
+loss_exceedance_curve <- function(iteration_results) {
+  gg <- dplyr::arrange(iteration_results, .data$max_loss) %>%
+    dplyr::mutate(prob = 1 - dplyr::percent_rank(.data$max_loss)) %>%
+    ggplot(aes(.data$prob, .data$max_loss))
+  gg <- gg + geom_path()
+
+  # set 80% threshold line
+  gg <- gg + geom_vline(xintercept = 0.8, color = "red", size = 1)
+  gg <- gg + annotate("text", x = 0.8, y = max(iteration_results$max_loss),
+                      label = percent(.8, accuracy = 1), hjust = "right")
+
+  gg <- gg + scale_x_reverse(labels = scales::percent)
+  gg <- gg + scale_y_continuous(labels = scales::dollar)
+  gg <- gg + theme_evaluator(base_family = get_base_fontfamily())
+  gg <- gg + theme(panel.grid.minor = element_blank())
+  gg <- gg + theme(panel.grid.major.x = element_blank())
+  gg <- gg + labs(x = "Chance of Equal or Greater Loss", y = "Loss",
+                  title = "Loss Exceedance Curve",
+                  caption = "Source: Evaluator toolkit")
   gg
 }

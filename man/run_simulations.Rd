@@ -10,7 +10,7 @@ run_simulations(scenario, ..., iterations = 10000L, ale_maximum = NULL,
 \arguments{
 \item{scenario}{A \link{tidyrisk_scenario} object.}
 
-\item{...}{Additional \code{tidyrisk_scenario} objects to simulate}
+\item{...}{Additional \code{tidyrisk_scenario} objects to simulate.}
 
 \item{iterations}{Number of iterations to run on each scenario.}
 
@@ -21,7 +21,7 @@ run_simulations(scenario, ..., iterations = 10000L, ale_maximum = NULL,
 \item{simulation_count}{\strong{DEPRECATED} Number of simulations to perform.}
 }
 \value{
-A list of one dataframe of results for each scenario
+A list of one dataframe of results for each scenario.
 }
 \description{
 Given a list of quantitative scenario objects of type \code{tidyrisk_scenario},

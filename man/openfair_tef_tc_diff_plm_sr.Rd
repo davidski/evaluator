@@ -8,15 +8,15 @@ openfair_tef_tc_diff_plm_sr(tef, tc, diff, plm, sr, n = 10^4,
   verbose = FALSE)
 }
 \arguments{
-\item{tef}{Parameters for TEF simulation}
+\item{tef}{Parameters for TEF simulation.}
 
-\item{tc}{Parameters for TC simulation}
+\item{tc}{Parameters for TC simulation.}
 
-\item{diff}{Parameters for DIFF simulation}
+\item{diff}{Parameters for DIFF simulation.}
 
-\item{plm}{Parameters for PLM simulation}
+\item{plm}{Parameters for PLM simulation.}
 
-\item{sr}{Parameters for SR simulation}
+\item{sr}{Parameters for SR simulation.}
 
 \item{n}{Number of iterations to run.}
 
