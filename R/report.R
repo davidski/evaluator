@@ -143,7 +143,7 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
 #' }
 openfair_example <- function(intermediates_dir = tempdir(),
                              quiet = TRUE) {
-  check_availability(c("rmarkdown", "shiny", "flexdashboard"),
+  check_availability(c("rmarkdown", "shiny", "flexdashboard", "DT"),
                      func = "openfair_example")
 
   styles <- system.file("rmd", "styles", "html-styles.css", package = "evaluator")
