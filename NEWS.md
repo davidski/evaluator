@@ -12,6 +12,10 @@
   formatting.
 * Removed inadvertent dependency on R 3.5 `tempdir()` syntax.
 
+* `openfair_example()` did not check for the presence of the DT package. Fixed.
+* `check_availability()` error message reported for all checked packages, rather 
+  than reporting on just the packages that are missing.
+
 # evaluator 0.4.0
 
 This release includes a greatly improved flow when starting directly from 

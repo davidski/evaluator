@@ -1,6 +1,7 @@
 context("Utilities")
 test_that("Missing packages are detected", {
-  expect_error(check_availability(packages = c("Missing"), func = "test"))
+  expect_error(check_availability(packages = c("ggplot2", "Missing"), func = "test"),
+              "available: Missing")
 })
 test_that("Found packages are detected silently", {
   expect_silent(check_availability(packages = c("stats"), func = "test"))

@@ -17,7 +17,7 @@ check_availability <- function(packages, func) {
                                         available = requireNamespace(.x, quietly=TRUE)))
   if (sum(res$available) != length(packages)) {
     stop(func, " requires the following packages which are not available: ",
-         paste0(res[, ]$package, collapse = ", "), "\n",
+         paste0(res[res$available == FALSE, ]$package, collapse = ", "), "\n",
          "Please install and try again.", call. = FALSE)
   }
 
