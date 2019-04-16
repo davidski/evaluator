@@ -4,7 +4,7 @@
 \alias{summarize_to_disk}
 \title{Create all summary files and write to disk}
 \usage{
-summarize_to_disk(simulation_results, results_dir = "~/results")
+summarize_to_disk(simulation_results, results_dir)
 }
 \arguments{
 \item{simulation_results}{Simulation results dataframe.}
@@ -20,8 +20,6 @@ This is a wrapper around \code{\link{summarize_scenario}} and
 dataframes to a location on disk.
 }
 \examples{
-\dontrun{
 data(mc_simulation_results)
-summarize_to_disk(mc_simulation_results)
-}
+summarize_to_disk(mc_simulation_results, results_dir = tempdir())
 }

@@ -1,5 +1,8 @@
 # evaluator (development version)
 
+* `summarize_to_disk()` no longer defaults to the user's home directory for 
+  writing to disk. A path to place the summary files must be provided.
+
 # evaluator 0.4.0
 
 This release includes a greatly improved flow when starting directly from 
