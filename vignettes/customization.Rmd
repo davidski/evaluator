@@ -26,7 +26,11 @@ tolerance.
 `inputs/qualitative_mappings.csv`. The values in this mapping may be changed 
 but they must use lowercase and agree with the values used in the survey 
 spreadsheet. Changing the number of levels used for any qualitative label 
-(e.g. changing High/Medium/Low to High/Medium/Low/VeryLow) is unsupported.
+(e.g. changing High/Medium/Low to High/Medium/Low/VeryLow) is possible as long 
+as the survey spreadsheet uses the same labels. 
+  - The survey spreadsheet uses data validation to populate drop downs. If you 
+  change the mappings, the validation will need to be updated or removed to 
+  agree with your new mappings.
 
 ## Report Customization
 
