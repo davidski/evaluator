@@ -51,10 +51,10 @@ together represent an analysis snapshot.
 
 ## Quick Start Script
 
-When using `create_templates()` an `run_analysis.R` file will be placed at the base 
+When using `create_templates()` a `run_analysis.R` file will be placed at the base 
 of the `evaluator` directory. A sample ultra-quick workflow looks like:
 
-1. Run `evaluator::create_templates()`
+1. Run `evaluator::create_templates("~/evaluator")`
 2. Edit the inputs for your situation.
 3. Run the quick start script with code like the following:
 

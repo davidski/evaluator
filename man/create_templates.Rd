@@ -4,7 +4,7 @@
 \alias{create_templates}
 \title{Create a directory structure for risk analysis, pre-populated with templates}
 \usage{
-create_templates(base_directory = "~/evaluator")
+create_templates(base_directory)
 }
 \arguments{
 \item{base_directory}{Parent directory under which to create starter files.}

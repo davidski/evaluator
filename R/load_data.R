@@ -15,7 +15,7 @@
 #' \dontrun{
 #' create_templates("~/evaluator")
 #' }
-create_templates <- function(base_directory = "~/evaluator"){
+create_templates <- function(base_directory){
 
   inputs_dir = file.path(base_directory, "inputs")
   if (!dir.exists(inputs_dir)) dir.create(inputs_dir, recursive = TRUE)
