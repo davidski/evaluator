@@ -14,10 +14,14 @@ List of domains, quantitative_scenarios, and risk_tolerances
 }
 \description{
 Given an input directory, load the quantitative objects into memory.
+}
+\details{
 The key quantitative inputs for Evaluator processing include:
-* domains - domains and domain_ids
-* risk_tolerances - the risk tolerances of the organization
-* quantitative_scenarios - risk scenarios and quantified parameters
+\itemize{
+\item \code{domains.csv} - domains and domain_ids
+\item \code{risk_tolerances.csv} - the risk tolerances of the organization
+\item \code{quantitative_scenarios.rds} - risk scenarios and quantified parameters
+}
 }
 \examples{
 \dontrun{

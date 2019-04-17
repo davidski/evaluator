@@ -3,6 +3,8 @@
 * `summarize_to_disk()` and `create_templates()` no longer default to the 
   user's home directory for writing to disk. A path to place the generated 
   files must be provided.
+* General documentation improvements. Clarifying language and correcting 
+  formatting.
 
 # evaluator 0.4.0
 

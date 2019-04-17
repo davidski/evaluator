@@ -14,11 +14,15 @@ List of domains, mappings, capabilities, and qualitative_scenarios
 }
 \description{
 Given an input directory, load the key qualitative objects into memory.
+}
+\details{
 The key qualitative inputs for Evaluator processing include:
-* domains - domains and domain_ids
-* mappings - qualitative to quantitative mappings
-* capabilities - qualitative capabilities
-* qualitative_scenarios - qualitative risk scenarios
+\itemize{
+\item \code{domains.csv}: domains and domain_ids
+\item \code{mappings.csv}: qualitative to quantitative mappings
+\item \code{capabilities.csv}: qualitative capabilities
+\item \code{qualitative_scenarios.csv}: qualitative risk scenarios
+}
 }
 \examples{
 \dontrun{

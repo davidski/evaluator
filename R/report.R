@@ -82,8 +82,8 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
 #'   be preferable, with the Explorer application provided as a bare-bones data
 #'   exploration tool.
 #'
-#' @param input_directory Location of input files.
-#' @param results_directory Location of simulation results.
+#' @param input_directory Location of input files to be read by \code{\link{read_quantitative_inputs}}.
+#' @param results_directory Directory where the `simulations_results.rds` file is stored.
 #' @param styles Optional full path to CSS file to override default styles.
 #' @param intermediates_dir Location for intermediate knit files.
 #' @param quiet `TRUE` to suppress printing of pandoc output.
@@ -130,7 +130,7 @@ explore_scenarios <- function(input_directory = "~/evaluator/inputs",
 #' A simple web application to demonstrate OpenFAIR modeling. This application
 #'   allows a user to enter beta PERT parameters and run simulations to see the
 #'   distribution of results, with high level summary statistics. As a demonstration
-#'   application, only TEF+TC+DIFF+LM parameters may be entered.
+#'   application, only TEF, TC, DIFF, and LM parameters may be entered.
 #'
 #' @param intermediates_dir Location for intermediate knit files.
 #' @param quiet `TRUE` to suppress printing of pandoc output.
@@ -168,8 +168,8 @@ openfair_example <- function(intermediates_dir = tempdir(),
 #'   Intended as a skeleton showing how the results could be displayed at an
 #'   executive level.
 #'
-#' @param input_directory Location of input files.
-#' @param results_directory Location of simulation results.
+#' @param input_directory Location of input files read by \code{\link{read_quantitative_inputs}}.
+#' @param results_directory Directory where the `simulation_results.rds` file is located.
 #' @param output_file Full path to the desired output file.
 #' @param intermediates_dir Location for intermediate knit files.
 #' @param quiet `TRUE` to suppress printing of pandoc output.

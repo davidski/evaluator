@@ -9,9 +9,9 @@ risk_dashboard(input_directory = "~/evaluator/inputs",
   intermediates_dir = tempdir(), quiet = TRUE, ...)
 }
 \arguments{
-\item{input_directory}{Location of input files.}
+\item{input_directory}{Location of input files read by \code{\link{read_quantitative_inputs}}.}
 
-\item{results_directory}{Location of simulation results.}
+\item{results_directory}{Directory where the \code{simulation_results.rds} file is located.}
 
 \item{output_file}{Full path to the desired output file.}
 

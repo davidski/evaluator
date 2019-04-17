@@ -162,11 +162,13 @@ load_data <- function(input_directory = "~/evaluator/inputs", results_directory 
 #' Load qualitative inputs
 #'
 #' Given an input directory, load the key qualitative objects into memory.
-#'   The key qualitative inputs for Evaluator processing include:
-#'     * domains - domains and domain_ids
-#'     * mappings - qualitative to quantitative mappings
-#'     * capabilities - qualitative capabilities
-#'     * qualitative_scenarios - qualitative risk scenarios
+#'
+#' The key qualitative inputs for Evaluator processing include:
+#'
+#' - `domains.csv`: domains and domain_ids
+#' - `mappings.csv`: qualitative to quantitative mappings
+#' - `capabilities.csv`: qualitative capabilities
+#' - `qualitative_scenarios.csv`: qualitative risk scenarios
 #'
 #' @importFrom dplyr summarize mutate group_by_at
 #' @importFrom rlang .data
@@ -226,10 +228,12 @@ read_qualitative_inputs <- function(input_directory = "~/evaluator/inputs") {
 #' Load quantitative inputs
 #'
 #' Given an input directory, load the quantitative objects into memory.
-#'   The key quantitative inputs for Evaluator processing include:
-#'     * domains - domains and domain_ids
-#'     * risk_tolerances - the risk tolerances of the organization
-#'     * quantitative_scenarios - risk scenarios and quantified parameters
+#'
+#' The key quantitative inputs for Evaluator processing include:
+#'
+#' * `domains.csv` - domains and domain_ids
+#' * `risk_tolerances.csv` - the risk tolerances of the organization
+#' * `quantitative_scenarios.rds` - risk scenarios and quantified parameters
 #'
 #' @importFrom dplyr summarize mutate group_by_at
 #' @importFrom rlang .data

@@ -50,7 +50,6 @@ reference:
     contents:
       - compare_tef_vuln
       - get_mean_control_strength
-      - identify_outliers
       - starts_with("openfair_")
       - run_simulation
       - run_simulations
@@ -60,13 +59,14 @@ reference:
     contents:
       - starts_with("calculate")
       - derive_control_key
-      - explore_scenarios
       - dollar_millions
-      - starts_with("generate")
+      - explore_scenarios
       - exposure_histogram
+      - starts_with("generate")
+      - get_base_fontfamily
+      - identify_outliers
       - loss_exceedance_curve
       - loss_scatterplot
-      - get_base_fontfamily
       - risk_dashboard
       - theme_evaluator
   - title: Sample Data Set

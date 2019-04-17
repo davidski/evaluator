@@ -9,9 +9,9 @@ explore_scenarios(input_directory = "~/evaluator/inputs",
   intermediates_dir = tempdir(), quiet = TRUE, ...)
 }
 \arguments{
-\item{input_directory}{Location of input files.}
+\item{input_directory}{Location of input files to be read by \code{\link{read_quantitative_inputs}}.}
 
-\item{results_directory}{Location of simulation results.}
+\item{results_directory}{Directory where the \code{simulations_results.rds} file is stored.}
 
 \item{styles}{Optional full path to CSS file to override default styles.}
 

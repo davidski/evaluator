@@ -205,8 +205,10 @@ summarize_domains <- function(simulation_results, domain_variable = "domain_id")
 #' @return Tibble with paths to the created data files.
 #' @export
 #' @examples
+#' \dontrun{
 #' data(mc_simulation_results)
 #' summarize_to_disk(mc_simulation_results, results_dir = tempdir())
+#' }
 summarize_to_disk <- function(simulation_results, results_dir) {
   if (!dir.exists(results_dir)) dir.create(results_dir)
 
