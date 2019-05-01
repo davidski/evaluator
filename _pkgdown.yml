@@ -21,7 +21,9 @@ navbar:
           href: articles/process.html
     - text: Presentations
       menu:
-        - text: "SiRAcon 2018 (Slideshare)"
+        - text: "Tidyrisk Training Workshop"
+          href: https://www.slideshare.net/davidski1/tidyrisk-workshop
+        - text: "SiRAcon 2018"
           href: https://www.slideshare.net/davidski1/evaluator-siracon-2018-presentation
     - text: "News"
       href: news/index.html
