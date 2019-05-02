@@ -26,7 +26,8 @@ data("mc_quantitative_scenarios", envir = environment())
 saveRDS(mc_quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.rds"))
 
 test_that("Template files can be copied", {
-  tmpdata <- file.path(tempdir(check = TRUE), "templates")
+  tmpdata <- file.path(tempdir(), "templates")
+  dir.create(tmpdata, showWarnings = FALSE)
   res <- create_templates(tmpdata)
   expect_equal(sum(res$copied), 5)
   unlink(tmpdata, recursive = TRUE)

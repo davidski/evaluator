@@ -5,6 +5,7 @@
   files must be provided.
 * General documentation improvements. Clarifying language and correcting 
   formatting.
+* Removed inadvertent dependency on R 3.5 `tempdir()` syntax.
 
 # evaluator 0.4.0
 
