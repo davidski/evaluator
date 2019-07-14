@@ -1,5 +1,6 @@
 # evaluator (development version)
 
+* Update for compatability with `vctrs` 0.2.0 CRAN release.
 * `summarize_to_disk()` and `create_templates()` no longer default to the 
   user's home directory for writing to disk. A path to place the generated 
   files must be provided.

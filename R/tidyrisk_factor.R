@@ -103,12 +103,6 @@ vec_cast.tidyrisk_factor.default <- function(x, to) {
   stop_incompatible_cast(x, to)
 }
 
-#' @method vec_cast.tidyrisk_factor logical
-#' @importFrom vctrs vec_unspecified_cast
-vec_cast.tidyrisk_factor.logical <- function(x, to) {
-  vec_unspecified_cast(x, to)
-}
-
 #' @method vec_cast.tidyrisk_factor class_pred
 vec_cast.tidyrisk_factor.class_pred <- function(x, to) {
 
