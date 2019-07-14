@@ -1,12 +1,11 @@
 ## Update
 
-This is a major release. Both bug fixes and new features are included. The 
-focus is on stabilizing interfaces, preparing for a stable 1.0 milestone.
+This is a minor hotfix, primarily addressing `vctrs` 0.2.0 compatibility.
 
 ## Test environments
 
 * local Windows 10 64 install, R 3.5.3
-* local OS X, R 3.5.2
+* local OS X, R 3.6.0
 * Windows Server 2016 (on appveyor), R 3.5
 * Ubuntu 16.04 LTS (on travis-ci)
   * R-release (both with and without pandoc)
@@ -21,4 +20,5 @@ focus is on stabilizing interfaces, preparing for a stable 1.0 milestone.
 
 ## Downstream dependencies
 
-There are no downstream CRAN dependencies on this package.
+The `collector` package (also authored by me) depends on this package. This 
+release does not impact collector.
