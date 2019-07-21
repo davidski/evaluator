@@ -21,4 +21,5 @@ This is a minor hotfix, primarily addressing `vctrs` 0.2.0 compatibility.
 ## Downstream dependencies
 
 The `collector` package (also authored by me) depends on this package. This 
-release does not impact collector.
+release does not impact collector, apart from fixing CRAN checks on 
+collector that fail due to `evaluator`.
