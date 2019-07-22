@@ -1,4 +1,4 @@
-# evaluator (development version)
+# evaluator 0.4.1
 
 * Update for compatibility with `vctrs` 0.2.0 CRAN release.
 * `summarize_to_disk()` and `create_templates()` no longer default to the 
