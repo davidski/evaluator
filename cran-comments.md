@@ -1,6 +1,7 @@
 ## Update
 
-This is a minor hotfix, primarily addressing `vctrs` 0.2.0 compatibility.
+This is a resubmission of a minor hotfix to address `vctrs` compatability. 
+This resubmission fixes an invalid URI in the README.
 
 ## Test environments
 
