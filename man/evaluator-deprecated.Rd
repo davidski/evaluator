@@ -9,8 +9,10 @@
 \usage{
 generate_scatterplot(simulation_results, scenario_id)
 
-load_data(input_directory = "~/evaluator/inputs",
-  results_directory = "~/evaluator/results")
+load_data(
+  input_directory = "~/evaluator/inputs",
+  results_directory = "~/evaluator/results"
+)
 }
 \description{
 The functions listed below are deprecated and will be defunct in

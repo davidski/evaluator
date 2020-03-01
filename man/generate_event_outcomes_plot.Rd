@@ -25,10 +25,11 @@ data(mc_domain_summary)
 generate_event_outcomes_plot(mc_domain_summary)
 }
 \seealso{
-Other result graphs: \code{\link{exposure_histogram}},
-  \code{\link{generate_heatmap}},
-  \code{\link{generate_scatterplot-deprecated}},
-  \code{\link{loss_exceedance_curve}},
-  \code{\link{loss_scatterplot}}
+Other result graphs: 
+\code{\link{exposure_histogram}()},
+\code{\link{generate_heatmap}()},
+\code{\link{generate_scatterplot-deprecated}},
+\code{\link{loss_exceedance_curve}()},
+\code{\link{loss_scatterplot}()}
 }
 \concept{result graphs}

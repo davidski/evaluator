@@ -3,7 +3,6 @@
 \docType{package}
 \name{evaluator}
 \alias{evaluator}
-\alias{evaluator-package}
 \title{\code{evaluator} package}
 \description{
 Quantified Information Risk Simulation Toolkit

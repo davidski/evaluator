@@ -20,10 +20,11 @@ data(mc_simulation_results)
 summarize_iterations(mc_simulation_results$results) \%>\% loss_exceedance_curve()
 }
 \seealso{
-Other result graphs: \code{\link{exposure_histogram}},
-  \code{\link{generate_event_outcomes_plot}},
-  \code{\link{generate_heatmap}},
-  \code{\link{generate_scatterplot-deprecated}},
-  \code{\link{loss_scatterplot}}
+Other result graphs: 
+\code{\link{exposure_histogram}()},
+\code{\link{generate_event_outcomes_plot}()},
+\code{\link{generate_heatmap}()},
+\code{\link{generate_scatterplot-deprecated}},
+\code{\link{loss_scatterplot}()}
 }
 \concept{result graphs}

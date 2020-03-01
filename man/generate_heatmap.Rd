@@ -14,7 +14,7 @@ A ggplot object.
 }
 \description{
 Given a domain_summary and a list of all domains, generate a heatmap colored
-by the 95% VaR. This plot displays the domains in which aggregreate risk is
+by the 95\% VaR. This plot displays the domains in which aggregreate risk is
 greater than others.
 }
 \examples{
@@ -22,10 +22,11 @@ data(mc_domain_summary)
 generate_heatmap(mc_domain_summary)
 }
 \seealso{
-Other result graphs: \code{\link{exposure_histogram}},
-  \code{\link{generate_event_outcomes_plot}},
-  \code{\link{generate_scatterplot-deprecated}},
-  \code{\link{loss_exceedance_curve}},
-  \code{\link{loss_scatterplot}}
+Other result graphs: 
+\code{\link{exposure_histogram}()},
+\code{\link{generate_event_outcomes_plot}()},
+\code{\link{generate_scatterplot-deprecated}},
+\code{\link{loss_exceedance_curve}()},
+\code{\link{loss_scatterplot}()}
 }
 \concept{result graphs}
