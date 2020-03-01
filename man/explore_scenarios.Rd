@@ -4,9 +4,14 @@
 \alias{explore_scenarios}
 \title{Launch the Scenario Explorer web application}
 \usage{
-explore_scenarios(input_directory = "~/evaluator/inputs",
-  results_directory = "~/evaluator/results", styles = NULL,
-  intermediates_dir = tempdir(), quiet = TRUE, ...)
+explore_scenarios(
+  input_directory = "~/evaluator/inputs",
+  results_directory = "~/evaluator/results",
+  styles = NULL,
+  intermediates_dir = tempdir(),
+  quiet = TRUE,
+  ...
+)
 }
 \arguments{
 \item{input_directory}{Location of input files to be read by \code{\link{read_quantitative_inputs}}.}

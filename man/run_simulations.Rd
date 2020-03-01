@@ -4,8 +4,14 @@
 \alias{run_simulations}
 \title{Run simulations for a list of scenarios}
 \usage{
-run_simulations(scenario, ..., iterations = 10000L, ale_maximum = NULL,
-  verbose = FALSE, simulation_count = NULL)
+run_simulations(
+  scenario,
+  ...,
+  iterations = 10000L,
+  ale_maximum = NULL,
+  verbose = FALSE,
+  simulation_count = NULL
+)
 }
 \arguments{
 \item{scenario}{A \link{tidyrisk_scenario} object.}

@@ -4,8 +4,7 @@
 \alias{openfair_tef_tc_diff_plm_sr}
 \title{Run an OpenFAIR simulation at the TEF/TC/DIFF/PLM/SR levels}
 \usage{
-openfair_tef_tc_diff_plm_sr(tef, tc, diff, plm, sr, n = 10^4,
-  verbose = FALSE)
+openfair_tef_tc_diff_plm_sr(tef, tc, diff, plm, sr, n = 10^4, verbose = FALSE)
 }
 \arguments{
 \item{tef}{Parameters for TEF simulation.}
@@ -33,6 +32,7 @@ arithmetic mean (average) is taken across samples for all controls to get
 the effective control strength for each threat event.
 }
 \seealso{
-Other OpenFAIR models: \code{\link{sample_tef}}
+Other OpenFAIR models: 
+\code{\link{sample_tef}()}
 }
 \concept{OpenFAIR models}

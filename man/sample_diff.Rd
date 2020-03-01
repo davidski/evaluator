@@ -22,11 +22,14 @@ Calculate the difficulty presented by controls, given a function and
 parameters for that function
 }
 \seealso{
-Other OpenFAIR helpers: \code{\link{compare_tef_vuln}},
-  \code{\link{get_mean_control_strength}},
-  \code{\link{openfair_tef_tc_diff_lm}},
-  \code{\link{sample_lef}}, \code{\link{sample_lm}},
-  \code{\link{sample_tc}}, \code{\link{sample_vuln}},
-  \code{\link{select_loss_opportunities}}
+Other OpenFAIR helpers: 
+\code{\link{compare_tef_vuln}()},
+\code{\link{get_mean_control_strength}()},
+\code{\link{openfair_tef_tc_diff_lm}()},
+\code{\link{sample_lef}()},
+\code{\link{sample_lm}()},
+\code{\link{sample_tc}()},
+\code{\link{sample_vuln}()},
+\code{\link{select_loss_opportunities}()}
 }
 \concept{OpenFAIR helpers}

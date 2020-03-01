@@ -5,8 +5,11 @@
 \alias{new_tidyrisk_factor}
 \title{Construct a tidyrisk_factor object}
 \usage{
-new_tidyrisk_factor(samples = double(), factor_label = character(),
-  details = list())
+new_tidyrisk_factor(
+  samples = double(),
+  factor_label = character(),
+  details = list()
+)
 
 tidyrisk_factor(samples, factor_label, details = list())
 }

@@ -25,11 +25,14 @@ percentage), calculate how many of those become loss events (LEF).
 compare_tef_vuln(tef = 500, vuln = .25)
 }
 \seealso{
-Other OpenFAIR helpers: \code{\link{get_mean_control_strength}},
-  \code{\link{openfair_tef_tc_diff_lm}},
-  \code{\link{sample_diff}}, \code{\link{sample_lef}},
-  \code{\link{sample_lm}}, \code{\link{sample_tc}},
-  \code{\link{sample_vuln}},
-  \code{\link{select_loss_opportunities}}
+Other OpenFAIR helpers: 
+\code{\link{get_mean_control_strength}()},
+\code{\link{openfair_tef_tc_diff_lm}()},
+\code{\link{sample_diff}()},
+\code{\link{sample_lef}()},
+\code{\link{sample_lm}()},
+\code{\link{sample_tc}()},
+\code{\link{sample_vuln}()},
+\code{\link{select_loss_opportunities}()}
 }
 \concept{OpenFAIR helpers}
