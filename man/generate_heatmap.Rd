@@ -14,7 +14,7 @@ A ggplot object.
 }
 \description{
 Given a domain_summary and a list of all domains, generate a heatmap colored
-by the 95\% VaR. This plot displays the domains in which aggregreate risk is
+by the 95\% VaR. This plot displays the domains in which aggregate risk is
 greater than others.
 }
 \examples{

@@ -21,6 +21,6 @@ IDs.
 }
 \examples{
 data(mc_capabilities)
-capability_ids <- c("1, 3")
+capability_ids <- c("CAP-01", "CAP-03")
 derive_control_key(capability_ids, mc_capabilities)
 }

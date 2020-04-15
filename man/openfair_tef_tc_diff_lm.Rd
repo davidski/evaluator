@@ -31,7 +31,7 @@ the effective control strength for each threat event.
 }
 \examples{
 data(mc_quantitative_scenarios)
-params <- mc_quantitative_scenarios[[1, "scenario"]]$parameters
+params <- mc_quantitative_scenarios$scenario[[1]]$parameters
 openfair_tef_tc_diff_lm(params$tef, params$tc, params$diff, params$lm, 10)
 }
 \seealso{

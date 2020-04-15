@@ -22,7 +22,7 @@
 #' @examples
 #' data(mc_simulation_results)
 #' # summarize a single scenario
-#' summarize_scenario(mc_simulation_results[[1, "results"]])
+#' summarize_scenario(mc_simulation_results$results[[1]])
 #'
 summarize_scenario <- function(simulation_result) {
   if (!is.data.frame(simulation_result) ||

@@ -298,7 +298,7 @@ select_loss_opportunities <- function(tc, diff, n = NULL, ...) {
 #' @export
 #' @examples
 #' data(mc_quantitative_scenarios)
-#' params <- mc_quantitative_scenarios[[1, "scenario"]]$parameters
+#' params <- mc_quantitative_scenarios$scenario[[1]]$parameters
 #' openfair_tef_tc_diff_lm(params$tef, params$tc, params$diff, params$lm, 10)
 openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE) {
 
@@ -318,7 +318,7 @@ openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE
 
   # TEF - how many contacts do we have in each simulated period
   TEFestimate <- tef %>% purrr::flatten() %>%
-    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+    tibble::as_tibble() %>% tidyr::nest(params = -.data$func)
   params <- TEFestimate$params %>% unlist()
   TEFsamples <- sample_tef(n = n, .func = TEFestimate$func, params = params)
   TEFsamples <- TEFsamples$samples
@@ -326,7 +326,7 @@ openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE
   # TC - what is the strength of each threat event
   #    - get the threat capability parameters for this scenario
   TCestimate <- tc %>% purrr::flatten() %>%
-    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+    tibble::as_tibble() %>% tidyr::nest(params = -.data$func)
   #    - sample threat capability for each TEF event in each sample period
   TCsamples <- purrr::map(1:n, function(x) {
     params <- TCestimate$params %>% unlist()
@@ -360,7 +360,7 @@ openfair_tef_tc_diff_lm <- function(tef, tc, diff, lm, n = 10^4, verbose = FALSE
 
   # LM - determine the size of losses for each iteration
   LMestimate <- lm %>% purrr::flatten() %>%
-    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+    tibble::as_tibble() %>% tidyr::nest(params = -.data$func)
   loss_samples <- purrr::map(LEFsamples, function(x) {
     params <- LMestimate$params %>% unlist()
     dat <- sample_lm(n = x, .func = LMestimate$func, params = params)
@@ -435,7 +435,7 @@ openfair_tef_tc_diff_plm_sr <- function(tef, tc, diff, plm, sr, n = 10^4, verbos
 
   # TEF - how many contacts do we have in each simulated period
   TEFestimate <- tef %>% purrr::flatten() %>%
-    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+    tibble::as_tibble() %>% tidyr::nest(params = -.data$func)
   params <- TEFestimate$params %>% unlist()
   TEFsamples <- sample_tef(n = n, .func = TEFestimate$func, params = params)
   TEFsamples <- TEFsamples$samples
@@ -443,7 +443,7 @@ openfair_tef_tc_diff_plm_sr <- function(tef, tc, diff, plm, sr, n = 10^4, verbos
   # TC - what is the strength of each threat event
   #    - get the threat capability parameters for this scenario
   TCestimate <- tc %>% purrr::flatten() %>%
-    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+    tibble::as_tibble() %>% tidyr::nest(params = -.data$func)
   #    - sample threat capability for each TEF event in each sample period
   TCsamples <- purrr::map(1:n, function(x) {
     params <- TCestimate$params %>% unlist()
@@ -474,9 +474,9 @@ openfair_tef_tc_diff_plm_sr <- function(tef, tc, diff, plm, sr, n = 10^4, verbos
 
   # LM - determine the size of losses for each iteration
   PLMestimate <- plm %>% purrr::flatten() %>%
-    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+    tibble::as_tibble() %>% tidyr::nest(params = -.data$func)
   SRestimate <- sr %>% purrr::flatten() %>%
-    tibble::as_tibble() %>% tidyr::nest(-.data$func, .key = "params")
+    tibble::as_tibble() %>% tidyr::nest(params = -.data$func)
   loss_samples <- purrr::map(LEFsamples, function(x) {
     params <- PLMestimate$params %>% unlist()
     dat_p <- sample_lm(n = x, .func = PLMestimate$func, params = params)

@@ -1,12 +1,11 @@
 ## Update
 
-This is a resubmission of a minor hotfix to address `vctrs` compatability. 
-This resubmission fixes an invalid URI in the README.
+This is a hotfix to address recent breaking changes in `tibble`.
 
 ## Test environments
 
 * local Windows 10 64 install, R 3.5.3
-* local OS X, R 3.6.0
+* local OS X, R 3.6.3
 * Windows Server 2016 (on appveyor), R 3.5
 * Ubuntu 16.04 LTS (on travis-ci)
   * R-release (both with and without pandoc)

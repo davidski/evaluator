@@ -36,9 +36,9 @@ run a OpenFAIR Monte Carlo simulation for each scenario.
 \examples{
 # fetch three scenarios for this example
 data(mc_quantitative_scenarios)
-scenario_a <- mc_quantitative_scenarios[[1, "scenario"]]
-scenario_b <- mc_quantitative_scenarios[[2, "scenario"]]
-scenario_c <- mc_quantitative_scenarios[[3, "scenario"]]
+scenario_a <- mc_quantitative_scenarios$scenario[[1]]
+scenario_b <- mc_quantitative_scenarios$scenario[[2]]
+scenario_c <- mc_quantitative_scenarios$scenario[[3]]
 run_simulations(scenario_a, scenario_b, scenario_c, iterations = 10)
 
 }

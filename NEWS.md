@@ -1,3 +1,7 @@
+# evaluator 0.4.2
+
+* Internal updates for recent `tibble` and `tidyr` changes.
+
 # evaluator 0.4.1
 
 * Update for compatibility with `vctrs` 0.2.0 CRAN release.

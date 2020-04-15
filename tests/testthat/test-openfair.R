@@ -217,7 +217,7 @@ test_that("SR model works as expected", {
     mutate(scenario = pmap(list(tef_params = tef_params, tc_params = tc_params,
                                 diff_params = diff_params, plm_params = plm_params,
                                 sr_params = sr_params, model = model), tidyrisk_scenario))
-  results <- run_simulation(scenario[[1, "scenario"]], 100L)
+  results <- scenario$scenario %>% map_df(run_simulation, 100L)
   expect_s3_class(results, "tbl_df")
   expect_equal(nrow(results), 100)
   expect_equal(length(results), 11)

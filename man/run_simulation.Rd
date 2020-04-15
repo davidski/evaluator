@@ -32,5 +32,5 @@ OpenFAIR Monte Carlo simulation.
 }
 \examples{
 data(mc_quantitative_scenarios)
-run_simulation(mc_quantitative_scenarios[[1, "scenario"]], 10)
+run_simulation(mc_quantitative_scenarios$scenario[[1]], 10)
 }
