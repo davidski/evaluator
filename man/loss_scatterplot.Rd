@@ -19,7 +19,7 @@ simulation. This provides a detailed view on the results.
 }
 \examples{
 data(mc_simulation_results)
-loss_scatterplot(mc_simulation_results[[1, "results"]])
+loss_scatterplot(mc_simulation_results$results[[1]])
 }
 \seealso{
 Other result graphs: 

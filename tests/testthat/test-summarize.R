@@ -14,9 +14,9 @@ test_that("Scenario summary rejects non dataframe inputs", {
 
 test_that("Simulation summary handles NAs for tc/diff exceedance", {
   data("mc_simulation_results")
-  mc_simulation_results[[1, "results"]][[1, "mean_tc_exceedance"]] <- NA
+  mc_simulation_results[[1, "results"]][[1]]$mean_tc_exceedance <- NA
   #simulation_results[1, "mean_tc_exceedance"] <- NA
-  mc_simulation_results[[10, "results"]][[1, "mean_diff_exceedance"]] <- NA
+  mc_simulation_results[[10, "results"]][[1]]$mean_diff_exceedance <- NA
   dat <- mutate(mc_simulation_results,
                 result_summary = map(results, summarize_scenario)) %>%
     select(-results)

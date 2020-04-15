@@ -1,6 +1,6 @@
 Package: evaluator
 Title: Quantified Risk Assessment Toolkit
-Version: 0.4.1
+Version: 0.4.2
 Authors@R: c(person("David", "Severski", email = "davidski@deadheaven.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-7867-0459")))
 Description: An open source risk analysis toolkit based on the OpenFAIR ontology 
   <https://www2.opengroup.org/ogsys/catalog/C13K> and risk assessment standard 

@@ -18,7 +18,7 @@
 #' @return Dataframe of results.
 #' @examples
 #' data(mc_quantitative_scenarios)
-#' run_simulation(mc_quantitative_scenarios[[1, "scenario"]], 10)
+#' run_simulation(mc_quantitative_scenarios$scenario[[1]], 10)
 run_simulation <- function(scenario, iterations = 10000L,
                             ale_maximum = NULL,
                             verbose = FALSE, simulation_count = NULL) {
@@ -43,7 +43,7 @@ run_simulation <- function(scenario, iterations = 10000L,
     if ((!is.null(.pb)) & inherits(.pb, "Progress") && (.pb$i < .pb$n)) .pb$tick()$print()
 
     safe_calculate <- purrr::safely(eval(rlang::parse_expr(func)))
-    rlang::exec(safe_calculate, !!!params)
+    rlang::exec("safe_calculate", !!!params)
   }
 
   simulation_results <- wrapped_calc(scenario)
@@ -88,9 +88,9 @@ run_simulation <- function(scenario, iterations = 10000L,
 #' @examples
 #' # fetch three scenarios for this example
 #' data(mc_quantitative_scenarios)
-#' scenario_a <- mc_quantitative_scenarios[[1, "scenario"]]
-#' scenario_b <- mc_quantitative_scenarios[[2, "scenario"]]
-#' scenario_c <- mc_quantitative_scenarios[[3, "scenario"]]
+#' scenario_a <- mc_quantitative_scenarios$scenario[[1]]
+#' scenario_b <- mc_quantitative_scenarios$scenario[[2]]
+#' scenario_c <- mc_quantitative_scenarios$scenario[[3]]
 #' run_simulations(scenario_a, scenario_b, scenario_c, iterations = 10)
 #'
 run_simulations <- function(scenario, ..., iterations = 10000L,

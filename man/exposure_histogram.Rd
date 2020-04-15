@@ -23,7 +23,7 @@ for a particular scenario.
 }
 \examples{
 data(mc_simulation_results)
-result <- mc_simulation_results[[1, "results"]]
+result <- mc_simulation_results$results[[1]]
 exposure_histogram(result)
 }
 \seealso{

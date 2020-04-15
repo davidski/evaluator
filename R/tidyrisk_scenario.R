@@ -24,7 +24,7 @@ new_tidyrisk_scenario <- function(..., model = "openfair_tef_tc_diff_lm") {
   scenario <- list(
     parameters = dots,
     model = model)
-  class(scenario) <- c("tidyrisk_scenario")
+  class(scenario) <- c("tidyrisk_scenario", "list")
   scenario
 }
 

@@ -39,7 +39,7 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #' Display a heatmap of impact by domain
 #'
 #' Given a domain_summary and a list of all domains, generate a heatmap colored
-#'   by the 95% VaR. This plot displays the domains in which aggregreate risk is
+#'   by the 95% VaR. This plot displays the domains in which aggregate risk is
 #'   greater than others.
 #'
 #' @import ggplot2
@@ -134,7 +134,7 @@ generate_scatterplot <- function(simulation_results, scenario_id){
 #' @export
 #' @examples
 #' data(mc_simulation_results)
-#' loss_scatterplot(mc_simulation_results[[1, "results"]])
+#' loss_scatterplot(mc_simulation_results$results[[1]])
 loss_scatterplot <- function(simulation_result) {
   gg <- ggplot(simulation_result, aes(x = .data$loss_events, y = .data$ale))
   gg <- gg + geom_point(alpha = 1/4)
@@ -167,7 +167,7 @@ loss_scatterplot <- function(simulation_result) {
 #' @export
 #' @examples
 #' data(mc_simulation_results)
-#' result <- mc_simulation_results[[1, "results"]]
+#' result <- mc_simulation_results$results[[1]]
 #' exposure_histogram(result)
 exposure_histogram <- function(simulation_result, bins = 30, show_var_95 = FALSE){
   gg <- ggplot(simulation_result, aes(x = .data$ale))

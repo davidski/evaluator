@@ -107,7 +107,6 @@ import_scenarios <- function(survey_file = NULL, domains = NULL) {
 #' @importFrom readxl read_excel
 #' @importFrom purrr map
 #' @importFrom rlang .data
-#' @inheritParams import_scenarios
 #' @param survey_file Path to survey Excel file. If not supplied, a default sample file is used.
 #' @param domains Dataframe of domains and domain IDs.
 #'

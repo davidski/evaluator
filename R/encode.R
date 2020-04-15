@@ -79,7 +79,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #'   IDs.
 #'
 #' @importFrom dplyr filter select
-#' @importFrom rlang .data set_names
+#' @importFrom tibble deframe
 #' @importFrom stringi stri_split_fixed
 #' @importFrom vctrs vec_cast
 #' @param capability_ids Comma-delimited list of capabilities in scope for a scenario.
@@ -89,7 +89,7 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
 #' @export
 #' @examples
 #' data(mc_capabilities)
-#' capability_ids <- c("1, 3")
+#' capability_ids <- c("CAP-01", "CAP-03")
 #' derive_control_key(capability_ids, mc_capabilities)
 derive_control_key <- function(capability_ids, capabilities) {
   control_list <- stringi::stri_split_fixed(capability_ids, ", ") %>% unlist()
@@ -98,8 +98,9 @@ derive_control_key <- function(capability_ids, capabilities) {
     dplyr::select(.data$capability_id, .data$capability)
 
   #rlang::as_list(control_frame$capability) %>%
-  vctrs::vec_cast(control_frame$capability, to = list()) %>%
-    rlang::set_names(control_frame$capability_id)
+  # vctrs::vec_cast(control_frame$capability, to = list()) %>%
+  #   rlang::set_names(control_frame$capability_id)
+  tibble::deframe(control_frame) %>% as.list()
 
 }
 
