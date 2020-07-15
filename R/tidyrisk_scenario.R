@@ -108,7 +108,8 @@ print.tidyrisk_scenario <- function(x, ...) {
 as_tibble.tidyrisk_scenario <- function(x, ...) {
   cli::cat_line("# Scenario model: ", x$model)
   purrr::map_depth(x$parameters, .depth = 1, dplyr::bind_rows, .id = "id") %>%
-    dplyr::bind_rows(.id = "openfair_factor")
+    dplyr::bind_rows(.id = "openfair_factor") %>%
+    tibble::as_tibble()
 }
 
 #' @rdname as_tibble.tidyrisk_scenario
