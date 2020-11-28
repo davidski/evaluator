@@ -6,7 +6,7 @@ ARG ADD=shiny
 
 LABEL org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.source="https://github.com/davidski/evaluator" \
-      org.opencontainers.image.documentation = "https://evaluator.tidyrisk.org"
+      org.opencontainers.image.documentation = "https://evaluator.tidyrisk.org" \
       maintainer="David F. Severski <davidski@deadheaven.com>" \
       org.openctainers.image.authors ="David F. Severski <davidski@deadheaven.com>"
 
