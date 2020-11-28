@@ -5,10 +5,8 @@
 
 <!-- badges: start -->
 
-[![Build
-Status](https://travis-ci.org/davidski/evaluator.svg?branch=master)](https://travis-ci.org/davidski/evaluator)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator)
+[![R build
+status](https://github.com/davidski/evaluator/workflows/R-CMD-check/badge.svg)](https://github.com/davidski/evaluator/actions)
 [![Coverage
 Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)](https://codecov.io/github/davidski/evaluator?branch=master)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator)
@@ -26,12 +24,12 @@ data-driven risk review.
 
 Three sample outputs of this toolkit are available:
 
-1)  A [sample risk
+1.  A [sample risk
     analysis](https://evaluator.tidyrisk.org/reports/evaluator_risk_analysis.html)
     report
-2)  A one page [risk
+2.  A one page [risk
     dashboard](https://evaluator.tidyrisk.org/reports/evaluator_risk_dashboard.html)
-3)  A demonstration copy of [Scenario
+3.  A demonstration copy of [Scenario
     Explorer](https://davidski.shinyapps.io/scenario_explorer)
 
 ## Installation
@@ -68,11 +66,11 @@ From Excel:
 
 From Evaluator:
 
-2.  Import the data
-3.  Prepare the data for simulation
-4.  Run the simulations
-5.  Summarize the results
-6.  Generate draft reports for customization
+1.  Import the data
+2.  Prepare the data for simulation
+3.  Run the simulations
+4.  Summarize the results
+5.  Generate draft reports for customization
 
 A detailed guide is available in the vignette accessed via
 `vignette("usage", package="evaluator")`. A short screencast showing the
@@ -86,38 +84,38 @@ While evaluator is a powerful tool, it does not attempt to address
 interactions between risk scenarios, rolling up multiple levels of risk
 into aggregations, or other advanced topics. As you become more
 comfortable with quantitative risk analysis, you may wish to dive deeper
-into these areas (and I hope you do\!). The following resources may help
+into these areas (and I hope you do!). The following resources may help
 you explore these and other topics in risk management.
 
 ### Alternative Software
 
-  - [RiskLens](http://www.risklens.com/), a commercial analysis suite,
+-   [RiskLens](http://www.risklens.com/), a commercial analysis suite,
     founded by the original creator of the FAIR methodology
-  - [FAIR Tool](https://github.com/zugo01/FAIRTool), a Shiny and R based
+-   [FAIR Tool](https://github.com/zugo01/FAIRTool), a Shiny and R based
     two scenario simulator, authored by Ezeugo Aguta under an MIT
     license
-  - [FAIR-U](https://www.fairinstitute.org/fair-u), a free educational
+-   [FAIR-U](https://www.fairinstitute.org/fair-u), a free educational
     tool for learning FAIR analysis, powered by RiskLens
-  - [Open FAIR Risk Analysis
+-   [Open FAIR Risk Analysis
     Tool](https://publications.opengroup.org/i181), an Excel and SIPMath
     base tool with a limited open license
 
 ### Blogs/Books/Training
 
-  - Russell C. Thomas’s excellent and provocative blog post on systemic
+-   Russell C. Thomas’s excellent and provocative blog post on systemic
     [Risk
     Management](http://exploringpossibilityspace.blogspot.com/2013/08/risk-management-out-with-old-in-with-new.html)
-  - [Measuring and Managing Information
+-   [Measuring and Managing Information
     Risk](https://smile.amazon.com/gp/product/0124202314)
-  - [OpenFAIR
+-   [OpenFAIR
     certification](http://www.opengroup.org/certifications/openfair)
-  - [Hubbard Decision Research calibration
+-   [Hubbard Decision Research calibration
     training](https://www.hubbardresearch.com/training/)
 
 ### Associations
 
-  - [FAIR Institute](http://www.fairinstitute.org/)
-  - [Society of Information Risk Analysts
+-   [FAIR Institute](http://www.fairinstitute.org/)
+-   [Society of Information Risk Analysts
     (SIRA)](https://www.societyinforisk.org/)
 
 ## Contributing

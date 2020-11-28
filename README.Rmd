@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
 
 <!-- badges: start --> 
 [![R build status](https://github.com/davidski/evaluator/workflows/R-CMD-check/badge.svg)](https://github.com/davidski/evaluator/actions)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/davidski/evaluator?branch=master&svg=true)](https://ci.appveyor.com/project/davidski/evaluator)
 [![Coverage Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)](https://codecov.io/github/davidski/evaluator?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator)
 ![downloads](https://cranlogs.r-pkg.org/badges/grand-total/evaluator)

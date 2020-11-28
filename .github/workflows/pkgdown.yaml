@@ -1,0 +1,64 @@
+on:
+  push:
+    branches:
+      - main
+      - master
+
+name: pkgdown
+
+jobs:
+  pkgdown:
+    runs-on: macOS-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@v1
+
+      - uses: r-lib/actions/setup-pandoc@v1
+
+      - name: Query dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
+
+      - name: Cache R packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          install.packages("pkgdown", type = "binary")
+        shell: Rscript {0}
+
+      - name: Install package
+        run: R CMD INSTALL .
+
+      - name: Build site and reports
+        run: |
+          Rscript -e 'pkgdown::build_site(preview = FALSE)'
+          Rscript ./scripts/generate_sample_reports.R
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Copy files to the website with the AWS CLI
+        run: |
+          aws s3 cp --recursive docs s3://${{ secrets.DEPLOY_BUCKET }}/
+          #aws s3 sync . s3://my-s3-test-website-bucket
+
+      - name: Copy reports to the website with the AWS CLI
+        run: |
+          aws s3 cp --recursive reports s3://${{ secrets.DEPLOY_BUCKET }}/reports/
+          #aws s3 sync . s3://my-s3-test-website-bucket
