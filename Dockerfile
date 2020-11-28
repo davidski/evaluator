@@ -4,9 +4,11 @@ ARG EVALUATOR_VERSION
 ENV BUILD_DATE=2020-11-27
 ARG ADD=shiny
 
-LABEL org.opencontainers.licenses="MIT" \
-      org.opencontainers.source="https://github.com/davidski/evaluator" \
-      maintainer="David F. Severski <davidski@deadheaven.com>"
+LABEL org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.source="https://github.com/davidski/evaluator" \
+      org.opencontainers.image.documentation = "https://evaluator.tidyrisk.org"
+      maintainer="David F. Severski <davidski@deadheaven.com>" \
+      org.openctainers.image.authors ="David F. Severski <davidski@deadheaven.com>"
 
 RUN /rocker_scripts/install_shiny_server.sh
 
