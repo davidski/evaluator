@@ -28,7 +28,7 @@ navbar:
     - text: "News"
       href: news/index.html
   right:
-    - icon: fa-github fa-lg
+    - icon: fa-github fa-lg fab
       text: "github"
       href: https://github.com/davidski/evaluator/
 
