@@ -33,9 +33,9 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch TEF params
   tef_nested <- dplyr::filter(mappings, .data$type == "tef") %>%
     dplyr::rowwise() %>%
-    dplyr::do(tef_params = list(min = .$l, mode = .$ml, max = .$h,
-                                shape = .$conf, func = "mc2d::rpert"),
-              label = .$label) %>%
+    dplyr::do(tef_params = list(min = .data$l, mode = .data$ml, max = .data$h,
+                                shape = .data$conf, func = "mc2d::rpert"),
+              label = .data$label) %>%
     dplyr::mutate(label = as.character(.data$label))
   scenarios <- dplyr::left_join(scenarios, tef_nested,
                                 by = c("tef" = "label")) %>%
@@ -44,9 +44,9 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch TC params
   tc_nested <- dplyr::filter(mappings, .data$type == "tc") %>%
     dplyr::rowwise() %>%
-    dplyr::do(tc_params = list(min = .$l, mode = .$ml, max = .$h,
-                               shape = .$conf, func = "mc2d::rpert"),
-              label = .$label) %>%
+    dplyr::do(tc_params = list(min = .data$l, mode = .data$ml, max = .data$h,
+                               shape = .data$conf, func = "mc2d::rpert"),
+              label = .data$label) %>%
     dplyr::mutate(label = as.character(.data$label))
   scenarios <- dplyr::left_join(scenarios, tc_nested,
                                 by = c("tc" = "label")) %>%
@@ -55,9 +55,9 @@ encode_scenarios <- function(scenarios, capabilities, mappings) {
   # fetch LM params
   lm_nested <- dplyr::filter(mappings, .data$type == "lm") %>%
     dplyr::rowwise() %>%
-    dplyr::do(lm_params = list(min = .$l, mode = .$ml, max = .$h,
-                               shape = .$conf, func = "mc2d::rpert"),
-              label = .$label) %>%
+    dplyr::do(lm_params = list(min = .data$l, mode = .data$ml, max = .data$h,
+                               shape = .data$conf, func = "mc2d::rpert"),
+              label = .data$label) %>%
     dplyr::mutate(label = as.character(.data$label))
   scenarios <- dplyr::left_join(scenarios, lm_nested,
                                 by = c("lm" = "label")) %>%
@@ -145,8 +145,8 @@ derive_controls <- function(capability_ids, capabilities, mappings) {
     dplyr::left_join(mappings[mappings$type == "diff", ],
                      by = c(label = "label")) %>%
     dplyr::rowwise() %>%
-    dplyr::do(diff_params = list(min = .$l, mode = .$ml, max = .$h,
-                                 shape = .$conf, func = "mc2d::rpert")) %>%
+    dplyr::do(diff_params = list(min = .data$l, mode = .data$ml, max = .data$h,
+                                 shape = .data$conf, func = "mc2d::rpert")) %>%
     dplyr::pull() %>%
     rlang::set_names(nm = control_list$control_id)
 

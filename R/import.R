@@ -32,8 +32,8 @@ import_spreadsheet <- function(survey_file = system.file("survey",
                                       domains = domains)
 
   ## ----write_files---------------------------------------------------------
-  readr::write_csv(capabilities, path = file.path(output_dir, "capabilities.csv"))
-  readr::write_csv(qualitative_scenarios, path =
+  readr::write_csv(capabilities, file = file.path(output_dir, "capabilities.csv"))
+  readr::write_csv(qualitative_scenarios, file =
                      file.path(output_dir, "qualitative_scenarios.csv"))
 
   file.info(c(file.path(output_dir, "capabilities.csv"),

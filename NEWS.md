@@ -1,3 +1,8 @@
+# evaluator 0.4.3 (unreleased)
+
+* Internal updates for deprecated `readr` options.
+* Internal shift to roxygen 7.1.1.
+
 # evaluator 0.4.2
 
 * Internal updates for recent `tibble` and `tidyr` changes.

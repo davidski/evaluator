@@ -54,10 +54,10 @@ theme_evaluator <- function(base_family = "BentonSansRE") {
 #' data(mc_domain_summary)
 #' generate_heatmap(mc_domain_summary)
 generate_heatmap <- function(domain_summary) {
-  dat <- domain_summary %>% dplyr::arrange(.data$domain_id) %>%
-    dplyr::mutate(full_label = paste0(.data$domain_id, "\n",
-                                      "$", round(.data$ale_var/10^6), "M"),
-                   aux = seq(1, 2 * nrow(.), by = 2))
+  dat <- domain_summary %>% dplyr::arrange(.data$domain_id)
+  dat <- dat %>% dplyr::mutate(full_label = paste0(
+    .data$domain_id, "\n", "$", round(.data$ale_var/10^6), "M"),
+    aux = seq(1, 2 * nrow(dat), by = 2))
   gg <- ggplot(dat, aes(x = .data$aux, y = 1))
   gg <- gg + geom_tile(stat = "identity", color = "white",
                        aes(fill = .data$ale_var), width = 1)
