@@ -1,7 +1,7 @@
 ## Update
 
 This is a minor update, addressing stale links, some deprecated functions 
-in dependencies, and internal code maintenance. No user-facing changes exist.
+in dependencies, and internal code maintenance. There are no user-facing changes. 
 
 ## Test environments
 
@@ -17,6 +17,10 @@ in dependencies, and internal code maintenance. No user-facing changes exist.
 ## R CMD check results
 
 * There were no NOTEs, ERRORs or WARNINGs.
+* Some check systems may throw an incorrect dependency error for 
+`mc2d`, which was recently updated on CRAN and is not available in 
+binaries on all platforms. This error is incorrect and the check 
+process works when run on an up to date CI system.
 
 ## Downstream dependencies
 
