@@ -2,6 +2,7 @@
 
 * Internal updates for deprecated `readr` options.
 * Internal shift to roxygen 7.1.1.
+* `markdown` now a suggested package for vignette building.
 
 # evaluator 0.4.2
 

@@ -40,6 +40,7 @@ Suggests:
     flexdashboard (>= 0.4),
     forcats,
     furrr,
+    markdown,
     mockery,
     pander (>= 0.6.1),
     psych,
