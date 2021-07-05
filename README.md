@@ -88,7 +88,7 @@ you explore these and other topics in risk management.
 
 ### Alternative Software
 
--   [RiskLens](http://www.risklens.com), a commercial analysis suite,
+-   [RiskLens](https://www.risklens.com), a commercial analysis suite,
     founded by the original creator of the FAIR methodology
 -   [FAIR Tool](https://github.com/zugo01/FAIRTool), a Shiny and R based
     two scenario simulator, authored by Ezeugo Aguta under an MIT
@@ -103,17 +103,17 @@ you explore these and other topics in risk management.
 
 -   Russell C. Thomas’s excellent and provocative blog post on systemic
     [Risk
-    Management](http://exploringpossibilityspace.blogspot.com/2013/08/risk-management-out-with-old-in-with-new.html)
+    Management](https://exploringpossibilityspace.blogspot.com/2013/08/risk-management-out-with-old-in-with-new.html)
 -   [Measuring and Managing Information
     Risk](https://smile.amazon.com/gp/product/0124202314)
 -   [OpenFAIR
-    certification](http://www.opengroup.org/certifications/openfair)
+    certification](https://www.opengroup.org/certifications/openfair)
 -   [Hubbard Decision Research calibration
     training](https://hubbardresearch.com/training/)
 
 ### Associations
 
--   [FAIR Institute](http://www.fairinstitute.org)
+-   [FAIR Institute](https://www.fairinstitute.org)
 -   [Society of Information Risk Analysts
     (SIRA)](https://www.societyinforisk.org/)
 

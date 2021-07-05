@@ -1,11 +1,12 @@
 ## Update
 
-This is a hotfix to address recent breaking changes in `tibble`.
+This is a minor update, addressing stale links, some deprecated functions 
+in dependencies, and internal code maintenance. No user-facing changes exist.
 
 ## Test environments
 
 * local Windows 10 64 install, R 4.0.3
-* local OS X, R 4.0.3
+* local OS X, R 4.0.5
 * OS X (via GitHub Actions), R-release
 * win-builder (R-devel and R-release)
 * R-Hub
@@ -19,6 +20,6 @@ This is a hotfix to address recent breaking changes in `tibble`.
 
 ## Downstream dependencies
 
-The `collector` package (also authored by me) depends on this package. This 
-release does not impact collector, apart from fixing CRAN checks on 
-collector that fail due to `evaluator`.
+The `collector` package (also authored by me) depends on this package. 
+`collector` is currently archived on CRAN, but a resubmission of this 
+package will take place once `evaluator` is updated on CRAN.
