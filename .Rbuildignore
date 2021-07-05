@@ -20,3 +20,4 @@ meta_tags.html
 pkgdown
 ^reports$
 ^scripts$
+^Dockerfile$
