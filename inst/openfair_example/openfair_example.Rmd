@@ -11,14 +11,14 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(dplyr)
 library(extrafont)
 library(evaluator)
 library(flexdashboard)
 library(ggplot2)
 library(mc2d)
-library(shiny)
 library(scales)
-library(dplyr)
+library(shiny)
 ```
 
 ```{r common_functions, include=FALSE}
@@ -64,53 +64,53 @@ Scenario Parameters {.sidebar data-width=400}
 
 ### TEF
 
-Frequency of action by the actor.
+Frequency of action (events per year) by the actor.
 
 ```{r input_tef}
 fillRow(height = 50,
   numericInput("tefl", "Min:", 10, min = 0, max = 100),
   numericInput("tefml", "ML:", 20, min = 0, max = 100),
   numericInput("tefh", "Max:", 100, min = 0, max = 100),
-  numericInput("tefconf", "Conf:", 1, min = 1, max = 5)
+  numericInput("tefconf", "Shape:", 1, min = 1, max = 5)
 )
 ```
 
-### TCAP
+### TC
 
-Capabilities of the threat actor.
+Capabilities (in %) of the threat actor.
 
 ```{r input_tcap}
 fillRow(height = 50,
-  numericInput("tcapl", "Min:", 20, min = 0, max = 100),
-  numericInput("tcapml", "ML:", 30, min = 0, max = 100),
-  numericInput("tcaph", "Max:", 70, min = 0, max = 100),
-  numericInput("tcapconf", "Conf:", 1, min = 1, max = 5)
+  numericInput("tcapl", "Min:", .20, min = 0, max = 1, step = 0.01),
+  numericInput("tcapml", "ML:", .30, min = 0, max = 1, step = 0.01),
+  numericInput("tcaph", "Max:", .70, min = 0, max = 1, step = 0.01),
+  numericInput("tcapconf", "Shape:", 1, min = 1, max = 5)
 )
 ```
 
 ### DIFF
 
-Difficulty presented by the controls.
+Difficulty (in %) presented by the controls.
 
 ```{r input_diff}
 fillRow(height = 50,
-  numericInput("csl", "Min:", 40, min = 0, max = 100),
-  numericInput("csml", "ML:", 50, min = 0, max = 100),
-  numericInput("csh", "Max:", 60, min = 0, max = 100),
-  numericInput("csconf", "Conf:", 2, min = 1, max = 5)
+  numericInput("csl", "Min:", .40, min = 0, max = 1, step = 0.01),
+  numericInput("csml", "ML:", .50, min = 0, max = 1, step = 0.01),
+  numericInput("csh", "Max:", .60, min = 0, max = 1, step = 0.01),
+  numericInput("csconf", "Shape:", 2, min = 1, max = 5)
 )
 ```
 
 ### LM
 
-Loss magnitude
+Total losses (in $) for a single adverse event.
 
 ```{r input_lm}
 fillRow(height = 50,
-  numericInput("lml", "Min:", 100, min = 0),
-  numericInput("lmml", "ML:", 500, min = 0),
-  numericInput("lmh", "Max:", 10000, min = 0),
-  numericInput("lmconf", "Conf:", 1, min = 1, max = 5)
+  numericInput("lml", "Min:", 100, min = 0, step = 0.01),
+  numericInput("lmml", "ML:", 500, min = 0, step = 0.01),
+  numericInput("lmh", "Max:", 10000, min = 0, step = 0.01),
+  numericInput("lmconf", "Shape:", 1, min = 1, max = 5)
 )
 ```
 
