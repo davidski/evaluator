@@ -4,14 +4,16 @@
 \name{mc_mappings}
 \alias{mc_mappings}
 \title{Qualitative to quantitative mappings}
-\format{\describe{
+\format{
+\describe{
 \item{type}{The element in the OpenFAIR ontology to which this mapping applies}
 \item{label}{Qualitative label}
 \item{l}{BetaPERT low value}
 \item{ml}{BetaPERT most likely value}
 \item{h}{BetaPERT high value}
 \item{conf}{BetaPERT confidence value}
-}}
+}
+}
 \source{
 This is hypothetical information. Any similarity to any other
 entity is completely coincidental.

@@ -4,7 +4,8 @@
 \name{mc_qualitative_scenarios}
 \alias{mc_qualitative_scenarios}
 \title{Qualitative information security risk scenarios}
-\format{\describe{
+\format{
+\describe{
 \item{scenario_id}{id of the scenario, primary key}
 \item{scenario}{full text description of the risk scenario}
 \item{tcomm}{full text name of threat community}
@@ -13,7 +14,8 @@
 \item{lm}{qualitative label of loss magnitude}
 \item{domain_id}{domain id}
 \item{controls}{comma delimited list of controls ids}
-}}
+}
+}
 \source{
 This is hypothetical information. Any similarity to any other
 entity is completely coincidental.

@@ -4,10 +4,12 @@
 \name{mc_domains}
 \alias{mc_domains}
 \title{Domain mappings}
-\format{\describe{
+\format{
+\describe{
 \item{domain_id}{abbreviated name of the domain}
 \item{domain}{full title of the domain}
-}}
+}
+}
 \source{
 This is hypothetical information. Any similarity to any other
 entity is completely coincidental.

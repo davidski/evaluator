@@ -4,7 +4,8 @@
 \name{mc_scenario_summary}
 \alias{mc_scenario_summary}
 \title{Scenario-level risk summary}
-\format{\describe{
+\format{
+\describe{
 \item{scenario_id}{ID of the scenario}
 \item{domain_id}{domain id}
 \item{control_description}{control description}
@@ -23,7 +24,8 @@
 \item{mean_tc_exceedance}{mean threat capability exceedance}
 \item{mean_diff_exceedance}{mean difficulty exceedance}
 \item{mean_vuln}{mean vulnerability of the scenario}
-}}
+}
+}
 \source{
 This is hypothetical information. Any similarity to any other
 entity is completely coincidental.

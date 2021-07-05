@@ -4,7 +4,8 @@
 \name{mc_quantitative_scenarios}
 \alias{mc_quantitative_scenarios}
 \title{Quantified information risk scenarios}
-\format{A dataset of quantified risk scenarios, with parameters
+\format{
+A dataset of quantified risk scenarios, with parameters
 describing the distribution of each input.
 
 \describe{
@@ -14,7 +15,8 @@ describing the distribution of each input.
 \item{domain_id}{domain id}
 \item{control_descriptons}{named list of the text description of controls involved}
 \item{scenario}{\code{\link{tidyrisk_scenario}} objects}
-}}
+}
+}
 \source{
 This is hypothetical information. Any similarity to any other
 entity is completely coincidental.

@@ -4,7 +4,8 @@
 \name{mc_domain_summary}
 \alias{mc_domain_summary}
 \title{Domain-level risk summary}
-\format{\describe{
+\format{
+\describe{
 \item{domain_id}{abbreviated name of the domain}
 \item{loss_events_mean}{mean number of loss events}
 \item{loss_events_min}{minimum number of loss events}
@@ -21,7 +22,8 @@
 \item{mean_tc_exceedance}{mean threat capability exceedance}
 \item{mean_diff_exceedance}{mean difficulty exceedance}
 \item{mean_vuln}{mean vulnerability of the scenario}
-}}
+}
+}
 \source{
 This is hypothetical information. Any similarity to any other
 entity is completely coincidental.

@@ -4,11 +4,13 @@
 \name{mc_simulation_results}
 \alias{mc_simulation_results}
 \title{Simulation results}
-\format{\describe{
+\format{
+\describe{
 \item{scenario_id}{id of the scenario}
 \item{domain_id}{domain id}
 \item{results}{nested data frame of simulation results for the scenario}
-}}
+}
+}
 \source{
 This is hypothetical information. Any similarity to any other
 entity is completely coincidental.
