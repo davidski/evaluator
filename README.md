@@ -9,18 +9,17 @@
 status](https://github.com/davidski/evaluator/workflows/R-CMD-check/badge.svg)](https://github.com/davidski/evaluator/actions)
 [![Coverage
 Status](https://codecov.io/gh/davidski/evaluator/branch/master/graph/badge.svg)](https://codecov.io/github/davidski/evaluator?branch=master)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/evaluator)](https://cran.r-project.org/package=evaluator)
 ![downloads](https://cranlogs.r-pkg.org/badges/grand-total/evaluator)
 <!-- badges: end -->
 
 ## Overview
 
 evaluator is an open source quantitative risk analysis toolkit. Based on
-the OpenFAIR [ontology](https://www2.opengroup.org/ogsys/catalog/C13K)
-and risk assessment
-[standard](https://www2.opengroup.org/ogsys/catalog/C13G), evaluator
-empowers an organization to perform a quantifiable, repeatable, and
-data-driven risk review.
+the OpenFAIR [ontology](https://publications.opengroup.org/c20b) and
+risk analysis [standard](https://publications.opengroup.org/c20a),
+evaluator empowers an organization to perform a quantifiable,
+repeatable, and data-driven risk review.
 
 Three sample outputs of this toolkit are available:
 
@@ -66,11 +65,11 @@ From Excel:
 
 From Evaluator:
 
-1.  Import the data
-2.  Prepare the data for simulation
-3.  Run the simulations
-4.  Summarize the results
-5.  Generate draft reports for customization
+2.  Import the data
+3.  Prepare the data for simulation
+4.  Run the simulations
+5.  Summarize the results
+6.  Generate draft reports for customization
 
 A detailed guide is available in the vignette accessed via
 `vignette("usage", package="evaluator")`. A short screencast showing the
@@ -89,7 +88,7 @@ you explore these and other topics in risk management.
 
 ### Alternative Software
 
--   [RiskLens](http://www.risklens.com/), a commercial analysis suite,
+-   [RiskLens](http://www.risklens.com), a commercial analysis suite,
     founded by the original creator of the FAIR methodology
 -   [FAIR Tool](https://github.com/zugo01/FAIRTool), a Shiny and R based
     two scenario simulator, authored by Ezeugo Aguta under an MIT
@@ -110,11 +109,11 @@ you explore these and other topics in risk management.
 -   [OpenFAIR
     certification](http://www.opengroup.org/certifications/openfair)
 -   [Hubbard Decision Research calibration
-    training](https://www.hubbardresearch.com/training/)
+    training](https://hubbardresearch.com/training/)
 
 ### Associations
 
--   [FAIR Institute](http://www.fairinstitute.org/)
+-   [FAIR Institute](http://www.fairinstitute.org)
 -   [Society of Information Risk Analysts
     (SIRA)](https://www.societyinforisk.org/)
 
