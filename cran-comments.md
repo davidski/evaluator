@@ -18,12 +18,12 @@ prior versions of this package) per a notice from CRAN.
 
 ## R CMD check results
 
-* One RHUB check platform (Fedora, r-devel) emits a NOTE of a possible invalid 
-URL in a vignette for https://hitrustalliance.net/hitrust-csf/. This URL is 
+* Some platforms in the test matrix emit a NOTE of a possible invalid URL in a 
+vignette for https://hitrustalliance.net/hitrust-csf/. This URL is 
 valid and the certificate is verified as good to a known trust. The 
 current certificate on this site was renewed earlier this month, which 
-I suspect is the reason the RHUB NOTE. I am unable to reproduce this on any 
-other systems in the build matrix and believe this to be a RHUB local/transient problem.
+I suspect is the reason for the NOTE. I am unable to reproduce this on any 
+other systems in the build matrix and believe this to be a local/transient problem.
 
 ## Downstream dependencies
 
