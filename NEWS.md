@@ -1,4 +1,4 @@
-# evaluator 0.4.4 (unreleased)
+# evaluator 0.4.4
 
 * Remove the hard dependency on `crayon` and `extrafont`.
 * Remove soft-dependency (SUGGESTS) dependency on `ggalt`.
