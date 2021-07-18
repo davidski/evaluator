@@ -18,14 +18,15 @@ prior versions of this package) per a notice from CRAN.
 
 ## R CMD check results
 
-* There were no NOTEs, ERRORs or WARNINGs.
-* Some check systems may throw an incorrect dependency error for 
-`mc2d`, which was recently updated on CRAN and is not available in 
-binaries on all platforms. This error is incorrect and the check 
-process works when run on an up to date CI system.
+* One RHUB check platform (Fedora, r-devel) emits a NOTE of a possible invalid 
+URL in a vignette for https://hitrustalliance.net/hitrust-csf/. This URL is 
+valid and the certificate is verified as good to a known trust. The 
+current certificate on this site was renewed earlier this month, which 
+I suspect is the reason the RHUB NOTE. I am unable to reproduce this on any 
+other systems in the build matrix and believe this to be a RHUB local/transient problem.
 
 ## Downstream dependencies
 
 The `collector` package (also authored by me) depends on this package. 
 `collector` is currently archived on CRAN, but a resubmission of this 
-package will take place once `evaluator` is updated on CRAN.
+package is in process.
