@@ -26,7 +26,6 @@ library(ggplot2)
 library(dplyr)
 library(tibble)
 library(evaluator)
-library(extrafont)
 input_directory <- params$input_directory
 results_directory <- params$results_directory
 ```

@@ -1,4 +1,11 @@
-# evaluator 0.4.3 (unreleased)
+# evaluator 0.4.4 (unreleased)
+
+* Remove the hard dependency on `crayon` and `extrafont`.
+* Remove soft-dependency (SUGGESTS) dependency on `ggalt`.
+* Add a soft-dependency on `showtext`.
+* The default font for `get_base_family()` is moved to "Arial Narrow", if available.
+
+# evaluator 0.4.3
 
 * Internal updates for deprecated `readr` options.
 * Internal shift to roxygen 7.1.1.

@@ -47,9 +47,8 @@ as_tidyrisk_factor <- function(x, factor_label) {
 
 # Formatters --------------------------------------------------------------
 
-#' @importFrom cli cat_line cat_bullet cat_rule cat_print
+#' @importFrom cli cat_line cat_bullet cat_rule cat_print style_bold
 #' @importFrom vctrs vec_data
-#' @importFrom crayon bold
 #' @importFrom purrr walk2
 format.tidyrisk_factor <- function(x, ...) {
   cli::cat_line("# Factor samples: ", length(vctrs::vec_data(x)))
@@ -58,7 +57,7 @@ format.tidyrisk_factor <- function(x, ...) {
     cli::cat_bullet("# Summary details: None.")
   } else {
     purrr::walk2(names(details(x)), details(x)
-                 ~ cli::cat_bullet("# Summary detail: ", crayon::bold(.x),
+                 ~ cli::cat_bullet("# Summary detail: ", cli::style_bold(.x),
                                    " ", .y))
     cli::cat_rule()
   }

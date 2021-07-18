@@ -3,7 +3,7 @@
 # Ensure packages are available for running Scenario Explorer on Heroku
 #
 
-my_packages = c("flexdashboard", "ggplot2", "extrafont", "scales", "viridis",
+my_packages = c("flexdashboard", "ggplot2", "scales", "viridis",
                 "stringi", "dplyr", "readr", "tidyr", "modeest", "shiny", "DT")
 
 install_if_missing = function(p) {

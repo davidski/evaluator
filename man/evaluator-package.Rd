@@ -9,8 +9,8 @@
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
 An open source risk analysis toolkit based on the OpenFAIR ontology 
-  <https://www2.opengroup.org/ogsys/catalog/C13K> and risk assessment standard 
-  <https://www2.opengroup.org/ogsys/catalog/C13G>. Empowers an organization to 
+  <https://publications.opengroup.org/c20b> and risk analysis standard 
+  <https://publications.opengroup.org/c20a>. Empowers an organization to 
   perform a quantifiable, repeatable, and data-driven risk review.
 }
 \seealso{

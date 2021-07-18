@@ -38,7 +38,7 @@ generate_report <- function(input_directory = "~/evaluator/inputs",
                             intermediates_dir = tempdir(),
                             quiet = TRUE,
                             ...) {
-  check_availability(packages = c("psych", "pander", "ggalt", "rmarkdown"),
+  check_availability(packages = c("psych", "pander", "rmarkdown"),
                      func = "generate_report")
 
   # figure out the correct style format to apply

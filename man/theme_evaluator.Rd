@@ -4,7 +4,7 @@
 \alias{theme_evaluator}
 \title{Default ggplot theme used by all Evaluator-supplied graphics}
 \usage{
-theme_evaluator(base_family = "BentonSansRE")
+theme_evaluator(base_family = "")
 }
 \arguments{
 \item{base_family}{Font family.}

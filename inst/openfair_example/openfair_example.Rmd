@@ -12,7 +12,6 @@ output:
 
 ```{r setup, include=FALSE}
 library(dplyr)
-library(extrafont)
 library(evaluator)
 library(flexdashboard)
 library(ggplot2)

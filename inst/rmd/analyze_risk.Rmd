@@ -48,8 +48,6 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = FALSE,
 
 # graphics
 library(ggplot2)
-library(ggalt)
-library(extrafont)
 library(scales)
 library(viridis)
 
@@ -521,9 +519,10 @@ scenario_summary %>%
 
 gg <- ggplot(scenarios_ranked_by_var, 
              aes(x = ale_var, 
-                 y = reorder(scenario_label, ale_var), 
+                 y = reorder(scenario_label, ale_var),
                  color = annual_tolerance))
-gg <- gg + ggalt::geom_lollipop(horizontal = TRUE, point.size = 3)
+gg <- gg + geom_segment(aes(x = 0, xend = ale_var, yend = reorder(scenario_label, ale_var)))
+gg <- gg + geom_point(size = 3)
 gg <- gg + scale_x_continuous(labels = dollar_millions)
 gg <- gg + scale_color_viridis(discrete = TRUE, drop = FALSE, 
                                breaks = c("Low", "Medium", "High"))

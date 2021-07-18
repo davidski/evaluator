@@ -4,12 +4,12 @@ test_that("Basefont selection works", {
   expect_gt(nchar(dat), 1)
 })
 test_that("Basefont returns sans when no fonts available", {
-  mockery::stub(get_base_fontfamily, 'extrafont::choose_font', "")
+  mockery::stub(get_base_fontfamily, 'sysfonts::font_families', "")
   expect_equal(get_base_fontfamily(), "sans")
 })
-test_that("Basefont returns Benton when available", {
-  mockery::stub(get_base_fontfamily, 'extrafont::choose_font', "BentonSansRE")
-  expect_equal(get_base_fontfamily(), "BentonSansRE")
+test_that("Basefont returns Arial Narrow when available", {
+  mockery::stub(get_base_fontfamily, 'sysfonts::font_families', "Arial Narrow")
+  expect_equal(get_base_fontfamily(), "Arial Narrow")
 })
 
 

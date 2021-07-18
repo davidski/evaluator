@@ -1,19 +1,20 @@
 #' Select a base graphics font family
 #'
-#' The Benton Sans Regular font is preferred with a fallback of Arial Narrow.
-#'   If neither font is available, use a default `sans` family font.
+#' The Arial Narrow font is preferred. If not available, use a default `sans`
+#' family font.
 #'
-#' @importFrom extrafont choose_font
 #' @return String of the preferred base font.
 #' @export
 #' @examples
 #' get_base_fontfamily()
 get_base_fontfamily <- function() {
-  dat <- extrafont::choose_font(c("BentonSansRE", "Arial Narrow"))
-  if (dat == "") {
-    "sans"
+  dat <- if (requireNamespace("sysfonts", quietly=TRUE)) {
+    sysfonts::font_families()
+  } else { "" }
+  if ("Arial Narrow" %in% dat) {
+    "Arial Narrow"
   } else {
-    dat
+    "sans"
   }
 }
 
@@ -30,7 +31,7 @@ get_base_fontfamily <- function() {
 #' p <- ggplot(mtcars) + geom_point(aes(wt, mpg, color = factor(gear))) + facet_wrap(~am)
 #' font_family <- get_base_fontfamily()
 #' p + theme_evaluator(font_family)
-theme_evaluator <- function(base_family = "BentonSansRE") {
+theme_evaluator <- function(base_family = "") {
   theme_minimal(base_family = base_family) %+replace%
     theme(panel.border = element_blank(), legend.position = "bottom",
           plot.caption = element_text(size = 9, hjust = 1))

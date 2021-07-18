@@ -1,6 +1,6 @@
 Package: evaluator
 Title: Quantified Risk Assessment Toolkit
-Version: 0.4.3
+Version: 0.4.3.9000
 Authors@R: c(person("David", "Severski", email = "davidski@deadheaven.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-7867-0459")))
 Description: An open source risk analysis toolkit based on the OpenFAIR ontology 
   <https://publications.opengroup.org/c20b> and risk analysis standard 
@@ -12,9 +12,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     cli,
-    crayon,
     dplyr,
-    extrafont,
     ggplot2,
     mc2d,
     magrittr,
@@ -35,7 +33,6 @@ Suggests:
     DT,
     EnvStats,
     covr,
-    ggalt (>= 0.4.0),
     knitr,
     flexdashboard (>= 0.4),
     forcats,
@@ -49,6 +46,7 @@ Suggests:
     shinytest,
     spelling,
     statip,
+    sysfonts,
     testthat
 SystemRequirements: pandoc
 VignetteBuilder: knitr

@@ -23,7 +23,6 @@ Sample narrative section.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE) 
-library(extrafont)
 library(evaluator)
 library(dplyr)
 
