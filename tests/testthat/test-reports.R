@@ -16,7 +16,8 @@ res <- c("domains.csv", "qualitative_mappings.csv", "risk_tolerances.csv") %>%
   purrr::map(~ file.copy(system.file("extdata", .x, package = "evaluator"),
                          tmpinputs))
 data("mc_qualitative_scenarios", envir = environment())
-readr::write_csv(mc_qualitative_scenarios, file.path(tmpinputs, "qualitative_scenarios.csv"))
+write.csv(mc_qualitative_scenarios, file = file.path(tmpinputs, "qualitative_scenarios.csv"),
+          row.names = FALSE)
 data("mc_quantitative_scenarios", envir = environment())
 saveRDS(mc_quantitative_scenarios, file.path(tmpinputs, "quantitative_scenarios.rds"))
 
