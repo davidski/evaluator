@@ -46,7 +46,7 @@ buckets into which you divide your program. Examples of domains include
 Physical Security, Strategy, Policy, Business Continuity/Disaster 
 Recovery, and Technical Security. Out of the box, Evaluator comes with a 
 demonstration model based upon the 
-[HITRUST CSF](https://hitrustalliance.net/hitrust-csf/).
+[HITRUST CSF](https://hitrustalliance.net/product-tool/hitrust-csf/).
 
 To start a fresh analysis using the default starter files, run 
 `create_templates("~/evaulator")`. This creates an `evaluator` directory in your home 
