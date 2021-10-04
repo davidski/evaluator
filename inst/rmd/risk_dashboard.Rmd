@@ -69,7 +69,7 @@ Value Boxes
 
 ### Aggregate Risk
 
-````{r var_valuebox}
+```{r var_valuebox}
 agg_risk <- quantile(iteration_summary$ale_sum, 0.95)
 flexdashboard::valueBox(dollar_millions(agg_risk), icon = "glyphicon-eye-open",
          caption = "Aggregate 95% Value at Risk",
