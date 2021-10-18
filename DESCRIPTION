@@ -28,7 +28,7 @@ Imports:
     vctrs,
     viridis
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests:
     DT,
     EnvStats,
@@ -50,6 +50,7 @@ Suggests:
     testthat
 SystemRequirements: pandoc
 VignetteBuilder: knitr
+Config/testthat/edition: 3
 URL: https://evaluator.tidyrisk.org
 BugReports: https://github.com/davidski/evaluator/issues
 Language: en-US

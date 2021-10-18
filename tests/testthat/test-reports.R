@@ -1,5 +1,5 @@
 context("Reports")
-tmpdir <- tempdir()
+tmpdir <- tempdir(check = TRUE)
 tmpdata <- file.path(tmpdir, "data")
 dir.create(tmpdata)
 tmpinputs <- file.path(tmpdir, "inputs")
@@ -26,7 +26,7 @@ test_that("Analyze report renders", {
 
   skip_if_not(rmarkdown::pandoc_available(),
               message = "Cannot test report generation without pandoc available.")
-  purrr::walk(c("psych", "pander", "ggalt", "rmarkdown"),
+  purrr::walk(c("psych", "pander", "rmarkdown"),
               ~ skip_if_not_installed(.))
 
   file <- tempfile(fileext = ".html")

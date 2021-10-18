@@ -3,7 +3,7 @@ context("OpenFAIR Example Shiny app")
 library(shinytest)
 
 test_that("openfairExample() works", {
-  skip("Shiny testing is awkward, consider moving to stand along pkg")
+  skip("Shiny testing is awkward, consider moving to stand alone pkg")
 
   # Don't run these tests on the CRAN build servers
   skip_on_cran()

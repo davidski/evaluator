@@ -2,13 +2,13 @@
 
 This is a minor update, removing some dependencies and substituting others 
 with SUGGESTS when full removals could not easily be supported. This is in 
-response to the potential archival of `extrafont` (a hard dependency in 
-prior versions of this package) per a notice from CRAN.
+response to CRAN notices of incompatibility with a forthcoming knitr 
+release.
 
 ## Test environments
 
-* local Windows 10 64 install, R 4.0.5
-* local OS X, R 4.0.5
+* local Windows 10 64 install, R 4.1
+* local OS X, R 4.1
 * OS X (via GitHub Actions), R-release
 * win-builder (R-devel and R-release)
 * R-Hub
