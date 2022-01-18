@@ -3,11 +3,13 @@ on:
     branches:
       - main
       - master
+  workflow_dispatch: 
 
 name: pkgdown
 
 permissions:
   id-token: write
+  contents: write
 
 jobs:
   pkgdown:
@@ -67,3 +69,4 @@ jobs:
         run: |
           aws s3 cp --recursive reports s3://${{ secrets.DEPLOY_BUCKET }}/reports/
           #aws s3 sync . s3://my-s3-test-website-bucket
+
