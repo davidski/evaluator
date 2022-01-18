@@ -131,7 +131,7 @@ vec_proxy_compare.tidyrisk_factor <- function(x) {
 #'
 #' @param factor_label abbreviation of the OpenFAIR element
 #' @importFrom rlang as_function
-risk_factory <- function(factor_label = "TC") {
+tidyrisk_factory <- function(factor_label = "TC") {
 
   function(.n = 1, ..., .func) {
     my_func <- rlang::as_function(.func)
