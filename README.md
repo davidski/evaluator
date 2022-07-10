@@ -47,7 +47,7 @@ version of evaluator, you can install directly from GitHub with the
 following `devtools` command.
 
 ``` r
-# install.pacakges("devtools")
+# install.packages("devtools")
 devtools::install_github("davidski/evaluator", dependencies = TRUE)
 ```
 
